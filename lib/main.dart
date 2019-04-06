@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'playerPage.dart';
 import 'program.dart';
 import 'wall.dart';
 import 'playerWidget.dart';
