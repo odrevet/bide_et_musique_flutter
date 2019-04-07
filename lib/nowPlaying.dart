@@ -49,12 +49,6 @@ class _nowPlayingWidgetState extends State<nowPlayingWidget> {
     });
   }
 
-  void _refreshNowPlaying() {
-    setState(() {
-      _song = fetchNowPlaying();
-    });
-  }
-
   @override
   void dispose() {
     super.dispose();
