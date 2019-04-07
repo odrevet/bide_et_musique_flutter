@@ -92,16 +92,6 @@ class SongPageWidget extends StatelessWidget {
                   fontSize: 20.0,
                   color: Colors.black,
                   fontWeight: FontWeight.w600))),
-
-      /*decoration: new BoxDecoration(
-          image: new DecorationImage(
-            fit: BoxFit.fill,
-            alignment: FractionalOffset.topCenter,
-            image: new NetworkImage(
-                'http://www.bide-et-musique.com/images/pochettes/' +
-                    song.id +
-                    '.jpg'),
-          )),*/
     );
   }
 }
