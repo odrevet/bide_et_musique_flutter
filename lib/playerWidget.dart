@@ -22,7 +22,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   get isPaused => playerState == PlayerState.paused;
 
   bool isMuted = false;
-  
+
   StreamSubscription _audioPlayerStateSubscription;
 
   @override

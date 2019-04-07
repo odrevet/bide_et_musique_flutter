@@ -20,11 +20,14 @@ Future<List<Song>> fetchPochettoscope() async {
       var match = idRegex.firstMatch(src);
       var song = Song();
       song.id = match[1];
+
+      var title = vignette.children[0].children[0].attributes['title'];
+      song.title = title;
       songs.add(song);
     }
     return songs;
   } else {
-    throw Exception('Failed to load trombines');
+    throw Exception('Failed to load pochette');
   }
 }
 
@@ -47,7 +50,7 @@ class PochettoscopeWidget extends StatelessWidget {
           future: songs,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -60,23 +63,14 @@ class PochettoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(List<Song> songs) {
-    var rows = <Container>[];
+  Widget _buildView(BuildContext context, List<Song> songs) {
+    var rows = <GestureDetector>[];
     for (Song song in songs) {
       rows.add(
-        Container(
-          //child: Text(song.title, style: _font),
-          decoration: new BoxDecoration(
-              color: Colors.orangeAccent,
-              image: new DecorationImage(
-                fit: BoxFit.contain,
-                alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(
-                    'http://www.bide-et-musique.com/images/thumb75/' +
-                        song.id +
-                        '.jpg'),
-              )),
-        ),
+          GestureDetector(
+            onTap: () { print("Container was tapped"); },
+            child: SongCardWidget(song: song)
+          )
       );
     }
 
