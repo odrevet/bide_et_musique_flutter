@@ -4,6 +4,7 @@ import 'wall.dart';
 import 'playerWidget.dart';
 import 'nowPlaying.dart';
 import 'trombidoscope.dart';
+import 'pochettoscope.dart';
 import 'about.dart';
 
 void main() => runApp(BideApp());
@@ -103,6 +104,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   new MaterialPageRoute(
                       builder: (context) =>
                           new TrombidoscopeWidget(accounts: fetchAccounts())));
+            },
+          ),
+          new ListTile(
+            title: new Text('Pochettoscope'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                      new PochettoscopeWidget(songs: fetchPochettoscope())));
             },
           ),
           new ListTile(
