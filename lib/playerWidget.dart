@@ -22,8 +22,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   get isPaused => playerState == PlayerState.paused;
 
   bool isMuted = false;
-
-  StreamSubscription _positionSubscription;
+  
   StreamSubscription _audioPlayerStateSubscription;
 
   @override
@@ -123,7 +122,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   @override
   void dispose() {
-    _positionSubscription.cancel();
     _audioPlayerStateSubscription.cancel();
     audioPlayer.stop();
     super.dispose();
@@ -135,8 +133,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   void initAudioPlayer() {
     audioPlayer = new AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
-        .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == AudioPlayerState.PLAYING) {
