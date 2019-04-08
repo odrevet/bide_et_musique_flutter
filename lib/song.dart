@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
@@ -59,6 +60,7 @@ Future<String> fetchLyrics(String songId) async {
 class SongPageWidget extends StatelessWidget {
   Song song;
   Future<String> lyrics;
+  final _fontLyrics = TextStyle(fontSize: 20.0);
 
   SongPageWidget({Key key, this.song, this.lyrics}) : super(key: key);
 
@@ -109,18 +111,33 @@ class SongPageWidget extends StatelessWidget {
                     )),
                   )),
                   Expanded(
-                    child: Text('TODO'),//SongPlayerWidget(song.id),
+                    child: Text('TODO'), //SongPlayerWidget(song.id),
                   ),
                 ],
               )),
           Expanded(
             flex: 7,
-            child: SingleChildScrollView(
-                child: Text(lyrics,
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600))),
+            child: Container(
+              child: Stack(children: [
+                new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: new Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.grey.shade200.withOpacity(0.7)),
+                  ),
+                ),
+                SingleChildScrollView(child: Text(lyrics, style: _fontLyrics)),
+              ]),
+              decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                fit: BoxFit.fill,
+                alignment: FractionalOffset.topCenter,
+                image: new NetworkImage(
+                    'http://www.bide-et-musique.com/images/pochettes/' +
+                        song.id +
+                        '.jpg'),
+              )),
+            ),
           ),
         ],
       )),
