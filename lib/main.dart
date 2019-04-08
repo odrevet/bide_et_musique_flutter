@@ -127,30 +127,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       )),
       body: OrientationBuilder(
         builder: (context, orientation) {
+          var children = [
+            Expanded(
+              child: nowPlayingWidget(),
+            ),
+            Expanded(
+              child: PlayerWidget(),
+            ),
+          ];
+
           return orientation == Orientation.portrait
               ? new Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: nowPlayingWidget(),
-                    ),
-                    Expanded(
-                      child: PlayerWidget(),
-                    ),
-                  ],
+                  children: children
                 ))
               : new Center(
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: nowPlayingWidget(),
-                    ),
-                    Expanded(
-                      child: PlayerWidget(),
-                    ),
-                  ],
+                  children: children
                 ));
         },
       ),
