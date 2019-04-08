@@ -19,8 +19,7 @@ Future<List<Account>> fetchTrombidoscope() async {
       var href = td.children[0].attributes['href'];
       final idRegex = RegExp(r'/account/(\d+).html');
       var match = idRegex.firstMatch(href);
-      var account = Account(match[1]);
-      account.name = stripTags(td.children[0].innerHtml);
+      var account = Account(match[1], stripTags(td.children[0].innerHtml));
       accounts.add(account);
     }
     return accounts;

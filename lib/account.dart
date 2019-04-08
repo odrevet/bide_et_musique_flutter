@@ -10,7 +10,7 @@ class Account {
   String id;
   String name;
 
-  Account(this.id);
+  Account(this.id, this.name);
 }
 
 Future<String> fetchAccount(String accountId) async {

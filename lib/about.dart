@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'account.dart';
 
 class AboutPage extends StatelessWidget {
   AboutPage({Key key}) : super(key: key);
@@ -49,6 +51,18 @@ class AboutPage extends StatelessWidget {
                         text:
                             'Application non-officiel par Olivier Drevet. \nDistribuée sous la license GPLv3\n'
                             'Vous pouvez consulter le code source sur https://github.com/odrevet/bide-et-musique-flutter\n\n',
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () => {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) =>
+                                            new AccountPageWidget(
+                                                account:
+                                                    Account('84482', 'drev'),
+                                                txtpresentation:
+                                                    fetchAccount('84482')))),
+                              },
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.black,
