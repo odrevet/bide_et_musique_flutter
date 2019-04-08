@@ -103,7 +103,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) =>
-                          new TrombidoscopeWidget(accounts: fetchAccounts())));
+                          new TrombidoscopeWidget(accounts: fetchTrombidoscope())));
             },
           ),
           new ListTile(

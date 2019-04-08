@@ -64,11 +64,10 @@ class PochettoscopeWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<Song> songs) {
-    var rows = <GestureDetector>[];
+    var rows = <Container>[];
     for (Song song in songs) {
       rows.add(
-          GestureDetector(
-            onTap: () { print("Container was tapped"); },
+          Container(
             child: SongCardWidget(song: song)
           )
       );

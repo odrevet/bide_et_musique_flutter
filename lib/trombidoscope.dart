@@ -6,7 +6,7 @@ import 'package:html/parser.dart' as parser;
 import 'account.dart';
 import 'utils.dart';
 
-Future<List<Account>> fetchAccounts() async {
+Future<List<Account>> fetchTrombidoscope() async {
   var accounts = <Account>[];
   final url = 'http://www.bide-et-musique.com/trombidoscope.html';
   final response = await http.get(url);
@@ -48,7 +48,7 @@ class TrombidoscopeWidget extends StatelessWidget {
           future: accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -61,23 +61,34 @@ class TrombidoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(List<Account> accounts) {
-    var rows = <Container>[];
+  Widget _buildView(BuildContext context, List<Account> accounts) {
+    var rows = <GestureDetector>[];
     for (Account account in accounts) {
+      var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
+          account.id +
+          '.jpg';
       rows.add(
-        Container(
-          child: Text(account.name, style: _font),
-          decoration: new BoxDecoration(
-              color: Colors.orangeAccent,
-              image: new DecorationImage(
-                fit: BoxFit.contain,
-                alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(
-                    'http://www.bide-et-musique.com/images/photos/ACT' +
-                        account.id +
-                        '.jpg'),
-              )),
-        ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new AccountPageWidget(account: account, txtpresentation: fetchAccount(account.id))));
+                  },
+                  child:  Container(
+                    child: Text(account.name, style: _font),
+                    decoration: new BoxDecoration(
+                        color: Colors.orangeAccent,
+                        image: new DecorationImage(
+                          fit: BoxFit.contain,
+                          alignment: FractionalOffset.topCenter,
+                          image: new NetworkImage(url),
+                        )),
+                  ),
+              )
+
+
+
       );
     }
 
