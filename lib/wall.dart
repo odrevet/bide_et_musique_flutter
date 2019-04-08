@@ -42,8 +42,6 @@ Future<List<Post>> fetchPosts() async {
 
       post.during = song;
 
-      //print(">>>>>" + basmsg.children[0].outerHtml);
-
       posts.add(post);
     }
     return posts;

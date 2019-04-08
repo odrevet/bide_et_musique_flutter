@@ -112,8 +112,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) =>
-                      new PochettoscopeWidget(songs: fetchPochettoscope())));
+                      builder: (context) => new PochettoscopeWidget(
+                          songs: fetchPochettoscope())));
             },
           ),
           new ListTile(
@@ -154,20 +154,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ));
         },
       ),
-
-/*      new Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-            child: nowPlayingWidget(),
-          ),
-          Expanded(
-            child: PlayerWidget(),
-          ),
-        ],
-      )
-      ),*/
     );
   }
 }
