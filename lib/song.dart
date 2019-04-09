@@ -56,7 +56,8 @@ Future<String> fetchLyrics(String songId) async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var lyricsHTML = document.getElementsByClassName('paroles')[0].innerHtml;
+    var divs = document.getElementsByClassName('paroles');
+    var lyricsHTML = divs.isEmpty ? 'Paroles indisponible' : divs[0].innerHtml;
     return stripTags(lyricsHTML);
   } else {
     throw Exception('Failed to load post');
