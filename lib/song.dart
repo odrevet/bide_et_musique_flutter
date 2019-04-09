@@ -15,7 +15,19 @@ class Song {
   Song();
 }
 
-String extractSongId(str){
+/// information available on the song page
+class SongInformations {
+  String year;
+  String length;
+  String label;
+  String reference;
+  String presentation;
+  String lyrics;
+
+  SongInformations();
+}
+
+String extractSongId(str) {
   final idRegex = RegExp(r'/song/(\d+).html');
   var match = idRegex.firstMatch(str);
   return match[1];
@@ -23,6 +35,7 @@ String extractSongId(str){
 
 class SongCardWidget extends StatelessWidget {
   Song song;
+
   SongCardWidget({Key key, this.song}) : super(key: key);
 
   @override
@@ -33,7 +46,8 @@ class SongCardWidget extends StatelessWidget {
             context,
             new MaterialPageRoute(
                 builder: (context) => new SongPageWidget(
-                    song: song, lyrics: fetchLyrics(song.id))));
+                    song: song,
+                    songInformations: fetchSongInformations(song.id))));
       },
       child: Container(
         decoration: new BoxDecoration(
@@ -50,26 +64,36 @@ class SongCardWidget extends StatelessWidget {
   }
 }
 
-Future<String> fetchLyrics(String songId) async {
+Future<SongInformations> fetchSongInformations(String songId) async {
   final url = 'http://www.bide-et-musique.com/song/' + songId + '.html';
+  var songInformations = SongInformations();
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
     var divs = document.getElementsByClassName('paroles');
     var lyricsHTML = divs.isEmpty ? 'Paroles indisponible' : divs[0].innerHtml;
-    return stripTags(lyricsHTML);
+    songInformations.lyrics = stripTags(lyricsHTML);
+
+    var informations = document.getElementsByClassName('informations')[0];
+    var ps = informations.getElementsByTagName('p');
+    songInformations.year = ps[1].innerHtml;
+    songInformations.length = ps[3].innerHtml;
+    songInformations.label = ps[4].innerHtml;
+    songInformations.reference = ps[5].innerHtml;
+
+    return songInformations;
   } else {
-    throw Exception('Failed to load post');
+    throw Exception('Failed to load song page');
   }
 }
 
 class SongPageWidget extends StatelessWidget {
   Song song;
-  Future<String> lyrics;
+  Future<SongInformations> songInformations;
   final _fontLyrics = TextStyle(fontSize: 20.0);
 
-  SongPageWidget({Key key, this.song, this.lyrics}) : super(key: key);
+  SongPageWidget({Key key, this.song, this.songInformations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +102,8 @@ class SongPageWidget extends StatelessWidget {
         title: Text(song.title),
       ),
       body: Center(
-        child: FutureBuilder<String>(
-          future: lyrics,
+        child: FutureBuilder<SongInformations>(
+          future: songInformations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(snapshot.data);
@@ -95,7 +119,7 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(String lyrics) {
+  Widget _buildView(SongInformations songInformations) {
     return new Container(
       child: Center(
           child: Column(
@@ -118,7 +142,11 @@ class SongPageWidget extends StatelessWidget {
                     )),
                   )),
                   Expanded(
-                    child: Text('TODO'), //SongPlayerWidget(song.id),
+                    child: Text(songInformations.year +
+                        '\n' +
+                        songInformations.label +
+                        '\n' +
+                        songInformations.length), //SongPlayerWidget(song.id),
                   ),
                 ],
               )),
@@ -133,7 +161,8 @@ class SongPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(child: Text(lyrics, style: _fontLyrics)),
+                SingleChildScrollView(
+                    child: Text(songInformations.lyrics, style: _fontLyrics)),
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
