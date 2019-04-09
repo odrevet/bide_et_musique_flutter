@@ -6,7 +6,8 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 
 Future<List<Song>> fetchSearch(String search) async {
-  final url = 'http://www.bide-et-musique.com/recherche.html?kw='+search+'&st=1';
+  final url =
+      'http://www.bide-et-musique.com/recherche.html?kw=' + search + '&st=1';
   final response = await http.get(url);
   var songs = <Song>[];
 
@@ -18,12 +19,13 @@ Future<List<Song>> fetchSearch(String search) async {
     var trs = resultat.getElementsByTagName('tr');
     //trs.removeAt(0); //remove header (result count)
     //if(trs[0].className == 'entete'){trs.removeAt(0);}
-    for(dom.Element tr in trs){
-      if(tr.className == 'p1' || tr.className == 'p0'){
+    for (dom.Element tr in trs) {
+      if (tr.className == 'p1' || tr.className == 'p0') {
         var tds = tr.getElementsByTagName('td');
         var a = tds[3].children[0];
         var song = Song();
-        song.id = extractSongId(a.attributes['href']);;
+        song.id = extractSongId(a.attributes['href']);
+        ;
         song.title = a.innerHtml;
         songs.add(song);
       }
@@ -74,7 +76,9 @@ class _SearchWidgetState extends State<SearchWidget> {
             }
 
             return TextField(
-                onSubmitted: (value) {_search = fetchSearch(value);},
+                onSubmitted: (value) {
+                  _search = fetchSearch(value);
+                },
                 controller: _controller);
           },
         ),
@@ -103,7 +107,8 @@ class _SearchWidgetState extends State<SearchWidget> {
               context,
               new MaterialPageRoute(
                   builder: (context) => new SongPageWidget(
-                      song: song, lyrics: fetchLyrics(song.id))));
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
         },
       ));
     }

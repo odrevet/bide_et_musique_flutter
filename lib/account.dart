@@ -19,7 +19,8 @@ Future<String> fetchAccount(String accountId) async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var txtpresentation = document.getElementsByClassName('txtpresentation')[0].innerHtml;
+    var txtpresentation =
+        document.getElementsByClassName('txtpresentation')[0].innerHtml;
     return stripTags(txtpresentation);
   } else {
     throw Exception('Failed to load account ');
@@ -30,7 +31,8 @@ class AccountPageWidget extends StatelessWidget {
   Account account;
   Future<String> txtpresentation;
 
-  AccountPageWidget({Key key, this.account, this.txtpresentation}) : super(key: key);
+  AccountPageWidget({Key key, this.account, this.txtpresentation})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,6 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-
   Widget _buildView(String txtpresentation) {
     var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
         account.id +
@@ -65,52 +66,52 @@ class AccountPageWidget extends StatelessWidget {
     return new Container(
       child: Center(
           child: Column(
-            children: <Widget>[
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: Container(
-                            decoration: new BoxDecoration(
-                                image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  alignment: FractionalOffset.topCenter,
-                                  image: new NetworkImage(url),
-                                )),
-                          )),
-                      Expanded(
-                        child: Text('TODO'), //SongPlayerWidget(song.id),
-                      ),
-                    ],
+        children: <Widget>[
+          Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                      child: Container(
+                    decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      alignment: FractionalOffset.topCenter,
+                      image: new NetworkImage(url),
+                    )),
                   )),
-              Expanded(
-                flex: 7,
-                child: Container(
-                  child: Stack(children: [
-                    new BackdropFilter(
-                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      child: new Container(
-                        decoration: new BoxDecoration(
-                            color: Colors.grey.shade200.withOpacity(0.7)),
-                      ),
-                    ),
-                    SingleChildScrollView(child: Text(txtpresentation)),
-                  ]),
-                  decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        alignment: FractionalOffset.topCenter,
-                        image: new NetworkImage(url),
-                      )),
+                  Expanded(
+                    child: Text('TODO'), //SongPlayerWidget(song.id),
+                  ),
+                ],
+              )),
+          Expanded(
+            flex: 7,
+            child: Container(
+              child: Stack(children: [
+                new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: new Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.grey.shade200.withOpacity(0.7)),
+                  ),
                 ),
-              ),
-            ],
-          )),
+                SingleChildScrollView(child: Text(txtpresentation)),
+              ]),
+              decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                fit: BoxFit.fill,
+                alignment: FractionalOffset.topCenter,
+                image: new NetworkImage(url),
+              )),
+            ),
+          ),
+        ],
+      )),
     );
   }
 
   //  return new Container(child: Text(txtpresentation));
-  
+
 }

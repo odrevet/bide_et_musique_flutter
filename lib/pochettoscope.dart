@@ -14,7 +14,8 @@ Future<List<Song>> fetchPochettoscope() async {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-    for (dom.Element vignette in document.getElementsByClassName('vignette75')) {
+    for (dom.Element vignette
+        in document.getElementsByClassName('vignette75')) {
       var src = vignette.children[1].attributes['src'];
       final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
       var match = idRegex.firstMatch(src);
@@ -66,11 +67,7 @@ class PochettoscopeWidget extends StatelessWidget {
   Widget _buildView(BuildContext context, List<Song> songs) {
     var rows = <Container>[];
     for (Song song in songs) {
-      rows.add(
-          Container(
-            child: SongCardWidget(song: song)
-          )
-      );
+      rows.add(Container(child: SongCardWidget(song: song)));
     }
 
     return GridView.count(crossAxisCount: 2, children: rows);

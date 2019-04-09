@@ -96,7 +96,8 @@ class ProgrammeWidget extends StatelessWidget {
               context,
               new MaterialPageRoute(
                   builder: (context) => new SongPageWidget(
-                      song: song, lyrics: fetchLyrics(song.id))));
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
         },
       ));
     }

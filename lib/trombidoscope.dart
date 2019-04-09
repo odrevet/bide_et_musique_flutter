@@ -66,29 +66,26 @@ class TrombidoscopeWidget extends StatelessWidget {
       var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
           account.id +
           '.jpg';
-      rows.add(
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new AccountPageWidget(account: account, txtpresentation: fetchAccount(account.id))));
-                  },
-                  child:  Container(
-                    child: Text(account.name, style: _font),
-                    decoration: new BoxDecoration(
-                        color: Colors.orangeAccent,
-                        image: new DecorationImage(
-                          fit: BoxFit.contain,
-                          alignment: FractionalOffset.topCenter,
-                          image: new NetworkImage(url),
-                        )),
-                  ),
-              )
-
-
-
-      );
+      rows.add(GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new AccountPageWidget(
+                      account: account,
+                      txtpresentation: fetchAccount(account.id))));
+        },
+        child: Container(
+          child: Text(account.name, style: _font),
+          decoration: new BoxDecoration(
+              color: Colors.orangeAccent,
+              image: new DecorationImage(
+                fit: BoxFit.contain,
+                alignment: FractionalOffset.topCenter,
+                image: new NetworkImage(url),
+              )),
+        ),
+      ));
     }
 
     return GridView.count(crossAxisCount: 2, children: rows);

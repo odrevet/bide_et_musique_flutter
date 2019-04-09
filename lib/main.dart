@@ -93,8 +93,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) =>
-                      new SearchWidget()));
+                      builder: (context) => new SearchWidget()));
             },
           ),
           new ListTile(
@@ -113,8 +112,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) =>
-                          new TrombidoscopeWidget(accounts: fetchTrombidoscope())));
+                      builder: (context) => new TrombidoscopeWidget(
+                          accounts: fetchTrombidoscope())));
             },
           ),
           new ListTile(
@@ -150,14 +149,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           return orientation == Orientation.portrait
               ? new Center(
                   child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: children
-                ))
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: children))
               : new Center(
                   child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: children
-                ));
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: children));
         },
       ),
     );
