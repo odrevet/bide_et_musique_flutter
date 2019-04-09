@@ -15,6 +15,12 @@ class Song {
   Song();
 }
 
+String extractSongId(str){
+  final idRegex = RegExp(r'/song/(\d+).html');
+  var match = idRegex.firstMatch(str);
+  return match[1];
+}
+
 class SongCardWidget extends StatelessWidget {
   Song song;
   SongCardWidget({Key key, this.song}) : super(key: key);

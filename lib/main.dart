@@ -6,6 +6,7 @@ import 'nowPlaying.dart';
 import 'trombidoscope.dart';
 import 'pochettoscope.dart';
 import 'about.dart';
+import 'searchWidget.dart';
 
 void main() => runApp(BideApp());
 
@@ -84,6 +85,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   new MaterialPageRoute(
                       builder: (context) =>
                           new ProgrammeWidget(program: fetchTitles())));
+            },
+          ),
+          new ListTile(
+            title: new Text('Recherche'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                      new SearchWidget()));
             },
           ),
           new ListTile(
