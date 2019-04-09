@@ -56,7 +56,61 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
+
   Widget _buildView(String txtpresentation) {
-    return new Container(child: Text(txtpresentation));
+    var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
+        account.id +
+        '.jpg';
+
+    return new Container(
+      child: Center(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                          child: Container(
+                            decoration: new BoxDecoration(
+                                image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  alignment: FractionalOffset.topCenter,
+                                  image: new NetworkImage(url),
+                                )),
+                          )),
+                      Expanded(
+                        child: Text('TODO'), //SongPlayerWidget(song.id),
+                      ),
+                    ],
+                  )),
+              Expanded(
+                flex: 7,
+                child: Container(
+                  child: Stack(children: [
+                    new BackdropFilter(
+                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: new Container(
+                        decoration: new BoxDecoration(
+                            color: Colors.grey.shade200.withOpacity(0.7)),
+                      ),
+                    ),
+                    SingleChildScrollView(child: Text(txtpresentation)),
+                  ]),
+                  decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        fit: BoxFit.fill,
+                        alignment: FractionalOffset.topCenter,
+                        image: new NetworkImage(url),
+                      )),
+                ),
+              ),
+            ],
+          )),
+    );
   }
+
+  //  return new Container(child: Text(txtpresentation));
+  
 }
