@@ -45,7 +45,7 @@ class AccountPageWidget extends StatelessWidget {
           future: txtpresentation,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -58,10 +58,22 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(String txtpresentation) {
-    var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
+  void _openAvatarViewerDialog(BuildContext context) {
+    var urlCover =
+        'http://www.bide-et-musique.com/images/photos/ACT' + account.id + '.jpg';
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return new Image.network(urlCover);
+        },
+        fullscreenDialog: true));
+  }
+
+  Widget _buildView(BuildContext context,String txtpresentation) {
+    final url = 'http://www.bide-et-musique.com/images/photos/ACT' +
         account.id +
         '.jpg';
+
+    final image = NetworkImage(url);
 
     return new Container(
       child: Center(
@@ -73,16 +85,13 @@ class AccountPageWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                      child: Container(
-                    decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      alignment: FractionalOffset.topCenter,
-                      image: new NetworkImage(url),
-                    )),
-                  )),
+                      child: InkWell(
+                          onTap: () {
+                            _openAvatarViewerDialog(context);
+                          },
+                          child: new Image.network(url))),
                   Expanded(
-                    child: Text('TODO'), //SongPlayerWidget(song.id),
+                    child: Text(''),
                   ),
                 ],
               )),
@@ -103,7 +112,7 @@ class AccountPageWidget extends StatelessWidget {
                   image: new DecorationImage(
                 fit: BoxFit.fill,
                 alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(url),
+                image: image,
               )),
             ),
           ),
