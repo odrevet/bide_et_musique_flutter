@@ -13,7 +13,17 @@ class Account {
   Account(this.id, this.name);
 }
 
-Future<String> fetchAccount(String accountId) async {
+// Information present on the account page
+class AccountInformations {
+  String type;
+  String inscription;
+  String messageForum;
+  String comments;
+  String presentation;
+}
+
+Future<AccountInformations> fetchAccount(String accountId) async {
+  var accountInformations = AccountInformations();
   final url = 'http://www.bide-et-musique.com/account/' + accountId + '.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -21,7 +31,16 @@ Future<String> fetchAccount(String accountId) async {
     dom.Document document = parser.parse(body);
     var txtpresentation =
         document.getElementsByClassName('txtpresentation')[0].innerHtml;
-    return stripTags(txtpresentation);
+    accountInformations.presentation = stripTags(txtpresentation);
+
+    dom.Element divInfo = document.getElementById('gd-encartblc2');
+    List<dom.Element> ps = divInfo.getElementsByTagName('p');
+    accountInformations.type = stripTags(ps[1].innerHtml);
+    accountInformations.inscription = stripTags(ps[2].innerHtml);
+    accountInformations.messageForum = stripTags(ps[3].innerHtml);
+    accountInformations.comments = stripTags(ps[4].innerHtml);
+
+    return accountInformations;
   } else {
     throw Exception('Failed to load account ');
   }
@@ -29,9 +48,9 @@ Future<String> fetchAccount(String accountId) async {
 
 class AccountPageWidget extends StatelessWidget {
   Account account;
-  Future<String> txtpresentation;
+  Future<AccountInformations> accountInformations;
 
-  AccountPageWidget({Key key, this.account, this.txtpresentation})
+  AccountPageWidget({Key key, this.account, this.accountInformations})
       : super(key: key);
 
   @override
@@ -41,8 +60,8 @@ class AccountPageWidget extends StatelessWidget {
         title: Text(account.name),
       ),
       body: Center(
-        child: FutureBuilder<String>(
-          future: txtpresentation,
+        child: FutureBuilder<AccountInformations>(
+          future: accountInformations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);
@@ -68,7 +87,7 @@ class AccountPageWidget extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  Widget _buildView(BuildContext context,String txtpresentation) {
+  Widget _buildView(BuildContext context, AccountInformations accountInformations) {
     final url = 'http://www.bide-et-musique.com/images/photos/ACT' +
         account.id +
         '.jpg';
@@ -91,7 +110,10 @@ class AccountPageWidget extends StatelessWidget {
                           },
                           child: new Image.network(url))),
                   Expanded(
-                    child: Text(''),
+                    child: Text(accountInformations.type + '\n' +
+                        accountInformations.inscription + '\n'+
+                        accountInformations.messageForum + '\n'+
+                        accountInformations.comments + '\n'),
                   ),
                 ],
               )),
@@ -106,7 +128,7 @@ class AccountPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(child: Text(txtpresentation)),
+                SingleChildScrollView(child: Text(accountInformations.presentation)),
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
