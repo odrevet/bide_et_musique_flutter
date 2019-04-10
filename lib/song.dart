@@ -77,10 +77,10 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
     var informations = document.getElementsByClassName('informations')[0];
     var ps = informations.getElementsByTagName('p');
-    songInformations.year = ps[1].innerHtml;
-    songInformations.length = ps[3].innerHtml;
-    songInformations.label = ps[4].innerHtml;
-    songInformations.reference = ps[5].innerHtml;
+    songInformations.year = ps[1].children[1].children[0].innerHtml;
+    //songInformations.length = ps[3].innerHtml;
+    songInformations.label = ps[4].children[1].children[0].innerHtml;
+    songInformations.reference = ps[5].children[1].innerHtml;
 
     return songInformations;
   } else {
@@ -142,12 +142,12 @@ class SongPageWidget extends StatelessWidget {
                     )),
                   )),
                   Expanded(
-                    child: Text(songInformations.year +
-                        '\n' +
-                        songInformations.label +
-                        '\n' +
-                        songInformations.length), //SongPlayerWidget(song.id),
+                    child: Text('Année : ' + songInformations.year + '\n' +
+                        'Label : ' + songInformations.label + '\n'
+                        'Reference : ' + songInformations.reference,
+                    style : _fontLyrics),
                   ),
+                  //SongPlayerWidget(song.id),
                 ],
               )),
           Expanded(
