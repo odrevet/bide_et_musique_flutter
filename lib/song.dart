@@ -6,6 +6,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:audioplayer/audioplayer.dart';
 import 'utils.dart';
+import 'coverViewer.dart';
 
 class Song {
   String id;
@@ -120,11 +121,9 @@ class SongPageWidget extends StatelessWidget {
   }
 
   void _openCoverViewerDialog(BuildContext context) {
-    var urlCover =
-        'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new Image.network(urlCover);
+          return new coverViewer(song.id);//Image.network(urlCover);
         },
         fullscreenDialog: true));
   }
