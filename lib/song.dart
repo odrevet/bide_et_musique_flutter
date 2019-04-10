@@ -106,7 +106,7 @@ class SongPageWidget extends StatelessWidget {
           future: songInformations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -119,7 +119,19 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(SongInformations songInformations) {
+  void _openCoverViewerDialog(BuildContext context, String songId) {
+    var urlCover =
+        'http://www.bide-et-musique.com/images/pochettes/' + songId + '.jpg';
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return new Image.network(urlCover);
+        },
+        fullscreenDialog: true));
+  }
+
+  Widget _buildView(BuildContext context, SongInformations songInformations) {
+    var urlCover =
+        'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
     return new Container(
       child: Center(
           child: Column(
@@ -130,22 +142,22 @@ class SongPageWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                      child: Container(
-                    decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      alignment: FractionalOffset.topCenter,
-                      image: new NetworkImage(
-                          'http://www.bide-et-musique.com/images/pochettes/' +
-                              song.id +
-                              '.jpg'),
-                    )),
-                  )),
+                      child: InkWell(
+                          onTap: () {
+                            _openCoverViewerDialog(context, song.id);
+                          },
+                          child: new Image.network(urlCover))),
                   Expanded(
-                    child: Text('Année : ' + songInformations.year + '\n' +
-                        'Label : ' + songInformations.label + '\n'
-                        'Reference : ' + songInformations.reference,
-                    style : _fontLyrics),
+                    child: Text(
+                        'Année : ' +
+                            songInformations.year +
+                            '\n' +
+                            'Label : ' +
+                            songInformations.label +
+                            '\n'
+                            'Reference : ' +
+                            songInformations.reference,
+                        style: _fontLyrics),
                   ),
                   //SongPlayerWidget(song.id),
                 ],
@@ -169,9 +181,7 @@ class SongPageWidget extends StatelessWidget {
                 fit: BoxFit.fill,
                 alignment: FractionalOffset.topCenter,
                 image: new NetworkImage(
-                    'http://www.bide-et-musique.com/images/pochettes/' +
-                        song.id +
-                        '.jpg'),
+                    urlCover),
               )),
             ),
           ),
