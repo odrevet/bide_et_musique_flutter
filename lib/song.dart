@@ -77,10 +77,10 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
     var informations = document.getElementsByClassName('informations')[0];
     var ps = informations.getElementsByTagName('p');
-    songInformations.year = ps[1].children[1].children[0].innerHtml;
+    songInformations.year = '';//ps[1].children[1].children[0].innerHtml;
     //songInformations.length = ps[3].innerHtml;
-    songInformations.label = ps[4].children[1].children[0].innerHtml;
-    songInformations.reference = ps[5].children[1].innerHtml;
+    songInformations.label ='';// ps[4].children[1].children[0].innerHtml;
+    songInformations.reference = '';//ps[5].children[1].innerHtml;
 
     return songInformations;
   } else {
