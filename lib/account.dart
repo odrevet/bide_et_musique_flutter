@@ -113,7 +113,9 @@ class AccountPageWidget extends StatelessWidget {
                     child: Text(accountInformations.type + '\n' +
                         accountInformations.inscription + '\n'+
                         accountInformations.messageForum + '\n'+
-                        accountInformations.comments + '\n'),
+                        accountInformations.comments + '\n',
+                        style: TextStyle(fontSize:14)),
+
                   ),
                 ],
               )),
@@ -128,7 +130,8 @@ class AccountPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(child: Text(accountInformations.presentation)),
+                SingleChildScrollView(child: Text(accountInformations.presentation,
+                    style: TextStyle(fontSize:20))),
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
