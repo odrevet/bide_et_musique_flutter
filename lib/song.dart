@@ -119,9 +119,9 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  void _openCoverViewerDialog(BuildContext context, String songId) {
+  void _openCoverViewerDialog(BuildContext context) {
     var urlCover =
-        'http://www.bide-et-musique.com/images/pochettes/' + songId + '.jpg';
+        'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new Image.network(urlCover);
@@ -144,7 +144,7 @@ class SongPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            _openCoverViewerDialog(context, song.id);
+                            _openCoverViewerDialog(context);
                           },
                           child: new Image.network(urlCover))),
                   Expanded(
