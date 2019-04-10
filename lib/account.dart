@@ -78,8 +78,9 @@ class AccountPageWidget extends StatelessWidget {
   }
 
   void _openAvatarViewerDialog(BuildContext context) {
-    var urlCover =
-        'http://www.bide-et-musique.com/images/photos/ACT' + account.id + '.jpg';
+    var urlCover = 'http://www.bide-et-musique.com/images/photos/ACT' +
+        account.id +
+        '.jpg';
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new Image.network(urlCover);
@@ -87,7 +88,8 @@ class AccountPageWidget extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  Widget _buildView(BuildContext context, AccountInformations accountInformations) {
+  Widget _buildView(
+      BuildContext context, AccountInformations accountInformations) {
     final url = 'http://www.bide-et-musique.com/images/photos/ACT' +
         account.id +
         '.jpg';
@@ -110,12 +112,16 @@ class AccountPageWidget extends StatelessWidget {
                           },
                           child: new Image.network(url))),
                   Expanded(
-                    child: Text(accountInformations.type + '\n' +
-                        accountInformations.inscription + '\n'+
-                        accountInformations.messageForum + '\n'+
-                        accountInformations.comments + '\n',
-                        style: TextStyle(fontSize:14)),
-
+                    child: Text(
+                        accountInformations.type +
+                            '\n' +
+                            accountInformations.inscription +
+                            '\n' +
+                            accountInformations.messageForum +
+                            '\n' +
+                            accountInformations.comments +
+                            '\n',
+                        style: TextStyle(fontSize: 14)),
                   ),
                 ],
               )),
@@ -130,8 +136,9 @@ class AccountPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(child: Text(accountInformations.presentation,
-                    style: TextStyle(fontSize:20))),
+                SingleChildScrollView(
+                    child: Text(accountInformations.presentation,
+                        style: TextStyle(fontSize: 20))),
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(

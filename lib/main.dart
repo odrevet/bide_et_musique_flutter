@@ -18,7 +18,6 @@ class BideApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         canvasColor: Color.fromARGB(190, 245, 240, 220),
-
       ),
       home: new DrawerWidget(),
     );

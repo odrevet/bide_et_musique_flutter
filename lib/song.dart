@@ -180,8 +180,7 @@ class SongPageWidget extends StatelessWidget {
                   image: new DecorationImage(
                 fit: BoxFit.fill,
                 alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(
-                    urlCover),
+                image: new NetworkImage(urlCover),
               )),
             ),
           ),
