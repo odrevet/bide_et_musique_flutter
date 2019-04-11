@@ -180,6 +180,7 @@ class SongPageWidget extends StatelessWidget {
     var urlCover =
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
     return new Container(
+      color: Theme.of(context).canvasColor,
       child: Center(
           child: Column(
         children: <Widget>[
