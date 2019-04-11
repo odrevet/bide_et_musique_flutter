@@ -27,9 +27,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
       var song = Song();
 
       var href = tr.children[3].innerHtml;
-      final idRegex = RegExp(r'/song/(\d+).html');
-      var match = idRegex.firstMatch(href);
-      song.id = match[1];
+      song.id = extractSongId(href);
 
       song.artist = stripTags(tr.children[2].children[0].innerHtml);
       song.title = stripTags(tr.children[3].children[0].innerHtml);
