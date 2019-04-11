@@ -75,7 +75,7 @@ class WallWidget extends StatelessWidget {
           future: posts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -88,10 +88,18 @@ class WallWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(List<Post> posts) {
+  Widget _buildView(BuildContext context, List<Post> posts) {
     var rows = <ListTile>[];
     for (Post post in posts) {
       rows.add(ListTile(
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new AccountPageWidget(
+                      account: post.author,
+                      accountInformations: fetchAccount(post.author.id))));
+        },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,
             child: new Image(

@@ -203,7 +203,7 @@ class SongPageWidget extends StatelessWidget {
                   children: <Widget>[
                         SingleChildScrollView(
                             child: Text(songInformations.lyrics, style: _fontLyrics)),
-                        _buildViewComments(songInformations.comments),
+                        _buildViewComments(context, songInformations.comments),
                   ],
                 )
 
@@ -221,10 +221,18 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildViewComments(List<Comment> comments) {
+  Widget _buildViewComments(BuildContext context, List<Comment> comments) {
     var rows = <ListTile>[];
     for (Comment comment in comments) {
       rows.add(ListTile(
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new AccountPageWidget(
+                        account: comment.author,
+                        accountInformations: fetchAccount(comment.author.id))));
+          },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,
             child: new Image(
