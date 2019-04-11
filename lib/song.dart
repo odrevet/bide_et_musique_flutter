@@ -96,7 +96,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
-    songInformations = SongInformations.fromJson(json.decode(responseJson.body));
+    songInformations = SongInformations.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
   } else {
     // If that response was not OK, throw an error.
     throw Exception('Failed to load post');
