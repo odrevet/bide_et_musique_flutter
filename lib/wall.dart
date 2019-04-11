@@ -92,14 +92,14 @@ class WallWidget extends StatelessWidget {
     var rows = <ListTile>[];
     for (Post post in posts) {
       rows.add(ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new AccountPageWidget(
-                      account: post.author,
-                      accountInformations: fetchAccount(post.author.id))));
-        },
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new AccountPageWidget(
+                        account: post.author,
+                        accountInformations: fetchAccount(post.author.id))));
+          },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,
             child: new Image(

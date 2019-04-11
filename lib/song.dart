@@ -29,22 +29,28 @@ class SongInformations {
   String lyrics;
   List<Comment> comments;
 
-  SongInformations({this.year, this.artists, this.author, this.length, this.label, this.reference, this.lyrics});
+  SongInformations(
+      {this.year,
+      this.artists,
+      this.author,
+      this.length,
+      this.label,
+      this.reference,
+      this.lyrics});
 
   factory SongInformations.fromJson(Map<String, dynamic> json) {
     return SongInformations(
-      year: json['year'],
-      artists: json['artists']['main']['alias'],
-      author: json['author'],
-      length: json['length']['pretty'],
-      label: json['label'],
-      reference: json['reference'],
-      lyrics: stripTags(json['lyrics'])
-    );
+        year: json['year'],
+        artists: json['artists']['main']['alias'],
+        author: json['author'],
+        length: json['length']['pretty'],
+        label: json['label'],
+        reference: json['reference'],
+        lyrics: stripTags(json['lyrics']));
   }
 }
 
-class Comment{
+class Comment {
   Account author;
   String body;
   String time;
@@ -96,7 +102,8 @@ Future<SongInformations> fetchSongInformations(String songId) async {
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
-    songInformations = SongInformations.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
+    songInformations = SongInformations.fromJson(
+        json.decode(utf8.decode(responseJson.bodyBytes)));
   } else {
     // If that response was not OK, throw an error.
     throw Exception('Failed to load post');
@@ -111,7 +118,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     var divComments = document.getElementById('comments');
     var tdsComments = divComments.getElementsByClassName('normal');
 
-    for(dom.Element tdComment in tdsComments){
+    for (dom.Element tdComment in tdsComments) {
       var comment = Comment();
       dom.Element aAccount = tdComment.children[1].children[0];
       String accountId = extractAccountId(aAccount.attributes['href']);
@@ -193,7 +200,8 @@ class SongPageWidget extends StatelessWidget {
                             songInformations.year.toString() +
                             '\n' +
                             'Artists : ' +
-                            songInformations.artists + '\n'
+                            songInformations.artists +
+                            '\n'
                             'Durée : ' +
                             songInformations.length +
                             '\n' +
@@ -220,12 +228,12 @@ class SongPageWidget extends StatelessWidget {
                 ),
                 PageView(
                   children: <Widget>[
-                        SingleChildScrollView(
-                            child: Text(songInformations.lyrics, style: _fontLyrics)),
-                        _buildViewComments(context, songInformations.comments),
+                    SingleChildScrollView(
+                        child:
+                            Text(songInformations.lyrics, style: _fontLyrics)),
+                    _buildViewComments(context, songInformations.comments),
                   ],
                 )
-
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
@@ -263,8 +271,7 @@ class SongPageWidget extends StatelessWidget {
           title: Text(
             stripTags(comment.body),
           ),
-          subtitle: Text(
-              'Par ' + comment.author.name + ' ' + comment.time)));
+          subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }
 
     return ListView(children: rows);
