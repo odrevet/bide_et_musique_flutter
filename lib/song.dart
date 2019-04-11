@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
@@ -19,15 +20,28 @@ class Song {
 
 /// information available on the song page
 class SongInformations {
-  String year;
+  int year;
+  String artists;
+  String author;
   String length;
   String label;
   String reference;
-  String presentation;
   String lyrics;
   List<Comment> comments;
 
-  SongInformations();
+  SongInformations({this.year, this.artists, this.author, this.length, this.label, this.reference, this.lyrics});
+
+  factory SongInformations.fromJson(Map<String, dynamic> json) {
+    return SongInformations(
+      year: json['year'],
+      artists: json['artists']['main']['alias'],
+      author: json['author'],
+      length: json['length']['pretty'],
+      label: json['label'],
+      reference: json['reference'],
+      lyrics: stripTags(json['lyrics'])
+    );
+  }
 }
 
 class Comment{
@@ -76,24 +90,23 @@ class SongCardWidget extends StatelessWidget {
 }
 
 Future<SongInformations> fetchSongInformations(String songId) async {
-  final url = 'http://www.bide-et-musique.com/song/' + songId + '.html';
-  var songInformations = SongInformations();
-  final response = await http.get(url);
+  var songInformations;
+  final url = 'http://www.bide-et-musique.com/song/' + songId;
+
+  final responseJson = await http.get(url);
+
+  if (responseJson.statusCode == 200) {
+    songInformations = SongInformations.fromJson(json.decode(responseJson.body));
+  } else {
+    // If that response was not OK, throw an error.
+    throw Exception('Failed to load post');
+  }
+
+  //Fetch comments
+  final response = await http.get(url + '.html');
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var divs = document.getElementsByClassName('paroles');
-    var lyricsHTML = divs.isEmpty ? 'Paroles indisponible' : divs[0].innerHtml;
-    songInformations.lyrics = stripTags(lyricsHTML);
-
-    var informations = document.getElementsByClassName('informations')[0];
-    var ps = informations.getElementsByTagName('p');
-    songInformations.year = ''; //ps[1].children[1].children[0].innerHtml;
-    //songInformations.length = ps[3].innerHtml;
-    songInformations.label = ''; // ps[4].children[1].children[0].innerHtml;
-    songInformations.reference = ''; //ps[5].children[1].innerHtml;
-
-    //comments
     var comments = <Comment>[];
     var divComments = document.getElementById('comments');
     var tdsComments = divComments.getElementsByClassName('normal');
@@ -110,10 +123,11 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     }
 
     songInformations.comments = comments;
-    return songInformations;
   } else {
     throw Exception('Failed to load song page');
   }
+
+  return songInformations;
 }
 
 class SongPageWidget extends StatelessWidget {
@@ -176,7 +190,12 @@ class SongPageWidget extends StatelessWidget {
                   Expanded(
                     child: Text(
                         'Année : ' +
-                            songInformations.year +
+                            songInformations.year.toString() +
+                            '\n' +
+                            'Artists : ' +
+                            songInformations.artists + '\n'
+                            'Durée : ' +
+                            songInformations.length +
                             '\n' +
                             'Label : ' +
                             songInformations.label +
