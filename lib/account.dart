@@ -22,6 +22,12 @@ class AccountInformations {
   String presentation;
 }
 
+String extractAccountId(str) {
+  final idRegex = RegExp(r'/account/(\d+).html');
+  var match = idRegex.firstMatch(str);
+  return match[1];
+}
+
 Future<AccountInformations> fetchAccount(String accountId) async {
   var accountInformations = AccountInformations();
   final url = 'http://www.bide-et-musique.com/account/' + accountId + '.html';

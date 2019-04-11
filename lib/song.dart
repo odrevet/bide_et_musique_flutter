@@ -7,6 +7,7 @@ import 'package:html/parser.dart' as parser;
 import 'package:audioplayer/audioplayer.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
+import 'account.dart';
 
 class Song {
   String id;
@@ -24,8 +25,17 @@ class SongInformations {
   String reference;
   String presentation;
   String lyrics;
+  List<Comment> comments;
 
   SongInformations();
+}
+
+class Comment{
+  Account author;
+  String body;
+  String time;
+
+  Comment();
 }
 
 String extractSongId(str) {
@@ -83,6 +93,23 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     songInformations.label = ''; // ps[4].children[1].children[0].innerHtml;
     songInformations.reference = ''; //ps[5].children[1].innerHtml;
 
+    //comments
+    var comments = <Comment>[];
+    var divComments = document.getElementById('comments');
+    var tdsComments = divComments.getElementsByClassName('normal');
+
+    for(dom.Element tdComment in tdsComments){
+      var comment = Comment();
+      dom.Element aAccount = tdComment.children[1].children[0];
+      String accountId = extractAccountId(aAccount.attributes['href']);
+      String accountName = aAccount.innerHtml;
+      comment.author = Account(accountId, accountName);
+      comment.body = tdComment.innerHtml.split('<br>')[1];
+      comment.time = tdComment.children[2].innerHtml;
+      comments.add(comment);
+    }
+
+    songInformations.comments = comments;
     return songInformations;
   } else {
     throw Exception('Failed to load song page');
@@ -172,8 +199,14 @@ class SongPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(
-                    child: Text(songInformations.lyrics, style: _fontLyrics)),
+                PageView(
+                  children: <Widget>[
+                        SingleChildScrollView(
+                            child: Text(songInformations.lyrics, style: _fontLyrics)),
+                        _buildViewComments(songInformations.comments),
+                  ],
+                )
+
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
@@ -186,6 +219,28 @@ class SongPageWidget extends StatelessWidget {
         ],
       )),
     );
+  }
+
+  Widget _buildViewComments(List<Comment> comments) {
+    var rows = <ListTile>[];
+    for (Comment comment in comments) {
+      rows.add(ListTile(
+          leading: new CircleAvatar(
+            backgroundColor: Colors.black12,
+            child: new Image(
+                image: new NetworkImage(
+                    'http://www.bide-et-musique.com/images/avatars/' +
+                        comment.author.id +
+                        '.jpg')),
+          ),
+          title: Text(
+            stripTags(comment.body),
+          ),
+          subtitle: Text(
+              'Par ' + comment.author.name + ' ' + comment.time)));
+    }
+
+    return ListView(children: rows);
   }
 }
 
