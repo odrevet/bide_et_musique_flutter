@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'utils.dart';
+import 'song.dart';
 
 class Account {
   String id;
@@ -20,6 +21,7 @@ class AccountInformations {
   String messageForum;
   String comments;
   String presentation;
+  List<Song> favorites;
 }
 
 String extractAccountId(str) {
@@ -30,7 +32,7 @@ String extractAccountId(str) {
 
 Future<AccountInformations> fetchAccount(String accountId) async {
   var accountInformations = AccountInformations();
-  final url = 'http://www.bide-et-musique.com/account/' + accountId + '.html';
+  final url = '$host/account.html?N=$accountId&Page=all';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -46,6 +48,19 @@ Future<AccountInformations> fetchAccount(String accountId) async {
     accountInformations.messageForum = stripTags(ps[3].innerHtml);
     accountInformations.comments = stripTags(ps[4].innerHtml);
 
+    //parse favorites
+    dom.Element table = document.getElementsByClassName('bmtable')[0];
+    var favorites = <Song>[];
+    for (dom.Element tr in table.getElementsByTagName('tr')) {
+      var song = Song();
+      var aTitle = tr.children[4].children[0];
+      song.id = extractSongId(aTitle.attributes['href']);
+      song.title = stripTags(aTitle.innerHtml);
+      song.artist = stripTags(tr.children[3].innerHtml);
+      favorites.add(song);
+    }
+
+    accountInformations.favorites = favorites;
     return accountInformations;
   } else {
     throw Exception('Failed to load account ');
@@ -103,6 +118,7 @@ class AccountPageWidget extends StatelessWidget {
     final image = NetworkImage(url);
 
     return new Container(
+      color: Theme.of(context).canvasColor,
       child: Center(
           child: Column(
         children: <Widget>[
@@ -142,9 +158,14 @@ class AccountPageWidget extends StatelessWidget {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
-                SingleChildScrollView(
-                    child: Text(accountInformations.presentation,
-                        style: TextStyle(fontSize: 20))),
+                PageView(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                        child: Text(accountInformations.presentation,
+                            style: TextStyle(fontSize: 20))),
+                    _buildViewFavorites(context, accountInformations.favorites),
+                  ],
+                )
               ]),
               decoration: new BoxDecoration(
                   image: new DecorationImage(
@@ -159,6 +180,34 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-  //  return new Container(child: Text(txtpresentation));
+  Widget _buildViewFavorites(BuildContext context, List<Song> songs) {
+    var rows = <ListTile>[];
+    for (Song song in songs) {
+      rows.add(ListTile(
+        leading: new CircleAvatar(
+          backgroundColor: Colors.black12,
+          child: new Image(
+              image: new NetworkImage(
+                  'http://bide-et-musique.com/images/thumb25/' +
+                      song.id +
+                      '.jpg')),
+        ),
+        title: Text(
+          song.title,
+        ),
+        subtitle: Text(song.artist),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SongPageWidget(
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
+        },
+      ));
+    }
+
+    return ListView(children: rows);
+  }
 
 }
