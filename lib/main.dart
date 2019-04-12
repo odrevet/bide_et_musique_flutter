@@ -7,6 +7,7 @@ import 'trombidoscope.dart';
 import 'pochettoscope.dart';
 import 'about.dart';
 import 'searchWidget.dart';
+import 'song.dart';
 
 void main() => runApp(BideApp());
 
@@ -124,6 +125,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   new MaterialPageRoute(
                       builder: (context) => new PochettoscopeWidget(
                           songs: fetchPochettoscope())));
+            },
+          ),
+          new ListTile(
+            title: new Text('Nouvelles entrées'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new NewSongsWidget(
+                          songs: fetchNewSongs())));
             },
           ),
           new ListTile(
