@@ -12,6 +12,7 @@ dependencies:
   audioplayer: ^0.5.2
   http: ^0.12.0
   html:
+  xml:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
