@@ -49,15 +49,17 @@ Future<AccountInformations> fetchAccount(String accountId) async {
     accountInformations.comments = stripTags(ps[4].innerHtml);
 
     //parse favorites
-    dom.Element table = document.getElementsByClassName('bmtable')[0];
+    List<dom.Element> tables = document.getElementsByClassName('bmtable');
     var favorites = <Song>[];
-    for (dom.Element tr in table.getElementsByTagName('tr')) {
-      var song = Song();
-      var aTitle = tr.children[4].children[0];
-      song.id = extractSongId(aTitle.attributes['href']);
-      song.title = stripTags(aTitle.innerHtml);
-      song.artist = stripTags(tr.children[3].innerHtml);
-      favorites.add(song);
+    if(!tables.isEmpty){
+      for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
+        var song = Song();
+        var aTitle = tr.children[4].children[0];
+        song.id = extractSongId(aTitle.attributes['href']);
+        song.title = stripTags(aTitle.innerHtml);
+        song.artist = stripTags(tr.children[3].innerHtml);
+        favorites.add(song);
+      }
     }
 
     accountInformations.favorites = favorites;
