@@ -49,7 +49,7 @@ class AboutPage extends StatelessWidget {
                         )),
                     new TextSpan(
                         text:
-                            'Application non-officiel par Olivier Drevet. \nDistribuée sous la license GPLv3\n'
+                            'Application non-officielle par Olivier Drevet. \nDistribuée sous la license GPLv3\n'
                             'Vous pouvez consulter le code source sur https://github.com/odrevet/bide-et-musique-flutter\n\n',
                         /*recognizer: new TapGestureRecognizer()
                           ..onTap = () => {
