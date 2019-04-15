@@ -183,7 +183,6 @@ class SongPageWidget extends StatelessWidget {
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
     return new Container(
       color: Theme.of(context).canvasColor,
-      child: Center(
           child: Column(
         children: <Widget>[
           Expanded(
@@ -198,24 +197,32 @@ class SongPageWidget extends StatelessWidget {
                           },
                           child: new Image.network(urlCover))),
                   Expanded(
-                    child: Text(
-                        'Année : ' +
-                            songInformations.year.toString() +
-                            '\n' +
-                            'Artists : ' +
-                            songInformations.artists +
-                            '\n'
-                            'Durée : ' +
-                            songInformations.length +
-                            '\n' +
-                            'Label : ' +
-                            songInformations.label +
-                            '\n'
-                            'Reference : ' +
-                            songInformations.reference,
-                        style: _fontLyrics),
+                    child:
+                    Column(children: [
+                      Expanded(
+                          flex: 7,
+                          child:Text(
+                          'Année : ' +
+                              songInformations.year.toString() +
+                              '\n' +
+                              'Artists : ' +
+                              songInformations.artists +
+                              '\n'
+                                  'Durée : ' +
+                              songInformations.length +
+                              '\n' +
+                              'Label : ' +
+                              songInformations.label +
+                              '\n'
+                                  'Reference : ' +
+                              songInformations.reference,
+                          style: _fontLyrics))
+                      ,
+                    Expanded(
+                        flex: 3,
+                        child:SongPlayerWidget(song.id))])
                   ),
-                  //SongPlayerWidget(song.id),
+
                 ],
               )),
           Expanded(
@@ -247,7 +254,7 @@ class SongPageWidget extends StatelessWidget {
             ),
           ),
         ],
-      )),
+      ),
     );
   }
 
@@ -326,22 +333,18 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     if (isPlaying) {
       playStopButton = new IconButton(
           onPressed: isPlaying || isPaused ? () => stop() : null,
-          iconSize: 80.0,
+          iconSize: 32.0,
           icon: new Icon(Icons.stop),
           color: Colors.orange);
     } else {
       playStopButton = new IconButton(
           onPressed: isPlaying ? null : () => play(),
-          iconSize: 80.0,
+          iconSize: 32.0,
           icon: new Icon(Icons.play_arrow),
           color: Colors.orange);
     }
 
-    return new Container(
-        padding: new EdgeInsets.all(16.0),
-        child: new Column(mainAxisSize: MainAxisSize.min, children: [
-          new Row(mainAxisSize: MainAxisSize.min, children: [playStopButton]),
-        ]));
+    return playStopButton;
   }
 
   @override
@@ -352,8 +355,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   void dispose() {
-    _audioPlayerStateSubscription.cancel();
-    audioPlayer.stop();
+    //_audioPlayerStateSubscription.cancel();
+    //audioPlayer.stop();
     super.dispose();
   }
 
