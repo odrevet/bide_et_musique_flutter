@@ -41,9 +41,7 @@ class _CoverViewerState extends State<CoverViewer> {
             image: new DecorationImage(
           fit: BoxFit.contain,
           image: new NetworkImage(
-              'http://www.bide-et-musique.com/images/pochettes/' +
-                  songId +
-                  '.jpg'),
+              url),
         )),
         alignment: Alignment(0.0, 0.0),
       ),
