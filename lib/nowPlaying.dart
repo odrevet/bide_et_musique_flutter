@@ -25,18 +25,18 @@ Future<Song> fetchNowPlaying() async {
   }
 }
 
-class nowPlayingWidget extends StatefulWidget {
-  nowPlayingWidget({Key key}) : super(key: key);
+class NowPlayingWidget extends StatefulWidget {
+  NowPlayingWidget({Key key}) : super(key: key);
 
   @override
-  _nowPlayingWidgetState createState() => _nowPlayingWidgetState();
+  _NowPlayingWidgetState createState() => _NowPlayingWidgetState();
 }
 
-class _nowPlayingWidgetState extends State<nowPlayingWidget> {
+class _NowPlayingWidgetState extends State<NowPlayingWidget> {
   Future<Song> _song;
   Timer timer;
 
-  _nowPlayingWidgetState();
+  _NowPlayingWidgetState();
 
   @override
   void initState() {
