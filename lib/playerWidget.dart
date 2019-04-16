@@ -12,8 +12,6 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  Duration duration;
-  Duration position;
   AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
 
@@ -94,20 +92,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               ),
             ),
             playStopButton
-          ]),
-          new Row(mainAxisSize: MainAxisSize.min, children: [
-            new Padding(
-                padding: new EdgeInsets.all(12.0),
-                child: new Stack(children: [
-                  new CircularProgressIndicator(
-                    value: position != null && position.inMilliseconds > 0
-                        ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
-                            (duration?.inMilliseconds?.toDouble() ?? 0.0)
-                        : 0.0,
-                    valueColor: new AlwaysStoppedAnimation(Colors.orange),
-                    backgroundColor: Colors.yellow,
-                  ),
-                ])),
           ])
         ]));
   }
@@ -133,19 +117,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     audioPlayer = new AudioPlayer();
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-      if (s == AudioPlayerState.PLAYING) {
-        setState(() => duration = audioPlayer.duration);
-      } else if (s == AudioPlayerState.STOPPED) {
-        onComplete();
-        setState(() {
-          position = duration;
-        });
-      }
     }, onError: (msg) {
       setState(() {
         playerState = PlayerState.stopped;
-        duration = new Duration(seconds: 0);
-        position = new Duration(seconds: 0);
       });
     });
   }
@@ -161,7 +135,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.stopped;
-      position = new Duration();
     });
   }
 }
