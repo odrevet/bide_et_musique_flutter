@@ -427,9 +427,6 @@ Future<List<Song>> fetchNewSongs() async {
 
 class NewSongsWidget extends StatelessWidget {
   final Future<List<Song>> songs;
-  final _font = TextStyle(
-      fontSize: 18.0,
-      background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
 
   NewSongsWidget({Key key, this.songs}) : super(key: key);
 
