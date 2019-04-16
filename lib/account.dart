@@ -51,7 +51,7 @@ Future<AccountInformations> fetchAccount(String accountId) async {
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
     var favorites = <Song>[];
-    if(!tables.isEmpty){
+    if(tables.isNotEmpty){
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var song = Song();
         var aTitle = tr.children[4].children[0];

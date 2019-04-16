@@ -1,19 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class coverViewer extends StatefulWidget {
+class CoverViewer extends StatefulWidget {
   String songId;
-  coverViewer(this.songId, {Key key}) : super(key: key); // changed
+  CoverViewer(this.songId, {Key key}) : super(key: key); // changed
 
   @override
-  _coverViewerState createState() => _coverViewerState(this.songId);
+  _CoverViewerState createState() => _CoverViewerState(this.songId);
 }
 
-class _coverViewerState extends State<coverViewer> {
+class _CoverViewerState extends State<CoverViewer> {
   String songId;
   Offset _offset = Offset.zero; // changed
 
-  _coverViewerState(this.songId);
+  _CoverViewerState(this.songId);
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'song.dart';
-import 'utils.dart';
 
 Future<List<Song>> fetchPochettoscope() async {
   var songs = <Song>[];
@@ -34,9 +33,6 @@ Future<List<Song>> fetchPochettoscope() async {
 
 class PochettoscopeWidget extends StatelessWidget {
   final Future<List<Song>> songs;
-  final _font = TextStyle(
-      fontSize: 18.0,
-      background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
 
   PochettoscopeWidget({Key key, this.songs}) : super(key: key);
 

@@ -173,7 +173,7 @@ class SongPageWidget extends StatelessWidget {
   void _openCoverViewerDialog(BuildContext context) {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new coverViewer(song.id);
+          return new CoverViewer(song.id);
         },
         fullscreenDialog: true));
   }
