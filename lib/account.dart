@@ -6,6 +6,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'utils.dart';
 import 'song.dart';
+import 'ident.dart';
 
 class Account {
   String id;
@@ -212,4 +213,104 @@ class AccountPageWidget extends StatelessWidget {
     return ListView(children: rows);
   }
 
+}
+
+///////////////////////////
+Future<AccountInformations> fetchAccountSession(Session session) async {
+  var accountInformations = AccountInformations();
+  final accountId = session.id;
+  final url = '$host/account.html?N=$accountId&Page=all';
+  final response = await session.get(url);
+  if (response.statusCode == 200) {
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+
+    //parse favorites
+    List<dom.Element> tables = document.getElementsByClassName('bmtable');
+    var favorites = <Song>[];
+    if(tables.isNotEmpty){
+      for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
+        var song = Song();
+        var aTitle = tr.children[4].children[0];
+        song.id = extractSongId(aTitle.attributes['href']);
+        song.title = stripTags(aTitle.innerHtml);
+        song.artist = stripTags(tr.children[3].innerHtml);
+        favorites.add(song);
+      }
+    }
+
+    accountInformations.favorites = favorites;
+    return accountInformations;
+  } else {
+    throw Exception('Failed to load account ');
+  }
+}
+
+class ManageAccountWidget extends StatefulWidget {
+  ManageAccountWidget({Key key, this.session}) : super(key: key);
+  Session session;
+
+  @override
+  _ManageAccountWidgetState createState() => _ManageAccountWidgetState(this.session);
+}
+
+class _ManageAccountWidgetState extends State<ManageAccountWidget> {
+  _ManageAccountWidgetState(this.session);
+  Session session;
+  Future<AccountInformations> accountInformations;
+
+  @override
+  void initState() {
+    super.initState();
+    accountInformations = fetchAccountSession(this.session);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: FutureBuilder<AccountInformations>(
+          future: accountInformations,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildView(context, session, snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner
+            return CircularProgressIndicator();
+          },
+        ),
+      );
+  }
+  
+  Widget _buildView(BuildContext context, Session session, AccountInformations accountInformations) {
+    var rows = <ListTile>[];
+    for (Song song in accountInformations.favorites) {
+      rows.add(ListTile(
+        leading: new CircleAvatar(
+          backgroundColor: Colors.black12,
+          child: new Image(
+              image: new NetworkImage(
+                  'http://bide-et-musique.com/images/thumb25/' +
+                      song.id +
+                      '.jpg')),
+        ),
+        title: Text(
+          song.title,
+        ),
+        subtitle: Text(song.artist),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SongPageWidget(
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
+        },
+      ));
+    }
+
+    return ListView(children: rows);
+  }
 }

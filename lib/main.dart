@@ -8,6 +8,7 @@ import 'pochettoscope.dart';
 import 'about.dart';
 import 'searchWidget.dart';
 import 'song.dart';
+import 'ident.dart';
 
 void main() => runApp(BideApp());
 
@@ -78,6 +79,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
               ),
               decoration: new BoxDecoration(color: Colors.deepOrange)),
+          new ListTile(
+            title: new Text('Compte'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                      new IdentWidget()));
+            },
+          ),
           new ListTile(
             title: new Text('Programme'),
             onTap: () {
@@ -150,7 +161,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         builder: (context, orientation) {
           var children = [
             Expanded(
-              child: nowPlayingWidget(),
+              child: NowPlayingWidget(),
             ),
             Expanded(
               child: PlayerWidget(),
