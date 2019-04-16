@@ -76,6 +76,12 @@ class _SearchWidgetState extends State<SearchWidget> {
             }
 
             return TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Entrez ici votre recherche',
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                ),
                 onSubmitted: (value) {
                   _search = fetchSearch(value);
                 },
