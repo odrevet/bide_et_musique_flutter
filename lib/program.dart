@@ -30,7 +30,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
       song.id = extractSongId(href);
 
       song.artist = stripTags(tr.children[2].children[0].innerHtml);
-      song.title = stripTags(tr.children[3].children[0].innerHtml);
+      song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
 
       songsNext.add(song);
     }
