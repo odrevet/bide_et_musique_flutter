@@ -25,7 +25,6 @@ Future<List<Song>> fetchSearch(String search) async {
         var a = tds[3].children[0];
         var song = Song();
         song.id = extractSongId(a.attributes['href']);
-        ;
         song.title = a.innerHtml;
         songs.add(song);
       }
