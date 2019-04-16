@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:reorderables/reorderables.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'ident.dart';
@@ -52,7 +53,7 @@ Future<AccountInformations> fetchAccount(String accountId) async {
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
     var favorites = <Song>[];
-    if(tables.isNotEmpty){
+    if (tables.isNotEmpty) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var song = Song();
         var aTitle = tr.children[4].children[0];
@@ -212,7 +213,6 @@ class AccountPageWidget extends StatelessWidget {
 
     return ListView(children: rows);
   }
-
 }
 
 ///////////////////////////
@@ -228,7 +228,7 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
     var favorites = <Song>[];
-    if(tables.isNotEmpty){
+    if (tables.isNotEmpty) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var song = Song();
         var aTitle = tr.children[4].children[0];
@@ -251,7 +251,8 @@ class ManageAccountWidget extends StatefulWidget {
   Session session;
 
   @override
-  _ManageAccountWidgetState createState() => _ManageAccountWidgetState(this.session);
+  _ManageAccountWidgetState createState() =>
+      _ManageAccountWidgetState(this.session);
 }
 
 class _ManageAccountWidgetState extends State<ManageAccountWidget> {
@@ -259,35 +260,52 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
   Session session;
   Future<AccountInformations> accountInformations;
 
+  List<Widget> _rows;
+
   @override
   void initState() {
     super.initState();
     accountInformations = fetchAccountSession(this.session);
+    _rows = <ListTile>[];
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: FutureBuilder<AccountInformations>(
-          future: accountInformations,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, session, snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+  Widget _buildView(BuildContext context, Session session,
+      AccountInformations accountInformations) {
+    void _onReorder(int oldIndex, int newIndex)  async {
+      var currentSong = accountInformations.favorites[oldIndex];
+      //update server
+      var accountId = session.id;
+      var K = currentSong.id;
+      var step = oldIndex - newIndex;
+      var direction =  step < 0 ? 'down' : 'up';
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
-      );
-  }
-  
-  Widget _buildView(BuildContext context, Session session, AccountInformations accountInformations) {
-    var rows = <ListTile>[];
+      print("Move " + currentSong.title + ' ' +  step.abs().toString() + ' step(s) $direction' );
+
+      final response = await session.post('$host/account/$accountId.html', {
+        'K': K,
+        'Step': step.abs().toString(),
+        direction + '.x': '1',
+        direction + '.y': '1'
+      });
+
+      print("RESP CODE IS " + response.statusCode.toString());
+      if(response.statusCode == 200){
+        setState(() {
+          //update model
+          var tmp = currentSong;
+          currentSong = accountInformations.favorites[newIndex];
+          accountInformations.favorites[newIndex] = tmp;
+
+          //update view
+          Widget row = _rows.removeAt(oldIndex);
+          _rows.insert(newIndex, row);
+        });
+      }
+
+    }
+
     for (Song song in accountInformations.favorites) {
-      rows.add(ListTile(
+      _rows.add(ListTile(
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
           child: new Image(
@@ -311,6 +329,38 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
       ));
     }
 
-    return ListView(children: rows);
+    //return ListView(children: rows);
+
+    ScrollController _scrollController =
+        PrimaryScrollController.of(context) ?? ScrollController();
+
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: <Widget>[
+        ReorderableSliverList(
+          delegate: ReorderableSliverChildListDelegate(_rows),
+          onReorder: _onReorder,
+        )
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FutureBuilder<AccountInformations>(
+        future: accountInformations,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildView(context, session, snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner
+          return CircularProgressIndicator();
+        },
+      ),
+    );
   }
 }
