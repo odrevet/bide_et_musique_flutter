@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'song.dart';
+import 'utils.dart';
 
-Future<List<Song>> fetchSearch(String search) async {
+Future<List<Song>> fetchSearch(String search, String type) async {
   final url =
-      'http://www.bide-et-musique.com/recherche.html?kw=' + search + '&st=1';
+      '$host/recherche.html?kw=$search&st=$type';
   final response = await http.get(url);
   var songs = <Song>[];
 
@@ -25,7 +26,7 @@ Future<List<Song>> fetchSearch(String search) async {
         var a = tds[3].children[0];
         var song = Song();
         song.id = extractSongId(a.attributes['href']);
-        song.title = a.innerHtml;
+        song.title = stripTags(a.innerHtml);
         songs.add(song);
       }
     }
@@ -45,12 +46,40 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   Future<List<Song>> _search;
   final TextEditingController _controller = new TextEditingController();
+  List _searchTypes = [
+    'Interprète / Nom du morceau',
+    'Interprète',
+    'Nom du morceau',
+    'Auteur / Compositeur',
+    'Label',
+    'Paroles',
+    'Année',
+    'Dans les crédits de la pochette',
+    'Dans une émission'
+  ];
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
 
+  String _currentItem;
   _SearchWidgetState();
+
+  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    var i = 1;
+    for (String searchType in _searchTypes) {
+      items.add(new DropdownMenuItem(
+          value: i.toString(),
+          child: new Text(searchType)
+      ));
+    i++;
+    }
+    return items;
+  }
 
   @override
   void initState() {
     super.initState();
+    _dropDownMenuItems = getDropDownMenuItems();
+    this._currentItem = _dropDownMenuItems[0].value;
   }
 
   @override
@@ -74,21 +103,37 @@ class _SearchWidgetState extends State<SearchWidget> {
               return Text("${snapshot.error}");
             }
 
-            return TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Entrez ici votre recherche',
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+            return
+              Column(children: [
+                DropdownButton(
+                  value: this._currentItem,
+                  items: _dropDownMenuItems,
+                  onChanged: changedDropDownItem,
                 ),
-                onSubmitted: (value) {
-                  _search = fetchSearch(value);
-                },
-                controller: _controller);
+                TextField(
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez ici votre recherche',
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                    ),
+                    onSubmitted: (value) {
+                      _search = fetchSearch(value, this._currentItem);
+                    },
+                    controller: _controller)
+              ])
+              ;
           },
         ),
       ),
     );
+  }
+
+  void changedDropDownItem(String searchType) {
+    setState(() {
+      _currentItem = searchType;
+    });
   }
 
   Widget _buildView(List<Song> songs) {
