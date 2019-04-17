@@ -279,7 +279,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
       var step = oldIndex - newIndex;
       var direction =  step < 0 ? 'down' : 'up';
 
-      print("Move " + currentSong.title + ' ' +  step.abs().toString() + ' step(s) $direction' );
+      //print("Move " + currentSong.title + ' ' +  step.abs().toString() + ' step(s) $direction' );
 
       final response = await session.post('$host/account/$accountId.html', {
         'K': K,
@@ -288,7 +288,6 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
         direction + '.y': '1'
       });
 
-      print("RESP CODE IS " + response.statusCode.toString());
       if(response.statusCode == 200){
         setState(() {
           //update model
@@ -328,8 +327,6 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
         },
       ));
     }
-
-    //return ListView(children: rows);
 
     ScrollController _scrollController =
         PrimaryScrollController.of(context) ?? ScrollController();

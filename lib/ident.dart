@@ -100,9 +100,11 @@ class _IdentWidgetState extends State<IdentWidget> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    this.setState(() {
-      session = sendIdent(username, password);
-    });
+    if(username.isNotEmpty && password.isNotEmpty) {
+      this.setState(() {
+        session = sendIdent(username, password);
+      });
+    }
   }
 
   Widget _buildViewLoggedIn(BuildContext context, Session session) {
