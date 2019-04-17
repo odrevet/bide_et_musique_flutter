@@ -181,80 +181,82 @@ class SongPageWidget extends StatelessWidget {
   Widget _buildView(BuildContext context, SongInformations songInformations) {
     var urlCover =
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
-    return new Container(
-      color: Theme.of(context).canvasColor,
-          child: Column(
-        children: <Widget>[
-          Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                      child: InkWell(
-                          onTap: () {
-                            _openCoverViewerDialog(context);
-                          },
-                          child: new Image.network(urlCover))),
-                  Expanded(
-                    child:
-                    Column(children: [
-                      Expanded(
-                          flex: 7,
-                          child:Text(
-                          'Année : ' +
-                              songInformations.year.toString() +
-                              '\n' +
-                              'Artists : ' +
-                              songInformations.artists +
-                              '\n'
-                                  'Durée : ' +
-                              songInformations.length +
-                              '\n' +
-                              'Label : ' +
-                              songInformations.label +
-                              '\n'
-                                  'Reference : ' +
-                              songInformations.reference,
-                          style: _fontLyrics))
-                      ,
-                    Expanded(
-                        flex: 3,
-                        child:SongPlayerWidget(song.id))])
-                  ),
 
-                ],
-              )),
-          Expanded(
-            flex: 7,
-            child: Container(
-              child: Stack(children: [
-                new BackdropFilter(
-                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: new Container(
-                    decoration: new BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
-                  ),
-                ),
-                PageView(
-                  children: <Widget>[
-                    SingleChildScrollView(
-                        child:
-                            Text(songInformations.lyrics, style: _fontLyrics)),
-                    _buildViewComments(context, songInformations.comments),
-                  ],
-                )
-              ]),
+    return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            backgroundColor: Theme.of(context).canvasColor,
+            expandedHeight: 200.0,
+            automaticallyImplyLeading: false,
+            floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+                background: Row(children: [
+              Expanded(
+                  flex: 3,
+                  child: Row(
+
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                          child: InkWell(
+                              onTap: () {
+                                _openCoverViewerDialog(context);
+                              },
+                              child: new Image.network(urlCover))),
+                      Expanded(
+                          child: Column(children: [
+                        Expanded(
+                            flex: 7,
+                            child: Text(
+                                'Année : ' +
+                                    songInformations.year.toString() +
+                                    '\n' +
+                                    'Artists : ' +
+                                    songInformations.artists +
+                                    '\n'
+                                    'Durée : ' +
+                                    songInformations.length +
+                                    '\n' +
+                                    'Label : ' +
+                                    songInformations.label +
+                                    '\n'
+                                    'Reference : ' +
+                                    songInformations.reference,
+                                style: _fontLyrics)),
+                        Expanded(flex: 3, child: SongPlayerWidget(song.id))
+                      ])),
+                    ],
+                  ))
+            ])),
+          ),
+        ];
+      },
+      body: Center(
+          child: Container(
+        child: Stack(children: [
+          new BackdropFilter(
+            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: new Container(
               decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                fit: BoxFit.fill,
-                alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(urlCover),
-              )),
+                  color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
-        ],
-      ),
+          PageView(
+            children: <Widget>[
+              SingleChildScrollView(
+                  child: Text(songInformations.lyrics, style: _fontLyrics)),
+              _buildViewComments(context, songInformations.comments),
+            ],
+          )
+        ]),
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+          fit: BoxFit.fill,
+          alignment: FractionalOffset.topCenter,
+          image: new NetworkImage(urlCover),
+        )),
+      )),
     );
   }
 
@@ -402,7 +404,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 }
 
-
 //////////////////
 Future<List<Song>> fetchNewSongs() async {
   var songs = <Song>[];
@@ -411,7 +412,7 @@ Future<List<Song>> fetchNewSongs() async {
   if (response.statusCode == 200) {
     var body = response.body;
     var document = xml.parse(body);
-    for (var item in document.findAllElements('item')){
+    for (var item in document.findAllElements('item')) {
       var link = item.children[2].text;
       var song = Song();
       song.id = extractSongId(link);
