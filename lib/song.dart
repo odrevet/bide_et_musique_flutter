@@ -43,7 +43,7 @@ class SongInformations {
   factory SongInformations.fromJson(Map<String, dynamic> json) {
     return SongInformations(
         year: json['year'],
-        artists: json['artists']['main']['alias'],
+        artists: stripTags(json['artists']['main']['alias']),
         author: json['author'],
         length: json['length']['pretty'],
         label: json['label'],
