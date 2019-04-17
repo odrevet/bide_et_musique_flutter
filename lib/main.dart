@@ -80,79 +80,87 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
               decoration: new BoxDecoration(color: Colors.deepOrange)),
           new ListTile(
-            title: new Text('Compte'),
+            title: Text('Compte'),
+            leading: Icon(Icons.account_circle),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
+                   MaterialPageRoute(
                       builder: (context) =>
-                      new IdentWidget()));
+                       IdentWidget()));
             },
           ),
           new ListTile(
-            title: new Text('Programme'),
+            title: Text('Programme'),
+            leading: Icon(Icons.album),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
+                   MaterialPageRoute(
                       builder: (context) =>
-                          new ProgrammeWidget(program: fetchTitles())));
+                           ProgrammeWidget(program: fetchTitles())));
             },
           ),
           new ListTile(
-            title: new Text('Recherche'),
+            title:  Text('Recherche'),
+            leading: Icon(Icons.search),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new SearchWidget()));
+                   MaterialPageRoute(
+                      builder: (context) =>  SearchWidget()));
             },
           ),
           new ListTile(
-            title: new Text('Mur des messages'),
+            title:  Text('Mur des messages'),
+            leading: Icon(Icons.message),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
+                   MaterialPageRoute(
                       builder: (context) =>
-                          new WallWidget(posts: fetchPosts())));
+                           WallWidget(posts: fetchPosts())));
             },
           ),
           new ListTile(
-            title: new Text('Trombidoscope'),
+            title:  Text('Trombidoscope'),
+            leading: Icon(Icons.apps),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new TrombidoscopeWidget(
+                   MaterialPageRoute(
+                      builder: (context) =>  TrombidoscopeWidget(
                           accounts: fetchTrombidoscope())));
             },
           ),
           new ListTile(
-            title: new Text('Pochettoscope'),
+            title:  Text('Pochettoscope'),
+            leading: Icon(Icons.apps),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new PochettoscopeWidget(
+                   MaterialPageRoute(
+                      builder: (context) =>  PochettoscopeWidget(
                           songs: fetchPochettoscope())));
             },
           ),
           new ListTile(
-            title: new Text('Nouvelles entrées'),
+            title:  Text('Nouvelles entrées'),
+            leading: Icon(Icons.fiber_new),
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new NewSongsWidget(
+                   MaterialPageRoute(
+                      builder: (context) =>  NewSongsWidget(
                           songs: fetchNewSongs())));
             },
           ),
           new ListTile(
-            title: new Text('A propos'),
+            title:  Text('A propos'),
+            leading: Icon(Icons.info),
             onTap: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new AboutPage()));
+                   MaterialPageRoute(builder: (context) =>  AboutPage()));
             },
           ),
         ],
