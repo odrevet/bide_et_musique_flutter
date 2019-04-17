@@ -260,26 +260,24 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
   Session session;
   Future<AccountInformations> accountInformations;
 
-  List<Widget> _rows;
+  List<Dismissible> _rows;
 
   @override
   void initState() {
     super.initState();
     accountInformations = fetchAccountSession(this.session);
-    _rows = <ListTile>[];
+    _rows = <Dismissible>[];
   }
 
   Widget _buildView(BuildContext context, Session session,
       AccountInformations accountInformations) {
-    void _onReorder(int oldIndex, int newIndex)  async {
+    void _onReorder(int oldIndex, int newIndex) async {
       var currentSong = accountInformations.favorites[oldIndex];
       //update server
       var accountId = session.id;
       var K = currentSong.id;
       var step = oldIndex - newIndex;
-      var direction =  step < 0 ? 'down' : 'up';
-
-      //print("Move " + currentSong.title + ' ' +  step.abs().toString() + ' step(s) $direction' );
+      var direction = step < 0 ? 'down' : 'up';
 
       final response = await session.post('$host/account/$accountId.html', {
         'K': K,
@@ -288,7 +286,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
         direction + '.y': '1'
       });
 
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         setState(() {
           //update model
           var tmp = currentSong;
@@ -300,11 +298,32 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
           _rows.insert(newIndex, row);
         });
       }
-
     }
 
     for (Song song in accountInformations.favorites) {
-      _rows.add(ListTile(
+      _rows.add(Dismissible(
+        key: Key(song.id),
+        onDismissed: (direction) async{
+          var accountId = session.id;
+          var K = song.id;
+          var direction = 'DS';
+
+          final response = await session.post('$host/account/$accountId.html', {
+            'K': K,
+            'Step': '',
+            direction + '.x': '1',
+            direction + '.y': '1'
+          });
+
+          if (response.statusCode == 200) {
+            setState(() {
+              //update model
+              accountInformations.favorites.removeWhere((song) => song.id == K);
+            });
+          }
+          
+        },
+          child: ListTile(
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
           child: new Image(
@@ -325,7 +344,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
                       song: song,
                       songInformations: fetchSongInformations(song.id))));
         },
-      ));
+      )));
     }
 
     ScrollController _scrollController =
