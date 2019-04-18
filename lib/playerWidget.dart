@@ -11,7 +11,7 @@ class PlayerWidget extends StatefulWidget {
   _PlayerWidgetState createState() => _PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget> {
+class _PlayerWidgetState extends State<PlayerWidget>  with TickerProviderStateMixin  {
   AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
 
@@ -20,6 +20,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   get isPaused => playerState == PlayerState.paused;
 
   StreamSubscription _audioPlayerStateSubscription;
+
+  AnimationController _controller;
+  Animation _animation;
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +42,37 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     var playStopButton;
     if (isPlaying) {
       playStopButton = new IconButton(
-          onPressed: isPlaying || isPaused ? () => stop() : null,
+          onPressed: isPlaying || isPaused ? () {
+            _controller.stop();
+            stop();} : null,
           iconSize: 80.0,
           icon: new Icon(Icons.stop),
           color: Colors.orange);
     } else {
       playStopButton = new IconButton(
-          onPressed: isPlaying ? null : () => play(),
+          onPressed: isPlaying ? null : () {
+            _controller.repeat();
+            play();},
           iconSize: 80.0,
           icon: new Icon(Icons.play_arrow),
           color: Colors.orange);
     }
 
     return new Container(
-        padding: new EdgeInsets.all(16.0),
-        child: new Column(mainAxisSize: MainAxisSize.min, children: [
-          new Row(mainAxisSize: MainAxisSize.min, children: [
+        child: new Column(children: [
+          new Row(children: [
+            RotationTransition(
+              turns: _animation,
+              child: Column(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/vinyl_record.png',
+                    height:80,
+                    width:80
+                  ),
+                ],
+              ),
+            ),
             RichText(
               text: new TextSpan(
                 style: new TextStyle(
@@ -100,12 +118,18 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void initState() {
     super.initState();
     initAudioPlayer();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 5500),
+      vsync: this,
+    );
+    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
   }
 
   @override
   void dispose() {
     _audioPlayerStateSubscription.cancel();
     audioPlayer.stop();
+    _controller.dispose();
     super.dispose();
   }
 
