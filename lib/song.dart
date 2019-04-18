@@ -182,7 +182,8 @@ class SongPageWidget extends StatelessWidget {
     var urlCover =
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
 
-    var year = songInformations.year == 0 ? '?' :songInformations.year.toString();
+    var year =
+        songInformations.year == 0 ? '?' : songInformations.year.toString();
 
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -197,7 +198,6 @@ class SongPageWidget extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(

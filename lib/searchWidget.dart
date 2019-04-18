@@ -7,8 +7,7 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<List<Song>> fetchSearch(String search, String type) async {
-  final url =
-      '$host/recherche.html?kw=$search&st=$type';
+  final url = '$host/recherche.html?kw=$search&st=$type';
   final response = await http.get(url);
   var songs = <Song>[];
 
@@ -67,10 +66,8 @@ class _SearchWidgetState extends State<SearchWidget> {
     var i = 1;
     for (String searchType in _searchTypes) {
       items.add(new DropdownMenuItem(
-          value: i.toString(),
-          child: new Text(searchType)
-      ));
-    i++;
+          value: i.toString(), child: new Text(searchType)));
+      i++;
     }
     return items;
   }
@@ -103,27 +100,25 @@ class _SearchWidgetState extends State<SearchWidget> {
               return Text("${snapshot.error}");
             }
 
-            return
-              Column(children: [
-                DropdownButton(
-                  value: this._currentItem,
-                  items: _dropDownMenuItems,
-                  onChanged: changedDropDownItem,
-                ),
-                TextField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Entrez ici votre recherche',
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0)),
-                    ),
-                    onSubmitted: (value) {
-                      _search = fetchSearch(value, this._currentItem);
-                    },
-                    controller: _controller)
-              ])
-              ;
+            return Column(children: [
+              DropdownButton(
+                value: this._currentItem,
+                items: _dropDownMenuItems,
+                onChanged: changedDropDownItem,
+              ),
+              TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Entrez ici votre recherche',
+                    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
+                  ),
+                  onSubmitted: (value) {
+                    _search = fetchSearch(value, this._currentItem);
+                  },
+                  controller: _controller)
+            ]);
           },
         ),
       ),

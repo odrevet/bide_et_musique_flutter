@@ -302,49 +302,50 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
     for (Song song in accountInformations.favorites) {
       _rows.add(Dismissible(
-        key: Key(song.id),
-        onDismissed: (direction) async{
-          var accountId = session.id;
-          var K = song.id;
-          var direction = 'DS';
+          key: Key(song.id),
+          onDismissed: (direction) async {
+            var accountId = session.id;
+            var K = song.id;
+            var direction = 'DS';
 
-          final response = await session.post('$host/account/$accountId.html', {
-            'K': K,
-            'Step': '',
-            direction + '.x': '1',
-            direction + '.y': '1'
-          });
-
-          if (response.statusCode == 200) {
-            setState(() {
-              //update model
-              accountInformations.favorites.removeWhere((song) => song.id == K);
+            final response = await session.post(
+                '$host/account/$accountId.html', {
+              'K': K,
+              'Step': '',
+              direction + '.x': '1',
+              direction + '.y': '1'
             });
-          }
-          
-        },
+
+            if (response.statusCode == 200) {
+              setState(() {
+                //update model
+                accountInformations.favorites
+                    .removeWhere((song) => song.id == K);
+              });
+            }
+          },
           child: ListTile(
-        leading: new CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      )));
+            leading: new CircleAvatar(
+              backgroundColor: Colors.black12,
+              child: new Image(
+                  image: new NetworkImage(
+                      'http://bide-et-musique.com/images/thumb25/' +
+                          song.id +
+                          '.jpg')),
+            ),
+            title: Text(
+              song.title,
+            ),
+            subtitle: Text(song.artist),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new SongPageWidget(
+                          song: song,
+                          songInformations: fetchSongInformations(song.id))));
+            },
+          )));
     }
 
     ScrollController _scrollController =

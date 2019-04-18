@@ -11,7 +11,8 @@ class PlayerWidget extends StatefulWidget {
   _PlayerWidgetState createState() => _PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>  with TickerProviderStateMixin  {
+class _PlayerWidgetState extends State<PlayerWidget>
+    with TickerProviderStateMixin {
   AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
 
@@ -42,17 +43,23 @@ class _PlayerWidgetState extends State<PlayerWidget>  with TickerProviderStateMi
     var playStopButton;
     if (isPlaying) {
       playStopButton = new IconButton(
-          onPressed: isPlaying || isPaused ? () {
-            _controller.stop();
-            stop();} : null,
+          onPressed: isPlaying || isPaused
+              ? () {
+                  _controller.stop();
+                  stop();
+                }
+              : null,
           iconSize: 80.0,
           icon: new Icon(Icons.stop),
           color: Colors.orange);
     } else {
       playStopButton = new IconButton(
-          onPressed: isPlaying ? null : () {
-            _controller.repeat();
-            play();},
+          onPressed: isPlaying
+              ? null
+              : () {
+                  _controller.repeat();
+                  play();
+                },
           iconSize: 80.0,
           icon: new Icon(Icons.play_arrow),
           color: Colors.orange);
@@ -60,58 +67,54 @@ class _PlayerWidgetState extends State<PlayerWidget>  with TickerProviderStateMi
 
     return new Container(
         child: new Column(children: [
-          new Row(children: [
-            RotationTransition(
-              turns: _animation,
-              child: Column(
-                children: <Widget>[
-                  Image.asset(
-                    'assets/vinyl_record.png',
-                    height:80,
-                    width:80
-                  ),
-                ],
-              ),
+      new Row(children: [
+        RotationTransition(
+          turns: _animation,
+          child: Column(
+            children: <Widget>[
+              Image.asset('assets/vinyl_record.png', height: 80, width: 80),
+            ],
+          ),
+        ),
+        RichText(
+          text: new TextSpan(
+            style: new TextStyle(
+              fontSize: 14.0,
+              color: Colors.black,
             ),
-            RichText(
-              text: new TextSpan(
-                style: new TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black,
-                ),
-                children: <TextSpan>[
-                  new TextSpan(
-                      text: 'ECOUTEZ',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Colors.orange,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 3.0,
-                            color: Colors.black,
-                          ),
-                        ],
-                      )),
-                  new TextSpan(
-                      text: '\nLa radio',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.yellow,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 3.0,
-                            color: Colors.black,
-                          ),
-                        ],
-                      )),
-                ],
-              ),
-            ),
-            playStopButton
-          ])
-        ]));
+            children: <TextSpan>[
+              new TextSpan(
+                  text: 'ECOUTEZ',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    color: Colors.orange,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(1.0, 1.0),
+                        blurRadius: 3.0,
+                        color: Colors.black,
+                      ),
+                    ],
+                  )),
+              new TextSpan(
+                  text: '\nLa radio',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.yellow,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(1.0, 1.0),
+                        blurRadius: 3.0,
+                        color: Colors.black,
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        ),
+        playStopButton
+      ])
+    ]));
   }
 
   @override
@@ -140,8 +143,7 @@ class _PlayerWidgetState extends State<PlayerWidget>  with TickerProviderStateMi
   void initAudioPlayer() {
     audioPlayer = new AudioPlayer();
     _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
-    }, onError: (msg) {
+        audioPlayer.onPlayerStateChanged.listen((s) {}, onError: (msg) {
       setState(() {
         playerState = PlayerState.stopped;
       });

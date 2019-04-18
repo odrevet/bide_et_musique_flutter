@@ -40,8 +40,7 @@ class _CoverViewerState extends State<CoverViewer> {
         decoration: new BoxDecoration(
             image: new DecorationImage(
           fit: BoxFit.contain,
-          image: new NetworkImage(
-              url),
+          image: new NetworkImage(url),
         )),
         alignment: Alignment(0.0, 0.0),
       ),

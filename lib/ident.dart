@@ -28,28 +28,33 @@ class Session {
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
       headers['cookie'] =
-      (index == -1) ? rawCookie : rawCookie.substring(0, index);
+          (index == -1) ? rawCookie : rawCookie.substring(0, index);
     }
   }
 }
 
 Future<Session> sendIdent(String login, String password) async {
   final url = '$host/ident.html';
-  final response = await http.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+  final response =
+      await http.post(url, body: {'LOGIN': login, 'PASSWORD': password});
 
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var  confirm = document.getElementById('gd-encartblc').children[1].children[0].innerHtml;
+    var confirm = document
+        .getElementById('gd-encartblc')
+        .children[1]
+        .children[0]
+        .innerHtml;
     if (confirm == 'Vous avez été identifié !') {
       var session = Session();
       session.updateCookie(response);
 
       dom.Element divAccount = document.getElementById('compte2');
-      session.id = extractAccountId(divAccount.children[1].children[1].attributes['href']);
+      session.id = extractAccountId(
+          divAccount.children[1].children[1].attributes['href']);
       return session;
-    }
-    else{
+    } else {
       return null;
     }
   } else {
@@ -100,7 +105,7 @@ class _IdentWidgetState extends State<IdentWidget> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    if(username.isNotEmpty && password.isNotEmpty) {
+    if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
         session = sendIdent(username, password);
       });
@@ -108,26 +113,31 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoggedIn(BuildContext context, Session session) {
-    return  ManageAccountWidget(session: session);
+    return ManageAccountWidget(session: session);
   }
 
   Widget _buildViewLoginForm(BuildContext context) {
-    return Center(child:
-    ListView  (
+    return Center(
+        child: ListView(
       shrinkWrap: true,
       padding: EdgeInsets.only(left: 24.0, right: 24.0),
       children: <Widget>[
-        TextFormField(controller: _usernameController,
+        TextFormField(
+            controller: _usernameController,
             decoration: InputDecoration(
               hintText: 'Nom utilisateur',
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
             )),
-        TextFormField(controller: _passwordController, obscureText: true,
+        TextFormField(
+            controller: _passwordController,
+            obscureText: true,
             decoration: InputDecoration(
               hintText: 'Mot de passe',
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
             )),
         RaisedButton(
           onPressed: _performLogin,
