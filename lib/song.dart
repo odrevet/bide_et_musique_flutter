@@ -341,7 +341,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     } else {
       playStopButton = new IconButton(
           onPressed: isPlaying ? null : () {
-          pw.stop();
+          //pw.stop();
           play();
           },
           iconSize: 32.0,
