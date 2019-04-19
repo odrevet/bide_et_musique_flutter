@@ -207,9 +207,8 @@ class SongPageWidget extends StatelessWidget {
                               },
                               child: new Image.network(urlCover))),
                       Expanded(
-                          child: Column(children: [
-                        Expanded(
-                            flex: 7,
+                          child: 
+                        Center(
                             child: Text(
                                 'Année : ' +
                                     year +
@@ -226,8 +225,7 @@ class SongPageWidget extends StatelessWidget {
                                     'Reference : ' +
                                     songInformations.reference,
                                 style: _fontLyrics)),
-                        Expanded(flex: 3, child: SongPlayerWidget(song.id))
-                      ])),
+                      ),
                     ],
                   ))
             ])),
