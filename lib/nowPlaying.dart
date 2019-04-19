@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'song.dart';
+import 'utils.dart';
 
 Future<Song> fetchNowPlaying() async {
   var song = Song();
-  final url = 'http://www.bide-et-musique.com/now-top.php';
+  final url = '$host/now-top.php';
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -18,7 +19,7 @@ Future<Song> fetchNowPlaying() async {
     final idRegex = RegExp(r'/song/(\d+).html');
     var match = idRegex.firstMatch(href);
     song.id = match[1];
-    song.title = titreSong.children[0].innerHtml;
+    song.title = stripTags(titreSong.children[0].innerHtml);
     return song;
   } else {
     throw Exception('Failed to load top');
