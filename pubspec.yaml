@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audioplayer: ^0.5.2
+  audioplayers: ^0.10.1
   http: ^0.12.0
   reorderables:
   html:

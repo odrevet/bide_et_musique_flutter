@@ -12,6 +12,8 @@ import 'ident.dart';
 
 void main() => runApp(BideApp());
 
+var pw = PlayerWidget();
+
 class BideApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -166,7 +168,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               child: NowPlayingWidget(),
             ),
             Expanded(
-              child: PlayerWidget(),
+              child: pw,
             ),
           ];
 

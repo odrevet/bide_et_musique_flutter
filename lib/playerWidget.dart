@@ -1,14 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 enum PlayerState { stopped, playing, paused }
 
 class PlayerWidget extends StatefulWidget {
   PlayerWidget({Key key}) : super(key: key);
 
+  final _PlayerWidgetState playerState = _PlayerWidgetState();
+
+  stop(){
+    playerState.stop();
+    playerState._controller.stop();
+  }
+
+
   @override
-  _PlayerWidgetState createState() => _PlayerWidgetState();
+  //_PlayerWidgetState createState() => _PlayerWidgetState();
+  State<StatefulWidget> createState() => playerState;
 }
 
 class _PlayerWidgetState extends State<PlayerWidget>

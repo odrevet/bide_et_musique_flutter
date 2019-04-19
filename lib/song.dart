@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:xml/xml.dart' as xml;
-
+import 'main.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
@@ -342,7 +342,10 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           color: Colors.orange);
     } else {
       playStopButton = new IconButton(
-          onPressed: isPlaying ? null : () => play(),
+          onPressed: isPlaying ? null : () {
+          pw.stop();
+          play();
+          },
           iconSize: 32.0,
           icon: new Icon(Icons.play_arrow),
           color: Colors.orange);
@@ -359,8 +362,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   void dispose() {
-    //_audioPlayerStateSubscription.cancel();
-    //audioPlayer.stop();
+    _audioPlayerStateSubscription.cancel();
+    audioPlayer.stop();
     super.dispose();
   }
 
@@ -373,7 +376,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == AudioPlayerState.PLAYING) {
-        setState(() => duration = audioPlayer.duration);
+        //setState(() => duration = audioPlayer.duration);
       } else if (s == AudioPlayerState.STOPPED) {
         onComplete();
         setState(() {
