@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:reorderables/reorderables.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'ident.dart';
@@ -271,34 +270,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
   Widget _buildView(BuildContext context, Session session,
       AccountInformations accountInformations) {
-    void _onReorder(int oldIndex, int newIndex) async {
-      var currentSong = accountInformations.favorites[oldIndex];
-      //update server
-      var accountId = session.id;
-      var K = currentSong.id;
-      var step = oldIndex - newIndex;
-      var direction = step < 0 ? 'down' : 'up';
 
-      final response = await session.post('$host/account/$accountId.html', {
-        'K': K,
-        'Step': step.abs().toString(),
-        direction + '.x': '1',
-        direction + '.y': '1'
-      });
-
-      if (response.statusCode == 200) {
-        setState(() {
-          //update model
-          var tmp = currentSong;
-          currentSong = accountInformations.favorites[newIndex];
-          accountInformations.favorites[newIndex] = tmp;
-
-          //update view
-          Widget row = _rows.removeAt(oldIndex);
-          _rows.insert(newIndex, row);
-        });
-      }
-    }
 
     for (Song song in accountInformations.favorites) {
       _rows.add(Container(
@@ -348,19 +320,38 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
           )));
     }
 
-    ScrollController _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+    return ReorderableListView(
+      children:_rows,
+        onReorder: (int index, int targetPosition) async {
+            var currentSong = accountInformations.favorites[index];
+            //update server
+            var accountId = session.id;
+            var K = currentSong.id;
+            var step = index - targetPosition;
+            var direction = step < 0 ? 'down' : 'up';
 
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: <Widget>[
-        ReorderableSliverList(
-          delegate: ReorderableSliverChildListDelegate(_rows),
-          onReorder: _onReorder,
-        )
-      ],
-    );
+            final response = await session.post('$host/account/$accountId.html', {
+              'K': K,
+              'Step': step.abs().toString(),
+              direction + '.x': '1',
+              direction + '.y': '1'
+            });
+
+            if (response.statusCode == 200) {
+              setState(() {
+                //update model
+                var tmp = currentSong;
+                currentSong = accountInformations.favorites[targetPosition];
+                accountInformations.favorites[targetPosition] = tmp;
+
+                //update view
+                Widget row = _rows.removeAt(index);
+                _rows.insert(targetPosition, row);
+              });
+            }
+        });
   }
+
 
   @override
   Widget build(BuildContext context) {

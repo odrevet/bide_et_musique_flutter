@@ -11,7 +11,6 @@ dependencies:
     sdk: flutter
   audioplayers: ^0.10.1
   http: ^0.12.0
-  reorderables:
   html:
   xml:
   cupertino_icons: ^0.1.2
