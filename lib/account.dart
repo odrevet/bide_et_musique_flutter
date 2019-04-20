@@ -260,13 +260,13 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
   Session session;
   Future<AccountInformations> accountInformations;
 
-  List<Dismissible> _rows;
+  List<Container> _rows;
 
   @override
   void initState() {
     super.initState();
     accountInformations = fetchAccountSession(this.session);
-    _rows = <Dismissible>[];
+    _rows = <Container>[];
   }
 
   Widget _buildView(BuildContext context, Session session,
@@ -301,9 +301,9 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
     }
 
     for (Song song in accountInformations.favorites) {
-      _rows.add(Dismissible(
+      _rows.add(Container(
           key: Key(song.id),
-          onDismissed: (direction) async {
+          /*onDismissed: (direction) async {
             var accountId = session.id;
             var K = song.id;
             var direction = 'DS';
@@ -323,7 +323,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
                     .removeWhere((song) => song.id == K);
               });
             }
-          },
+          },*/
           child: ListTile(
             leading: new CircleAvatar(
               backgroundColor: Colors.black12,
