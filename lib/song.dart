@@ -30,6 +30,7 @@ class SongInformations {
   String reference;
   String lyrics;
   List<Comment> comments;
+  bool canListen;
 
   SongInformations(
       {this.year,
@@ -130,8 +131,12 @@ Future<SongInformations> fetchSongInformations(String songId) async {
       comment.time = tdComment.children[2].innerHtml;
       comments.add(comment);
     }
-
     songInformations.comments = comments;
+
+    //check if the song is available to listen
+    var divTitre = document.getElementsByClassName('titreorange')[0];
+    songInformations.canListen = divTitre == 'Écouter le morceau';
+
   } else {
     throw Exception('Failed to load song page');
   }
