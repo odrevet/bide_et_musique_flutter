@@ -36,8 +36,9 @@ Sur la page d'une chanson, tape sur la couverture en haut a gauche.
 ou appuye long sur la pochette au dessus du player
 
 # Capture d'écran 
-![Alt text](/screenshots/Screenshot_Bide-et-Musique_Menu.jpg?raw=true)
-![Alt text](/screenshots/Screenshot_Bide-et-Musique_Player.jpg?raw=true "")
-![Alt text](/screenshots/Screenshot_Bide-et-Musique_Pochettoscope.png?raw=true "")
-![Alt text](/screenshots/Screenshot_Bide-et-Musique_Program.png?raw=true "")
-![Alt text](/screenshots/Screenshot_Bide-et-Musique_Song.jpg?raw=true "")
+
+<img src="/screenshots/Screenshot_Bide-et-Musique_Menu.jpg" width="240px" />
+<img src="/screenshots/Screenshot_Bide-et-Musique_Player.jpg" width="240px" />
+<img src="/screenshots/Screenshot_Bide-et-Musique_Pochettoscope.png" width="240px" />
+<img src="/screenshots/Screenshot_Bide-et-Musique_Program.png" width="240px" />
+<img src="/screenshots/Screenshot_Bide-et-Musique_Song.jpg" width="240px" />
