@@ -8,13 +8,22 @@ import 'utils.dart';
 
 Future<List<Song>> fetchSearch(String search, String type) async {
   final url = '$host/recherche.html?kw=$search&st=$type';
-  final response = await http.get(url);
+  final response = await http.post(url);
   var songs = <Song>[];
 
-  if (response.statusCode == 200) {
+  if(response.statusCode == 302){
+    var location = response.headers['location'];
+    print (location);
+    //when the result is a single song, the host redirect to the song page
+    //in our case parse the page and return a list with one song
+    var song = Song();
+    song.id = extractSongId(location);
+    song.title = 'redirection';
+    songs.add(song);
+  }
+  else if(response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-
     var resultat = document.getElementById('resultat');
     var trs = resultat.getElementsByTagName('tr');
     //trs.removeAt(0); //remove header (result count)
@@ -29,10 +38,11 @@ Future<List<Song>> fetchSearch(String search, String type) async {
         songs.add(song);
       }
     }
-    return songs;
   } else {
     throw Exception('Failed to load search');
   }
+
+  return songs;
 }
 
 class SearchWidget extends StatefulWidget {
