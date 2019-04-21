@@ -270,8 +270,6 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
   Widget _buildView(BuildContext context, Session session,
       AccountInformations accountInformations) {
-
-
     for (Song song in accountInformations.favorites) {
       _rows.add(Container(
           key: Key(song.id),
@@ -321,37 +319,36 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
     }
 
     return ReorderableListView(
-      children:_rows,
+        children: _rows,
         onReorder: (int index, int targetPosition) async {
-            var currentSong = accountInformations.favorites[index];
-            //update server
-            var accountId = session.id;
-            var K = currentSong.id;
-            var step = index - targetPosition;
-            var direction = step < 0 ? 'down' : 'up';
+          var currentSong = accountInformations.favorites[index];
+          //update server
+          var accountId = session.id;
+          var K = currentSong.id;
+          var step = index - targetPosition;
+          var direction = step < 0 ? 'down' : 'up';
 
-            final response = await session.post('$host/account/$accountId.html', {
-              'K': K,
-              'Step': step.abs().toString(),
-              direction + '.x': '1',
-              direction + '.y': '1'
+          final response = await session.post('$host/account/$accountId.html', {
+            'K': K,
+            'Step': step.abs().toString(),
+            direction + '.x': '1',
+            direction + '.y': '1'
+          });
+
+          if (response.statusCode == 200) {
+            setState(() {
+              //update model
+              var tmp = currentSong;
+              currentSong = accountInformations.favorites[targetPosition];
+              accountInformations.favorites[targetPosition] = tmp;
+
+              //update view
+              Widget row = _rows.removeAt(index);
+              _rows.insert(targetPosition, row);
             });
-
-            if (response.statusCode == 200) {
-              setState(() {
-                //update model
-                var tmp = currentSong;
-                currentSong = accountInformations.favorites[targetPosition];
-                accountInformations.favorites[targetPosition] = tmp;
-
-                //update view
-                Widget row = _rows.removeAt(index);
-                _rows.insert(targetPosition, row);
-              });
-            }
+          }
         });
   }
-
 
   @override
   Widget build(BuildContext context) {

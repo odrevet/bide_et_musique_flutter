@@ -9,11 +9,10 @@ class PlayerWidget extends StatefulWidget {
 
   final _PlayerWidgetState playerState = _PlayerWidgetState();
 
-  stop(){
+  stop() {
     playerState.stop();
     playerState._controller.stop();
   }
-
 
   @override
   State<StatefulWidget> createState() => playerState;
