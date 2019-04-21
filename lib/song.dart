@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:xml/xml.dart' as xml;
 import 'main.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
+import 'package:flutter_radio/flutter_radio.dart';
 
 class Song {
   String id;
@@ -321,15 +322,10 @@ class SongPlayerWidget extends StatefulWidget {
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   final String _songId;
 
-  //Duration duration;
-  //Duration position;
-  AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
-
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.paused;
-
-  StreamSubscription _audioPlayerStateSubscription;
+  //StreamSubscription _audioPlayerStateSubscription;
 
   _SongPlayerWidgetState(this._songId);
 
@@ -360,13 +356,18 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    initAudioPlayer();
+    //initAudioPlayer();
+    audioStart();
+  }
+
+  Future<void> audioStart() async {
+    await FlutterRadio.audioStart();
+    print('Audio Start OK');
   }
 
   @override
   void dispose() {
-    _audioPlayerStateSubscription.cancel();
-    audioPlayer.stop();
+    FlutterRadio.stop();
     super.dispose();
   }
 
@@ -374,42 +375,17 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     setState(() => playerState = PlayerState.stopped);
   }
 
-  void initAudioPlayer() {
-    audioPlayer = new AudioPlayer();
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
-      if (s == AudioPlayerState.PLAYING) {
-        //setState(() => duration = audioPlayer.duration);
-      } else if (s == AudioPlayerState.STOPPED) {
-        onComplete();
-        setState(() {
-          //position = duration;
-        });
-      }
-    }, onError: (msg) {
-          print('Song player ERROR: ' + msg);
-      setState(() {
-        playerState = PlayerState.stopped;
-        //duration = new Duration(seconds: 0);
-        //position = new Duration(seconds: 0);
-      });
-    }
-    );
-  }
-
   Future play() async {
-    await audioPlayer
-        .play('http://www.bide-et-musique.com/stream_' + this._songId + '.php');
+    FlutterRadio.play(url: 'http://www.bide-et-musique.com/stream_' + this._songId + '.php');
     setState(() {
       playerState = PlayerState.playing;
     });
   }
 
   Future stop() async {
-    await audioPlayer.stop();
+    FlutterRadio.stop();
     setState(() {
       playerState = PlayerState.stopped;
-      //position = new Duration();
     });
   }
 }
