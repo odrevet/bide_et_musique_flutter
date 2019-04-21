@@ -13,7 +13,7 @@ avec une interface pensée pour le mobile, vous pouvez :
 * Voie le Trombidoscope
 * Voir le pochettoscope
 * Voir les nouvelles entrées dans la base
-* Organiser vos favories
+* Organiser les favories
 
 # Utilisation 
 
