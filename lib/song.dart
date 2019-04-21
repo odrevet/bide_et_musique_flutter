@@ -151,6 +151,9 @@ class SongPageWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(song.title),
+        actions: <Widget>[
+          SongPlayerWidget(song.id),
+        ],
       ),
       body: Center(
         child: FutureBuilder<SongInformations>(
@@ -207,8 +210,7 @@ class SongPageWidget extends StatelessWidget {
                               },
                               child: new Image.network(urlCover))),
                       Expanded(
-                          child: 
-                        Center(
+                        child: Center(
                             child: Text(
                                 'Année : ' +
                                     year +
@@ -318,35 +320,23 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Material(child: _buildPlayer()),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlayer() {
     var playStopButton;
+
     if (isPlaying) {
-      playStopButton = new IconButton(
-          onPressed: isPlaying || isPaused ? () => stop() : null,
-          iconSize: 32.0,
-          icon: new Icon(Icons.stop),
-          color: Colors.orange);
+      playStopButton = IconButton(
+        icon: new Icon(Icons.stop),
+        onPressed: () {
+          stop();
+        },
+      );
     } else {
-      playStopButton = new IconButton(
-          onPressed: isPlaying ? null : () {
-          //pw.stop();
+      playStopButton = IconButton(
+        icon: new Icon(Icons.play_arrow),
+        onPressed: () {
+          playerWidget.stop();
           play();
-          },
-          iconSize: 32.0,
-          icon: new Icon(Icons.play_arrow),
-          color: Colors.orange);
+        },
+      );
     }
 
     return playStopButton;

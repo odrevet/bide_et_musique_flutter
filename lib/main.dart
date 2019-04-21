@@ -9,8 +9,11 @@ import 'about.dart';
 import 'searchWidget.dart';
 import 'song.dart';
 import 'ident.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(BideApp());
+
+var playerWidget = PlayerWidget();
 
 class BideApp extends StatelessWidget {
   @override
@@ -31,7 +34,28 @@ class DrawerWidget extends StatefulWidget {
   _DrawerWidgetState createState() => new _DrawerWidgetState();
 }
 
+
 class _DrawerWidgetState extends State<DrawerWidget> {
+
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  dispose(){
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -159,28 +183,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
         ],
       )),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          var children = [
-            Expanded(
-              child: NowPlayingWidget(),
-            ),
-            Expanded(
-              child: PlayerWidget(),
-            ),
-          ];
+      body:
 
-          return orientation == Orientation.portrait
-              ? new Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: children))
-              : new Center(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: children));
-        },
-      ),
+      Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: NowPlayingWidget(),
+                ),
+                Expanded(
+                  child: playerWidget
+                ),
+              ]))
     );
   }
 }
