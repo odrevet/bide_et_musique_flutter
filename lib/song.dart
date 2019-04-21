@@ -83,6 +83,13 @@ class SongCardWidget extends StatelessWidget {
                     song: song,
                     songInformations: fetchSongInformations(song.id))));
       },
+      onLongPress: () {
+          Navigator.of(context).push(new MaterialPageRoute<Null>(
+              builder: (BuildContext context) {
+                return new CoverViewer(song.id);
+              },
+              fullscreenDialog: true));
+      },
       child: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
