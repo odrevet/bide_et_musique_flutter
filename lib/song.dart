@@ -324,7 +324,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   PlayerState playerState = PlayerState.stopped;
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.paused;
-  //StreamSubscription _audioPlayerStateSubscription;
 
   _SongPlayerWidgetState(this._songId);
 
@@ -355,26 +354,21 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    //initAudioPlayer();
-    audioStart();
-  }
-
-  Future<void> audioStart() async {
-    await FlutterRadio.audioStart();
-    print('Audio Start OK');
+    //audioStart();
   }
 
   @override
   void dispose() {
-    FlutterRadio.stop();
+    //if the radio stream is playing do not stop
+    //if the song player is playing stop it
+    if(isPlaying){
+      FlutterRadio.stop();
+    }
+
     super.dispose();
   }
 
-  void onComplete() {
-    setState(() => playerState = PlayerState.stopped);
-  }
-
-  Future play() async {
+  play() {
     FlutterRadio.play(
         url: 'http://www.bide-et-musique.com/stream_' + this._songId + '.php');
     setState(() {
@@ -382,7 +376,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     });
   }
 
-  Future stop() async {
+  stop() {
     FlutterRadio.stop();
     setState(() {
       playerState = PlayerState.stopped;
