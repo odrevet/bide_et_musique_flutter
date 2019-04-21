@@ -115,8 +115,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     songInformations = SongInformations.fromJson(
         json.decode(utf8.decode(responseJson.bodyBytes)));
   } else {
-    // If that response was not OK, throw an error.
-    throw Exception('Failed to load post');
+    throw Exception('Failed to load song information');
   }
 
   //Fetch comments

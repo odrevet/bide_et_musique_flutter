@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'dart:convert';
 import 'song.dart';
 import 'utils.dart';
+
 
 Future<List<Song>> fetchSearch(String search, String type) async {
   final url = '$host/recherche.html?kw=$search&st=$type';
@@ -19,6 +21,18 @@ Future<List<Song>> fetchSearch(String search, String type) async {
     var song = Song();
     song.id = extractSongId(location);
     song.title = 'redirection';
+
+    final url = 'http://www.bide-et-musique.com/song/' + song.id;
+
+    final responseJson = await http.get(url);
+
+    if (responseJson.statusCode == 200) {
+      song.title = json.decode(utf8.decode(responseJson.bodyBytes))['name'];
+    } else {
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to song info');
+    }
+
     songs.add(song);
   }
   else if(response.statusCode == 200) {
