@@ -160,29 +160,29 @@ class SongPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(song.title),
-        actions: <Widget>[
-          SongPlayerWidget(song.id),
-        ],
-      ),
-      body: Center(
-        child: FutureBuilder<SongInformations>(
-          future: songInformations,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+    return Center(
+      child: FutureBuilder<SongInformations>(
+        future: songInformations,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildView(context, snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Chargement de ' + song.title),
+            ),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
       ),
     );
+
+
   }
 
   void _openCoverViewerDialog(BuildContext context) {
@@ -198,9 +198,9 @@ class SongPageWidget extends StatelessWidget {
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
 
     var year =
-        songInformations.year == 0 ? '?' : songInformations.year.toString();
+    songInformations.year == 0 ? '?' : songInformations.year.toString();
 
-    return NestedScrollView(
+    var x = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
@@ -210,68 +210,82 @@ class SongPageWidget extends StatelessWidget {
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
                 background: Row(children: [
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: InkWell(
-                              onTap: () {
-                                _openCoverViewerDialog(context);
-                              },
-                              child: new Image.network(urlCover))),
-                      Expanded(
-                        child: Center(
-                            child: Text(
-                                'Année : ' +
-                                    year +
-                                    '\n' +
-                                    'Artists : ' +
-                                    songInformations.artists +
-                                    '\n'
-                                    'Durée : ' +
-                                    songInformations.length +
-                                    '\n' +
-                                    'Label : ' +
-                                    songInformations.label +
-                                    '\n'
-                                    'Reference : ' +
-                                    songInformations.reference,
-                                style: _fontLyrics)),
-                      ),
-                    ],
-                  ))
-            ])),
+                  Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                              child: InkWell(
+                                  onTap: () {
+                                    _openCoverViewerDialog(context);
+                                  },
+                                  child: new Image.network(urlCover))),
+                          Expanded(
+                            child: Center(
+                                child: Text(
+                                    'Année : ' +
+                                        year +
+                                        '\n' +
+                                        'Artists : ' +
+                                        songInformations.artists +
+                                        '\n'
+                                            'Durée : ' +
+                                        songInformations.length +
+                                        '\n' +
+                                        'Label : ' +
+                                        songInformations.label +
+                                        '\n'
+                                            'Reference : ' +
+                                        songInformations.reference,
+                                    style: _fontLyrics)),
+                          ),
+                        ],
+                      ))
+                ])),
           ),
         ];
       },
       body: Center(
           child: Container(
-        child: Stack(children: [
-          new BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: new Container(
-              decoration: new BoxDecoration(
-                  color: Colors.grey.shade200.withOpacity(0.7)),
-            ),
-          ),
-          PageView(
-            children: <Widget>[
-              SingleChildScrollView(
-                  child: Text(songInformations.lyrics, style: _fontLyrics)),
-              _buildViewComments(context, songInformations.comments),
-            ],
-          )
-        ]),
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
-          fit: BoxFit.fill,
-          alignment: FractionalOffset.topCenter,
-          image: new NetworkImage(urlCover),
-        )),
-      )),
+            child: Stack(children: [
+              new BackdropFilter(
+                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: new Container(
+                  decoration: new BoxDecoration(
+                      color: Colors.grey.shade200.withOpacity(0.7)),
+                ),
+              ),
+              PageView(
+                children: <Widget>[
+                  SingleChildScrollView(
+                      child: Text(songInformations.lyrics, style: _fontLyrics)),
+                  _buildViewComments(context, songInformations.comments),
+                ],
+              )
+            ]),
+            decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  fit: BoxFit.fill,
+                  alignment: FractionalOffset.topCenter,
+                  image: new NetworkImage(urlCover),
+                )),
+          )),
     );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(song.title),
+        actions: <Widget>[
+          SongPlayerWidget(song.id),
+        ],
+      ),
+      body: x,
+    );
+
+
+
+
   }
 
   Widget _buildViewComments(BuildContext context, List<Comment> comments) {
