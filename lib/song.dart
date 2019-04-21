@@ -322,8 +322,8 @@ class SongPlayerWidget extends StatefulWidget {
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   final String _songId;
 
-  Duration duration;
-  Duration position;
+  //Duration duration;
+  //Duration position;
   AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
 
@@ -384,16 +384,18 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       } else if (s == AudioPlayerState.STOPPED) {
         onComplete();
         setState(() {
-          position = duration;
+          //position = duration;
         });
       }
     }, onError: (msg) {
+          print('Song player ERROR: ' + msg);
       setState(() {
         playerState = PlayerState.stopped;
-        duration = new Duration(seconds: 0);
-        position = new Duration(seconds: 0);
+        //duration = new Duration(seconds: 0);
+        //position = new Duration(seconds: 0);
       });
-    });
+    }
+    );
   }
 
   Future play() async {
@@ -408,7 +410,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.stopped;
-      position = new Duration();
+      //position = new Duration();
     });
   }
 }
