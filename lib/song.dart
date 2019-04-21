@@ -93,7 +93,7 @@ class SongCardWidget extends StatelessWidget {
       child: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
-          fit: BoxFit.fill,
+          fit: BoxFit.scaleDown,
           alignment: FractionalOffset.topCenter,
           image: new NetworkImage(
               'http://www.bide-et-musique.com/images/pochettes/' +
