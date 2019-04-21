@@ -43,7 +43,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 4 //flutterVersionCode.toInteger()
-        versionName "1.1.0" //flutterVersionName
+        versionName "1.1.1" //flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
