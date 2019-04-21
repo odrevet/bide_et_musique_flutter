@@ -270,6 +270,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
   Widget _buildView(BuildContext context, Session session,
       AccountInformations accountInformations) {
+    _rows.clear();
     for (Song song in accountInformations.favorites) {
       _rows.add(Container(
           key: Key(song.id),
