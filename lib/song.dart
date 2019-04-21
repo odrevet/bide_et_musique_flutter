@@ -47,8 +47,8 @@ class SongInformations {
         artists: stripTags(json['artists']['main']['alias']),
         author: json['author'],
         length: json['length']['pretty'],
-        label: json['label'],
-        reference: json['reference'],
+        label: stripTags(json['label']),
+        reference: stripTags(json['reference']),
         lyrics: stripTags(json['lyrics']));
   }
 }
