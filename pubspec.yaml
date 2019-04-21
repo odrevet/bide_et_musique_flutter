@@ -9,12 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^0.10.1
   http: ^0.12.0
   html:
   xml:
   cupertino_icons: ^0.1.2
-  flutter_radio:
+  flutter_radio: ^0.1.5
 
 dev_dependencies:
   flutter_test:

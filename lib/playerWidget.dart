@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_radio/flutter_radio.dart';
 
 enum PlayerState { stopped, playing, paused }
 
@@ -21,14 +21,9 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with TickerProviderStateMixin {
-  AudioPlayer audioPlayer;
   PlayerState playerState = PlayerState.stopped;
-
   get isPlaying => playerState == PlayerState.playing;
-
   get isPaused => playerState == PlayerState.paused;
-
-  StreamSubscription _audioPlayerStateSubscription;
 
   AnimationController _controller;
   Animation _animation;
@@ -128,7 +123,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
   @override
   void initState() {
     super.initState();
-    initAudioPlayer();
+    audioStart();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 5500),
       vsync: this,
@@ -136,10 +131,12 @@ class _PlayerWidgetState extends State<PlayerWidget>
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
   }
 
+  Future<void> audioStart() async {
+    await FlutterRadio.audioStart();
+  }
+
   @override
   void dispose() {
-    _audioPlayerStateSubscription.cancel();
-    audioPlayer.stop();
     _controller.dispose();
     super.dispose();
   }
@@ -148,25 +145,16 @@ class _PlayerWidgetState extends State<PlayerWidget>
     setState(() => playerState = PlayerState.stopped);
   }
 
-  void initAudioPlayer() {
-    audioPlayer = new AudioPlayer();
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {}, onError: (msg) {
-      setState(() {
-        playerState = PlayerState.stopped;
-      });
-    });
-  }
-
-  Future play() async {
-    await audioPlayer.play("http://relay2.bide-et-musique.com:9100");
+  void play() {
+    var url = "http://relay2.bide-et-musique.com:9100";
+    FlutterRadio.play(url: url);
     setState(() {
       playerState = PlayerState.playing;
     });
   }
 
-  Future stop() async {
-    await audioPlayer.stop();
+  void stop() {
+    FlutterRadio.stop();
     setState(() {
       playerState = PlayerState.stopped;
     });
