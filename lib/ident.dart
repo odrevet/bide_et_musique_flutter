@@ -140,7 +140,6 @@ class _IdentWidgetState extends State<IdentWidget> {
   void _performLogin() {
     String username = _usernameController.text;
     String password = _passwordController.text;
-
     if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
         _session = sendIdent(username, password);
@@ -153,37 +152,35 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoginForm(BuildContext context) {
-    return Center(
-        child: ListView(
-      shrinkWrap: true,
-      padding: EdgeInsets.only(left: 24.0, right: 24.0),
-      children: <Widget>[
-        TextFormField(
-            controller: _usernameController,
-            decoration: InputDecoration(
-              hintText: 'Nom utilisateur',
-              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-            )),
-        TextFormField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: 'Mot de passe',
-              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-            )),
-        RaisedButton(
-          onPressed: _performLogin,
-          child: Text('OK'),
-          padding: EdgeInsets.symmetric(vertical: 16.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+    return Container(
+        padding: new EdgeInsets.all(30.0),
+        child: new Form(
+          child: new ListView(
+            children: <Widget>[
+              new TextFormField(
+                  controller: _usernameController,
+                  decoration: new InputDecoration(
+                    hintText: 'Nom utilisateur',
+                  )),
+              new TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: new InputDecoration(
+                    hintText: 'Mot de passe',
+                  )),
+              new Container(
+                child: new RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    child: new Text(
+                      'Se connecter',
+                    ),
+                    onPressed: _performLogin,
+                    color: Colors.orangeAccent),
+                margin: new EdgeInsets.only(top: 20.0),
+              )
+            ],
           ),
-        )
-      ],
-    ));
+        ));
   }
 }
