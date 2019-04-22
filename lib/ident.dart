@@ -7,7 +7,6 @@ import 'utils.dart';
 import 'account.dart';
 
 class Session {
-
   static final Session _singleton = new Session._internal();
 
   factory Session() {
@@ -95,10 +94,9 @@ class _IdentWidgetState extends State<IdentWidget> {
     _localSession = Session();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if(_localSession.id != null){
+    if (_localSession.id != null) {
       var actions = <Widget>[];
       actions.add(IconButton(
         icon: new Icon(Icons.close),
@@ -109,14 +107,12 @@ class _IdentWidgetState extends State<IdentWidget> {
         },
       ));
       return Scaffold(
-        appBar: AppBar(
-          title: Text("Votre compte"),
-          actions: actions,
-        ),
-        body: Center(child: _buildViewLoggedIn(context, _localSession))
-      );
-    }
-    else{
+          appBar: AppBar(
+            title: Text("Votre compte"),
+            actions: actions,
+          ),
+          body: Center(child: _buildViewLoggedIn(context, _localSession)));
+    } else {
       return Scaffold(
         appBar: AppBar(
           title: Text("Votre compte"),
@@ -139,7 +135,6 @@ class _IdentWidgetState extends State<IdentWidget> {
         ),
       );
     }
-
   }
 
   void _performLogin() {

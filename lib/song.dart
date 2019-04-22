@@ -123,13 +123,11 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
   //Fetch comments and favourited status if connected
   var response;
-  if(gSession.id != null){
+  if (gSession.id != null) {
     response = await gSession.get(url + '.html');
-  }
-  else{
+  } else {
     response = await http.get(url + '.html');
   }
-
 
   if (response.statusCode == 200) {
     var body = response.body;
@@ -155,22 +153,20 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     songInformations.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
 
     //check if favourited
-    if(gSession.id != null){
-      if(divTitre.length == 2){
+    if (gSession.id != null) {
+      if (divTitre.length == 2) {
         songInformations.canFavourite = false;
         songInformations.isFavourite = false;
-      }
-      else{
+      } else {
         songInformations.canFavourite = true;
-        songInformations.isFavourite = stripTags(divTitre[2].innerHtml).trim() == 'Ce morceau est dans vos favoris';
-
+        songInformations.isFavourite =
+            stripTags(divTitre[2].innerHtml).trim() ==
+                'Ce morceau est dans vos favoris';
       }
-    }
-    else{
+    } else {
       songInformations.isFavourite = false;
       songInformations.canFavourite = false;
     }
-
   } else {
     throw Exception('Failed to load song page');
   }
@@ -302,14 +298,15 @@ class SongPageWidget extends StatelessWidget {
     var actions = <Widget>[];
 
     //if the song can be listen, add the song player
-    if (songInformations.canListen){
+    if (songInformations.canListen) {
       actions.add(SongPlayerWidget(song.id));
     }
 
     var session = Session();
-    print(">> " + session.id.toString() + " and " + songInformations.canFavourite.toString());
-    if(session.id != null && songInformations.canFavourite){
-      actions.add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
+    //print(">> " + session.id.toString() + " and " + songInformations.canFavourite.toString());
+    if (session.id != null && songInformations.canFavourite) {
+      actions
+          .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
     }
 
     return Scaffold(
@@ -353,10 +350,12 @@ class SongFavoriteIconWidget extends StatefulWidget {
   final String _songId;
   bool _isFavourite;
 
-  SongFavoriteIconWidget(this._songId, this._isFavourite, {Key key}) : super(key: key);
+  SongFavoriteIconWidget(this._songId, this._isFavourite, {Key key})
+      : super(key: key);
 
   @override
-  _SongFavoriteIconWidgetState createState() => _SongFavoriteIconWidgetState(this._songId, this._isFavourite);
+  _SongFavoriteIconWidgetState createState() =>
+      _SongFavoriteIconWidgetState(this._songId, this._isFavourite);
 }
 
 class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
@@ -375,60 +374,50 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
     var session = Session();
     print("SESSION ID BUILD IS " + session.id.toString());
 
-      if (_isFavourite) {
-        return IconButton(
-            icon: new Icon(Icons.star),
-            onPressed: () async {
-              //var url = '$host/song/$_songId.html';
-
-              final response = await session.post(
-                  '$host/account/${session.id}.html', {
-                'K': _songId,
-                'Step': '',
-                'DS.x': '1',
-                'DS.y': '1'
-              });
-
-              if (response.statusCode == 200) {
-                setState(() {
-                  _isFavourite = false;
-                });
-              }
-            }
-        );
-      }
-      else {
-        return IconButton(
-          icon: new Icon(Icons.star_border),
+    if (_isFavourite) {
+      return IconButton(
+          icon: new Icon(Icons.star),
           onPressed: () async {
-            var url = '$host/song/$_songId.html';
+            //var url = '$host/song/$_songId.html';
 
-            session.headers['Content-Type'] =
-            'application/x-www-form-urlencoded';
-            session.headers['Host'] = 'www.bide-et-musique.com';
-            session.headers['Origin'] = host;
-            session.headers['Referer'] = url;
+            final response = await session.post(
+                '$host/account/${session.id}.html',
+                {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
-            final response = await session.post(url, {
-              'M': 'AS'
-            });
-
-            session.headers.remove('Referer');
-            session.headers.remove('Content-Type');
             if (response.statusCode == 200) {
               setState(() {
-                _isFavourite = true;
+                _isFavourite = false;
               });
-            } else {
-              print("Add song to favorites returned status code " +
-                  response.statusCode.toString());
             }
-          },
-        );
-      }
+          });
+    } else {
+      return IconButton(
+        icon: new Icon(Icons.star_border),
+        onPressed: () async {
+          var url = '$host/song/$_songId.html';
+
+          session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+          session.headers['Host'] = 'www.bide-et-musique.com';
+          session.headers['Origin'] = host;
+          session.headers['Referer'] = url;
+
+          final response = await session.post(url, {'M': 'AS'});
+
+          session.headers.remove('Referer');
+          session.headers.remove('Content-Type');
+          if (response.statusCode == 200) {
+            setState(() {
+              _isFavourite = true;
+            });
+          } else {
+            print("Add song to favorites returned status code " +
+                response.statusCode.toString());
+          }
+        },
+      );
     }
   }
-
+}
 
 ////////////////////////////////
 enum PlayerState { stopped, playing, paused }
@@ -478,7 +467,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   void dispose() {
     //if the radio stream is playing do not stop
     //if the song player is playing stop it
-    if(isPlaying){
+    if (isPlaying) {
       FlutterRadio.stop();
     }
 
