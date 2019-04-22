@@ -122,25 +122,29 @@ class _SearchWidgetState extends State<SearchWidget> {
               return Text("${snapshot.error}");
             }
 
-            return Column(children: [
-              DropdownButton(
-                value: this._currentItem,
-                items: _dropDownMenuItems,
-                onChanged: changedDropDownItem,
-              ),
-              TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Entrez ici votre recherche',
-                    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32.0)),
+            return Container(
+                padding: new EdgeInsets.all(30.0),
+                margin: new EdgeInsets.only(top: 20.0),
+                child: ListView(children: [
+                  DropdownButton(
+                    value: this._currentItem,
+                    items: _dropDownMenuItems,
+                    onChanged: changedDropDownItem,
                   ),
-                  onSubmitted: (value) {
-                    _search = fetchSearch(value, this._currentItem);
-                  },
-                  controller: _controller)
-            ]);
+                  TextField(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Entrez ici votre recherche',
+                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      ),
+                      onSubmitted: (value) {
+                        _search = fetchSearch(value, this._currentItem);
+                      },
+                      controller: _controller)
+                ],)
+                 );
           },
         ),
       ),
