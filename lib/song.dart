@@ -113,7 +113,7 @@ class SongCardWidget extends StatelessWidget {
 
 Future<SongInformations> fetchSongInformations(String songId) async {
   var songInformations;
-  final url = 'http://www.bide-et-musique.com/song/' + songId;
+  final url = '$host/song/$songId';
 
   final responseJson = await http.get(url);
 
@@ -123,7 +123,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
           json.decode(utf8.decode(responseJson.bodyBytes)));
     }
     catch(e){
-      print("ERROR: " + e.toString());
       songInformations = SongInformations(
           year: 0,
           artists: '?',
@@ -320,7 +319,6 @@ class SongPageWidget extends StatelessWidget {
     }
 
     var session = Session();
-    //print(">> " + session.id.toString() + " and " + songInformations.canFavourite.toString());
     if (session.id != null && songInformations.canFavourite) {
       actions
           .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));

@@ -25,17 +25,28 @@ Future<Map<String, List<Song>>> fetchTitles() async {
       //td 2 artist
       //td 3 song
       var song = Song();
-
       var href = tr.children[3].innerHtml;
       song.id = extractSongId(href);
-
       song.artist = stripTags(tr.children[2].children[0].innerHtml);
       song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
-
       songsNext.add(song);
     }
 
     var songsPrev = <Song>[];
+    var trs = tables[3].children[0].children;
+    trs.removeLast();
+    for (dom.Element tr in trs) {
+      //td 0 program
+      //td 1 cover
+      //td 2 artist
+      //td 3 song
+      var song = Song();
+      var href = tr.children[3].innerHtml;
+      song.id = extractSongId(href);
+      song.artist = stripTags(tr.children[2].children[0].innerHtml);
+      song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
+      songsPrev.add(song);
+    }
 
     return {'next': songsNext, 'prev': songsPrev};
   } else {
@@ -73,10 +84,10 @@ class ProgrammeWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Map<String, List<Song>> program) {
-    var rows = <ListTile>[];
+    var rowsNext = <ListTile>[];
     List<Song> songsNext = program['next'];
     for (Song song in songsNext) {
-      rows.add(ListTile(
+      rowsNext.add(ListTile(
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
           child: new Image(
@@ -100,6 +111,39 @@ class ProgrammeWidget extends StatelessWidget {
       ));
     }
 
-    return ListView(children: rows);
+    var rowsPrev = <ListTile>[];
+    List<Song> songPrev = program['prev'];
+    for (Song song in songPrev) {
+      rowsPrev.add(ListTile(
+        leading: new CircleAvatar(
+          backgroundColor: Colors.black12,
+          child: new Image(
+              image: new NetworkImage(
+                  'http://bide-et-musique.com/images/thumb25/' +
+                      song.id +
+                      '.jpg')),
+        ),
+        title: Text(
+          song.title,
+        ),
+        subtitle: Text(song.artist),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SongPageWidget(
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
+        },
+      ));
+    }
+
+    return PageView(
+      children: <Widget>[
+        ListView(children: rowsNext),
+        ListView(children: rowsPrev)
+      ],
+    );
+
   }
 }
