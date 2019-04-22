@@ -45,6 +45,7 @@ class SongInformations {
       this.lyrics});
 
   factory SongInformations.fromJson(Map<String, dynamic> json) {
+    final String lyrics = json['lyrics'];
     return SongInformations(
         year: json['year'],
         artists: stripTags(json['artists']['main']['alias']),
@@ -52,7 +53,9 @@ class SongInformations {
         length: json['length']['pretty'],
         label: stripTags(json['label']),
         reference: stripTags(json['reference']),
-        lyrics: stripTags(json['lyrics']));
+        lyrics: lyrics == null
+            ? 'Paroles non renseignées pour cette chanson '
+            : stripTags(lyrics));
   }
 }
 
