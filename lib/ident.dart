@@ -7,6 +7,15 @@ import 'utils.dart';
 import 'account.dart';
 
 class Session {
+
+  static final Session _singleton = new Session._internal();
+
+  factory Session() {
+    return _singleton;
+  }
+
+  Session._internal();
+
   String id;
 
   Map<String, String> headers = {};
@@ -32,6 +41,8 @@ class Session {
     }
   }
 }
+
+var gSession = Session();
 
 Future<Session> sendIdent(String login, String password) async {
   final url = '$host/ident.html';
@@ -72,33 +83,63 @@ class IdentWidget extends StatefulWidget {
 class _IdentWidgetState extends State<IdentWidget> {
   _IdentWidgetState();
 
-  Future<Session> session;
+  Future<Session> _session;
+  Session _localSession;
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Votre compte"),
-      ),
-      body: Center(
-        child: FutureBuilder<Session>(
-          future: session,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildViewLoggedIn(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+  void initState() {
+    super.initState();
+    _localSession = Session();
+  }
 
-            // By default, show the login form
-            return _buildViewLoginForm(context);
-          },
+
+  @override
+  Widget build(BuildContext context) {
+    if(_localSession.id != null){
+      var actions = <Widget>[];
+      actions.add(IconButton(
+        icon: new Icon(Icons.close),
+        onPressed: () {
+          _localSession.id = null;
+          _localSession.headers = {};
+          Navigator.pop(context);
+        },
+      ));
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Votre compte"),
+          actions: actions,
         ),
-      ),
-    );
+        body: Center(child: _buildViewLoggedIn(context, _localSession))
+      );
+    }
+    else{
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Votre compte"),
+        ),
+        body: Center(
+          child: FutureBuilder<Session>(
+            future: _session,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                gSession = snapshot.data;
+                return _buildViewLoggedIn(context, snapshot.data);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+
+              // By default, show the login form
+              return _buildViewLoginForm(context);
+            },
+          ),
+        ),
+      );
+    }
+
   }
 
   void _performLogin() {
@@ -107,7 +148,7 @@ class _IdentWidgetState extends State<IdentWidget> {
 
     if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
-        session = sendIdent(username, password);
+        _session = sendIdent(username, password);
       });
     }
   }
