@@ -154,13 +154,19 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
     for (dom.Element tdComment in tdsComments) {
       var comment = Comment();
-      dom.Element aAccount = tdComment.children[1].children[0];
-      String accountId = extractAccountId(aAccount.attributes['href']);
-      String accountName = aAccount.innerHtml;
-      comment.author = Account(accountId, accountName);
-      comment.body = tdComment.innerHtml.split('<br>')[1];
-      comment.time = tdComment.children[2].innerHtml;
-      comments.add(comment);
+      try{
+        dom.Element aAccount = tdComment.children[1].children[0];
+        String accountId = extractAccountId(aAccount.attributes['href']);
+        String accountName = aAccount.innerHtml;
+        comment.author = Account(accountId, accountName);
+        comment.body = tdComment.innerHtml.split('<br>')[1];
+        comment.time = tdComment.children[2].innerHtml;
+        comments.add(comment);
+      }
+      catch(e){
+        print(e.toString());
+      }
+
     }
     songInformations.comments = comments;
 
@@ -387,8 +393,6 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   @override
   Widget build(BuildContext context) {
     var session = Session();
-    print("SESSION ID BUILD IS " + session.id.toString());
-
     if (_isFavourite) {
       return IconButton(
           icon: new Icon(Icons.star),
