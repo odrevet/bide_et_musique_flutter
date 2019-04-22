@@ -321,12 +321,12 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
     return ReorderableListView(
         children: _rows,
-        onReorder: (int index, int targetPosition) async {
-          var currentSong = accountInformations.favorites[index];
+        onReorder: (int initialPosition, int targetPosition) async {
+          var draggedSong = accountInformations.favorites[initialPosition];
           //update server
           var accountId = session.id;
-          var K = currentSong.id;
-          var step = index - targetPosition;
+          var K = draggedSong.id;
+          var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 
           final response = await session.post('$host/account/$accountId.html', {
@@ -338,14 +338,8 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
           if (response.statusCode == 200) {
             setState(() {
-              //update model
-              var tmp = currentSong;
-              currentSong = accountInformations.favorites[targetPosition];
-              accountInformations.favorites[targetPosition] = tmp;
-
-              //update view
-              Widget row = _rows.removeAt(index);
-              _rows.insert(targetPosition, row);
+              accountInformations.favorites.removeAt(initialPosition);
+              accountInformations.favorites.insert(targetPosition, draggedSong);
             });
           }
         });
