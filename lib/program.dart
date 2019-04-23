@@ -84,64 +84,10 @@ class ProgrammeWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Map<String, List<Song>> program) {
-    var rowsNext = <ListTile>[];
-    List<Song> songsNext = program['next'];
-    for (Song song in songsNext) {
-      rowsNext.add(ListTile(
-        leading: new CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      ));
-    }
-
-    var rowsPrev = <ListTile>[];
-    List<Song> songPrev = program['prev'];
-    for (Song song in songPrev) {
-      rowsPrev.add(ListTile(
-        leading: new CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      ));
-    }
-
     return PageView(
       children: <Widget>[
-        ListView(children: rowsNext),
-        ListView(children: rowsPrev)
+        SongListingWidget(program['next']),
+        SongListingWidget(program['prev']),
       ],
     );
 
