@@ -166,7 +166,7 @@ class AccountPageWidget extends StatelessWidget {
                     SingleChildScrollView(
                         child: Text(accountInformations.presentation,
                             style: TextStyle(fontSize: 20))),
-                    _buildViewFavorites(context, accountInformations.favorites),
+                    SongListingWidget(accountInformations.favorites),
                   ],
                 )
               ]),
@@ -181,36 +181,6 @@ class AccountPageWidget extends StatelessWidget {
         ],
       )),
     );
-  }
-
-  Widget _buildViewFavorites(BuildContext context, List<Song> songs) {
-    var rows = <ListTile>[];
-    for (Song song in songs) {
-      rows.add(ListTile(
-        leading: new CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      ));
-    }
-
-    return ListView(children: rows);
   }
 }
 
