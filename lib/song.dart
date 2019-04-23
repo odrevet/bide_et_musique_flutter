@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter_radio/flutter_radio.dart';
+import 'package:flutter/gestures.dart';
 import 'main.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
+import 'searchWidget.dart';
 
 class Song {
   String id;
@@ -117,11 +119,10 @@ Future<SongInformations> fetchSongInformations(String songId) async {
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
-    try{
+    try {
       songInformations = SongInformations.fromJson(
           json.decode(utf8.decode(responseJson.bodyBytes)));
-    }
-    catch(e){
+    } catch (e) {
       songInformations = SongInformations(
           year: 0,
           artists: '?',
@@ -131,7 +132,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
           reference: '?',
           lyrics: e.toString());
     }
-
   } else {
     throw Exception('Failed to load song information');
   }
@@ -153,7 +153,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
     for (dom.Element tdComment in tdsComments) {
       var comment = Comment();
-      try{
+      try {
         dom.Element aAccount = tdComment.children[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
@@ -161,11 +161,9 @@ Future<SongInformations> fetchSongInformations(String songId) async {
         comment.body = tdComment.innerHtml.split('<br>')[1];
         comment.time = tdComment.children[2].innerHtml;
         comments.add(comment);
-      }
-      catch(e){
+      } catch (e) {
         print(e.toString());
       }
-
     }
     songInformations.comments = comments;
 
@@ -239,9 +237,6 @@ class SongPageWidget extends StatelessWidget {
     var urlCover =
         'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
 
-    var year =
-        songInformations.year == 0 ? '?' : songInformations.year.toString();
-
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -263,32 +258,7 @@ class SongPageWidget extends StatelessWidget {
                                 _openCoverViewerDialog(context);
                               },
                               child: new Image.network(urlCover))),
-                      /*Expanded(child: new InkWell(
-                        child: new Text("Hello"),
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => SearchWidget()));
-                          }
-                      )),*/
-                      Expanded(
-                        child: Center(
-                            child: Text(
-                                'Année : ' +
-                                    year +
-                                    '\n' +
-                                    'Artists : ' +
-                                    songInformations.artists +
-                                    '\n'
-                                    'Durée : ' +
-                                    songInformations.length +
-                                    '\n' +
-                                    'Label : ' +
-                                    songInformations.label +
-                                    '\n'
-                                    'Reference : ' +
-                                    songInformations.reference,
-                                style: _fontLyrics)),
-                      ),
+                      Expanded(child: SongInformationWidget(songInformations)),
                     ],
                   ))
             ])),
@@ -419,6 +389,71 @@ class SongListingWidgetState extends State<SongListingWidget> {
   }
 }
 
+class SongInformationWidget extends StatelessWidget {
+  final SongInformations _songInformations;
+
+  SongInformationWidget(this._songInformations);
+
+  @override
+  Widget build(BuildContext context) {
+    var textSpans = <TextSpan>[];
+
+    if(_songInformations.year != 0){
+      textSpans.add(TextSpan(text: _songInformations.year.toString()  + '\n',
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DoSearchWidget(fetchSearch(_songInformations.year.toString(), '7')))),
+            }));
+    }
+
+    if(_songInformations.artists != null){
+      textSpans.add(TextSpan(text: _songInformations.artists.toString() + '\n',
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DoSearchWidget(fetchSearch(_songInformations.artists, '4')))),
+            }));
+    }
+
+    if(_songInformations.length != null) {
+      textSpans.add(TextSpan(text: _songInformations.length + '\n'));
+    }
+
+    if(_songInformations.label != null){
+      textSpans.add(TextSpan(text: _songInformations.label.toString() + '\n',
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DoSearchWidget(fetchSearch(_songInformations.label, '9')))),
+            }));
+    }
+
+    if(_songInformations.reference != null){
+      textSpans.add(TextSpan(text: _songInformations.reference.toString() + '\n'));
+    }
+
+    final textStyle = TextStyle(fontSize: 18.0,
+      color: Colors.black,);
+
+    return Center(
+        child: RichText(
+        textAlign: TextAlign.left,
+        text: new TextSpan(
+          style: textStyle,
+          children: textSpans
+        )));
+  }
+}
 
 ////////////////////////////////
 // Actions for the song page titlebar : Add song to favourite and player
@@ -439,11 +474,6 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   bool _isFavourite;
 
   _SongFavoriteIconWidgetState(this._songId, this._isFavourite);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -563,4 +593,3 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     });
   }
 }
-

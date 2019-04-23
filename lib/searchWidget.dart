@@ -163,3 +163,34 @@ class _SearchWidgetState extends State<SearchWidget> {
 }
 
 
+//////////////////////////
+// Search songs from given
+class DoSearchWidget extends StatelessWidget {
+  final Future<List<Song>> songs;
+
+  DoSearchWidget(this.songs, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recherche'),
+      ),
+      body: Center(
+        child: FutureBuilder<List<Song>>(
+          future: songs,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SongListingWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner
+            return CircularProgressIndicator();
+          },
+        ),
+      ),
+    );
+  }
+}
