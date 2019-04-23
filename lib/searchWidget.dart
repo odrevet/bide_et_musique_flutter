@@ -65,7 +65,7 @@ class SearchWidget extends StatefulWidget {
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
-  Future<List<Song>> _search;
+  Future<List<Song>> _songsResult;
   final TextEditingController _controller = new TextEditingController();
   List _searchTypes = [
     'Interprète / Nom du morceau',
@@ -81,6 +81,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
 
   String _currentItem;
+
   _SearchWidgetState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
@@ -114,10 +115,10 @@ class _SearchWidgetState extends State<SearchWidget> {
       ),
       body: Center(
         child: FutureBuilder<List<Song>>(
-          future: _search,
+          future: _songsResult,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(snapshot.data);
+              return SongListingWidget(snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -135,16 +136,17 @@ class _SearchWidgetState extends State<SearchWidget> {
                       autofocus: true,
                       decoration: InputDecoration(
                         hintText: 'Entrez ici votre recherche',
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            20.0, 10.0, 20.0, 10.0),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0)),
                       ),
                       onSubmitted: (value) {
-                        _search = fetchSearch(value, this._currentItem);
+                        _songsResult = fetchSearch(value, this._currentItem);
                       },
                       controller: _controller)
                 ],)
-                 );
+            );
           },
         ),
       ),
@@ -157,33 +159,7 @@ class _SearchWidgetState extends State<SearchWidget> {
     });
   }
 
-  Widget _buildView(List<Song> songs) {
-    var rows = <ListTile>[];
-    for (Song song in songs) {
-      rows.add(ListTile(
-        leading: new CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        //subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      ));
-    }
 
-    return ListView(children: rows);
-  }
 }
+
+

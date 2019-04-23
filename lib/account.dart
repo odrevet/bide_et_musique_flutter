@@ -215,6 +215,8 @@ class AccountPageWidget extends StatelessWidget {
 }
 
 ///////////////////////////
+// Manage the account after identification
+
 Future<AccountInformations> fetchAccountSession(Session session) async {
   var accountInformations = AccountInformations();
   final accountId = session.id;

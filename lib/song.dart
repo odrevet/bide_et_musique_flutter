@@ -11,6 +11,7 @@ import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
+import 'searchWidget.dart';
 
 class Song {
   String id;
@@ -263,6 +264,13 @@ class SongPageWidget extends StatelessWidget {
                                 _openCoverViewerDialog(context);
                               },
                               child: new Image.network(urlCover))),
+                      /*Expanded(child: new InkWell(
+                        child: new Text("Hello"),
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SearchWidget()));
+                          }
+                      )),*/
                       Expanded(
                         child: Center(
                             child: Text(
@@ -365,7 +373,55 @@ class SongPageWidget extends StatelessWidget {
   }
 }
 
+//////////////////
+/// Display given songs in a ListView
+class SongListingWidget extends StatefulWidget {
+  List<Song> _songs;
+  SongListingWidget(this._songs, {Key key}) : super(key: key);
+
+  @override
+  SongListingWidgetState createState() => SongListingWidgetState(this._songs);
+}
+
+class SongListingWidgetState extends State<SongListingWidget> {
+  List<Song> _songs;
+  SongListingWidgetState(this._songs);
+
+  @override
+  Widget build(BuildContext context) {
+    var rows = <ListTile>[];
+    for (Song song in _songs) {
+      rows.add(ListTile(
+        leading: new CircleAvatar(
+          backgroundColor: Colors.black12,
+          child: new Image(
+              image: new NetworkImage(
+                  'http://bide-et-musique.com/images/thumb25/' +
+                      song.id +
+                      '.jpg')),
+        ),
+        title: Text(
+          song.title,
+        ),
+        //subtitle: Text(song.artist),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SongPageWidget(
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
+        },
+      ));
+    }
+
+    return ListView(children: rows);
+  }
+}
+
+
 ////////////////////////////////
+// Actions for the song page titlebar : Add song to favourite and player
 class SongFavoriteIconWidget extends StatefulWidget {
   final String _songId;
   bool _isFavourite;
@@ -508,4 +564,3 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 }
 
-//////////////////
