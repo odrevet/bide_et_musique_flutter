@@ -411,7 +411,7 @@ class SongInformationWidget extends StatelessWidget {
     }
 
     if(_songInformations.artists != null){
-      textSpans.add(TextSpan(text: _songInformations.artists.toString() + '\n',
+      textSpans.add(TextSpan(text: _songInformations.artists + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
             Navigator.push(
@@ -427,7 +427,7 @@ class SongInformationWidget extends StatelessWidget {
     }
 
     if(_songInformations.label != null){
-      textSpans.add(TextSpan(text: _songInformations.label.toString() + '\n',
+      textSpans.add(TextSpan(text: _songInformations.label + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
             Navigator.push(
