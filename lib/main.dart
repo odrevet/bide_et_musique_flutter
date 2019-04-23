@@ -7,7 +7,7 @@ import 'trombidoscope.dart';
 import 'pochettoscope.dart';
 import 'about.dart';
 import 'searchWidget.dart';
-import 'song.dart';
+import 'newSongs.dart';
 import 'ident.dart';
 
 void main() => runApp(BideApp());
