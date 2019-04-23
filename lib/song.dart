@@ -434,7 +434,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DoSearchWidget(fetchSearch(_songInformations.label, '9')))),
+                        DoSearchWidget(fetchSearch(_songInformations.label, '5')))),
             }));
     }
 
