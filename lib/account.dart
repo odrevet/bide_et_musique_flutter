@@ -71,8 +71,8 @@ Future<AccountInformations> fetchAccount(String accountId) async {
 }
 
 class AccountPageWidget extends StatelessWidget {
-  Account account;
-  Future<AccountInformations> accountInformations;
+  final Account account;
+  final Future<AccountInformations> accountInformations;
 
   AccountPageWidget({Key key, this.account, this.accountInformations})
       : super(key: key);
@@ -218,8 +218,10 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
 }
 
 class ManageAccountWidget extends StatefulWidget {
+
+  final Session session;
+
   ManageAccountWidget({Key key, this.session}) : super(key: key);
-  Session session;
 
   @override
   _ManageAccountWidgetState createState() =>

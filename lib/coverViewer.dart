@@ -2,7 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CoverViewer extends StatefulWidget {
-  String songId;
+  final String songId;
+
   CoverViewer(this.songId, {Key key}) : super(key: key); // changed
 
   @override

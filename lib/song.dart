@@ -11,7 +11,6 @@ import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
-import 'searchWidget.dart';
 
 class Song {
   String id;
@@ -74,7 +73,7 @@ String extractSongId(str) {
 }
 
 class SongCardWidget extends StatelessWidget {
-  Song song;
+  final Song song;
 
   SongCardWidget({Key key, this.song}) : super(key: key);
 
@@ -197,8 +196,8 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 }
 
 class SongPageWidget extends StatelessWidget {
-  Song song;
-  Future<SongInformations> songInformations;
+  final Song song;
+  final Future<SongInformations> songInformations;
   final _fontLyrics = TextStyle(fontSize: 20.0);
 
   SongPageWidget({Key key, this.song, this.songInformations}) : super(key: key);
@@ -376,7 +375,8 @@ class SongPageWidget extends StatelessWidget {
 //////////////////
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
-  List<Song> _songs;
+  final List<Song> _songs;
+
   SongListingWidget(this._songs, {Key key}) : super(key: key);
 
   @override
@@ -424,7 +424,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
 // Actions for the song page titlebar : Add song to favourite and player
 class SongFavoriteIconWidget extends StatefulWidget {
   final String _songId;
-  bool _isFavourite;
+  final bool _isFavourite;
 
   SongFavoriteIconWidget(this._songId, this._isFavourite, {Key key})
       : super(key: key);
