@@ -8,7 +8,7 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<List<Song>> fetchSearch(String search, String type) async {
-  final url = '$host/recherche.html?kw=$search&st=$type';
+  final url = '$baseUri/recherche.html?kw=$search&st=$type';
   final response = await http.post(url);
   var songs = <Song>[];
 

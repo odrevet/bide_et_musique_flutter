@@ -8,7 +8,7 @@ import 'utils.dart';
 
 Future<Song> fetchNowPlaying() async {
   var song = Song();
-  final url = '$host/now-top.php';
+  final url = '$baseUri/now-top.php';
   final response = await http.get(url);
 
   if (response.statusCode == 200) {

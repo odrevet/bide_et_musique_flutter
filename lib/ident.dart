@@ -44,7 +44,7 @@ class Session {
 var gSession = Session();
 
 Future<Session> sendIdent(String login, String password) async {
-  final url = '$host/ident.html';
+  final url = '$baseUri/ident.html';
   final response =
       await http.post(url, body: {'LOGIN': login, 'PASSWORD': password});
 

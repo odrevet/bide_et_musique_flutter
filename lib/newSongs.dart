@@ -8,7 +8,7 @@ import 'song.dart';
 
 Future<List<Song>> fetchNewSongs() async {
   var songs = <Song>[];
-  final url = '$host/new_song.rss';
+  final url = '$baseUri/new_song.rss';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

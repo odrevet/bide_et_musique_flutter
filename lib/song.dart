@@ -114,7 +114,7 @@ class SongCardWidget extends StatelessWidget {
 
 Future<SongInformations> fetchSongInformations(String songId) async {
   var songInformations;
-  final url = '$host/song/$songId';
+  final url = '$baseUri/song/$songId';
 
   final responseJson = await http.get(url);
 
@@ -482,10 +482,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
       return IconButton(
           icon: new Icon(Icons.star),
           onPressed: () async {
-            //var url = '$host/song/$_songId.html';
-
             final response = await session.post(
-                '$host/account/${session.id}.html',
+                '$baseUri/account/${session.id}.html',
                 {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
             if (response.statusCode == 200) {
@@ -498,11 +496,11 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
       return IconButton(
         icon: new Icon(Icons.star_border),
         onPressed: () async {
-          var url = '$host/song/$_songId.html';
+          var url = '$baseUri/song/$_songId.html';
 
           session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-          session.headers['Host'] = 'www.bide-et-musique.com';
-          session.headers['Origin'] = host;
+          session.headers['Host'] = host;
+          session.headers['Origin'] = baseUri;
           session.headers['Referer'] = url;
 
           final response = await session.post(url, {'M': 'AS'});

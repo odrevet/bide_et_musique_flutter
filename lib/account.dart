@@ -33,7 +33,7 @@ String extractAccountId(str) {
 
 Future<AccountInformations> fetchAccount(String accountId) async {
   var accountInformations = AccountInformations();
-  final url = '$host/account.html?N=$accountId&Page=all';
+  final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -190,7 +190,7 @@ class AccountPageWidget extends StatelessWidget {
 Future<AccountInformations> fetchAccountSession(Session session) async {
   var accountInformations = AccountInformations();
   final accountId = session.id;
-  final url = '$host/account.html?N=$accountId&Page=all';
+  final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -254,7 +254,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
             var direction = 'DS';
 
             final response = await session.post(
-                '$host/account/$accountId.html', {
+                '$baseUri/account/$accountId.html', {
               'K': K,
               'Step': '',
               direction + '.x': '1',
@@ -303,7 +303,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 
-          final response = await session.post('$host/account/$accountId.html', {
+          final response = await session.post('$baseUri/account/$accountId.html', {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',
