@@ -83,9 +83,11 @@ Future<List<Song>> fetchSearchSong(String search, String type) async {
       if (tr.className == 'p1' || tr.className == 'p0') {
         var tds = tr.getElementsByTagName('td');
         var a = tds[3].children[0];
+
         var song = Song();
         song.id = extractSongId(a.attributes['href']);
         song.title = stripTags(a.innerHtml);
+        song.artist = tds[2].children[0].innerHtml;
         songs.add(song);
       }
     }

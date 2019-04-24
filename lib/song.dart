@@ -367,7 +367,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
         title: Text(
           song.title,
         ),
-        //subtitle: Text(song.artist),
+        subtitle: Text(song.artist == null ? '' : song.artist),
         onTap: () {
           Navigator.push(
               context,
