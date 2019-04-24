@@ -16,9 +16,7 @@ Future<Song> fetchNowPlaying() async {
     dom.Document document = parser.parse(body);
     dom.Node titreSong = document.getElementsByClassName('titre-song')[0];
     String href = titreSong.children[0].attributes['href'];
-    final idRegex = RegExp(r'/song/(\d+).html');
-    var match = idRegex.firstMatch(href);
-    song.id = match[1];
+    song.id = extractSongId(href);
     song.title = stripTags(titreSong.children[0].innerHtml);
     return song;
   } else {
