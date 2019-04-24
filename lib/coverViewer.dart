@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'utils.dart';
 
 class CoverViewer extends StatefulWidget {
   final String songId;
@@ -35,7 +36,7 @@ class _CoverViewerState extends State<CoverViewer> {
 
   _buildView(BuildContext context, String songId) {
     var url =
-        'http://www.bide-et-musique.com/images/pochettes/' + songId + '.jpg';
+        '$baseUri/images/pochettes/$songId.jpg';
     return Center(
       child: Container(
         decoration: new BoxDecoration(

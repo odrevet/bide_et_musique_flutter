@@ -573,7 +573,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   play() {
     FlutterRadio.play(
-        url: 'http://www.bide-et-musique.com/stream_' + this._songId + '.php');
+        url: '$baseUri/stream_${this._songId}.php');
     setState(() {
       playerState = PlayerState.playing;
     });

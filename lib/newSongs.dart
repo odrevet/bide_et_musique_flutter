@@ -64,9 +64,7 @@ class NewSongsWidget extends StatelessWidget {
           backgroundColor: Colors.black12,
           child: new Image(
               image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
+                  '$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,

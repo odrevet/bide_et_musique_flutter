@@ -9,7 +9,7 @@ import 'account.dart';
 
 Future<List<Post>> fetchPosts() async {
   var posts = <Post>[];
-  final url = 'http://www.bide-et-musique.com/mur-des-messages.html';
+  final url = '$baseUri/mur-des-messages.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -104,9 +104,7 @@ class WallWidget extends StatelessWidget {
             backgroundColor: Colors.black12,
             child: new Image(
                 image: new NetworkImage(
-                    'http://www.bide-et-musique.com/images/avatars/' +
-                        post.author.id +
-                        '.jpg')),
+                    '$baseUri/images/avatars/${post.author.id}.jpg')),
           ),
           title: Text(
             stripTags(post.body),

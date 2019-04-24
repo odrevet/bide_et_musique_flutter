@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_radio/flutter_radio.dart';
+import 'utils.dart';
 
 enum PlayerState { stopped, playing, paused }
 
@@ -145,7 +146,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
   }
 
   void play() {
-    var url = "http://relay2.bide-et-musique.com:9100";
+    var url = 'http://relay2.${host}:9100';
     FlutterRadio.play(url: url);
     setState(() {
       playerState = PlayerState.playing;
