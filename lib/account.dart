@@ -31,7 +31,7 @@ String extractAccountId(str) {
   return match[1];
 }
 
-Future<AccountInformations> fetchAccount(String accountId) async {
+Future<AccountInformations> fetchAccountInformations(String accountId) async {
   var accountInformations = AccountInformations();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await http.get(url);
@@ -334,6 +334,74 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
           // By default, show a loading spinner
           return CircularProgressIndicator();
         },
+      ),
+    );
+  }
+}
+
+////////////////////////////////////
+class AccountListingWidget extends StatelessWidget {
+  final List<Account> _account;
+
+  AccountListingWidget(this._account, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var rows = <ListTile>[];
+    for (Account account in _account) {
+      rows.add(ListTile(
+        leading: new CircleAvatar(
+          backgroundColor: Colors.black12,
+          child: new Image(
+              image: new NetworkImage(
+                  'http://bide-et-musique.com/images/avatars/' +
+                      account.id +
+                      '.jpg')),
+        ),
+        title: Text(
+          account.name,
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new AccountPageWidget(
+                      account: account,
+                      accountInformations: fetchAccountInformations(account.id))));
+        },
+      ));
+    }
+
+    return ListView(children: rows);
+  }
+  
+}
+
+class AccountListingFutureWidget extends StatelessWidget {
+  final Future<List<Account>> accounts;
+
+  AccountListingFutureWidget(this.accounts, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recherche de bidonautes'),
+      ),
+      body: Center(
+        child: FutureBuilder<List<Account>>(
+          future: accounts,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return AccountListingWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner
+            return CircularProgressIndicator();
+          },
+        ),
       ),
     );
   }

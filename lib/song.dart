@@ -12,7 +12,7 @@ import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
-import 'searchWidget.dart' show fetchSearch;
+import 'searchWidget.dart' show fetchSearchSong;
 
 class Song {
   String id;
@@ -323,7 +323,7 @@ class SongPageWidget extends StatelessWidget {
                 new MaterialPageRoute(
                     builder: (context) => new AccountPageWidget(
                         account: comment.author,
-                        accountInformations: fetchAccount(comment.author.id))));
+                        accountInformations: fetchAccountInformations(comment.author.id))));
           },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,
@@ -407,7 +407,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        SongListingFutureWidget(fetchSearch(_songInformations.year.toString(), '7')))),
+                        SongListingFutureWidget(fetchSearchSong(_songInformations.year.toString(), '7')))),
             }));
     }
 
@@ -419,7 +419,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        SongListingFutureWidget(fetchSearch(_songInformations.artists, '4')))),
+                        SongListingFutureWidget(fetchSearchSong(_songInformations.artists, '4')))),
             }));
     }
 
@@ -435,7 +435,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        SongListingFutureWidget(fetchSearch(_songInformations.label, '5')))),
+                        SongListingFutureWidget(fetchSearchSong(_songInformations.label, '5')))),
             }));
     }
 
@@ -604,7 +604,7 @@ class SongListingFutureWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recherche'),
+        title: Text('Recherche de chansons'),
       ),
       body: Center(
         child: FutureBuilder<List<Song>>(

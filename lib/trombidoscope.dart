@@ -73,7 +73,7 @@ class TrombidoscopeWidget extends StatelessWidget {
               new MaterialPageRoute(
                   builder: (context) => new AccountPageWidget(
                       account: account,
-                      accountInformations: fetchAccount(account.id))));
+                      accountInformations: fetchAccountInformations(account.id))));
         },
         child: Container(
           child: Text(account.name, style: _font),
