@@ -25,10 +25,8 @@ Future<List<Post>> fetchPosts() async {
       var accountLink = basmsg.children[0].children[0];
       var accountHref = accountLink.attributes['href'];
 
-      final idRegex = RegExp(r'/account/(\d+).html');
-      var match = idRegex.firstMatch(accountHref);
-
-      var account = Account(match[1], stripTags(accountLink.innerHtml));
+      var id = extractAccountId(accountHref);
+      var account = Account(id, stripTags(accountLink.innerHtml));
 
       post.author = account;
 
