@@ -98,7 +98,8 @@ class WallWidget extends StatelessWidget {
                 new MaterialPageRoute(
                     builder: (context) => new AccountPageWidget(
                         account: post.author,
-                        accountInformations: fetchAccountInformations(post.author.id))));
+                        accountInformations:
+                            fetchAccountInformations(post.author.id))));
           },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,

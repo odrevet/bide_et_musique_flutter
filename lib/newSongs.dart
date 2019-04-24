@@ -63,8 +63,8 @@ class NewSongsWidget extends StatelessWidget {
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
           child: new Image(
-              image: new NetworkImage(
-                  '$baseUri/images/thumb25/${song.id}.jpg')),
+              image:
+                  new NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,

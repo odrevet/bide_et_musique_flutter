@@ -35,8 +35,7 @@ class _CoverViewerState extends State<CoverViewer> {
   }
 
   _buildView(BuildContext context, String songId) {
-    var url =
-        '$baseUri/images/pochettes/$songId.jpg';
+    var url = '$baseUri/images/pochettes/$songId.jpg';
     return Center(
       child: Container(
         decoration: new BoxDecoration(

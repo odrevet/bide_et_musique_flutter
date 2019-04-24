@@ -90,6 +90,5 @@ class ProgrammeWidget extends StatelessWidget {
         SongListingWidget(program['prev']),
       ],
     );
-
   }
 }

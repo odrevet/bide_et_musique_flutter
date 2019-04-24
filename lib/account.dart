@@ -53,11 +53,10 @@ Future<AccountInformations> fetchAccountInformations(String accountId) async {
     //set avatar path (cannot be always firgured out from account id as some
     //are jpg and some are png
     var img = divInfo.getElementsByTagName('img');
-    if(img.isEmpty){
+    if (img.isEmpty) {
       accountInformations.avatar = '';
-    }
-    else{
-      accountInformations.avatar =  img[0].attributes['src'];
+    } else {
+      accountInformations.avatar = img[0].attributes['src'];
     }
 
     //parse favorites
@@ -223,7 +222,6 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
 }
 
 class ManageAccountWidget extends StatefulWidget {
-
   final Session session;
 
   ManageAccountWidget({Key key, this.session}) : super(key: key);
@@ -279,7 +277,7 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
               backgroundColor: Colors.black12,
               child: new Image(
                   image: new NetworkImage(
-                      '$baseUri/images/thumb25/${ song.id}.jpg')),
+                      '$baseUri/images/thumb25/${song.id}.jpg')),
             ),
             title: Text(
               song.title,
@@ -306,7 +304,8 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 
-          final response = await session.post('$baseUri/account/$accountId.html', {
+          final response =
+              await session.post('$baseUri/account/$accountId.html', {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',
@@ -368,14 +367,14 @@ class AccountListingWidget extends StatelessWidget {
               new MaterialPageRoute(
                   builder: (context) => new AccountPageWidget(
                       account: account,
-                      accountInformations: fetchAccountInformations(account.id))));
+                      accountInformations:
+                          fetchAccountInformations(account.id))));
         },
       ));
     }
 
     return ListView(children: rows);
   }
-  
 }
 
 class AccountListingFutureWidget extends StatelessWidget {

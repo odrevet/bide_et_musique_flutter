@@ -30,7 +30,7 @@ Future<Map<String, Account>> fetchTrombidoscope() async {
 }
 
 class TrombidoscopeWidget extends StatelessWidget {
-  final Future<Map<String, Account>> accounts;  // [avatar : account]
+  final Future<Map<String, Account>> accounts; // [avatar : account]
   final _font = TextStyle(
       fontSize: 18.0,
       background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
@@ -73,7 +73,8 @@ class TrombidoscopeWidget extends StatelessWidget {
               new MaterialPageRoute(
                   builder: (context) => new AccountPageWidget(
                       account: account,
-                      accountInformations: fetchAccountInformations(account.id))));
+                      accountInformations:
+                          fetchAccountInformations(account.id))));
         },
         child: Container(
           child: Text(account.name, style: _font),
@@ -86,7 +87,6 @@ class TrombidoscopeWidget extends StatelessWidget {
               )),
         ),
       ));
-
     });
 
     return GridView.count(crossAxisCount: 2, children: rows);

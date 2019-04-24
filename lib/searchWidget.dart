@@ -36,10 +36,11 @@ Future<List<Account>> fetchSearchAccount(String search) async {
     var trs = resultat.getElementsByTagName('tr');
 
     for (dom.Element tr in trs) {
-        var tds = tr.getElementsByTagName('td');
-        var a = tds[0].children[0];
-        var account = Account(extractAccountId(a.attributes['href']),stripTags(a.innerHtml) );
-        accounts.add(account);
+      var tds = tr.getElementsByTagName('td');
+      var a = tds[0].children[0];
+      var account = Account(
+          extractAccountId(a.attributes['href']), stripTags(a.innerHtml));
+      accounts.add(account);
     }
   } else {
     throw Exception('Failed to load search');
@@ -118,7 +119,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   ];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
 
-  String _currentItem;  //selected index from 1
+  String _currentItem; //selected index from 1
 
   _SearchWidgetState();
 
@@ -175,14 +176,16 @@ class _SearchWidgetState extends State<SearchWidget> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AccountListingFutureWidget(
-                                    fetchSearchAccount(value))));
+                                builder: (context) =>
+                                    AccountListingFutureWidget(
+                                        fetchSearchAccount(value))));
                       } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SongListingFutureWidget(
-                                    fetchSearchSong(value, this._currentItem))));
+                                    fetchSearchSong(
+                                        value, this._currentItem))));
                       }
                     },
                     controller: _controller)

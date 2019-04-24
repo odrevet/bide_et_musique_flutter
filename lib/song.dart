@@ -102,8 +102,7 @@ class SongCardWidget extends StatelessWidget {
             image: new DecorationImage(
           fit: BoxFit.scaleDown,
           alignment: FractionalOffset.topCenter,
-          image: new NetworkImage(
-              '$baseUri/images/pochettes/${song.id}.jpg'),
+          image: new NetworkImage('$baseUri/images/pochettes/${song.id}.jpg'),
         )),
       ),
     );
@@ -233,8 +232,7 @@ class SongPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, SongInformations songInformations) {
-    var urlCover =
-        '$baseUri/images/pochettes/${song.id}.jpg';
+    var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -321,7 +319,8 @@ class SongPageWidget extends StatelessWidget {
                 new MaterialPageRoute(
                     builder: (context) => new AccountPageWidget(
                         account: comment.author,
-                        accountInformations: fetchAccountInformations(comment.author.id))));
+                        accountInformations:
+                            fetchAccountInformations(comment.author.id))));
           },
           leading: new CircleAvatar(
             backgroundColor: Colors.black12,
@@ -362,8 +361,8 @@ class SongListingWidgetState extends State<SongListingWidget> {
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
           child: new Image(
-              image: new NetworkImage(
-                  '$baseUri/images/thumb25/${song.id}.jpg')),
+              image:
+                  new NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,
@@ -393,60 +392,65 @@ class SongInformationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var textSpans = <TextSpan>[];
 
-    if(_songInformations.year != 0){
-      textSpans.add(TextSpan(text: _songInformations.year.toString()  + '\n',
+    if (_songInformations.year != 0) {
+      textSpans.add(TextSpan(
+          text: _songInformations.year.toString() + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SongListingFutureWidget(fetchSearchSong(_songInformations.year.toString(), '7')))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SongListingFutureWidget(
+                              fetchSearchSong(
+                                  _songInformations.year.toString(), '7')))),
+                }));
     }
 
-    if(_songInformations.artists != null){
-      textSpans.add(TextSpan(text: _songInformations.artists + '\n',
+    if (_songInformations.artists != null) {
+      textSpans.add(TextSpan(
+          text: _songInformations.artists + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SongListingFutureWidget(fetchSearchSong(_songInformations.artists, '4')))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SongListingFutureWidget(
+                              fetchSearchSong(
+                                  _songInformations.artists, '4')))),
+                }));
     }
 
-    if(_songInformations.length != null) {
+    if (_songInformations.length != null) {
       textSpans.add(TextSpan(text: _songInformations.length + '\n'));
     }
 
-    if(_songInformations.label != null){
-      textSpans.add(TextSpan(text: _songInformations.label + '\n',
+    if (_songInformations.label != null) {
+      textSpans.add(TextSpan(
+          text: _songInformations.label + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SongListingFutureWidget(fetchSearchSong(_songInformations.label, '5')))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SongListingFutureWidget(
+                              fetchSearchSong(_songInformations.label, '5')))),
+                }));
     }
 
-    if(_songInformations.reference != null){
-      textSpans.add(TextSpan(text: _songInformations.reference.toString() + '\n'));
+    if (_songInformations.reference != null) {
+      textSpans
+          .add(TextSpan(text: _songInformations.reference.toString() + '\n'));
     }
 
-    final textStyle = TextStyle(fontSize: 18.0,
-      color: Colors.black,);
+    final textStyle = TextStyle(
+      fontSize: 18.0,
+      color: Colors.black,
+    );
 
     return Center(
         child: RichText(
-        textAlign: TextAlign.left,
-        text: new TextSpan(
-          style: textStyle,
-          children: textSpans
-        )));
+            textAlign: TextAlign.left,
+            text: new TextSpan(style: textStyle, children: textSpans)));
   }
 }
 
@@ -572,8 +576,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 
   play() {
-    FlutterRadio.play(
-        url: '$baseUri/stream_${this._songId}.php');
+    FlutterRadio.play(url: '$baseUri/stream_${this._songId}.php');
     setState(() {
       playerState = PlayerState.playing;
     });
