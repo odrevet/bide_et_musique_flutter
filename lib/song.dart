@@ -12,7 +12,7 @@ import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
-import 'searchWidget.dart';
+import 'searchWidget.dart' show fetchSearch;
 
 class Song {
   String id;
@@ -407,7 +407,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DoSearchWidget(fetchSearch(_songInformations.year.toString(), '7')))),
+                        SongListingFutureWidget(fetchSearch(_songInformations.year.toString(), '7')))),
             }));
     }
 
@@ -419,7 +419,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DoSearchWidget(fetchSearch(_songInformations.artists, '4')))),
+                        SongListingFutureWidget(fetchSearch(_songInformations.artists, '4')))),
             }));
     }
 
@@ -435,7 +435,7 @@ class SongInformationWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DoSearchWidget(fetchSearch(_songInformations.label, '5')))),
+                        SongListingFutureWidget(fetchSearch(_songInformations.label, '5')))),
             }));
     }
 
@@ -590,5 +590,37 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     setState(() {
       playerState = PlayerState.stopped;
     });
+  }
+}
+
+//////////////////////////
+// Display songs from future song list
+class SongListingFutureWidget extends StatelessWidget {
+  final Future<List<Song>> songs;
+
+  SongListingFutureWidget(this.songs, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recherche'),
+      ),
+      body: Center(
+        child: FutureBuilder<List<Song>>(
+          future: songs,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SongListingWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner
+            return CircularProgressIndicator();
+          },
+        ),
+      ),
+    );
   }
 }
