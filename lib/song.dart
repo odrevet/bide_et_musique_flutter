@@ -103,9 +103,7 @@ class SongCardWidget extends StatelessWidget {
           fit: BoxFit.scaleDown,
           alignment: FractionalOffset.topCenter,
           image: new NetworkImage(
-              'http://www.bide-et-musique.com/images/pochettes/' +
-                  song.id +
-                  '.jpg'),
+              '$baseUri/images/pochettes/${song.id}.jpg'),
         )),
       ),
     );
@@ -236,7 +234,7 @@ class SongPageWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, SongInformations songInformations) {
     var urlCover =
-        'http://www.bide-et-musique.com/images/pochettes/' + song.id + '.jpg';
+        '$baseUri/images/pochettes/${song.id}.jpg';
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -329,9 +327,7 @@ class SongPageWidget extends StatelessWidget {
             backgroundColor: Colors.black12,
             child: new Image(
                 image: new NetworkImage(
-                    'http://www.bide-et-musique.com/images/avatars/' +
-                        comment.author.id +
-                        '.jpg')),
+                    '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
           title: Text(
             stripTags(comment.body),
@@ -367,9 +363,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
           backgroundColor: Colors.black12,
           child: new Image(
               image: new NetworkImage(
-                  'http://bide-et-musique.com/images/thumb25/' +
-                      song.id +
-                      '.jpg')),
+                  '$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,

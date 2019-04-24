@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'song.dart';
+import 'utils.dart';
 
 Future<List<Song>> fetchPochettoscope() async {
   var songs = <Song>[];
-  final url = 'http://www.bide-et-musique.com/le-pochettoscope.html';
+  final url = '$baseUri/le-pochettoscope.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

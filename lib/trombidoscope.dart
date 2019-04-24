@@ -8,7 +8,7 @@ import 'utils.dart';
 
 Future<List<Account>> fetchTrombidoscope() async {
   var accounts = <Account>[];
-  final url = 'http://www.bide-et-musique.com/trombidoscope.html';
+  final url = '$baseUri/trombidoscope.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -63,9 +63,7 @@ class TrombidoscopeWidget extends StatelessWidget {
   Widget _buildView(BuildContext context, List<Account> accounts) {
     var rows = <GestureDetector>[];
     for (Account account in accounts) {
-      var url = 'http://www.bide-et-musique.com/images/photos/ACT' +
-          account.id +
-          '.jpg';
+      var url = '$baseUri/images/photos/ACT${account.id}.jpg';
       rows.add(GestureDetector(
         onTap: () {
           Navigator.push(

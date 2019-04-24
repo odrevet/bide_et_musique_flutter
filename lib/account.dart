@@ -23,6 +23,7 @@ class AccountInformations {
   String comments;
   String presentation;
   List<Song> favorites;
+  String avatar;
 }
 
 String extractAccountId(str) {
@@ -48,6 +49,16 @@ Future<AccountInformations> fetchAccountInformations(String accountId) async {
     accountInformations.inscription = stripTags(ps[2].innerHtml);
     accountInformations.messageForum = stripTags(ps[3].innerHtml);
     accountInformations.comments = stripTags(ps[4].innerHtml);
+
+    //set avatar path (cannot be always firgured out from account id as some
+    //are jpg and some are png
+    var img = divInfo.getElementsByTagName('img');
+    if(img.isEmpty){
+      accountInformations.avatar = '';
+    }
+    else{
+      accountInformations.avatar =  img[0].attributes['src'];
+    }
 
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
@@ -101,20 +112,17 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-  void _openAvatarViewerDialog(BuildContext context) {
-    var urlCover = 'http://www.bide-et-musique.com/images/photos/ACT' +
-        account.id +
-        '.jpg';
+  /*void _openAvatarViewerDialog(BuildContext context, NetworkImage image) {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new Image.network(urlCover);
+          return Container(child: image)
         },
         fullscreenDialog: true));
-  }
+  }*/
 
   Widget _buildView(
       BuildContext context, AccountInformations accountInformations) {
-    final url = 'http://www.bide-et-musique.com/images/photos/ACT${account.id}.png';
+    final url = baseUri + accountInformations.avatar;
     final image = NetworkImage(url);
 
     return new Container(
@@ -130,7 +138,7 @@ class AccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            _openAvatarViewerDialog(context);
+                            //_openAvatarViewerDialog(context, image);
                           },
                           child: new Image.network(url))),
                   Expanded(
@@ -351,9 +359,7 @@ class AccountListingWidget extends StatelessWidget {
           backgroundColor: Colors.black12,
           child: new Image(
               image: new NetworkImage(
-                  'http://bide-et-musique.com/images/avatars/' +
-                      account.id +
-                      '.png')),
+                  '$baseUri/images/avatars/${account.id}.png')),
         ),
         title: Text(
           account.name,
