@@ -7,7 +7,7 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<Map<String, List<Song>>> fetchTitles() async {
-  final url = 'http://www.bide-et-musique.com/programmes.php';
+  final url = '$baseUri/programmes.php';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

@@ -6,8 +6,9 @@ import 'package:html/parser.dart' as parser;
 import 'account.dart';
 import 'utils.dart';
 
-Future<List<Account>> fetchTrombidoscope() async {
-  var accounts = <Account>[];
+Future<Map<String, Account>> fetchTrombidoscope() async {
+  var accounts = <String, Account>{};
+
   final url = '$baseUri/trombidoscope.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -16,11 +17,11 @@ Future<List<Account>> fetchTrombidoscope() async {
 
     var table = document.getElementsByClassName('bmtable')[0];
     for (dom.Element td in table.getElementsByTagName('td')) {
-      var href = td.children[0].attributes['href'];
-      final idRegex = RegExp(r'/account/(\d+).html');
-      var match = idRegex.firstMatch(href);
-      var account = Account(match[1], stripTags(td.children[0].innerHtml));
-      accounts.add(account);
+      var a = td.children[0];
+      var href = a.attributes['href'];
+      var id = extractAccountId(href);
+      var account = Account(id, stripTags(a.innerHtml));
+      accounts[a.children[0].attributes['src']] = account;
     }
     return accounts;
   } else {
@@ -29,7 +30,7 @@ Future<List<Account>> fetchTrombidoscope() async {
 }
 
 class TrombidoscopeWidget extends StatelessWidget {
-  final Future<List<Account>> accounts;
+  final Future<Map<String, Account>> accounts;  // [avatar : account]
   final _font = TextStyle(
       fontSize: 18.0,
       background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
@@ -43,7 +44,7 @@ class TrombidoscopeWidget extends StatelessWidget {
         title: Text('Le trombidoscope'),
       ),
       body: Center(
-        child: FutureBuilder<List<Account>>(
+        child: FutureBuilder<Map<String, Account>>(
           future: accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -60,10 +61,11 @@ class TrombidoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, List<Account> accounts) {
+  Widget _buildView(BuildContext context, Map<String, Account> accounts) {
     var rows = <GestureDetector>[];
-    for (Account account in accounts) {
-      var url = '$baseUri/images/photos/ACT${account.id}.jpg';
+
+    accounts.forEach((img, account) {
+      var url = baseUri + img;
       rows.add(GestureDetector(
         onTap: () {
           Navigator.push(
@@ -84,7 +86,8 @@ class TrombidoscopeWidget extends StatelessWidget {
               )),
         ),
       ));
-    }
+
+    });
 
     return GridView.count(crossAxisCount: 2, children: rows);
   }
