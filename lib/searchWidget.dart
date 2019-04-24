@@ -8,7 +8,16 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<List<Song>> fetchSearch(String search, String type) async {
-  final url = '$baseUri/recherche.html?kw=$search&st=$type';
+  String url = '$baseUri/recherche.html?kw=$search&st=$type';
+
+  //need to transform characters to url encoding
+  // cannot use Uri.encodeFull because it will encode from UTF-8 and the
+  //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
+  //see https://www.w3schools.com/tags/ref_urlencode.asp
+  //TODO convert from  CP-1252
+  url = url.replaceAll(new RegExp(r'é'), '%E9');
+  url = url.replaceAll(new RegExp(r'è'), '%E8');
+
   final response = await http.post(url);
   var songs = <Song>[];
 
