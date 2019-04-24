@@ -268,9 +268,6 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
                     .removeWhere((song) => song.id == K);
               });
             }
-            Scaffold
-                .of(context)
-                .showSnackBar(SnackBar(content: Text("'${song.title}' à été retiré de vos favories")));
           },
           child: ListTile(
             leading: new CircleAvatar(

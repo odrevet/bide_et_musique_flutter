@@ -137,9 +137,10 @@ Future<SongInformations> fetchSongInformations(String songId) async {
   }
 
   //Fetch comments and favourited status if connected
+  var session = Session();
   var response;
-  if (gSession.id != null) {
-    response = await gSession.get(url + '.html');
+  if (session.id != null) {
+    response = await session.get(url + '.html');
   } else {
     response = await http.get(url + '.html');
   }
@@ -172,7 +173,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     songInformations.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
 
     //check if favourited
-    if (gSession.id != null) {
+    if (session.id != null) {
       if (divTitre.length == 2) {
         songInformations.canFavourite = false;
         songInformations.isFavourite = false;

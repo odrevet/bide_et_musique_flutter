@@ -41,8 +41,6 @@ class Session {
   }
 }
 
-var gSession = Session();
-
 Future<Session> sendIdent(String login, String password) async {
   final url = '$baseUri/ident.html';
   final response =
@@ -122,7 +120,6 @@ class _IdentWidgetState extends State<IdentWidget> {
             future: _session,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                gSession = snapshot.data;
                 return _buildViewLoggedIn(context, snapshot.data);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
