@@ -114,10 +114,7 @@ class AccountPageWidget extends StatelessWidget {
 
   Widget _buildView(
       BuildContext context, AccountInformations accountInformations) {
-    final url = 'http://www.bide-et-musique.com/images/photos/ACT' +
-        account.id +
-        '.jpg';
-
+    final url = 'http://www.bide-et-musique.com/images/photos/ACT${account.id}.png';
     final image = NetworkImage(url);
 
     return new Container(
@@ -341,14 +338,14 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
 
 ////////////////////////////////////
 class AccountListingWidget extends StatelessWidget {
-  final List<Account> _account;
+  final List<Account> _accounts;
 
-  AccountListingWidget(this._account, {Key key}) : super(key: key);
+  AccountListingWidget(this._accounts, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (Account account in _account) {
+    for (Account account in _accounts) {
       rows.add(ListTile(
         leading: new CircleAvatar(
           backgroundColor: Colors.black12,
@@ -356,7 +353,7 @@ class AccountListingWidget extends StatelessWidget {
               image: new NetworkImage(
                   'http://bide-et-musique.com/images/avatars/' +
                       account.id +
-                      '.jpg')),
+                      '.png')),
         ),
         title: Text(
           account.name,
