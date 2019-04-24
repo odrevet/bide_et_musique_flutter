@@ -42,8 +42,8 @@ android {
         applicationId "fr.odrevet.bide_et_musique"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 4 //flutterVersionCode.toInteger()
-        versionName "1.1.1" //flutterVersionName
+        versionCode 5 //flutterVersionCode.toInteger()
+        versionName "1.2.0" //flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
