@@ -176,7 +176,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            SongsWidget(songs: fetchSongs())));
+                            SongsWidget(songs: fetchNewSongs())));
               },
             ),
              ListTile(

@@ -6,9 +6,9 @@ import 'package:xml/xml.dart' as xml;
 import 'utils.dart';
 import 'song.dart';
 
-Future<List<Song>> fetchSongs() async {
+Future<List<Song>> fetchNewSongs() async {
   var songs = <Song>[];
-  final url = '$baseUri/_song.rss';
+  final url = '$baseUri/new_song.rss';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -23,7 +23,7 @@ Future<List<Song>> fetchSongs() async {
     }
     return songs;
   } else {
-    throw Exception('Failed to load pochette');
+    throw Exception('Failed to load new songs');
   }
 }
 
