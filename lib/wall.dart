@@ -93,16 +93,16 @@ class WallWidget extends StatelessWidget {
           onTap: () {
             Navigator.push(
                 context,
-                new MaterialPageRoute(
-                    builder: (context) => new AccountPageWidget(
+                 MaterialPageRoute(
+                    builder: (context) =>  AccountPageWidget(
                         account: post.author,
                         accountInformations:
                             fetchAccountInformations(post.author.id))));
           },
-          leading: new CircleAvatar(
+          leading:  CircleAvatar(
             backgroundColor: Colors.black12,
-            child: new Image(
-                image: new NetworkImage(
+            child:  Image(
+                image:  NetworkImage(
                     '$baseUri/images/avatars/${post.author.id}.jpg')),
           ),
           title: Text(

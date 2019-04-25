@@ -7,19 +7,19 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: new AppBar(title: new Text("A propos")),
+        appBar:  AppBar(title:  Text("A propos")),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
               child: RichText(
-                text: new TextSpan(
-                  style: new TextStyle(
+                text:  TextSpan(
+                  style:  TextStyle(
                     fontSize: 14.0,
                     color: Colors.black,
                   ),
                   children: <TextSpan>[
-                    new TextSpan(
+                     TextSpan(
                         text: 'Bide&Musique',
                         style: TextStyle(
                           fontSize: 30.0,
@@ -32,7 +32,7 @@ class AboutPage extends StatelessWidget {
                             ),
                           ],
                         )),
-                    new TextSpan(
+                     TextSpan(
                         text:
                             '\nLa web radio de l\'improbable et de l\'inouïe\n\n',
                         style: TextStyle(
@@ -46,17 +46,17 @@ class AboutPage extends StatelessWidget {
                             ),
                           ],
                         )),
-                    new TextSpan(
+                     TextSpan(
                         text:
                             'Application Bide&Musique non-officielle par Olivier Drevet. \nDistribuée sous la license GPLv3\n'
                             'Code source sur https://github.com/odrevet/bide-et-musique-flutter\n\n',
-                        /*recognizer: new TapGestureRecognizer()
+                        /*recognizer:  TapGestureRecognizer()
                           ..onTap = () => {
                                 Navigator.push(
                                     context,
-                                    new MaterialPageRoute(
+                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            new AccountPageWidget(
+                                             AccountPageWidget(
                                                 account:
                                                     Account('84482', 'drev'),
                                                 txtpresentation:

@@ -112,7 +112,7 @@ class AccountPageWidget extends StatelessWidget {
   }
 
   /*void _openAvatarViewerDialog(BuildContext context, NetworkImage image) {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push( MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return Container(child: image)
         },
@@ -124,7 +124,7 @@ class AccountPageWidget extends StatelessWidget {
     final url = baseUri + accountInformations.avatar;
     final image = NetworkImage(url);
 
-    return new Container(
+    return  Container(
       color: Theme.of(context).canvasColor,
       child: Center(
           child: Column(
@@ -139,7 +139,7 @@ class AccountPageWidget extends StatelessWidget {
                           onTap: () {
                             //_openAvatarViewerDialog(context, image);
                           },
-                          child: new Image.network(url))),
+                          child:  Image.network(url))),
                   Expanded(
                     child: Text(
                         accountInformations.type +
@@ -158,10 +158,10 @@ class AccountPageWidget extends StatelessWidget {
             flex: 7,
             child: Container(
               child: Stack(children: [
-                new BackdropFilter(
-                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: new Container(
-                    decoration: new BoxDecoration(
+                 BackdropFilter(
+                  filter:  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child:  Container(
+                    decoration:  BoxDecoration(
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
@@ -174,8 +174,8 @@ class AccountPageWidget extends StatelessWidget {
                   ],
                 )
               ]),
-              decoration: new BoxDecoration(
-                  image: new DecorationImage(
+              decoration:  BoxDecoration(
+                  image:  DecorationImage(
                 fit: BoxFit.fill,
                 alignment: FractionalOffset.topCenter,
                 image: image,
@@ -273,10 +273,10 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
             }
           },
           child: ListTile(
-            leading: new CircleAvatar(
+            leading:  CircleAvatar(
               backgroundColor: Colors.black12,
-              child: new Image(
-                  image: new NetworkImage(
+              child:  Image(
+                  image:  NetworkImage(
                       '$baseUri/images/thumb25/${song.id}.jpg')),
             ),
             title: Text(
@@ -286,8 +286,8 @@ class _ManageAccountWidgetState extends State<ManageAccountWidget> {
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new SongPageWidget(
+                   MaterialPageRoute(
+                      builder: (context) =>  SongPageWidget(
                           song: song,
                           songInformations: fetchSongInformations(song.id))));
             },
@@ -352,10 +352,10 @@ class AccountListingWidget extends StatelessWidget {
     var rows = <ListTile>[];
     for (Account account in _accounts) {
       rows.add(ListTile(
-        leading: new CircleAvatar(
+        leading:  CircleAvatar(
           backgroundColor: Colors.black12,
-          child: new Image(
-              image: new NetworkImage(
+          child:  Image(
+              image:  NetworkImage(
                   '$baseUri/images/avatars/${account.id}.png')),
         ),
         title: Text(
@@ -364,8 +364,8 @@ class AccountListingWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              new MaterialPageRoute(
-                  builder: (context) => new AccountPageWidget(
+               MaterialPageRoute(
+                  builder: (context) =>  AccountPageWidget(
                       account: account,
                       accountInformations:
                           fetchAccountInformations(account.id))));

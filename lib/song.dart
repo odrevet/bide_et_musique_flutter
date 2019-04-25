@@ -85,24 +85,24 @@ class SongCardWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            new MaterialPageRoute(
-                builder: (context) => new SongPageWidget(
+             MaterialPageRoute(
+                builder: (context) =>  SongPageWidget(
                     song: song,
                     songInformations: fetchSongInformations(song.id))));
       },
       onLongPress: () {
-        Navigator.of(context).push(new MaterialPageRoute<Null>(
+        Navigator.of(context).push( MaterialPageRoute<Null>(
             builder: (BuildContext context) {
-              return new CoverViewer(song.id);
+              return  CoverViewer(song.id);
             },
             fullscreenDialog: true));
       },
       child: Container(
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
+        decoration:  BoxDecoration(
+            image:  DecorationImage(
           fit: BoxFit.scaleDown,
           alignment: FractionalOffset.topCenter,
-          image: new NetworkImage('$baseUri/images/pochettes/${song.id}.jpg'),
+          image:  NetworkImage('$baseUri/images/pochettes/${song.id}.jpg'),
         )),
       ),
     );
@@ -224,9 +224,9 @@ class SongPageWidget extends StatelessWidget {
   }
 
   void _openCoverViewerDialog(BuildContext context) {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push( MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new CoverViewer(song.id);
+          return  CoverViewer(song.id);
         },
         fullscreenDialog: true));
   }
@@ -254,7 +254,7 @@ class SongPageWidget extends StatelessWidget {
                               onTap: () {
                                 _openCoverViewerDialog(context);
                               },
-                              child: new Image.network(urlCover))),
+                              child:  Image.network(urlCover))),
                       Expanded(child: SongInformationWidget(songInformations)),
                     ],
                   ))
@@ -265,10 +265,10 @@ class SongPageWidget extends StatelessWidget {
       body: Center(
           child: Container(
         child: Stack(children: [
-          new BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: new Container(
-              decoration: new BoxDecoration(
+           BackdropFilter(
+            filter:  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child:  Container(
+              decoration:  BoxDecoration(
                   color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
@@ -280,11 +280,11 @@ class SongPageWidget extends StatelessWidget {
             ],
           )
         ]),
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
+        decoration:  BoxDecoration(
+            image:  DecorationImage(
           fit: BoxFit.fill,
           alignment: FractionalOffset.topCenter,
-          image: new NetworkImage(urlCover),
+          image:  NetworkImage(urlCover),
         )),
       )),
     );
@@ -316,16 +316,16 @@ class SongPageWidget extends StatelessWidget {
           onTap: () {
             Navigator.push(
                 context,
-                new MaterialPageRoute(
-                    builder: (context) => new AccountPageWidget(
+                 MaterialPageRoute(
+                    builder: (context) =>  AccountPageWidget(
                         account: comment.author,
                         accountInformations:
                             fetchAccountInformations(comment.author.id))));
           },
-          leading: new CircleAvatar(
+          leading:  CircleAvatar(
             backgroundColor: Colors.black12,
-            child: new Image(
-                image: new NetworkImage(
+            child:  Image(
+                image:  NetworkImage(
                     '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
           title: Text(
@@ -358,11 +358,11 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
     for (Song song in _songs) {
       rows.add(ListTile(
-        leading: new CircleAvatar(
+        leading:  CircleAvatar(
           backgroundColor: Colors.black12,
-          child: new Image(
+          child:  Image(
               image:
-                  new NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+                   NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,
@@ -371,8 +371,8 @@ class SongListingWidgetState extends State<SongListingWidget> {
         onTap: () {
           Navigator.push(
               context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
+               MaterialPageRoute(
+                  builder: (context) =>  SongPageWidget(
                       song: song,
                       songInformations: fetchSongInformations(song.id))));
         },
@@ -450,7 +450,7 @@ class SongInformationWidget extends StatelessWidget {
     return Center(
         child: RichText(
             textAlign: TextAlign.left,
-            text: new TextSpan(style: textStyle, children: textSpans)));
+            text:  TextSpan(style: textStyle, children: textSpans)));
   }
 }
 
@@ -479,7 +479,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
     var session = Session();
     if (_isFavourite) {
       return IconButton(
-          icon: new Icon(Icons.star),
+          icon:  Icon(Icons.star),
           onPressed: () async {
             final response = await session.post(
                 '$baseUri/account/${session.id}.html',
@@ -493,7 +493,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           });
     } else {
       return IconButton(
-        icon: new Icon(Icons.star_border),
+        icon:  Icon(Icons.star_border),
         onPressed: () async {
           var url = '$baseUri/song/$_songId.html';
 
@@ -546,14 +546,14 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     if (isPlaying) {
       playStopButton = IconButton(
-        icon: new Icon(Icons.stop),
+        icon:  Icon(Icons.stop),
         onPressed: () {
           stop();
         },
       );
     } else {
       playStopButton = IconButton(
-        icon: new Icon(Icons.play_arrow),
+        icon:  Icon(Icons.play_arrow),
         onPressed: () {
           playerWidget.stop();
           play();

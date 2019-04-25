@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_radio/flutter_radio.dart';
 
@@ -34,7 +33,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            new Material(child: _buildPlayer()),
+             Material(child: _buildPlayer()),
           ],
         ),
       ),
@@ -44,7 +43,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
   Widget _buildPlayer() {
     var playStopButton;
     if (isPlaying) {
-      playStopButton = new IconButton(
+      playStopButton =  IconButton(
           onPressed: isPlaying || isPaused
               ? () {
                   _controller.stop();
@@ -52,10 +51,10 @@ class _PlayerWidgetState extends State<PlayerWidget>
                 }
               : null,
           iconSize: 80.0,
-          icon: new Icon(Icons.stop),
+          icon:  Icon(Icons.stop),
           color: Colors.orange);
     } else {
-      playStopButton = new IconButton(
+      playStopButton =  IconButton(
           onPressed: isPlaying
               ? null
               : () {
@@ -63,13 +62,13 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   play();
                 },
           iconSize: 80.0,
-          icon: new Icon(Icons.play_arrow),
+          icon:  Icon(Icons.play_arrow),
           color: Colors.orange);
     }
 
-    return new Container(
-        child: new Column(children: [
-      new Row(children: [
+    return  Container(
+        child:  Column(children: [
+       Row(children: [
         RotationTransition(
           turns: _animation,
           child: Column(
@@ -79,13 +78,13 @@ class _PlayerWidgetState extends State<PlayerWidget>
           ),
         ),
         RichText(
-          text: new TextSpan(
-            style: new TextStyle(
+          text:  TextSpan(
+            style:  TextStyle(
               fontSize: 14.0,
               color: Colors.black,
             ),
             children: <TextSpan>[
-              new TextSpan(
+               TextSpan(
                   text: 'ECOUTEZ',
                   style: TextStyle(
                     fontSize: 30.0,
@@ -98,7 +97,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       ),
                     ],
                   )),
-              new TextSpan(
+               TextSpan(
                   text: '\nLa radio',
                   style: TextStyle(
                     fontSize: 14.0,

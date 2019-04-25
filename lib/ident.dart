@@ -7,7 +7,7 @@ import 'utils.dart';
 import 'account.dart';
 
 class Session {
-  static final Session _singleton = new Session._internal();
+  static final Session _singleton =  Session._internal();
 
   factory Session() {
     return _singleton;
@@ -97,7 +97,7 @@ class _IdentWidgetState extends State<IdentWidget> {
     if (_localSession.id != null) {
       var actions = <Widget>[];
       actions.add(IconButton(
-        icon: new Icon(Icons.close),
+        icon:  Icon(Icons.close),
         onPressed: () {
           _localSession.id = null;
           _localSession.headers = {};
@@ -150,31 +150,31 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   Widget _buildViewLoginForm(BuildContext context) {
     return Container(
-        padding: new EdgeInsets.all(30.0),
-        child: new Form(
-          child: new ListView(
+        padding:  EdgeInsets.all(30.0),
+        child:  Form(
+          child:  ListView(
             children: <Widget>[
-              new TextFormField(
+               TextFormField(
                   controller: _usernameController,
-                  decoration: new InputDecoration(
+                  decoration:  InputDecoration(
                     hintText: 'Nom utilisateur',
                   )),
-              new TextFormField(
+               TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: new InputDecoration(
+                  decoration:  InputDecoration(
                     hintText: 'Mot de passe',
                   )),
-              new Container(
-                child: new RaisedButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    child: new Text(
+               Container(
+                child:  RaisedButton(
+                    shape:  RoundedRectangleBorder(
+                        borderRadius:  BorderRadius.circular(30.0)),
+                    child:  Text(
                       'Se connecter',
                     ),
                     onPressed: _performLogin,
                     color: Colors.orangeAccent),
-                margin: new EdgeInsets.only(top: 20.0),
+                margin:  EdgeInsets.only(top: 20.0),
               )
             ],
           ),

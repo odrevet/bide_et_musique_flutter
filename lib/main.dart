@@ -33,14 +33,14 @@ class BideApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         canvasColor: Color.fromARGB(190, 245, 240, 220),
       ),
-      home: new DrawerWidget(),
+      home:  DrawerWidget(),
     );
   }
 }
 
 class DrawerWidget extends StatefulWidget {
   @override
-  _DrawerWidgetState createState() => new _DrawerWidgetState();
+  _DrawerWidgetState createState() =>  _DrawerWidgetState();
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
@@ -55,30 +55,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     actions.add(
       IconButton(
-        icon: new Icon(Icons.stop),
+        icon:  Icon(Icons.stop),
         onPressed: () {
           playerWidget.stop();
         },
       )
     );
 
-    return new Scaffold(
-        appBar: new AppBar(
+    return  Scaffold(
+        appBar:  AppBar(
           actions: actions,
-          title: new Text('Bide & Musique'),
+          title:  Text('Bide&Musique'),
         ),
-        drawer: new Drawer(
-            child: new ListView(
+        drawer:  Drawer(
+            child:  ListView(
           children: <Widget>[
-            new DrawerHeader(
-                child: new RichText(
-                  text: new TextSpan(
-                    style: new TextStyle(
+             DrawerHeader(
+                child:  RichText(
+                  text:  TextSpan(
+                    style:  TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
                     ),
                     children: <TextSpan>[
-                      new TextSpan(
+                       TextSpan(
                           text: 'Bide&Musique',
                           style: TextStyle(
                             fontSize: 30.0,
@@ -91,7 +91,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               ),
                             ],
                           )),
-                      new TextSpan(
+                       TextSpan(
                           text:
                               '\nLa web radio de l\'improbable et de l\'inouïe',
                           style: TextStyle(
@@ -108,8 +108,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ],
                   ),
                 ),
-                decoration: new BoxDecoration(color: Colors.deepOrange)),
-            new ListTile(
+                decoration:  BoxDecoration(color: Colors.deepOrange)),
+             ListTile(
               title: Text('Compte'),
               leading: Icon(Icons.account_circle),
               onTap: () {
@@ -117,7 +117,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     MaterialPageRoute(builder: (context) => IdentWidget()));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Programme'),
               leading: Icon(Icons.album),
               onTap: () {
@@ -128,7 +128,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ProgrammeWidget(program: fetchTitles())));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Recherche'),
               leading: Icon(Icons.search),
               onTap: () {
@@ -136,7 +136,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     MaterialPageRoute(builder: (context) => SearchWidget()));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Mur des messages'),
               leading: Icon(Icons.message),
               onTap: () {
@@ -146,7 +146,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         builder: (context) => WallWidget(posts: fetchPosts())));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Trombidoscope'),
               leading: Icon(Icons.apps),
               onTap: () {
@@ -157,7 +157,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             accounts: fetchTrombidoscope())));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Pochettoscope'),
               leading: Icon(Icons.apps),
               onTap: () {
@@ -168,7 +168,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             PochettoscopeWidget(songs: fetchPochettoscope())));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('Nouvelles entrées'),
               leading: Icon(Icons.fiber_new),
               onTap: () {
@@ -176,10 +176,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            NewSongsWidget(songs: fetchNewSongs())));
+                            SongsWidget(songs: fetchSongs())));
               },
             ),
-            new ListTile(
+             ListTile(
               title: Text('A propos'),
               leading: Icon(Icons.info),
               onTap: () {

@@ -70,20 +70,20 @@ class TrombidoscopeWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              new MaterialPageRoute(
-                  builder: (context) => new AccountPageWidget(
+               MaterialPageRoute(
+                  builder: (context) =>  AccountPageWidget(
                       account: account,
                       accountInformations:
                           fetchAccountInformations(account.id))));
         },
         child: Container(
           child: Text(account.name, style: _font),
-          decoration: new BoxDecoration(
+          decoration:  BoxDecoration(
               color: Colors.orangeAccent,
-              image: new DecorationImage(
+              image:  DecorationImage(
                 fit: BoxFit.contain,
                 alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(url),
+                image:  NetworkImage(url),
               )),
         ),
       ));

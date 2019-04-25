@@ -6,9 +6,9 @@ import 'package:xml/xml.dart' as xml;
 import 'utils.dart';
 import 'song.dart';
 
-Future<List<Song>> fetchNewSongs() async {
+Future<List<Song>> fetchSongs() async {
   var songs = <Song>[];
-  final url = '$baseUri/new_song.rss';
+  final url = '$baseUri/_song.rss';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -27,10 +27,10 @@ Future<List<Song>> fetchNewSongs() async {
   }
 }
 
-class NewSongsWidget extends StatelessWidget {
+class SongsWidget extends StatelessWidget {
   final Future<List<Song>> songs;
 
-  NewSongsWidget({Key key, this.songs}) : super(key: key);
+  SongsWidget({Key key, this.songs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,11 @@ class NewSongsWidget extends StatelessWidget {
     var rows = <ListTile>[];
     for (Song song in songs) {
       rows.add(ListTile(
-        leading: new CircleAvatar(
+        leading:  CircleAvatar(
           backgroundColor: Colors.black12,
-          child: new Image(
+          child:  Image(
               image:
-                  new NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+                   NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
         ),
         title: Text(
           song.title,
@@ -73,8 +73,8 @@ class NewSongsWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              new MaterialPageRoute(
-                  builder: (context) => new SongPageWidget(
+               MaterialPageRoute(
+                  builder: (context) =>  SongPageWidget(
                       song: song,
                       songInformations: fetchSongInformations(song.id))));
         },
