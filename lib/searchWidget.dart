@@ -86,7 +86,7 @@ Future<List<Song>> fetchSearchSong(String search, String type) async {
         var song = Song();
         song.id = extractSongId(a.attributes['href']);
         song.title = stripTags(a.innerHtml);
-        song.artist = tds[2].children[0].innerHtml;
+        song.artist = stripTags(tds[2].children[0].innerHtml);
         songs.add(song);
       }
     }
