@@ -122,22 +122,11 @@ class _PlayerWidgetState extends State<PlayerWidget>
   @override
   void initState() {
     super.initState();
-    audioStart();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 5500),
       vsync: this,
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
-  }
-
-  Future<void> audioStart() async {
-    await FlutterRadio.audioStart();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   void onComplete() {

@@ -564,18 +564,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     return playStopButton;
   }
 
-  @override
-  void dispose() {
-    //if the radio stream is playing do not stop
-    //if the song player is playing stop it
-    if (isPlaying) {
-      FlutterRadio.stop();
-    }
-
-    super.dispose();
-  }
-
   play() {
+    FlutterRadio.stop();
     FlutterRadio.play(url: '$baseUri/stream_${this._songId}.php');
     setState(() {
       playerState = PlayerState.playing;

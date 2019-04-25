@@ -9,8 +9,18 @@ import 'about.dart';
 import 'searchWidget.dart';
 import 'newSongs.dart';
 import 'ident.dart';
+import 'package:flutter_radio/flutter_radio.dart';
 
-void main() => runApp(BideApp());
+Future<void> audioStart() async {
+  await FlutterRadio.audioStart();
+}
+
+
+void main() {
+  audioStart();
+  runApp(BideApp());
+  FlutterRadio.stop();
+}
 
 var playerWidget = PlayerWidget();
 
@@ -40,14 +50,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   @override
-  dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    var actions = <Widget>[];
+
+    actions.add(
+      IconButton(
+        icon: new Icon(Icons.stop),
+        onPressed: () {
+          playerWidget.stop();
+        },
+      )
+    );
+
     return new Scaffold(
         appBar: new AppBar(
+          actions: actions,
           title: new Text('Bide & Musique'),
         ),
         drawer: new Drawer(
