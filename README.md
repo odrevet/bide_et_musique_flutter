@@ -10,10 +10,10 @@ avec une interface pensée pour le mobile, vous pouvez :
 * Voir les prochaines chansons dans la playlist
 * Rechercher des chansons
 * Voir le mur des messages
-* Voie le Trombidoscope
+* Voir le Trombidoscope
 * Voir le pochettoscope
 * Voir les nouvelles entrées dans la base
-* Organiser les favories
+* Organiser les favoris
 
 # Utilisation 
 
@@ -21,11 +21,11 @@ avec une interface pensée pour le mobile, vous pouvez :
 
 Sur la page d'une chanson, glisser la page horizontalement a droite
 
-## Voir les favories 
+## Voir les favoris 
 
 Sur la page d'un bidaunote, glisser la page horizontalement a droite
 
-## Organiser ses favories
+## Organiser ses favoris
 
 Sur la page Compte, appuye long sur un titre puis glisser deposer a la nouvelle place. Puis attendre la synchronisation avec bide et musique. 
 
