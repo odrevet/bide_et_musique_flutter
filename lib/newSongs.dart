@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
@@ -17,8 +16,9 @@ Future<List<Song>> fetchNewSongs() async {
       var link = item.children[2].text;
       var song = Song();
       song.id = extractSongId(link);
-      song.title = item.firstChild.text;
-      song.artist = '';
+      var artistTitle = stripTags(item.firstChild.text).split('-');
+      song.title = artistTitle[0];
+      song.artist = artistTitle[1];
       songs.add(song);
     }
     return songs;
@@ -43,7 +43,7 @@ class SongsWidget extends StatelessWidget {
           future: songs,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
+              return SongListingWidget(snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -54,33 +54,5 @@ class SongsWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildView(BuildContext context, List<Song> songs) {
-    var rows = <ListTile>[];
-    for (Song song in songs) {
-      rows.add(ListTile(
-        leading:  CircleAvatar(
-          backgroundColor: Colors.black12,
-          child:  Image(
-              image:
-                   NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist),
-        onTap: () {
-          Navigator.push(
-              context,
-               MaterialPageRoute(
-                  builder: (context) =>  SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
-        },
-      ));
-    }
-
-    return ListView(children: rows);
   }
 }
