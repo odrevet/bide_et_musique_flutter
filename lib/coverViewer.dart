@@ -27,7 +27,7 @@ class _CoverViewerState extends State<CoverViewer> {
           ..rotateY(-0.01 * _offset.dx), // changed
         alignment: FractionalOffset.center,
         child: GestureDetector(
-          // 
+          //
           onPanUpdate: (details) => setState(() => _offset += details.delta),
           onDoubleTap: () => setState(() => _offset = Offset.zero),
           child: _buildView(context, this.songId),
@@ -38,10 +38,10 @@ class _CoverViewerState extends State<CoverViewer> {
     var url = '$baseUri/images/pochettes/$songId.jpg';
     return Center(
       child: Container(
-        decoration:  BoxDecoration(
-            image:  DecorationImage(
+        decoration: BoxDecoration(
+            image: DecorationImage(
           fit: BoxFit.contain,
-          image:  NetworkImage(url),
+          image: NetworkImage(url),
         )),
         alignment: Alignment(0.0, 0.0),
       ),

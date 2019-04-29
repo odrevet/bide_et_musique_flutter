@@ -15,8 +15,8 @@ Future<List<Account>> fetchSearchAccount(String search) async {
   //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
   //see https://www.w3schools.com/tags/ref_urlencode.asp
   //TODO convert from  CP-1252
-  url = url.replaceAll( RegExp(r'é'), '%E9');
-  url = url.replaceAll( RegExp(r'è'), '%E8');
+  url = url.replaceAll(RegExp(r'é'), '%E9');
+  url = url.replaceAll(RegExp(r'è'), '%E8');
 
   final response = await http.post(url);
   var accounts = <Account>[];
@@ -56,8 +56,8 @@ Future<List<Song>> fetchSearchSong(String search, String type) async {
   //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
   //see https://www.w3schools.com/tags/ref_urlencode.asp
   //TODO convert from  CP-1252
-  url = url.replaceAll( RegExp(r'é'), '%E9');
-  url = url.replaceAll( RegExp(r'è'), '%E8');
+  url = url.replaceAll(RegExp(r'é'), '%E9');
+  url = url.replaceAll(RegExp(r'è'), '%E8');
 
   final response = await http.post(url);
   var songs = <Song>[];
@@ -105,7 +105,7 @@ class SearchWidget extends StatefulWidget {
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
-  final TextEditingController _controller =  TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   List _searchTypes = [
     'Interprète / Nom du morceau',
     'Interprète',
@@ -125,11 +125,10 @@ class _SearchWidgetState extends State<SearchWidget> {
   _SearchWidgetState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items =  List();
+    List<DropdownMenuItem<String>> items = List();
     var i = 1;
     for (String searchType in _searchTypes) {
-      items.add( DropdownMenuItem(
-          value: i.toString(), child:  Text(searchType)));
+      items.add(DropdownMenuItem(value: i.toString(), child: Text(searchType)));
       i++;
     }
     return items;
@@ -149,8 +148,8 @@ class _SearchWidgetState extends State<SearchWidget> {
           title: Text('Rechercher dans la base'),
         ),
         body: Container(
-            padding:  EdgeInsets.all(30.0),
-            margin:  EdgeInsets.only(top: 20.0),
+            padding: EdgeInsets.all(30.0),
+            margin: EdgeInsets.only(top: 20.0),
             child: ListView(
               children: [
                 DropdownButton(

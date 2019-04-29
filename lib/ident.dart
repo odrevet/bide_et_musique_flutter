@@ -7,7 +7,7 @@ import 'utils.dart';
 import 'account.dart';
 
 class Session {
-  static final Session _singleton =  Session._internal();
+  static final Session _singleton = Session._internal();
 
   factory Session() {
     return _singleton;
@@ -97,7 +97,7 @@ class _IdentWidgetState extends State<IdentWidget> {
     if (_localSession.id != null) {
       var actions = <Widget>[];
       actions.add(IconButton(
-        icon:  Icon(Icons.close),
+        icon: Icon(Icons.close),
         onPressed: () {
           _localSession.id = null;
           _localSession.headers = {};
@@ -150,31 +150,31 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   Widget _buildViewLoginForm(BuildContext context) {
     return Container(
-        padding:  EdgeInsets.all(30.0),
-        child:  Form(
-          child:  ListView(
+        padding: EdgeInsets.all(30.0),
+        child: Form(
+          child: ListView(
             children: <Widget>[
-               TextFormField(
+              TextFormField(
                   controller: _usernameController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Nom utilisateur',
                   )),
-               TextFormField(
+              TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Mot de passe',
                   )),
-               Container(
-                child:  RaisedButton(
-                    shape:  RoundedRectangleBorder(
-                        borderRadius:  BorderRadius.circular(30.0)),
-                    child:  Text(
+              Container(
+                child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
                       'Se connecter',
                     ),
                     onPressed: _performLogin,
                     color: Colors.orangeAccent),
-                margin:  EdgeInsets.only(top: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
               )
             ],
           ),

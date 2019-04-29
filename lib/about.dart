@@ -7,19 +7,19 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:  AppBar(title:  Text("A propos")),
+        appBar: AppBar(title: Text("A propos")),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
               child: RichText(
-                text:  TextSpan(
-                  style:  TextStyle(
+                text: TextSpan(
+                  style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.black,
                   ),
                   children: <TextSpan>[
-                     TextSpan(
+                    TextSpan(
                         text: 'Bide&Musique',
                         style: TextStyle(
                           fontSize: 30.0,
@@ -32,7 +32,7 @@ class AboutPage extends StatelessWidget {
                             ),
                           ],
                         )),
-                     TextSpan(
+                    TextSpan(
                         text:
                             '\nLa web radio de l\'improbable et de l\'inouïe\n\n',
                         style: TextStyle(
@@ -46,7 +46,7 @@ class AboutPage extends StatelessWidget {
                             ),
                           ],
                         )),
-                     TextSpan(
+                    TextSpan(
                         text:
                             'Application Bide&Musique non-officielle par Olivier Drevet. \nDistribuée sous la license GPLv3\n'
                             'Code source sur https://github.com/odrevet/bide-et-musique-flutter\n\n',
