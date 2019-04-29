@@ -13,6 +13,7 @@ import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
 import 'searchWidget.dart' show fetchSearchSong;
+import 'package:flutter_html_view/flutter_html_view.dart';
 
 class Song {
   String id;
@@ -56,7 +57,7 @@ class SongInformations {
         reference: stripTags(json['reference']),
         lyrics: lyrics == null
             ? 'Paroles non renseignées pour cette chanson '
-            : stripTags(lyrics));
+            : lyrics);
   }
 }
 
@@ -274,8 +275,7 @@ class SongPageWidget extends StatelessWidget {
           ),
           PageView(
             children: <Widget>[
-              SingleChildScrollView(
-                  child: Text(songInformations.lyrics, style: _fontLyrics)),
+              HtmlView(data: songInformations.lyrics),
               _buildViewComments(context, songInformations.comments),
             ],
           )
