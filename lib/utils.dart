@@ -1,7 +1,7 @@
 import 'package:html/parser.dart' as parser;
 
-final host = 'www.bide-et-musique.com';
-final baseUri = 'http://$host';
+const host = 'www.bide-et-musique.com';
+const baseUri = 'http://$host';
 
 String stripTags(String htmlString) {
   var document = parser.parse(htmlString);

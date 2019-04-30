@@ -5,6 +5,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'utils.dart';
 import 'account.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Session {
   static final Session _singleton = Session._internal();
@@ -175,9 +176,24 @@ class _IdentWidgetState extends State<IdentWidget> {
                     onPressed: _performLogin,
                     color: Colors.orangeAccent),
                 margin: EdgeInsets.only(top: 20.0),
-              )
+              ),
+            Column(children: [Text("Pas de compte ? "),
+              RaisedButton(
+              onPressed: _launchURL,
+              child: Text('En créer un sur bide-et-musique.com'),
+            ),])
             ],
           ),
         ));
   }
+
+  _launchURL() async {
+    const url = '$baseUri/create_account.html';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }
+

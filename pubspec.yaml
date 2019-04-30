@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_radio: ^0.1.5
   flutter_html: ^0.9.6
+  url_launcher: ^5.0.2
 
 dev_dependencies:
   flutter_test:
