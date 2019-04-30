@@ -238,6 +238,7 @@ class SongPageWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, SongInformations songInformations) {
     var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
+    final _fontLyrics = TextStyle(fontSize: 20.0);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -279,7 +280,8 @@ class SongPageWidget extends StatelessWidget {
           ),
           PageView(
             children: <Widget>[
-          SingleChildScrollView(child:Html(data: songInformations.lyrics)),
+          SingleChildScrollView(child:Html(data: songInformations.lyrics,
+          defaultTextStyle: _fontLyrics)),
               _buildViewComments(context, songInformations.comments),
             ],
           )
