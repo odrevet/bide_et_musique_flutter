@@ -186,7 +186,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         )),
-        body: Center(
+        body: Container(
+            decoration:
+            BoxDecoration(color: Colors.orange.shade300),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
