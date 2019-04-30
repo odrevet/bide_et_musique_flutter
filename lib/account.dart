@@ -7,7 +7,7 @@ import 'package:html/parser.dart' as parser;
 import 'utils.dart';
 import 'song.dart';
 import 'ident.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class Account {
   String id;
@@ -160,7 +160,7 @@ class AccountPageWidget extends StatelessWidget {
                 ),
                 PageView(
                   children: <Widget>[
-                    HtmlView(data: accountInformations.presentation),
+                SingleChildScrollView(child:Html(data: accountInformations.presentation)),
                     SongListingWidget(accountInformations.favorites),
                   ],
                 )

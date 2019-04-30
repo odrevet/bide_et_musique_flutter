@@ -13,7 +13,7 @@ import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
 import 'searchWidget.dart' show fetchSearchSong;
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class Song {
   String id;
@@ -153,12 +153,17 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     for (dom.Element tdComment in tdsComments) {
       var comment = Comment();
       try {
-        dom.Element aAccount = tdComment.children[1].children[0];
+        var tdCommentChildren = tdComment.children;
+
+        dom.Element aAccount = tdCommentChildren[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
         comment.author = Account(accountId, accountName);
-        comment.body = tdComment.innerHtml.split('<br>')[1];
-        comment.time = tdComment.children[2].innerHtml;
+        print(tdComment.innerHtml);
+        var commentLines = tdComment.innerHtml.split('<br>');
+        commentLines.removeAt(0);
+        comment.body = commentLines.join();
+        comment.time = tdCommentChildren[2].innerHtml;
         comments.add(comment);
       } catch (e) {
         print(e.toString());
@@ -195,7 +200,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 class SongPageWidget extends StatelessWidget {
   final Song song;
   final Future<SongInformations> songInformations;
-  final _fontLyrics = TextStyle(fontSize: 20.0);
 
   SongPageWidget({Key key, this.song, this.songInformations}) : super(key: key);
 
@@ -275,7 +279,7 @@ class SongPageWidget extends StatelessWidget {
           ),
           PageView(
             children: <Widget>[
-              HtmlView(data: songInformations.lyrics),
+          SingleChildScrollView(child:Html(data: songInformations.lyrics)),
               _buildViewComments(context, songInformations.comments),
             ],
           )
@@ -328,9 +332,7 @@ class SongPageWidget extends StatelessWidget {
                 image: NetworkImage(
                     '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
-          title: Text(
-            stripTags(comment.body),
-          ),
+          title: Html(data:comment.body),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }
 
