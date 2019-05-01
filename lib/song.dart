@@ -197,8 +197,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
         songInformations.hasVote = false;
       }
 
-      print("HAS VOTE IS " + songInformations.hasVote .toString());
-
     } else {
       songInformations.isFavourite = false;
       songInformations.canFavourite = false;
@@ -329,7 +327,7 @@ class SongPageWidget extends StatelessWidget {
     }
 
     //share song button
-    actions.add(IconButton(
+    var shareButton = IconButton(
         icon: Icon(Icons.share),
         onPressed: () {
           Share.share(
@@ -342,12 +340,42 @@ http://bide-et-musique.com/song/${song.id}.html
 Message envoyé avec l'application 'bide et musique flutter pour android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ''');
-        }));
+        });
+
+
+    var listenButton = IconButton(
+        icon: Icon(Icons.music_note),
+        onPressed: () {
+          Share.share('$baseUri/stream_${song.id}.php');
+        });
+
+
+    //overflow menu
+    actions.add(PopupMenuButton<Widget>(
+      onSelected: _select,
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Widget>>[
+        PopupMenuItem<Widget>(
+          child: shareButton
+        ),
+        PopupMenuItem<Widget>(
+            child: listenButton
+        ),
+      ]
+
+      ,
+    ));
 
     return Scaffold(
       appBar: AppBar(title: Text(song.title), actions: actions),
       body: nestedScrollView,
     );
+  }
+
+  void _select(C) {
+    // Causes the app to rebuild with the new _selectedChoice.
+    /*setState(() {
+      //_selectedChoice = choice;
+    });*/
   }
 
   Widget _buildViewComments(BuildContext context, List<Comment> comments) {
