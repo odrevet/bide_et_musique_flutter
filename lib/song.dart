@@ -461,7 +461,7 @@ class SongInformationWidget extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
                             appBar: AppBar(
-                              title: Text('Recherche par artists'),
+                              title: Text('Recherche par artiste'),
                             ),
                             body: Center(
                               child: SongListingFutureWidget(
