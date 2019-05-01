@@ -175,8 +175,9 @@ Future<SongInformations> fetchSongInformations(String songId) async {
     var divTitre = document.getElementsByClassName('titreorange');
     songInformations.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
 
-    //check if favourited
+    //information available only if logged-in
     if (session.id != null) {
+      //check if favourited
       if (divTitre.length == 2) {
         songInformations.canFavourite = false;
         songInformations.isFavourite = false;
@@ -186,6 +187,18 @@ Future<SongInformations> fetchSongInformations(String songId) async {
             stripTags(divTitre[2].innerHtml).trim() ==
                 'Ce morceau est dans vos favoris';
       }
+
+      //check vote
+      var vote = document.getElementById('vote');
+      if(vote == null){
+        songInformations.hasVote = true;
+      }
+      else{
+        songInformations.hasVote = false;
+      }
+
+      print("HAS VOTE IS " + songInformations.hasVote .toString());
+
     } else {
       songInformations.isFavourite = false;
       songInformations.canFavourite = false;
@@ -193,8 +206,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
   } else {
     throw Exception('Failed to load song page');
   }
-
-  songInformations.hasVote = false; //TODO
   return songInformations;
 }
 
@@ -218,7 +229,7 @@ class SongPageWidget extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Chargement de "' + song.title + '"'),
+              title: Text('Chargement de ${song.title}'),
             ),
             body: Center(
               child: CircularProgressIndicator(),
