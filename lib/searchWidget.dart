@@ -105,7 +105,9 @@ class SearchWidget extends StatefulWidget {
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
+
   final TextEditingController _controller = TextEditingController();
+
   List _searchTypes = [
     'Interprète / Nom du morceau',
     'Interprète',
@@ -141,6 +143,31 @@ class _SearchWidgetState extends State<SearchWidget> {
     this._currentItem = _dropDownMenuItems[0].value;
   }
 
+  void performSearch(){
+    if (this._currentItem == '10') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  AccountListingFutureWidget(
+                      fetchSearchAccount(_controller.text))));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Scaffold(
+                appBar: AppBar(
+                  title: Text('Recherche de chansons'),
+                ),
+                body: Center(
+                  child: SongListingFutureWidget(
+                      fetchSearchSong(
+                          _controller.text, this._currentItem)),
+                ),
+              )));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,12 +178,28 @@ class _SearchWidgetState extends State<SearchWidget> {
             padding: EdgeInsets.all(30.0),
             margin: EdgeInsets.only(top: 20.0),
             child: ListView(
+              shrinkWrap: true,
+              padding: new EdgeInsets.all(16.0),
               children: [
-                DropdownButton(
-                  value: this._currentItem,
-                  items: _dropDownMenuItems,
-                  onChanged: changedDropDownItem,
-                ),
+                Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).accentColor,
+                  width: 2.0
+              ),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(24.0) //                 <--- border radius here
+              ),
+            ),
+                    margin: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(3.0),
+                    child:DropdownButton(
+                    value: this._currentItem,
+                    items: _dropDownMenuItems,
+                    onChanged: changedDropDownItem,
+
+                ))
+                ,
                 TextField(
                     autofocus: true,
                     decoration: InputDecoration(
@@ -166,31 +209,19 @@ class _SearchWidgetState extends State<SearchWidget> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32.0)),
                     ),
-                    onSubmitted: (value) {
-                      if (this._currentItem == '10') {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AccountListingFutureWidget(
-                                        fetchSearchAccount(value))));
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                      appBar: AppBar(
-                                        title: Text('Recherche de chansons'),
-                                      ),
-                                      body: Center(
-                                        child: SongListingFutureWidget(
-                                            fetchSearchSong(
-                                                value, this._currentItem)),
-                                      ),
-                                    )));
-                      }
-                    },
-                    controller: _controller)
+                    onSubmitted: (value) => performSearch(),
+                    controller: _controller),
+                Container(
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0)),
+                      child: Text(
+                        'Lancer la recherche',
+                      ),
+                      onPressed: () => performSearch(),
+                      color: Colors.orangeAccent),
+                  margin: EdgeInsets.only(top: 20.0),
+                )
               ],
             )));
   }
