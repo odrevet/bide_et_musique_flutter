@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:url_launcher/url_launcher.dart';
 import 'utils.dart';
 import 'account.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'manageFavoritesWidget.dart';
 
 class Session {
   static final Session _singleton = Session._internal();
@@ -146,7 +147,7 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoggedIn(BuildContext context, Session session) {
-    return ManageAccountWidget(session: session);
+    return ManageFavoritesWidget(session: session);
   }
 
   Widget _buildViewLoginForm(BuildContext context) {
