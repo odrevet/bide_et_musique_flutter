@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'utils.dart';
 import 'account.dart';
 import 'manageFavoritesWidget.dart';
+import 'manageAccountPageWidget.dart';
 
 class Session {
   static final Session _singleton = Session._internal();
@@ -97,25 +98,11 @@ class _IdentWidgetState extends State<IdentWidget> {
   @override
   Widget build(BuildContext context) {
     if (_localSession.id != null) {
-      var actions = <Widget>[];
-      actions.add(IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () {
-          _localSession.id = null;
-          _localSession.headers = {};
-          Navigator.pop(context);
-        },
-      ));
-      return Scaffold(
-          appBar: AppBar(
-            title: Text("Votre compte"),
-            actions: actions,
-          ),
-          body: Center(child: _buildViewLoggedIn(context, _localSession)));
+      return Center(child: _buildViewLoggedIn(context, _localSession));
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Votre compte"),
+          title: Text("Connexion à votre compte"),
         ),
         body: Center(
           child: FutureBuilder<Session>(
@@ -147,7 +134,44 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoggedIn(BuildContext context, Session session) {
-    return ManageFavoritesWidget(session: session);
+    var account = Account(session.id, "");
+
+    //disconnect button
+    var actions = <Widget>[];
+    actions.add(IconButton(
+      icon: Icon(Icons.close),
+      onPressed: () {
+        _localSession.id = null;
+        _localSession.headers = {};
+        Navigator.pop(context);
+      },
+    ));
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: actions,
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.account_circle)),
+              Tab(icon: Icon(Icons.star)),
+            ],
+          ),
+          title: Text('Gestion de vote compte'),
+        ),
+        body: TabBarView(
+            //physics: NeverScrollableScrollPhysics(),
+          children: [
+            ManageAccountPageWidget(
+                account: account,
+                accountInformations:
+                fetchAccountInformations(session.id)),
+            ManageFavoritesWidget(session: session),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildViewLoginForm(BuildContext context) {
