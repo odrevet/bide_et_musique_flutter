@@ -321,11 +321,11 @@ class SongPageWidget extends StatelessWidget {
     var session = Session();
     if (session.id != null) {
       if(songInformations.canFavourite){
-        actionsOverflow
+        actions
             .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
       }
 
-      actionsOverflow
+      actions
           .add(SongVoteIconWidget(song.id, songInformations.hasVote));
     }
 

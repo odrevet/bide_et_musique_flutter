@@ -5,6 +5,9 @@ import 'utils.dart';
 import 'ident.dart';
 
 // Actions for the song page titlebar
+
+////////////////////////////////
+//// Add to favorite
 class SongFavoriteIconWidget extends StatefulWidget {
   final String _songId;
   final bool _isFavourite;
@@ -70,6 +73,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 }
 
 ////////////////////////////////
+//// Vote
 class SongVoteIconWidget extends StatefulWidget {
   final String _songId;
   final bool _hasVote;
@@ -123,6 +127,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   }
 }
 ////////////////////////////////
+// Player
 enum PlayerState { stopped, playing, paused }
 
 class SongPlayerWidget extends StatefulWidget {
