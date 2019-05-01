@@ -439,9 +439,15 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SongListingFutureWidget(
-                              fetchSearchSong(
-                                  _songInformations.year.toString(), '7')))),
+                          builder: (context) => Scaffold(
+                            appBar: AppBar(
+                              title: Text('Recherche par année'),
+                            ),
+                            body: Center(
+                              child: SongListingFutureWidget(
+                                  fetchSearchSong(_songInformations.year.toString(), '7')),
+                            ),
+                          ))),
                 }));
     }
 
@@ -453,9 +459,15 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SongListingFutureWidget(
-                              fetchSearchSong(
-                                  _songInformations.artists, '4')))),
+                          builder: (context) => Scaffold(
+                            appBar: AppBar(
+                              title: Text('Recherche par artists'),
+                            ),
+                            body: Center(
+                              child: SongListingFutureWidget(
+                                  fetchSearchSong(_songInformations.artists, '4')),
+                            ),
+                          ))),
                 }));
     }
 
@@ -471,8 +483,18 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SongListingFutureWidget(
-                              fetchSearchSong(_songInformations.label, '5')))),
+                          builder: (context) =>
+                              Scaffold(
+                                appBar: AppBar(
+                                  title: Text('Recherche par label'),
+                                ),
+                                body: Center(
+                                  child: SongListingFutureWidget(
+                                      fetchSearchSong(_songInformations.label, '5')),
+                                ),
+                              )
+
+                      )),
                 }));
     }
 
