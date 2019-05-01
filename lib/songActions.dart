@@ -3,6 +3,8 @@ import 'package:flutter_radio/flutter_radio.dart';
 import 'main.dart';
 import 'utils.dart';
 import 'ident.dart';
+import 'song.dart';
+import 'package:share/share.dart';
 
 // Actions for the song page titlebar
 
@@ -188,3 +190,27 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 }
 
 
+class SongShareIconWidget extends StatelessWidget {
+  final Song song;
+
+  SongShareIconWidget(this.song, {Key key}) : super(key: key);
+
+
+  Widget build(BuildContext context){
+    //share song button
+    return IconButton(
+        icon: Icon(Icons.share),
+        onPressed: () {
+          Share.share(
+              '''En ce moment j'écoute '${song.title}' sur bide et musique !
+          
+Tu peut consulter la fiche de cette chanson à l'adresse : 
+http://bide-et-musique.com/song/${song.id}.html
+          
+--------
+Message envoyé avec l'application 'bide et musique flutter pour android'
+https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
+''');
+        });
+  }
+}

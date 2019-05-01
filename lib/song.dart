@@ -7,12 +7,12 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter/gestures.dart';
 import 'package:share/share.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'ident.dart';
 import 'searchWidget.dart' show fetchSearchSong;
-import 'package:flutter_html/flutter_html.dart';
 import 'songActions.dart';
 
 class Song {
@@ -329,21 +329,6 @@ class SongPageWidget extends StatelessWidget {
           .add(SongVoteIconWidget(song.id, songInformations.hasVote));
     }
 
-    //share song button
-    var shareButton = IconButton(
-        icon: Icon(Icons.share),
-        onPressed: () {
-          Share.share(
-              '''En ce moment j'écoute '${song.title}' sur bide et musique !
-          
-Tu peut consulter la fiche de cette chanson à l'adresse : 
-http://bide-et-musique.com/song/${song.id}.html
-          
---------
-Message envoyé avec l'application 'bide et musique flutter pour android'
-https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-''');
-        });
 
 
     var listenButton = IconButton(
@@ -352,7 +337,7 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
           Share.share('$baseUri/stream_${song.id}.php');
         });
 
-    actionsOverflow.add(shareButton);
+    actionsOverflow.add(SongShareIconWidget(song));
     actionsOverflow.add(listenButton);
     
     //build widget for overflow button
