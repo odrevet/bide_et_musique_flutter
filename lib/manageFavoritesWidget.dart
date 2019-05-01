@@ -68,7 +68,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Vraiment retirer cette chanson de vos favoris ? '),
+                Text('Vraiment retirer "${song.title}" de vos favoris ? '),
               ],
             ),
           ),
