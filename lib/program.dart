@@ -6,7 +6,7 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 import 'utils.dart';
 
-Song songFromTr(dom.Element tr){
+Song songFromTr(dom.Element tr) {
   //td 0 program
   //td 1 cover
   //td 2 artist

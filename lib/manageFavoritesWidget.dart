@@ -30,7 +30,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     _rows = <Dismissible>[];
   }
 
-  Dismissible _createSongTile(Song song, AccountInformations accountInformations, int index){
+  Dismissible _createSongTile(
+      Song song, AccountInformations accountInformations, int index) {
     int position = ++index;
     return Dismissible(
         key: Key(song.id),
@@ -41,8 +42,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
             child: Image(
-                image:
-                NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+                image: NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
           ),
           title: Text('#$position - ${song.title}'),
           subtitle: Text(song.artist),
@@ -57,7 +57,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         ));
   }
 
-  Future<void> _confirmDeletion(Song song, AccountInformations accountInformations) async {
+  Future<void> _confirmDeletion(
+      Song song, AccountInformations accountInformations) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -102,9 +103,9 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 int index = accountInformations.favorites.indexOf(song);
 
                 setState(() {
-                  _rows.insert(index, _createSongTile(song, accountInformations, index));
+                  _rows.insert(
+                      index, _createSongTile(song, accountInformations, index));
                 });
-
 
                 Navigator.of(context).pop();
               },
@@ -135,7 +136,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           var direction = step < 0 ? 'down' : 'up';
 
           final response =
-          await session.post('$baseUri/account/$accountId.html', {
+              await session.post('$baseUri/account/$accountId.html', {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',

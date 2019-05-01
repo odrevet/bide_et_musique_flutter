@@ -190,13 +190,11 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
       //check vote
       var vote = document.getElementById('vote');
-      if(vote == null){
+      if (vote == null) {
         songInformations.hasVote = true;
-      }
-      else{
+      } else {
         songInformations.hasVote = false;
       }
-
     } else {
       songInformations.isFavourite = false;
       songInformations.canFavourite = false;
@@ -320,16 +318,13 @@ class SongPageWidget extends StatelessWidget {
 
     var session = Session();
     if (session.id != null) {
-      if(songInformations.canFavourite){
+      if (songInformations.canFavourite) {
         actions
             .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
       }
 
-      actions
-          .add(SongVoteIconWidget(song.id, songInformations.hasVote));
+      actions.add(SongVoteIconWidget(song.id, songInformations.hasVote));
     }
-
-
 
     var listenButton = IconButton(
         icon: Icon(Icons.music_note),
@@ -339,19 +334,16 @@ class SongPageWidget extends StatelessWidget {
 
     actionsOverflow.add(SongShareIconWidget(song));
     actionsOverflow.add(listenButton);
-    
+
     //build widget for overflow button
     var popupMenuAction = <PopupMenuEntry<Widget>>[];
-    for (Widget actionWidget in actionsOverflow){
-      popupMenuAction.add(PopupMenuItem<Widget>(
-          child: actionWidget
-      ));
+    for (Widget actionWidget in actionsOverflow) {
+      popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
     }
 
     //overflow menu
     actions.add(PopupMenuButton<Widget>(
-      itemBuilder: (BuildContext context) => popupMenuAction
-    ));
+        itemBuilder: (BuildContext context) => popupMenuAction));
 
     return Scaffold(
       appBar: AppBar(title: Text(song.title), actions: actions),

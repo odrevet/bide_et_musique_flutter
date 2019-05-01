@@ -40,60 +40,61 @@ class ManageAccountPageWidget extends StatelessWidget {
       color: Theme.of(context).canvasColor,
       child: Center(
           child: Column(
-            children: <Widget>[
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: InkWell(
-                              onTap: () {
-                                //_openAvatarViewerDialog(context, image);
-                              },
-                              child: Image.network(url))),
-                      Expanded(
-                        child: Text(
-                            accountInformations.type +
-                                '\n' +
-                                accountInformations.inscription +
-                                '\n' +
-                                accountInformations.messageForum +
-                                '\n' +
-                                accountInformations.comments +
-                                '\n',
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                    ],
-                  )),
-              Expanded(
-                flex: 7,
-                child: Container(
-                  child: Stack(children: [
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200.withOpacity(0.7)),
-                      ),
-                    ),
-                    PageView(
-                      children: <Widget>[
-                        SingleChildScrollView(child:Html(data: accountInformations.presentation)),
-                        //SongListingWidget(accountInformations.favorites),
-                      ],
-                    )
-                  ]),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        alignment: FractionalOffset.topCenter,
-                        image: image,
-                      )),
+        children: <Widget>[
+          Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                      child: InkWell(
+                          onTap: () {
+                            //_openAvatarViewerDialog(context, image);
+                          },
+                          child: Image.network(url))),
+                  Expanded(
+                    child: Text(
+                        accountInformations.type +
+                            '\n' +
+                            accountInformations.inscription +
+                            '\n' +
+                            accountInformations.messageForum +
+                            '\n' +
+                            accountInformations.comments +
+                            '\n',
+                        style: TextStyle(fontSize: 14)),
+                  ),
+                ],
+              )),
+          Expanded(
+            flex: 7,
+            child: Container(
+              child: Stack(children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade200.withOpacity(0.7)),
+                  ),
                 ),
-              ),
-            ],
-          )),
+                PageView(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                        child: Html(data: accountInformations.presentation)),
+                    //SongListingWidget(accountInformations.favorites),
+                  ],
+                )
+              ]),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.fill,
+                alignment: FractionalOffset.topCenter,
+                image: image,
+              )),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }

@@ -161,12 +161,11 @@ class _IdentWidgetState extends State<IdentWidget> {
           title: Text('Gestion de vote compte'),
         ),
         body: TabBarView(
-            //physics: NeverScrollableScrollPhysics(),
+          //physics: NeverScrollableScrollPhysics(),
           children: [
             ManageAccountPageWidget(
                 account: account,
-                accountInformations:
-                fetchAccountInformations(session.id)),
+                accountInformations: fetchAccountInformations(session.id)),
             ManageFavoritesWidget(session: session),
           ],
         ),
@@ -202,11 +201,13 @@ class _IdentWidgetState extends State<IdentWidget> {
                     color: Colors.orangeAccent),
                 margin: EdgeInsets.only(top: 20.0),
               ),
-            Column(children: [Text("Pas de compte ? "),
-              RaisedButton(
-              onPressed: _launchURL,
-              child: Text('En créer un sur bide-et-musique.com'),
-            ),])
+              Column(children: [
+                Text("Pas de compte ? "),
+                RaisedButton(
+                  onPressed: _launchURL,
+                  child: Text('En créer un sur bide-et-musique.com'),
+                ),
+              ])
             ],
           ),
         ));
@@ -221,4 +222,3 @@ class _IdentWidgetState extends State<IdentWidget> {
     }
   }
 }
-

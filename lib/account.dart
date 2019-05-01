@@ -160,7 +160,8 @@ class AccountPageWidget extends StatelessWidget {
                 ),
                 PageView(
                   children: <Widget>[
-                SingleChildScrollView(child:Html(data: accountInformations.presentation)),
+                    SingleChildScrollView(
+                        child: Html(data: accountInformations.presentation)),
                     SongListingWidget(accountInformations.favorites),
                   ],
                 )
@@ -211,7 +212,6 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
     throw Exception('Failed to load account ');
   }
 }
-
 
 ////////////////////////////////////
 class AccountListingWidget extends StatelessWidget {

@@ -187,15 +187,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ],
         )),
         body: Container(
-            decoration:
-            BoxDecoration(color: Colors.orange.shade300),
+            decoration: BoxDecoration(color: Colors.orange.shade300),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-              Expanded(
-                child: NowPlayingWidget(),
-              ),
-              Expanded(child: playerWidget),
-            ])));
+                  Expanded(
+                    child: NowPlayingWidget(),
+                  ),
+                  Expanded(child: playerWidget),
+                ])));
   }
 }

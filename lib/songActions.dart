@@ -80,8 +80,7 @@ class SongVoteIconWidget extends StatefulWidget {
   final String _songId;
   final bool _hasVote;
 
-  SongVoteIconWidget(this._songId, this._hasVote, {Key key})
-      : super(key: key);
+  SongVoteIconWidget(this._songId, this._hasVote, {Key key}) : super(key: key);
 
   @override
   _SongVoteIconWidgetState createState() =>
@@ -98,8 +97,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   Widget build(BuildContext context) {
     var session = Session();
     if (_hasVote) {
-      return IconButton(icon: Icon(Icons.exposure_plus_1),
-          onPressed: null);
+      return IconButton(icon: Icon(Icons.exposure_plus_1), onPressed: null);
     } else {
       return IconButton(
         icon: Icon(Icons.exposure_plus_1),
@@ -111,7 +109,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
           session.headers['Origin'] = baseUri;
           session.headers['Referer'] = url;
 
-          final response = await session.post(url, {'Note': '1', 'M' : 'CN'});
+          final response = await session.post(url, {'Note': '1', 'M': 'CN'});
 
           session.headers.remove('Referer');
           session.headers.remove('Content-Type');
@@ -128,6 +126,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
     }
   }
 }
+
 ////////////////////////////////
 // Player
 enum PlayerState { stopped, playing, paused }
@@ -189,14 +188,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 }
 
-
 class SongShareIconWidget extends StatelessWidget {
   final Song song;
 
   SongShareIconWidget(this.song, {Key key}) : super(key: key);
 
-
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     //share song button
     return IconButton(
         icon: Icon(Icons.share),
