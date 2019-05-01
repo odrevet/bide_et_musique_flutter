@@ -158,7 +158,7 @@ class _IdentWidgetState extends State<IdentWidget> {
               Tab(icon: Icon(Icons.star)),
             ],
           ),
-          title: Text('Gestion de vote compte'),
+          title: Text('Gestion de votre compte'),
         ),
         body: TabBarView(
           //physics: NeverScrollableScrollPhysics(),
