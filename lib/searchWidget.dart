@@ -105,7 +105,6 @@ class SearchWidget extends StatefulWidget {
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
-
   final TextEditingController _controller = TextEditingController();
 
   List _searchTypes = [
@@ -143,28 +142,26 @@ class _SearchWidgetState extends State<SearchWidget> {
     this._currentItem = _dropDownMenuItems[0].value;
   }
 
-  void performSearch(){
+  void performSearch() {
     if (this._currentItem == '10') {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  AccountListingFutureWidget(
-                      fetchSearchAccount(_controller.text))));
+              builder: (context) => AccountListingFutureWidget(
+                  fetchSearchAccount(_controller.text))));
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => Scaffold(
-                appBar: AppBar(
-                  title: Text('Recherche de chansons'),
-                ),
-                body: Center(
-                  child: SongListingFutureWidget(
-                      fetchSearchSong(
-                          _controller.text, this._currentItem)),
-                ),
-              )));
+                    appBar: AppBar(
+                      title: Text('Recherche de chansons'),
+                    ),
+                    body: Center(
+                      child: SongListingFutureWidget(
+                          fetchSearchSong(_controller.text, this._currentItem)),
+                    ),
+                  )));
     }
   }
 
@@ -182,24 +179,20 @@ class _SearchWidgetState extends State<SearchWidget> {
               padding: new EdgeInsets.all(16.0),
               children: [
                 Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).accentColor,
-                  width: 2.0
-              ),
-              borderRadius: BorderRadius.all(
-                  Radius.circular(24.0) //                 <--- border radius here
-              ),
-            ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).accentColor, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(
+                              24.0) //                 <--- border radius here
+                          ),
+                    ),
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(3.0),
-                    child:DropdownButton(
-                    value: this._currentItem,
-                    items: _dropDownMenuItems,
-                    onChanged: changedDropDownItem,
-
-                ))
-                ,
+                    child: DropdownButton(
+                      value: this._currentItem,
+                      items: _dropDownMenuItems,
+                      onChanged: changedDropDownItem,
+                    )),
                 TextField(
                     autofocus: true,
                     decoration: InputDecoration(

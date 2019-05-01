@@ -91,7 +91,7 @@ Future<List<Song>> fetchVotes() async {
     dom.Document document = parser.parse(body);
     var tables = document.getElementsByClassName('bmtable');
 
-    if(tables.isEmpty){
+    if (tables.isEmpty) {
       return songs;
     }
 
