@@ -69,7 +69,10 @@ class ProgrammeWidget extends StatelessWidget {
           }
 
           // By default, show a loading spinner
-          return CircularProgressIndicator();
+          return Scaffold(
+            appBar: AppBar(title: Text("Chargement des programmes")),
+            body: CircularProgressIndicator(),
+          );
         },
       ),
     );
