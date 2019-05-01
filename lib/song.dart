@@ -310,6 +310,9 @@ class SongPageWidget extends StatelessWidget {
     //list of actions in the title bar
     var actions = <Widget>[];
 
+    //list of actions in the overflow
+    var actionsOverflow = <Widget>[];
+
     //if the song can be listen, add the song player
     if (songInformations.canListen) {
       actions.add(SongPlayerWidget(song.id));
@@ -318,11 +321,11 @@ class SongPageWidget extends StatelessWidget {
     var session = Session();
     if (session.id != null) {
       if(songInformations.canFavourite){
-        actions
+        actionsOverflow
             .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
       }
 
-      actions
+      actionsOverflow
           .add(SongVoteIconWidget(song.id, songInformations.hasVote));
     }
 
@@ -349,33 +352,26 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
           Share.share('$baseUri/stream_${song.id}.php');
         });
 
+    actionsOverflow.add(shareButton);
+    actionsOverflow.add(listenButton);
+    
+    //build widget for overflow button
+    var popupMenuAction = <PopupMenuEntry<Widget>>[];
+    for (Widget actionWidget in actionsOverflow){
+      popupMenuAction.add(PopupMenuItem<Widget>(
+          child: actionWidget
+      ));
+    }
 
     //overflow menu
     actions.add(PopupMenuButton<Widget>(
-      onSelected: _select,
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<Widget>>[
-        PopupMenuItem<Widget>(
-          child: shareButton
-        ),
-        PopupMenuItem<Widget>(
-            child: listenButton
-        ),
-      ]
-
-      ,
+      itemBuilder: (BuildContext context) => popupMenuAction
     ));
 
     return Scaffold(
       appBar: AppBar(title: Text(song.title), actions: actions),
       body: nestedScrollView,
     );
-  }
-
-  void _select(C) {
-    // Causes the app to rebuild with the new _selectedChoice.
-    /*setState(() {
-      //_selectedChoice = choice;
-    });*/
   }
 
   Widget _buildViewComments(BuildContext context, List<Comment> comments) {
