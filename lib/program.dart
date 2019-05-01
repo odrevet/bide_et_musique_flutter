@@ -6,6 +6,19 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 import 'utils.dart';
 
+Song songFromTr(dom.Element tr){
+  //td 0 program
+  //td 1 cover
+  //td 2 artist
+  //td 3 song
+  var song = Song();
+  var href = tr.children[3].innerHtml;
+  song.id = extractSongId(href);
+  song.artist = stripTags(tr.children[2].children[0].innerHtml);
+  song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
+  return song;
+}
+
 Future<Map<String, List<Song>>> fetchTitles() async {
   final url = '$baseUri/programmes.php';
   final response = await http.get(url);
@@ -20,15 +33,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
     // table 3 'Ce qui est passé tout à l'heure'
     var songsNext = <Song>[];
     for (dom.Element tr in tables[2].children[0].children) {
-      //td 0 program
-      //td 1 cover
-      //td 2 artist
-      //td 3 song
-      var song = Song();
-      var href = tr.children[3].innerHtml;
-      song.id = extractSongId(href);
-      song.artist = stripTags(tr.children[2].children[0].innerHtml);
-      song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
+      var song = songFromTr(tr);
       songsNext.add(song);
     }
 
@@ -36,15 +41,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
     var trs = tables[3].children[0].children;
     trs.removeLast();
     for (dom.Element tr in trs) {
-      //td 0 program
-      //td 1 cover
-      //td 2 artist
-      //td 3 song
-      var song = Song();
-      var href = tr.children[3].innerHtml;
-      song.id = extractSongId(href);
-      song.artist = stripTags(tr.children[2].children[0].innerHtml);
-      song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
+      var song = songFromTr(tr);
       songsPrev.add(song);
     }
 
