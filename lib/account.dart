@@ -81,6 +81,32 @@ Future<AccountInformations> fetchAccountInformations(String accountId) async {
   }
 }
 
+Future<List<Song>> fetchVotes() async {
+  var session = Session();
+  var songs = <Song>[];
+  final url = '$baseUri/mes-votes.html';
+  final response = await session.get(url);
+  if (response.statusCode == 200) {
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+    var table = document.getElementsByClassName('bmtable')[0];
+    var trs = table.children[0].children;
+    trs.removeAt(0);  //remove header
+    for(var tr in trs){
+      var song = Song();
+      song.id = extractSongId(tr.children[3].children[0].attributes['href']);
+      song.title =  stripTags(tr.children[3].innerHtml);
+      song.artist = stripTags(tr.children[2].innerHtml);
+      songs.add(song);
+    }
+  } else {
+    throw Exception('Failed to load account ');
+  }
+
+  return songs;
+}
+
+
 class AccountPageWidget extends StatelessWidget {
   final Account account;
   final Future<AccountInformations> accountInformations;

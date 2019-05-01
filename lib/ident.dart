@@ -8,6 +8,7 @@ import 'utils.dart';
 import 'account.dart';
 import 'manageFavoritesWidget.dart';
 import 'manageAccountPageWidget.dart';
+import 'song.dart';
 
 class Session {
   static final Session _singleton = Session._internal();
@@ -156,6 +157,7 @@ class _IdentWidgetState extends State<IdentWidget> {
             tabs: [
               Tab(icon: Icon(Icons.account_circle)),
               Tab(icon: Icon(Icons.star)),
+              Tab(icon: Icon(Icons.exposure_plus_1)),
             ],
           ),
           title: Text('Gestion de votre compte'),
@@ -167,6 +169,7 @@ class _IdentWidgetState extends State<IdentWidget> {
                 account: account,
                 accountInformations: fetchAccountInformations(session.id)),
             ManageFavoritesWidget(session: session),
+            SongListingFutureWidget(fetchVotes())
           ],
         ),
       ),
