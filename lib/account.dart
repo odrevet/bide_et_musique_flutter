@@ -91,11 +91,11 @@ Future<List<Song>> fetchVotes() async {
     dom.Document document = parser.parse(body);
     var table = document.getElementsByClassName('bmtable')[0];
     var trs = table.children[0].children;
-    trs.removeAt(0);  //remove header
-    for(var tr in trs){
+    trs.removeAt(0); //remove header
+    for (var tr in trs) {
       var song = Song();
       song.id = extractSongId(tr.children[3].children[0].attributes['href']);
-      song.title =  stripTags(tr.children[3].innerHtml);
+      song.title = stripTags(tr.children[3].innerHtml);
       song.artist = stripTags(tr.children[2].innerHtml);
       songs.add(song);
     }
@@ -105,7 +105,6 @@ Future<List<Song>> fetchVotes() async {
 
   return songs;
 }
-
 
 class AccountPageWidget extends StatelessWidget {
   final Account account;

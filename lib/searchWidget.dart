@@ -178,20 +178,16 @@ class _SearchWidgetState extends State<SearchWidget> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-
-                                Scaffold(
-                            appBar: AppBar(
-                            title: Text('Recherche de chansons'),
-                        ),
-                      body: Center(
-                      child: SongListingFutureWidget(
-                          fetchSearchSong(
-                              value, this._currentItem)),
-                      ),
-                      )
-
-                                    ));
+                                builder: (context) => Scaffold(
+                                      appBar: AppBar(
+                                        title: Text('Recherche de chansons'),
+                                      ),
+                                      body: Center(
+                                        child: SongListingFutureWidget(
+                                            fetchSearchSong(
+                                                value, this._currentItem)),
+                                      ),
+                                    )));
                       }
                     },
                     controller: _controller)
