@@ -30,7 +30,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     _rows = <Dismissible>[];
   }
 
-  Dismissible _createSongTile(Song song, AccountInformations accountInformations){
+  Dismissible _createSongTile(Song song, AccountInformations accountInformations, int index){
+    int position = ++index;
     return Dismissible(
         key: Key(song.id),
         onDismissed: (direction) {
@@ -43,9 +44,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 image:
                 NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
           ),
-          title: Text(
-            song.title,
-          ),
+          title: Text('#$position - ${song.title}'),
           subtitle: Text(song.artist),
           onTap: () {
             Navigator.push(
@@ -103,7 +102,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 int index = accountInformations.favorites.indexOf(song);
 
                 setState(() {
-                  _rows.insert(index, _createSongTile(song, accountInformations));
+                  _rows.insert(index, _createSongTile(song, accountInformations, index));
                 });
 
 
@@ -119,8 +118,10 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Widget _buildView(BuildContext context, Session session,
       AccountInformations accountInformations) {
     _rows.clear();
+    int index = 0;
     for (Song song in accountInformations.favorites) {
-      _rows.add(_createSongTile(song, accountInformations));
+      _rows.add(_createSongTile(song, accountInformations, index));
+      index++;
     }
 
     return ReorderableListView(
