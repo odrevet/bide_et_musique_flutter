@@ -89,7 +89,13 @@ Future<List<Song>> fetchVotes() async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var table = document.getElementsByClassName('bmtable')[0];
+    var tables = document.getElementsByClassName('bmtable');
+
+    if(tables.isEmpty){
+      return songs;
+    }
+
+    var table = tables[0];
     var trs = table.children[0].children;
     trs.removeAt(0); //remove header
     for (var tr in trs) {
