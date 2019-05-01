@@ -58,34 +58,43 @@ class ProgrammeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Demandez le programme'),
-      ),
-      body: Center(
-        child: FutureBuilder<Map<String, List<Song>>>(
-          future: program,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+    return Center(
+      child: FutureBuilder<Map<String, List<Song>>>(
+        future: program,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildView(context, snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
+          // By default, show a loading spinner
+          return CircularProgressIndicator();
+        },
       ),
     );
   }
 
   Widget _buildView(BuildContext context, Map<String, List<Song>> program) {
-    return PageView(
-      children: <Widget>[
-        SongListingWidget(program['next']),
-        SongListingWidget(program['prev']),
-      ],
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Demandez le programme"),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "A venir sur la platine"),
+              Tab(text: "De retrour dans leur bac"),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            SongListingWidget(program['next']),
+            SongListingWidget(program['prev']),
+          ],
+        ),
+      ),
     );
   }
 }
