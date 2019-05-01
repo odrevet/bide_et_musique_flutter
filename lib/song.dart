@@ -7,6 +7,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter_radio/flutter_radio.dart';
 import 'package:flutter/gestures.dart';
+import 'package:share/share.dart';
 import 'main.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
@@ -159,7 +160,6 @@ Future<SongInformations> fetchSongInformations(String songId) async {
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
         comment.author = Account(accountId, accountName);
-        print(tdComment.innerHtml);
         var commentLines = tdComment.innerHtml.split('<br>');
         commentLines.removeAt(0);
         comment.body = commentLines.join();
@@ -280,8 +280,10 @@ class SongPageWidget extends StatelessWidget {
           ),
           PageView(
             children: <Widget>[
-          SingleChildScrollView(child:Html(data: songInformations.lyrics,
-          defaultTextStyle: _fontLyrics)),
+              SingleChildScrollView(
+                  child: Html(
+                      data: songInformations.lyrics,
+                      defaultTextStyle: _fontLyrics)),
               _buildViewComments(context, songInformations.comments),
             ],
           )
@@ -309,6 +311,22 @@ class SongPageWidget extends StatelessWidget {
           .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
     }
 
+    //share song button
+    actions.add(IconButton(
+        icon: Icon(Icons.share),
+        onPressed: () {
+          Share.share(
+              '''En ce moment j'écoute '${song.title}' sur bide et musique !
+          
+Tu peut consulter la fiche de cette chanson à l'adresse : 
+http://bide-et-musique.com/song/${song.id}.html
+          
+--------
+Message envoyé avec l'application 'bide et musique flutter pour android'
+https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
+''');
+        }));
+
     return Scaffold(
       appBar: AppBar(title: Text(song.title), actions: actions),
       body: nestedScrollView,
@@ -334,7 +352,7 @@ class SongPageWidget extends StatelessWidget {
                 image: NetworkImage(
                     '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
-          title: Html(data:comment.body),
+          title: Html(data: comment.body),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }
 
