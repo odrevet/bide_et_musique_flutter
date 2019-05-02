@@ -465,7 +465,7 @@ class SongInformationWidget extends StatelessWidget {
                             ),
                             body: Center(
                               child: SongListingFutureWidget(
-                                  fetchSearchSong(_songInformations.artists, '4')),
+                                  fetchSearchSong(_songInformations.artists, '2')),
                             ),
                           ))),
                 }));
