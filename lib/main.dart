@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_radio/flutter_radio.dart';
 import 'program.dart';
 import 'wall.dart';
 import 'playerWidget.dart';
@@ -8,8 +9,9 @@ import 'pochettoscope.dart';
 import 'about.dart';
 import 'searchWidget.dart';
 import 'newSongs.dart';
+import 'nowSong.dart';
 import 'ident.dart';
-import 'package:flutter_radio/flutter_radio.dart';
+
 
 Future<void> audioStart() async {
   await FlutterRadio.audioStart();
@@ -123,6 +125,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     MaterialPageRoute(
                         builder: (context) =>
                             ProgrammeWidget(program: fetchTitles())));
+              },
+            ),
+            ListTile(
+              title: Text('Chanson du moment'),
+              leading: Icon(Icons.access_alarms),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NowSongsWidget(nowSongs: fetchNowSongs())));
               },
             ),
             ListTile(
