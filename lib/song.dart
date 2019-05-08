@@ -377,7 +377,8 @@ class SongPageWidget extends StatelessWidget {
                 image: NetworkImage(
                     '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
-          title: Html(data: comment.body),
+          title: Html(data: comment.body,
+            onLinkTap: (url){onLinkTap(url);}),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }
 

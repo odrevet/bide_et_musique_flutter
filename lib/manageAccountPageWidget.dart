@@ -80,7 +80,8 @@ class ManageAccountPageWidget extends StatelessWidget {
                 PageView(
                   children: <Widget>[
                     SingleChildScrollView(
-                        child: Html(data: accountInformations.presentation)),
+                        child: Html(data: accountInformations.presentation,
+                            onLinkTap: (url){onLinkTap(url);})),
                     //SongListingWidget(accountInformations.favorites),
                   ],
                 )
