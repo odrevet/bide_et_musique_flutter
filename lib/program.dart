@@ -80,7 +80,7 @@ class ProgrammeWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, Map<String, List<Song>> program) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text("Demandez le programme"),
