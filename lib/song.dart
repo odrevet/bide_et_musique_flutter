@@ -308,8 +308,8 @@ class SongPageWidget extends StatelessWidget {
     //list of actions in the title bar
     var actions = <Widget>[];
 
-    //list of actions in the overflow
-    var actionsOverflow = <Widget>[];
+    //list of actions for sharing
+    var actionsShare = <Widget>[];
 
     //if the song can be listen, add the song player
     if (songInformations.canListen) {
@@ -332,12 +332,12 @@ class SongPageWidget extends StatelessWidget {
           Share.share('$baseUri/stream_${song.id}.php');
         });
 
-    actionsOverflow.add(SongShareIconWidget(song));
-    actionsOverflow.add(listenButton);
+    actionsShare.add(SongShareIconWidget(song));
+    actionsShare.add(listenButton);
 
     //build widget for overflow button
     var popupMenuAction = <PopupMenuEntry<Widget>>[];
-    for (Widget actionWidget in actionsOverflow) {
+    for (Widget actionWidget in actionsShare) {
       popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
     }
 
@@ -346,7 +346,11 @@ class SongPageWidget extends StatelessWidget {
         itemBuilder: (BuildContext context) => popupMenuAction));
 
     return Scaffold(
-      appBar: AppBar(title: Text(song.title), actions: actions),
+      appBar: AppBar(title: Text(song.title),
+          bottom: PreferredSize(
+          child: Row(children: actions),
+    preferredSize: Size(0.0, 20.0),
+    ),),
       body: nestedScrollView,
     );
   }
