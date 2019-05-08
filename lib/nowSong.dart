@@ -9,7 +9,7 @@ import 'song.dart';
 
 class NowSong {
   Song song;
-  String desc;   //description formated in HTML
+  String desc; //description formated in HTML
   String date;
   NowSong();
 }
@@ -23,14 +23,14 @@ Future<List<NowSong>> fetchNowSongs() async {
     dom.Document document = parser.parse(body);
     dom.Element table = document.getElementsByClassName('bmtable')[0];
     var trs = table.getElementsByTagName('tr');
-    trs.removeAt(0);  //remove heading pagination
+    trs.removeAt(0); //remove heading pagination
     trs.removeLast(); //remove leading pagination
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var song = Song();
       song.title = tds[3].children[0].innerHtml;
       song.id = extractSongId(tds[3].children[0].attributes['href']);
-      var nowSong =  NowSong();
+      var nowSong = NowSong();
       nowSong.date = tds[0].innerHtml.trim();
       nowSong.desc = tds[4].innerHtml;
       nowSong.song = song;
@@ -41,7 +41,6 @@ Future<List<NowSong>> fetchNowSongs() async {
     throw Exception('Failed to load now songs');
   }
 }
-
 
 class NowSongsWidget extends StatelessWidget {
   final Future<List<NowSong>> nowSongs;
@@ -83,10 +82,7 @@ class NowSongsWidget extends StatelessWidget {
                     '$baseUri/images/thumb25/${nowSong.song.id}.jpg')),
             backgroundColor: Colors.black12,
           ),
-          title: Html(data:
-          nowSong.song.title + '<br/>' +
-          nowSong.desc
-          ),
+          title: Html(data: nowSong.song.title + '<br/>' + nowSong.desc),
           subtitle: Text('Le ${nowSong.date}')));
     }
 

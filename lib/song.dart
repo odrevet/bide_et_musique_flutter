@@ -349,11 +349,13 @@ class SongPageWidget extends StatelessWidget {
         itemBuilder: (BuildContext context) => popupMenuAction));
 
     return Scaffold(
-      appBar: AppBar(title: Text(song.title),
-          bottom: PreferredSize(
+      appBar: AppBar(
+        title: Text(song.title),
+        bottom: PreferredSize(
           child: Row(children: actions),
-    preferredSize: Size(0.0, 25.0),
-    ),),
+          preferredSize: Size(0.0, 25.0),
+        ),
+      ),
       body: nestedScrollView,
     );
   }
@@ -377,8 +379,11 @@ class SongPageWidget extends StatelessWidget {
                 image: NetworkImage(
                     '$baseUri/images/avatars/${comment.author.id}.jpg')),
           ),
-          title: Html(data: comment.body,
-            onLinkTap: (url){onLinkTap(url);}),
+          title: Html(
+              data: comment.body,
+              onLinkTap: (url) {
+                onLinkTap(url);
+              }),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }
 
@@ -448,14 +453,16 @@ class SongInformationWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
-                            appBar: AppBar(
-                              title: Text('Recherche par année'),
-                            ),
-                            body: Center(
-                              child: SongListingFutureWidget(
-                                  fetchSearchSong(_songInformations.year.toString(), '7')),
-                            ),
-                          ))),
+                                appBar: AppBar(
+                                  title: Text('Recherche par année'),
+                                ),
+                                body: Center(
+                                  child: SongListingFutureWidget(
+                                      fetchSearchSong(
+                                          _songInformations.year.toString(),
+                                          '7')),
+                                ),
+                              ))),
                 }));
     }
 
@@ -468,14 +475,15 @@ class SongInformationWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
-                            appBar: AppBar(
-                              title: Text('Recherche par artiste'),
-                            ),
-                            body: Center(
-                              child: SongListingFutureWidget(
-                                  fetchSearchSong(_songInformations.artists, '2')),
-                            ),
-                          ))),
+                                appBar: AppBar(
+                                  title: Text('Recherche par artiste'),
+                                ),
+                                body: Center(
+                                  child: SongListingFutureWidget(
+                                      fetchSearchSong(
+                                          _songInformations.artists, '2')),
+                                ),
+                              ))),
                 }));
     }
 
@@ -491,18 +499,16 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              Scaffold(
+                          builder: (context) => Scaffold(
                                 appBar: AppBar(
                                   title: Text('Recherche par label'),
                                 ),
                                 body: Center(
                                   child: SongListingFutureWidget(
-                                      fetchSearchSong(_songInformations.label, '5')),
+                                      fetchSearchSong(
+                                          _songInformations.label, '5')),
                                 ),
-                              )
-
-                      )),
+                              ))),
                 }));
     }
 

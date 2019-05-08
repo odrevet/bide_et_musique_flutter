@@ -9,7 +9,7 @@ String stripTags(String htmlString) {
   return parser.parse(document.body.text).documentElement.text;
 }
 
-void onLinkTap(String url){
+void onLinkTap(String url) {
   _launchURL(url);
 }
 
