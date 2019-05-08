@@ -17,6 +17,7 @@ dependencies:
   flutter_html: ^0.9.6
   url_launcher: ^5.0.2
   share: 0.6.1+1
+  shared_preferences: ^0.5.2
 
 dev_dependencies:
   flutter_test:

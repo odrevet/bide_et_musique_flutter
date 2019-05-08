@@ -21,6 +21,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Session session;
   Future<AccountInformations> accountInformations;
 
+
   List<Dismissible> _rows;
 
   @override

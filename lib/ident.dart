@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'utils.dart';
 import 'account.dart';
 import 'manageFavoritesWidget.dart';
@@ -94,6 +95,7 @@ class _IdentWidgetState extends State<IdentWidget> {
   void initState() {
     super.initState();
     _localSession = Session();
+    _read();
   }
 
   @override
@@ -124,6 +126,19 @@ class _IdentWidgetState extends State<IdentWidget> {
     }
   }
 
+  //save or load login
+  _read() async {
+    final prefs = await SharedPreferences.getInstance();
+    _usernameController.text = prefs.getString('login') ?? '';
+    _passwordController.text = prefs.getString('password') ?? '';
+  }
+
+  _save() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('login',  _usernameController.text);
+    prefs.setString('password',  _passwordController.text);
+  }
+
   void _performLogin() {
     String username = _usernameController.text;
     String password = _passwordController.text;
@@ -131,6 +146,7 @@ class _IdentWidgetState extends State<IdentWidget> {
       this.setState(() {
         _session = sendIdent(username, password);
       });
+      _save();
     }
   }
 
