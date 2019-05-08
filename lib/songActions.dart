@@ -196,7 +196,7 @@ class SongShareIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //share song button
     return IconButton(
-        icon: Icon(Icons.share),
+        icon: Icon(Icons.message),
         onPressed: () {
           Share.share(
               '''En ce moment j'écoute '${song.title}' sur bide et musique !

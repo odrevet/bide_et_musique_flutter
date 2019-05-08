@@ -343,6 +343,9 @@ class SongPageWidget extends StatelessWidget {
 
     //overflow menu
     actions.add(PopupMenuButton<Widget>(
+        icon: Icon(
+          Icons.share,
+        ),
         itemBuilder: (BuildContext context) => popupMenuAction));
 
     return Scaffold(
