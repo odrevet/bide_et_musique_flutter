@@ -352,7 +352,7 @@ class SongPageWidget extends StatelessWidget {
       appBar: AppBar(title: Text(song.title),
           bottom: PreferredSize(
           child: Row(children: actions),
-    preferredSize: Size(0.0, 20.0),
+    preferredSize: Size(0.0, 25.0),
     ),),
       body: nestedScrollView,
     );
