@@ -82,7 +82,11 @@ class NowSongsWidget extends StatelessWidget {
                     '$baseUri/images/thumb25/${nowSong.song.id}.jpg')),
             backgroundColor: Colors.black12,
           ),
-          title: Html(data: nowSong.song.title + '<br/>' + nowSong.desc),
+          title: Html(
+              data: nowSong.song.title + '<br/>' + nowSong.desc,
+              onLinkTap: (url) {
+                onLinkTap(url);
+              }),
           subtitle: Text('Le ${nowSong.date}')));
     }
 
