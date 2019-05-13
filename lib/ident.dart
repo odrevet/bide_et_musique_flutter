@@ -102,30 +102,34 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_localSession.id != null) {
-      return Center(child: _buildViewLoggedIn(context, _localSession));
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Connexion à votre compte"),
-        ),
-        body: Center(
-          child: FutureBuilder<Session>(
-            future: _session,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return _buildViewLoggedIn(context, snapshot.data);
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
 
-              // By default, show the login form
-              return _buildViewLoginForm(context);
-            },
-          ),
+    if(_localSession.id != null){
+      return _buildViewLoggedIn(context, _localSession);
+    }
+    else{
+      return Center(
+        child: FutureBuilder<Session>(
+          future: _session,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildViewLoggedIn(context, snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show the login form
+            return Scaffold(
+              appBar: AppBar(
+                title: Text("Connexion à votre compte"),
+              ),
+              body: _buildViewLoginForm(context),
+            );
+          },
         ),
       );
     }
+
+
   }
 
   //save or load login
