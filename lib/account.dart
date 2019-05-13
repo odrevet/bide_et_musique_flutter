@@ -195,7 +195,7 @@ class AccountPageWidget extends StatelessWidget {
                         child: Html(
                             data: accountInformations.presentation,
                             onLinkTap: (url) {
-                              onLinkTap(url);
+                              onLinkTap(url, context);
                             })),
                     SongListingWidget(accountInformations.favorites),
                   ],

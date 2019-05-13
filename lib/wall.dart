@@ -110,7 +110,7 @@ class WallWidget extends StatelessWidget {
               data: post.body,
               //style: _font,
               onLinkTap: (url) {
-                onLinkTap(url);
+                onLinkTap(url, context);
               }),
           subtitle: Text(
               'Par ' + post.author.name + ' pendant ' + post.during.title)));

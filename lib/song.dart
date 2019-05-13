@@ -20,12 +20,13 @@ class Song {
   String title;
   String artist;
 
-  Song();
+  Song({this.id = '', this.title = ''});
 }
 
 /// information available on the song page
 class SongInformations {
   int year;
+  String title;
   String artists;
   String author;
   String length;
@@ -39,7 +40,8 @@ class SongInformations {
   bool hasVote;
 
   SongInformations(
-      {this.year,
+      {this.title,
+        this.year,
       this.artists,
       this.author,
       this.length,
@@ -50,6 +52,7 @@ class SongInformations {
   factory SongInformations.fromJson(Map<String, dynamic> json) {
     final String lyrics = json['lyrics'];
     return SongInformations(
+      title: json['name'],
         year: json['year'],
         artists: stripTags(json['artists']['main']['alias']),
         author: json['author'],
@@ -223,9 +226,13 @@ class SongPageWidget extends StatelessWidget {
             return Text("${snapshot.error}");
           }
 
+          var loadingMessage = 'Chargement';
+          if (song.title.isNotEmpty){
+            loadingMessage += ' de ${song.title}';
+          }
           return Scaffold(
             appBar: AppBar(
-              title: Text('Chargement de ${song.title}'),
+              title: Text(loadingMessage),
             ),
             body: Center(
               child: CircularProgressIndicator(),
@@ -350,7 +357,7 @@ class SongPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(song.title),
+        title: Text(songInformations.title),
         bottom: PreferredSize(
           child: Row(children: actions),
           preferredSize: Size(0.0, 25.0),
@@ -382,7 +389,7 @@ class SongPageWidget extends StatelessWidget {
           title: Html(
               data: comment.body,
               onLinkTap: (url) {
-                onLinkTap(url);
+                onLinkTap(url, context);
               }),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
     }

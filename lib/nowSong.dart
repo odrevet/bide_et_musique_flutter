@@ -85,7 +85,7 @@ class NowSongsWidget extends StatelessWidget {
           title: Html(
               data: nowSong.song.title + '<br/>' + nowSong.desc,
               onLinkTap: (url) {
-                onLinkTap(url);
+                onLinkTap(url, context);
               }),
           subtitle: Text('Le ${nowSong.date}')));
     }
