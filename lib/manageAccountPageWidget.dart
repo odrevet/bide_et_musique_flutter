@@ -70,21 +70,24 @@ class ManageAccountPageWidget extends StatelessWidget {
             flex: 7,
             child: Container(
               child: Stack(children: [
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
-                  ),
-                ),
                 PageView(
                   children: <Widget>[
-                    SingleChildScrollView(
-                        child: Html(
-                            data: accountInformations.presentation,
-                            onLinkTap: (url) {
-                              onLinkTap(url, context);
-                            })),
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Stack(children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200.withOpacity(0.7)),
+                        ),
+                        SingleChildScrollView(
+                            child: Html(
+                                data: accountInformations.presentation,
+                                onLinkTap: (url) {
+                                  onLinkTap(url, context);
+                                })),
+                      ]),
+                    )
+
                     //SongListingWidget(accountInformations.favorites),
                   ],
                 )
