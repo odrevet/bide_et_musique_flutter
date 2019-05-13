@@ -20,34 +20,31 @@ Song songFromTr(dom.Element tr) {
 }
 
 Future<Map<String, List<Song>>> fetchTitles() async {
-  final url = '$baseUri/programmes.php';
+  final url = '$baseUri/programme-webradio.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    List<dom.Node> tables = document.getElementsByClassName('bmtable');
-
-    // table 0 'Demandez le programme'
-    // table 1 'Morceau du moment'
-    // table 2 'Les titres à venir'
-    // table 3 'Ce qui est passé tout à l'heure'
+    
     var songsNext = <Song>[];
-    var trsNext = tables[1].children[0].children;
-    trsNext.removeLast();
+    var tableNext = document.getElementById('BM_next_songs').children[1];
+    var trsNext = tableNext.getElementsByTagName('tr');
+    trsNext.removeLast();   //remove trailling message
     for (dom.Element tr in trsNext) {
       var song = songFromTr(tr);
       songsNext.add(song);
     }
 
-    var songsPrev = <Song>[];
-    var trsPrev = tables[2].children[0].children;
-    trsPrev.removeLast();
-    for (dom.Element tr in trsPrev) {
+    var songsPast = <Song>[];
+    var tablePast = document.getElementById('BM_past_songs').children[1];
+    var trsPast = tablePast.getElementsByTagName('tr');
+    trsPast.removeLast();   //remove show more button
+    for (dom.Element tr in trsPast) {
       var song = songFromTr(tr);
-      songsPrev.add(song);
+      songsPast.add(song);
     }
 
-    return {'next': songsNext, 'prev': songsPrev};
+    return {'next': songsNext, 'past': songsPast};
   } else {
     throw Exception('Failed to load program');
   }
@@ -96,7 +93,7 @@ class ProgrammeWidget extends StatelessWidget {
         body: TabBarView(
           children: [
             SongListingWidget(program['next']),
-            SongListingWidget(program['prev']),
+            SongListingWidget(program['past']),
           ],
         ),
       ),
