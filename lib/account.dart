@@ -148,7 +148,6 @@ class AccountPageWidget extends StatelessWidget {
     final url = baseUri + accountInformations.avatar;
     final image = NetworkImage(url);
 
-
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -159,125 +158,58 @@ class AccountPageWidget extends StatelessWidget {
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
                 background: Row(children: [
-                  Expanded(
-                      flex: 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.network(url),
-                          Expanded(
-                            child: Text(
-                                accountInformations.type +
-                                    '\n' +
-                                    accountInformations.inscription +
-                                    '\n' +
-                                    accountInformations.messageForum +
-                                    '\n' +
-                                    accountInformations.comments +
-                                    '\n',
-                                style: TextStyle(fontSize: 14)),
-                          )
-                        ],
-                      ))
-                ])),
+              Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image.network(url),
+                      Expanded(
+                        child: Text(
+                            accountInformations.type +
+                                '\n' +
+                                accountInformations.inscription +
+                                '\n' +
+                                accountInformations.messageForum +
+                                '\n' +
+                                accountInformations.comments +
+                                '\n',
+                            style: TextStyle(fontSize: 14)),
+                      )
+                    ],
+                  ))
+            ])),
           ),
         ];
       },
       body: Center(
           child: Container(
-            child: Stack(children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  decoration:
+        child: Stack(children: [
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              decoration:
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
-                ),
-              ),
-              PageView(
-                children: <Widget>[
-                  SingleChildScrollView(
-                      child: Html(
-                          data: accountInformations.presentation)),
-                  SongListingWidget(accountInformations.favorites)
-                ],
-              )
-            ]),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  alignment: FractionalOffset.topCenter,
-                  image: NetworkImage(url),
-                )),
-          )),
+            ),
+          ),
+          PageView(
+            children: <Widget>[
+              SingleChildScrollView(
+                  child: Html(data: accountInformations.presentation)),
+              SongListingWidget(accountInformations.favorites)
+            ],
+          )
+        ]),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.fill,
+          alignment: FractionalOffset.topCenter,
+          image: NetworkImage(url),
+        )),
+      )),
     );
 
     return nestedScrollView;
-
-
-    return Container(
-      color: Theme.of(context).canvasColor,
-      child: Center(
-          child: Column(
-        children: <Widget>[
-          Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                      child: InkWell(
-                          onTap: () {
-                            //_openAvatarViewerDialog(context, image);
-                          },
-                          child: Image.network(url))),
-                  Expanded(
-                    child: Text(
-                        accountInformations.type +
-                            '\n' +
-                            accountInformations.inscription +
-                            '\n' +
-                            accountInformations.messageForum +
-                            '\n' +
-                            accountInformations.comments +
-                            '\n',
-                        style: TextStyle(fontSize: 14)),
-                  ),
-                ],
-              )),
-          Expanded(
-            flex: 7,
-            child: Container(
-              child: Stack(children: [
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
-                  ),
-                ),
-                PageView(
-                  children: <Widget>[
-                    SingleChildScrollView(
-                        child: Html(
-                            data: accountInformations.presentation,
-                            onLinkTap: (url) {
-                              onLinkTap(url, context);
-                            })),
-                    SongListingWidget(accountInformations.favorites),
-                  ],
-                )
-              ]),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.fill,
-                alignment: FractionalOffset.topCenter,
-                image: image,
-              )),
-            ),
-          ),
-        ],
-      )),
-    );
   }
 }
 

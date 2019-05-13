@@ -18,8 +18,7 @@ Future<List<Post>> fetchPosts() async {
     dom.Element wall = document.getElementById('mur');
     for (dom.Element msg in wall.getElementsByClassName('murmsg')) {
       var post = Post();
-      post.body =
-          msg.getElementsByClassName('corpsmsg')[0].innerHtml;
+      post.body = msg.getElementsByClassName('corpsmsg')[0].innerHtml;
 
       var basmsg = msg.getElementsByClassName('basmsg')[0];
 
@@ -119,4 +118,3 @@ class WallWidget extends StatelessWidget {
     return ListView(children: rows);
   }
 }
-

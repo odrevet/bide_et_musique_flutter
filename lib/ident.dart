@@ -156,7 +156,7 @@ class _IdentWidgetState extends State<IdentWidget> {
     });
   }
 
-  _clearSettings() async{
+  _clearSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _usernameController.text = '';
@@ -165,7 +165,6 @@ class _IdentWidgetState extends State<IdentWidget> {
       prefs.setString('password', _passwordController.text);
     });
   }
-
 
   void _performLogin() {
     String username = _usernameController.text;
@@ -176,7 +175,7 @@ class _IdentWidgetState extends State<IdentWidget> {
         _session = sendIdent(username, password);
       });
 
-      if(_remember == true){
+      if (_remember == true) {
         _saveSettings();
       }
     }
@@ -224,8 +223,8 @@ class _IdentWidgetState extends State<IdentWidget> {
     );
   }
 
-  void _onRememberToggle(bool value){
-    setState((){
+  void _onRememberToggle(bool value) {
+    setState(() {
       _remember = value;
       _saveRemember();
     });
@@ -248,8 +247,10 @@ class _IdentWidgetState extends State<IdentWidget> {
                   decoration: InputDecoration(
                     hintText: 'Mot de passe',
                   )),
-              CheckboxListTile(title: Text("Se souvenir des identifiants"),
-                  value: _remember, onChanged: _onRememberToggle),
+              CheckboxListTile(
+                  title: Text("Se souvenir des identifiants"),
+                  value: _remember,
+                  onChanged: _onRememberToggle),
               Container(
                 child: RaisedButton(
                     shape: RoundedRectangleBorder(

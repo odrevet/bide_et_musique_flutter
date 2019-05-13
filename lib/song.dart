@@ -41,7 +41,7 @@ class SongInformations {
 
   SongInformations(
       {this.title,
-        this.year,
+      this.year,
       this.artists,
       this.author,
       this.length,
@@ -52,7 +52,7 @@ class SongInformations {
   factory SongInformations.fromJson(Map<String, dynamic> json) {
     final String lyrics = json['lyrics'];
     return SongInformations(
-      title: json['name'],
+        title: json['name'],
         year: json['year'],
         artists: stripTags(json['artists']['main']['alias']),
         author: json['author'],
@@ -227,7 +227,7 @@ class SongPageWidget extends StatelessWidget {
           }
 
           var loadingMessage = 'Chargement';
-          if (song.title.isNotEmpty){
+          if (song.title.isNotEmpty) {
             loadingMessage += ' de ${song.title}';
           }
           return Scaffold(
