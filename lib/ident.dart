@@ -90,12 +90,14 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _remember = false;
 
   @override
   void initState() {
     super.initState();
     _localSession = Session();
-    _read();
+    _loadRemember();
+    _loadSettings();
   }
 
   @override
@@ -127,26 +129,56 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   //save or load login
-  _read() async {
+  _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     _usernameController.text = prefs.getString('login') ?? '';
     _passwordController.text = prefs.getString('password') ?? '';
+    _remember = prefs.getBool('remember') ?? false;
   }
 
-  _save() async {
+  _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('login', _usernameController.text);
     prefs.setString('password', _passwordController.text);
   }
 
+  _loadRemember() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _remember = (prefs.getBool('remember'));
+    });
+  }
+
+  _saveRemember() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool('remember', _remember);
+    });
+  }
+
+  _clearSettings() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _usernameController.text = '';
+      _passwordController.text = '';
+      prefs.setString('login', _usernameController.text);
+      prefs.setString('password', _passwordController.text);
+    });
+  }
+
+
   void _performLogin() {
     String username = _usernameController.text;
     String password = _passwordController.text;
+
     if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
         _session = sendIdent(username, password);
       });
-      _save();
+
+      if(_remember == true){
+        _saveSettings();
+      }
     }
   }
 
@@ -192,6 +224,13 @@ class _IdentWidgetState extends State<IdentWidget> {
     );
   }
 
+  void _onRememberToggle(bool value){
+    setState((){
+      _remember = value;
+      _saveRemember();
+    });
+  }
+
   Widget _buildViewLoginForm(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(30.0),
@@ -209,6 +248,8 @@ class _IdentWidgetState extends State<IdentWidget> {
                   decoration: InputDecoration(
                     hintText: 'Mot de passe',
                   )),
+              CheckboxListTile(title: Text("Se souvenir des identifiants"),
+                  value: _remember, onChanged: _onRememberToggle),
               Container(
                 child: RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -220,11 +261,19 @@ class _IdentWidgetState extends State<IdentWidget> {
                     color: Colors.orangeAccent),
                 margin: EdgeInsets.only(top: 20.0),
               ),
+              Divider(),
               Column(children: [
                 Text("Pas de compte ? "),
                 RaisedButton(
                   onPressed: _launchURL,
                   child: Text('En créer un sur bide-et-musique.com'),
+                ),
+              ]),
+              Divider(),
+              Column(children: [
+                RaisedButton(
+                  onPressed: _clearSettings,
+                  child: Text('Oublier les identifiants'),
                 ),
               ])
             ],
