@@ -32,15 +32,17 @@ Future<Map<String, List<Song>>> fetchTitles() async {
     // table 2 'Les titres à venir'
     // table 3 'Ce qui est passé tout à l'heure'
     var songsNext = <Song>[];
-    for (dom.Element tr in tables[2].children[0].children) {
+    var trsNext = tables[1].children[0].children;
+    trsNext.removeLast();
+    for (dom.Element tr in trsNext) {
       var song = songFromTr(tr);
       songsNext.add(song);
     }
 
     var songsPrev = <Song>[];
-    var trs = tables[3].children[0].children;
-    trs.removeLast();
-    for (dom.Element tr in trs) {
+    var trsPrev = tables[2].children[0].children;
+    trsPrev.removeLast();
+    for (dom.Element tr in trsPrev) {
       var song = songFromTr(tr);
       songsPrev.add(song);
     }
