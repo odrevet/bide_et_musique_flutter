@@ -149,7 +149,7 @@ class _IdentWidgetState extends State<IdentWidget> {
   _loadRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _remember = (prefs.getBool('remember'));
+      _remember = (prefs.getBool('remember') ?? false);
     });
   }
 
