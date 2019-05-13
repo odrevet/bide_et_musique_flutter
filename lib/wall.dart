@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:flutter_html/flutter_html.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'account.dart';
@@ -18,7 +19,7 @@ Future<List<Post>> fetchPosts() async {
     for (dom.Element msg in wall.getElementsByClassName('murmsg')) {
       var post = Post();
       post.body =
-          stripTags(msg.getElementsByClassName('corpsmsg')[0].innerHtml);
+          msg.getElementsByClassName('corpsmsg')[0].innerHtml;
 
       var basmsg = msg.getElementsByClassName('basmsg')[0];
 
@@ -105,10 +106,12 @@ class WallWidget extends StatelessWidget {
                 image: NetworkImage(
                     '$baseUri/images/avatars/${post.author.id}.jpg')),
           ),
-          title: Text(
-            stripTags(post.body),
-            style: _font,
-          ),
+          title: Html(
+              data: post.body,
+              //style: _font,
+              onLinkTap: (url) {
+                onLinkTap(url);
+              }),
           subtitle: Text(
               'Par ' + post.author.name + ' pendant ' + post.during.title)));
     }
@@ -116,3 +119,4 @@ class WallWidget extends StatelessWidget {
     return ListView(children: rows);
   }
 }
+
