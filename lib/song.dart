@@ -76,7 +76,12 @@ class Comment {
 String extractSongId(str) {
   final idRegex = RegExp(r'/song/(\d+).html');
   var match = idRegex.firstMatch(str);
-  return match[1];
+  if(match != null){
+    return match[1];
+  }
+  else {
+    return null;
+  }
 }
 
 class SongCardWidget extends StatelessWidget {
@@ -88,12 +93,15 @@ class SongCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SongPageWidget(
-                    song: song,
-                    songInformations: fetchSongInformations(song.id))));
+        if(song.id != null){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SongPageWidget(
+                      song: song,
+                      songInformations: fetchSongInformations(song.id))));
+        }
+
       },
       onLongPress: () {
         Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -428,12 +436,15 @@ class SongListingWidgetState extends State<SongListingWidget> {
         ),
         subtitle: Text(song.artist == null ? '' : song.artist),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SongPageWidget(
-                      song: song,
-                      songInformations: fetchSongInformations(song.id))));
+          if(song.id != null){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SongPageWidget(
+                        song: song,
+                        songInformations: fetchSongInformations(song.id))));
+          }
+
         },
       ));
     }

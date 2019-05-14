@@ -7,20 +7,21 @@ import 'song.dart';
 import 'utils.dart';
 
 Song songFromTr(dom.Element tr) {
-  //td 0 program
+  //td 0 program / date
   //td 1 cover
   //td 2 artist
   //td 3 song
   var song = Song();
   var href = tr.children[3].innerHtml;
+  print('HREF IS -> ' + href);
   song.id = extractSongId(href);
-  song.artist = stripTags(tr.children[2].children[0].innerHtml);
+  song.artist = stripTags(tr.children[2].innerHtml);
   song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
   return song;
 }
 
 Future<Map<String, List<Song>>> fetchTitles() async {
-  final url = '$baseUri/programme-webradio.html';
+  final url = '$baseUri/programmes.php';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -29,7 +30,6 @@ Future<Map<String, List<Song>>> fetchTitles() async {
     var songsNext = <Song>[];
     var tableNext = document.getElementById('BM_next_songs').children[1];
     var trsNext = tableNext.getElementsByTagName('tr');
-    trsNext.removeLast();   //remove trailling message
     for (dom.Element tr in trsNext) {
       var song = songFromTr(tr);
       songsNext.add(song);
