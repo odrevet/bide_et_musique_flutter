@@ -76,10 +76,9 @@ class Comment {
 String extractSongId(str) {
   final idRegex = RegExp(r'/song/(\d+).html');
   var match = idRegex.firstMatch(str);
-  if(match != null){
+  if (match != null) {
     return match[1];
-  }
-  else {
+  } else {
     return null;
   }
 }
@@ -93,7 +92,7 @@ class SongCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(song.id != null){
+        if (song.id != null) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -101,7 +100,6 @@ class SongCardWidget extends StatelessWidget {
                       song: song,
                       songInformations: fetchSongInformations(song.id))));
         }
-
       },
       onLongPress: () {
         Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -436,7 +434,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
         ),
         subtitle: Text(song.artist == null ? '' : song.artist),
         onTap: () {
-          if(song.id != null){
+          if (song.id != null) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -444,7 +442,6 @@ class SongListingWidgetState extends State<SongListingWidget> {
                         song: song,
                         songInformations: fetchSongInformations(song.id))));
           }
-
         },
       ));
     }

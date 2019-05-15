@@ -102,11 +102,9 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(_localSession.id != null){
+    if (_localSession.id != null) {
       return _buildViewLoggedIn(context, _localSession);
-    }
-    else{
+    } else {
       return Center(
         child: FutureBuilder<Session>(
           future: _session,
@@ -128,8 +126,6 @@ class _IdentWidgetState extends State<IdentWidget> {
         ),
       );
     }
-
-
   }
 
   //save or load login

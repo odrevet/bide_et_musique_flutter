@@ -25,7 +25,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    
+
     var songsNext = <Song>[];
     var tableNext = document.getElementById('BM_next_songs').children[1];
     var trsNext = tableNext.getElementsByTagName('tr');
@@ -37,7 +37,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
     var songsPast = <Song>[];
     var tablePast = document.getElementById('BM_past_songs').children[1];
     var trsPast = tablePast.getElementsByTagName('tr');
-    trsPast.removeLast();   //remove show more button
+    trsPast.removeLast(); //remove show more button
     for (dom.Element tr in trsPast) {
       var song = songFromTr(tr);
       songsPast.add(song);
