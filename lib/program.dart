@@ -13,7 +13,6 @@ Song songFromTr(dom.Element tr) {
   //td 3 song
   var song = Song();
   var href = tr.children[3].innerHtml;
-  print('HREF IS -> ' + href);
   song.id = extractSongId(href);
   song.artist = stripTags(tr.children[2].innerHtml);
   song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
