@@ -365,7 +365,7 @@ class SongPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(songInformations.title),
+        title: Text(stripTags(songInformations.title)),
         bottom: PreferredSize(
           child: Row(children: actions),
           preferredSize: Size(0.0, 25.0),
