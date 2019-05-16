@@ -23,6 +23,14 @@ class Song {
   Song({this.id = '', this.title = ''});
 }
 
+class Comment {
+  Account author;
+  String body;
+  String time;
+
+  Comment();
+}
+
 /// information available on the song page
 class SongInformations {
   int year;
@@ -63,14 +71,6 @@ class SongInformations {
             ? 'Paroles non renseignées pour cette chanson '
             : lyrics);
   }
-}
-
-class Comment {
-  Account author;
-  String body;
-  String time;
-
-  Comment();
 }
 
 String extractSongId(str) {

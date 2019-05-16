@@ -49,10 +49,10 @@ Future<Map<String, List<Song>>> fetchTitles() async {
   }
 }
 
-class ProgrammeWidget extends StatelessWidget {
+class TitlesWidget extends StatelessWidget {
   final Future<Map<String, List<Song>>> program;
 
-  ProgrammeWidget({Key key, this.program}) : super(key: key);
+  TitlesWidget({Key key, this.program}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class ProgrammeWidget extends StatelessWidget {
 
           // By default, show a loading spinner
           return Scaffold(
-            appBar: AppBar(title: Text("Chargement des programmes")),
+            appBar: AppBar(title: Text("Chargement des titres")),
             body: CircularProgressIndicator(),
           );
         },
@@ -81,7 +81,7 @@ class ProgrammeWidget extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Demandez le programme"),
+          title: Text("Les titres"),
           bottom: TabBar(
             tabs: [
               Tab(text: "A venir sur la platine"),

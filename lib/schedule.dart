@@ -1,0 +1,130 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' as parser;
+import 'song.dart';
+import 'utils.dart';
+
+class Program {
+  String id;
+  String name;
+  String description;
+  List<String> airedOn;
+  List<String> inMeta;
+  List<Song> songs;
+
+}
+
+class DaySchedule{
+  String day;
+  List<ScheduleEntry> entries;
+  DaySchedule();
+}
+
+class ScheduleEntry{
+  String id;
+  String title;
+  String time;
+  String duration;
+  ScheduleEntry();
+}
+
+String extractProgramId(str) {
+  final idRegex = RegExp(r'/program/(\d+).html');
+  var match = idRegex.firstMatch(str);
+  if (match != null) {
+    return match[1];
+  } else {
+    return null;
+  }
+}
+
+Future<List<DaySchedule>> fetchSchedule() async {
+  final url = '$baseUri/grille.html';
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+
+    var schedule = <DaySchedule>[];
+
+    var table = document.getElementsByClassName('bmtable')[0];
+    var trs = table.getElementsByTagName('tr');
+
+    var daySchedule;
+    for(dom.Element tr in trs){
+      //each class named 'titre' is a new day in the schedule
+      if(tr.classes.first == 'titre'){
+        daySchedule = DaySchedule();
+        daySchedule.day = tr.children[0].innerHtml;
+        daySchedule.entries = <ScheduleEntry>[];
+        schedule.add(daySchedule);
+      }
+      else{
+        var scheduleEntry = ScheduleEntry();
+        var tds = tr.getElementsByTagName('td');
+        scheduleEntry.id = extractProgramId(tds[1].children[0].attributes['href']);
+        scheduleEntry.title = stripTags(tds[1].children[0].innerHtml);
+        scheduleEntry.time = stripTags(tds[0].innerHtml);
+        scheduleEntry.duration = tds[2].innerHtml;
+
+        daySchedule.entries.add(scheduleEntry);
+      }
+    }
+
+    return schedule;
+
+  } else {
+    throw Exception('Failed to load schedule');
+  }
+}
+
+class ScheduleWidget extends StatelessWidget {
+  final Future<List<DaySchedule>> schedule;
+
+  ScheduleWidget({Key key, this.schedule}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FutureBuilder<List<DaySchedule>>(
+        future: schedule,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildView(context, snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner
+          return Scaffold(
+            appBar: AppBar(title: Text("Chargement de la programmation")),
+            body: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildView(BuildContext context, List<DaySchedule> daySchedules) {
+    var rows = <ListTile>[];
+
+    for (DaySchedule daySchedule in daySchedules) {
+      rows.add(ListTile(
+          title: Text(daySchedule.day)));
+
+      for (ScheduleEntry scheduleEntry in daySchedule.entries) {
+        rows.add(ListTile(
+            title: Text(scheduleEntry.title),
+        subtitle: Text(scheduleEntry.duration),
+        ));
+      }
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text("Demandez le programme ! ")),
+      body: ListView(children: rows),
+    );
+  }
+}

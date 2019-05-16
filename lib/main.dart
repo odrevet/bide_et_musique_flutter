@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_radio/flutter_radio.dart';
-import 'program.dart';
+import 'titles.dart';
 import 'wall.dart';
 import 'playerWidget.dart';
 import 'nowPlaying.dart';
@@ -11,6 +11,7 @@ import 'searchWidget.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
 import 'ident.dart';
+import 'schedule.dart';
 
 Future<void> audioStart() async {
   await FlutterRadio.audioStart();
@@ -116,14 +117,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               },
             ),
             ListTile(
-              title: Text('Programme'),
+              title: Text('Titres'),
               leading: Icon(Icons.album),
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ProgrammeWidget(program: fetchTitles())));
+                            TitlesWidget(program: fetchTitles())));
+              },
+            ),
+            ListTile(
+              title: Text('Programmation'),
+              leading: Icon(Icons.music_note),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ScheduleWidget(schedule: fetchSchedule())));
               },
             ),
             ListTile(
