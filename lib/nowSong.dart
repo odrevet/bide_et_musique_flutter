@@ -76,6 +76,7 @@ class NowSongsWidget extends StatelessWidget {
     var rows = <ListTile>[];
     for (NowSong nowSong in nowSongs) {
       rows.add(ListTile(
+          onTap: () => launchSongPage(nowSong.song, context),
           leading: CircleAvatar(
             child: Image(
                 image: NetworkImage(

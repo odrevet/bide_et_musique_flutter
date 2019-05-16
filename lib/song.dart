@@ -433,22 +433,25 @@ class SongListingWidgetState extends State<SongListingWidget> {
           song.title,
         ),
         subtitle: Text(song.artist == null ? '' : song.artist),
-        onTap: () {
-          if (song.id != null) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongPageWidget(
-                        song: song,
-                        songInformations: fetchSongInformations(song.id))));
-          }
-        },
+        onTap: () => launchSongPage(song, context)
       ));
     }
 
     return ListView(children: rows);
   }
 }
+
+void launchSongPage(Song song, BuildContext context){
+  if (song.id != null) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SongPageWidget(
+                song: song,
+                songInformations: fetchSongInformations(song.id))));
+  }
+}
+
 
 class SongInformationWidget extends StatelessWidget {
   final SongInformations _songInformations;
