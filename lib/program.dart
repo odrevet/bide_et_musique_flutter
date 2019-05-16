@@ -2,76 +2,83 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_html/flutter_html.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'dart:convert';
 
-Future<Artist> fetchArtist(String artistId) async {
+class Program {
+  String id;
+  String name;
+  String description;
+  List<String> airedOn;
+  List<String> inMeta;
+  List<Song> songs;
+
+  Program({this.id, this.name, this.description, this.airedOn, this.songs});
+
+  factory Program.fromJson(Map<String, dynamic> json) {
+    var songs = <Song>[];
+    for(var songEntry in json['songs']){
+      var song = Song();
+      song.id = songEntry['song_id'].toString();
+      song.title = songEntry['name'];
+      song.artist = songEntry['alias'];
+      songs.add(song);
+    }
+
+    return Program(
+        id: json['id'].toString(),
+        name: json['name'],
+      description: json['description'],
+      songs: songs
+    );
+  }
+
+}
+
+
+Future<Program> fetchProgram(String programId) async {
   var artist;
-  final url = '$baseUri/artist/$artistId';
+  final url = '$baseUri/program/$programId';
 
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
     try {
-      artist = Artist.fromJson(
+      artist = Program.fromJson(
           json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      print('Error while decoding artist informations : ' + e.toString());
+      print('Error while decoding Program informations : ' + e.toString());
     }
   } else {
-    throw Exception('Failed to load artist informations');
+    throw Exception('Failed to load Program informations');
   }
 
   return artist;
 }
 
-String extractArtistId(str) {
-  final idRegex = RegExp(r'/artist/(\d+).html');
+String extractProgramId(str) {
+  final idRegex = RegExp(r'/program/(\d+).html');
   var match = idRegex.firstMatch(str);
-  return match[1];
-}
-
-
-class Artist {
-  String id;
-  String alias;
-  String firstName;
-  String lastName;
-  String site;
-  List<Song> disco;
-
-  Artist({this.id, this.alias, this.site, this.disco});
-
-  factory Artist.fromJson(Map<String, dynamic> json) {
-    var disco = <Song>[];
-    for(var discoEntry in json['disco']){
-      var song = Song();
-      song.id = discoEntry['id'].toString();
-      song.title = discoEntry['name'];
-      disco.add(song);
-    }
-
-    return Artist(
-        id: json['id'].toString(),
-        alias: json['alias'],
-        site: json['site'],
-      disco: disco
-    );
+  if (match != null) {
+    return match[1];
+  } else {
+    return null;
   }
 }
 
 
-class ArtistPageWidget extends StatelessWidget {
-  final Future<Artist> artist;
+class ProgramPageWidget extends StatelessWidget {
+  final Future<Program> program;
 
-  ArtistPageWidget({Key key, this.artist}) : super(key: key);
+  ProgramPageWidget({Key key, this.program}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<Artist>(
-        future: artist,
+      child: FutureBuilder<Program>(
+        future: program,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -94,8 +101,8 @@ class ArtistPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Artist artist) {
-    var urlCover = '$baseUri/images/photos/ART${artist.id}.jpg';
+  Widget _buildView(BuildContext context, Program program) {
+    var urlCover = '$baseUri/images/photos/TODO.jpg';
     final _fontLyrics = TextStyle(fontSize: 20.0);
 
     var nestedScrollView = NestedScrollView(
@@ -107,19 +114,7 @@ class ArtistPageWidget extends StatelessWidget {
             automaticallyImplyLeading: false,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-                background: Row(children: [
-                  Expanded(
-                      flex: 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                              child: InkWell(
-                                  child: Image.network(urlCover))),
-                          Expanded(child: Text(artist.alias)),
-                        ],
-                      ))
-                ])),
+                background:  Html(data: program.description)),
           ),
         ];
       },
@@ -133,7 +128,7 @@ class ArtistPageWidget extends StatelessWidget {
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
                 ),
               ),
-              SongListingWidget(artist.disco)
+              SongListingWidget(program.songs)
             ]),
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -148,7 +143,7 @@ class ArtistPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(stripTags(artist.alias)),
+        title: Text(stripTags(program.name)),
       ),
       body: nestedScrollView,
     );

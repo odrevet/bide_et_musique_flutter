@@ -3,18 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'song.dart';
 import 'utils.dart';
-
-class Program {
-  String id;
-  String name;
-  String description;
-  List<String> airedOn;
-  List<String> inMeta;
-  List<Song> songs;
-
-}
+import 'program.dart';
 
 class DaySchedule{
   String day;
@@ -28,16 +18,6 @@ class ScheduleEntry{
   String time;
   String duration;
   ScheduleEntry();
-}
-
-String extractProgramId(str) {
-  final idRegex = RegExp(r'/program/(\d+).html');
-  var match = idRegex.firstMatch(str);
-  if (match != null) {
-    return match[1];
-  } else {
-    return null;
-  }
 }
 
 Future<List<DaySchedule>> fetchSchedule() async {
@@ -116,8 +96,17 @@ class ScheduleWidget extends StatelessWidget {
 
       for (ScheduleEntry scheduleEntry in daySchedule.entries) {
         rows.add(ListTile(
-            title: Text(scheduleEntry.title),
+            title: Text(scheduleEntry.time + ' : ' + scheduleEntry.title),
         subtitle: Text(scheduleEntry.duration),
+            onTap: () {
+              if (scheduleEntry.id != null) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProgramPageWidget(
+                            program: fetchProgram(scheduleEntry.id))));
+              }
+            }
         ));
       }
     }
