@@ -48,7 +48,7 @@ class Artist {
     for(var discoEntry in json['disco']){
       var song = Song();
       song.id = discoEntry['id'].toString();
-      song.title = discoEntry['name'];
+      song.title = stripTags(discoEntry['name']);
       disco.add(song);
     }
 
