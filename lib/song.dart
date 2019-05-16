@@ -14,6 +14,7 @@ import 'account.dart';
 import 'ident.dart';
 import 'searchWidget.dart' show fetchSearchSong;
 import 'songActions.dart';
+import 'artist.dart';
 
 class Song {
   String id;
@@ -36,6 +37,7 @@ class SongInformations {
   int year;
   String title;
   String artists;
+  String artistId;
   String author;
   String length;
   String label;
@@ -51,6 +53,7 @@ class SongInformations {
       {this.title,
       this.year,
       this.artists,
+        this.artistId,
       this.author,
       this.length,
       this.label,
@@ -63,6 +66,7 @@ class SongInformations {
         title: json['name'],
         year: json['year'],
         artists: stripTags(json['artists']['main']['alias']),
+        artistId: json['artists']['main']['id'].toString(),
         author: json['author'],
         length: json['length']['pretty'],
         label: stripTags(json['label']),
@@ -492,16 +496,7 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Scaffold(
-                                appBar: AppBar(
-                                  title: Text('Recherche par artiste'),
-                                ),
-                                body: Center(
-                                  child: SongListingFutureWidget(
-                                      fetchSearchSong(
-                                          _songInformations.artists, '2')),
-                                ),
-                              ))),
+                          builder: (context) => ArtistPageWidget(artist: fetchArtist(_songInformations.artistId)))),
                 }));
     }
 
