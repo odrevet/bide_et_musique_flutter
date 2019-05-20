@@ -58,7 +58,6 @@ class Post {
 
 class WallWidget extends StatelessWidget {
   final Future<List<Post>> posts;
-  final _font = const TextStyle(fontSize: 18.0);
 
   WallWidget({Key key, this.posts}) : super(key: key);
 

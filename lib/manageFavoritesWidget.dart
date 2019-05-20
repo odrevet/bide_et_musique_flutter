@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 import 'song.dart';
-import 'ident.dart';
+import 'identification.dart';
 import 'account.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {

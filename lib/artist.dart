@@ -14,8 +14,8 @@ Future<Artist> fetchArtist(String artistId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      artist = Artist.fromJson(
-          json.decode(utf8.decode(responseJson.bodyBytes)));
+      artist =
+          Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       print('Error while decoding artist informations : ' + e.toString());
     }
@@ -32,7 +32,6 @@ String extractArtistId(str) {
   return match[1];
 }
 
-
 class Artist {
   String id;
   String alias;
@@ -45,7 +44,7 @@ class Artist {
 
   factory Artist.fromJson(Map<String, dynamic> json) {
     var disco = <Song>[];
-    for(var discoEntry in json['disco']){
+    for (var discoEntry in json['disco']) {
       var song = Song();
       song.id = discoEntry['id'].toString();
       song.title = stripTags(discoEntry['name']);
@@ -56,11 +55,9 @@ class Artist {
         id: json['id'].toString(),
         alias: json['alias'],
         site: json['site'],
-      disco: disco
-    );
+        disco: disco);
   }
 }
-
 
 class ArtistPageWidget extends StatelessWidget {
   final Future<Artist> artist;
@@ -96,7 +93,6 @@ class ArtistPageWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, Artist artist) {
     var urlCover = '$baseUri/images/photos/ART${artist.id}.jpg';
-    final _fontLyrics = TextStyle(fontSize: 20.0);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -108,43 +104,39 @@ class ArtistPageWidget extends StatelessWidget {
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
                 background: Row(children: [
-                  Expanded(
-                      flex: 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                              child: InkWell(
-                                  child: Image.network(urlCover))),
-                          Expanded(child: Text(artist.alias)),
-                        ],
-                      ))
-                ])),
+              Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: InkWell(child: Image.network(urlCover))),
+                      Expanded(child: Text(artist.alias)),
+                    ],
+                  ))
+            ])),
           ),
         ];
       },
       body: Center(
           child: Container(
-            child: Stack(children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  decoration:
+        child: Stack(children: [
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              decoration:
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
-                ),
-              ),
-              SongListingWidget(artist.disco)
-            ]),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  alignment: FractionalOffset.topCenter,
-                  image: NetworkImage(urlCover),
-                )),
-          )),
+            ),
+          ),
+          SongListingWidget(artist.disco)
+        ]),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.fill,
+          alignment: FractionalOffset.topCenter,
+          image: NetworkImage(urlCover),
+        )),
+      )),
     );
-
-
 
     return Scaffold(
       appBar: AppBar(

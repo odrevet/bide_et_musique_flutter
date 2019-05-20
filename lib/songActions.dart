@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_radio/flutter_radio.dart';
-import 'main.dart';
-import 'utils.dart';
-import 'ident.dart';
-import 'song.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:share/share.dart';
+import 'utils.dart';
+import 'identification.dart';
+import 'song.dart';
 
-// Actions for the song page titlebar
+/////////////////////////////////////////////////////////////////////////////
+// Actions for the song page title bar
 
 ////////////////////////////////
 //// Add to favorite
@@ -128,25 +128,53 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 }
 
 ////////////////////////////////
+// Share
+
+class SongShareIconWidget extends StatelessWidget {
+  final Song song;
+
+  SongShareIconWidget(this.song, {Key key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    //share song button
+    return IconButton(
+        icon: Icon(Icons.message),
+        onPressed: () {
+          Share.share(
+              '''En ce moment j'écoute '${song.title}' sur bide et musique !
+          
+Tu peux consulter la fiche de cette chanson à l'adresse : 
+http://bide-et-musique.com/song/${song.id}.html
+          
+--------
+Message envoyé avec l'application 'bide et musique flutter pour android'
+https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
+''');
+        });
+  }
+}
+
+////////////////////////////////
 // Player
+
 enum PlayerState { stopped, playing, paused }
 
 class SongPlayerWidget extends StatefulWidget {
-  final String _songId;
-  SongPlayerWidget(this._songId, {Key key}) : super(key: key);
+  final Song song;
+  SongPlayerWidget(this.song, {Key key}) : super(key: key);
 
   @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this._songId);
+  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this.song);
 }
 
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  final String _songId;
+  Song song;
 
   PlayerState playerState = PlayerState.stopped;
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.paused;
 
-  _SongPlayerWidgetState(this._songId);
+  _SongPlayerWidgetState(this.song);
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +191,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       playStopButton = IconButton(
         icon: Icon(Icons.play_arrow),
         onPressed: () {
-          playerWidget.stop();
           play();
         },
       );
@@ -173,41 +200,21 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 
   play() {
-    FlutterRadio.stop();
-    FlutterRadio.play(url: '$baseUri/stream_${this._songId}.php');
+    AudioService.customAction('song', {
+      'id': this.song.id,
+      'title': this.song.title,
+      'artist': this.song.artist
+    });
+    AudioService.play();
     setState(() {
       playerState = PlayerState.playing;
     });
   }
 
   stop() {
-    FlutterRadio.stop();
+    AudioService.stop();
     setState(() {
       playerState = PlayerState.stopped;
     });
-  }
-}
-
-class SongShareIconWidget extends StatelessWidget {
-  final Song song;
-
-  SongShareIconWidget(this.song, {Key key}) : super(key: key);
-
-  Widget build(BuildContext context) {
-    //share song button
-    return IconButton(
-        icon: Icon(Icons.message),
-        onPressed: () {
-          Share.share(
-              '''En ce moment j'écoute '${song.title}' sur bide et musique !
-          
-Tu peut consulter la fiche de cette chanson à l'adresse : 
-http://bide-et-musique.com/song/${song.id}.html
-          
---------
-Message envoyé avec l'application 'bide et musique flutter pour android'
-https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-''');
-        });
   }
 }

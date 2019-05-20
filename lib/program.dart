@@ -19,7 +19,7 @@ class Program {
 
   factory Program.fromJson(Map<String, dynamic> json) {
     var songs = <Song>[];
-    for(var songEntry in json['songs']){
+    for (var songEntry in json['songs']) {
       var song = Song();
       song.id = songEntry['song_id'].toString();
       song.title = songEntry['name'];
@@ -30,13 +30,10 @@ class Program {
     return Program(
         id: json['id'].toString(),
         name: json['name'],
-      description: json['description'],
-      songs: songs
-    );
+        description: json['description'],
+        songs: songs);
   }
-
 }
-
 
 Future<Program> fetchProgram(String programId) async {
   var artist;
@@ -46,8 +43,8 @@ Future<Program> fetchProgram(String programId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      artist = Program.fromJson(
-          json.decode(utf8.decode(responseJson.bodyBytes)));
+      artist =
+          Program.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       print('Error while decoding Program informations : ' + e.toString());
     }
@@ -67,7 +64,6 @@ String extractProgramId(str) {
     return null;
   }
 }
-
 
 class ProgramPageWidget extends StatelessWidget {
   final Future<Program> program;
@@ -102,9 +98,6 @@ class ProgramPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Program program) {
-    var urlCover = '$baseUri/images/photos/TODO.jpg';
-    final _fontLyrics = TextStyle(fontSize: 20.0);
-
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -113,33 +106,25 @@ class ProgramPageWidget extends StatelessWidget {
             expandedHeight: 200.0,
             automaticallyImplyLeading: false,
             floating: true,
-            flexibleSpace: FlexibleSpaceBar(
-                background:  Html(data: program.description)),
+            flexibleSpace:
+                FlexibleSpaceBar(background: Html(data: program.description)),
           ),
         ];
       },
       body: Center(
           child: Container(
-            child: Stack(children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  decoration:
+        child: Stack(children: [
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              decoration:
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
-                ),
-              ),
-              SongListingWidget(program.songs)
-            ]),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  alignment: FractionalOffset.topCenter,
-                  image: NetworkImage(urlCover),
-                )),
-          )),
+            ),
+          ),
+          SongListingWidget(program.songs)
+        ]),
+      )),
     );
-
-
 
     return Scaffold(
       appBar: AppBar(

@@ -1,224 +1,121 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_radio/flutter_radio.dart';
-import 'titles.dart';
-import 'wall.dart';
+import 'package:audio_service/audio_service.dart';
+import 'drawerWidget.dart';
 import 'playerWidget.dart';
 import 'nowPlaying.dart';
-import 'trombidoscope.dart';
-import 'pochettoscope.dart';
-import 'about.dart';
-import 'searchWidget.dart';
-import 'newSongs.dart';
-import 'nowSong.dart';
-import 'ident.dart';
-import 'schedule.dart';
 
-Future<void> audioStart() async {
-  await FlutterRadio.audioStart();
-}
+void main() => runApp(new BideApp());
 
-void main() {
-  audioStart();
-  runApp(BideApp());
-  FlutterRadio.stop();
-}
-
-var playerWidget = PlayerWidget();
-
-class BideApp extends StatelessWidget {
+class BideApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bide & Musique',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        canvasColor: Color.fromARGB(190, 245, 240, 220),
-      ),
-      home: DrawerWidget(),
-    );
-  }
+  _BideAppState createState() => new _BideAppState();
 }
 
-class DrawerWidget extends StatefulWidget {
-  @override
-  _DrawerWidgetState createState() => _DrawerWidgetState();
-}
+class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
+  PlaybackState _state;
+  StreamSubscription _playbackStateSubscription;
 
-class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    connect();
+    AudioService.start(
+      backgroundTask: backgroundAudioPlayerTask,
+      resumeOnClick: true,
+      androidNotificationChannelName: 'Bide&Musique',
+      notificationColor: 0xFFFED152,
+      androidNotificationIcon: 'mipmap/ic_launcher',
+    );
+  }
+
+  @override
+  void dispose() {
+    disconnect();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        connect();
+        break;
+      case AppLifecycleState.paused:
+        disconnect();
+        break;
+      default:
+        break;
+    }
+  }
+
+  void connect() async {
+    await AudioService.connect();
+    if (_playbackStateSubscription == null) {
+      _playbackStateSubscription = AudioService.playbackStateStream
+          .listen((PlaybackState playbackState) {
+        setState(() {
+          _state = playbackState;
+        });
+      });
+    }
+  }
+
+  void disconnect() {
+    if (_playbackStateSubscription != null) {
+      _playbackStateSubscription.cancel();
+      _playbackStateSubscription = null;
+    }
+    AudioService.disconnect();
   }
 
   @override
   Widget build(BuildContext context) {
-    var actions = <Widget>[];
+    var playerControls = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: _state?.basicState == BasicPlaybackState.playing
+          ? [pauseButton(), stopButton()]
+          : _state?.basicState == BasicPlaybackState.paused
+              ? [playButton(), stopButton()]
+              : [playButton()],
+    );
 
-    actions.add(IconButton(
-      icon: Icon(Icons.stop),
-      onPressed: () {
-        playerWidget.stop();
-      },
-    ));
+    var title = 'Bide&Musique';
 
-    return Scaffold(
-        appBar: AppBar(
-          actions: actions,
-          title: Text('Bide&Musique'),
+    var home = Scaffold(
+        appBar: AppBar(title: Text(title)),
+        bottomNavigationBar: BottomAppBar(child: playerControls,
+        color: Colors.orange),
+        drawer: DrawerWidget(),
+        body: NowPlayingWidget());
+
+    return MaterialApp(
+        title: title,
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+          secondaryHeaderColor: Colors.deepOrange,
+          canvasColor: Color.fromARGB(190, 245, 240, 220),
         ),
-        drawer: Drawer(
-            child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Bide&Musique',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.orange,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Colors.black,
-                              ),
-                            ],
-                          )),
-                      TextSpan(
-                          text:
-                              '\nLa web radio de l\'improbable et de l\'inouïe',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.yellow,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Colors.black,
-                              ),
-                            ],
-                          )),
-                    ],
-                  ),
-                ),
-                decoration: BoxDecoration(color: Colors.deepOrange)),
-            ListTile(
-              title: Text('Compte'),
-              leading: Icon(Icons.account_circle),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => IdentWidget()));
-              },
-            ),
-            ListTile(
-              title: Text('Titres'),
-              leading: Icon(Icons.album),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TitlesWidget(program: fetchTitles())));
-              },
-            ),
-            ListTile(
-              title: Text('Programmation'),
-              leading: Icon(Icons.music_note),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ScheduleWidget(schedule: fetchSchedule())));
-              },
-            ),
-            ListTile(
-              title: Text('Chanson du moment'),
-              leading: Icon(Icons.access_alarms),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            NowSongsWidget(nowSongs: fetchNowSongs())));
-              },
-            ),
-            ListTile(
-              title: Text('Recherche'),
-              leading: Icon(Icons.search),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchWidget()));
-              },
-            ),
-            ListTile(
-              title: Text('Mur des messages'),
-              leading: Icon(Icons.message),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => WallWidget(posts: fetchPosts())));
-              },
-            ),
-            ListTile(
-              title: Text('Trombidoscope'),
-              leading: Icon(Icons.apps),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TrombidoscopeWidget(
-                            accounts: fetchTrombidoscope())));
-              },
-            ),
-            ListTile(
-              title: Text('Pochettoscope'),
-              leading: Icon(Icons.apps),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            PochettoscopeWidget(songs: fetchPochettoscope())));
-              },
-            ),
-            ListTile(
-              title: Text('Nouvelles entrées'),
-              leading: Icon(Icons.fiber_new),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SongsWidget(songs: fetchNewSongs())));
-              },
-            ),
-            ListTile(
-              title: Text('A propos'),
-              leading: Icon(Icons.info),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AboutPage()));
-              },
-            ),
-          ],
-        )),
-        body: Container(
-            decoration: BoxDecoration(color: Colors.orange.shade300),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: NowPlayingWidget(),
-                  ),
-                  Expanded(child: playerWidget),
-                ])));
+        home: home);
   }
+
+  IconButton playButton() => IconButton(
+        icon: Icon(Icons.play_arrow),
+        iconSize: 64.0,
+        onPressed: AudioService.play,
+      );
+
+  IconButton pauseButton() => IconButton(
+        icon: Icon(Icons.pause),
+        iconSize: 64.0,
+        onPressed: AudioService.pause,
+      );
+
+  IconButton stopButton() => IconButton(
+        icon: Icon(Icons.stop),
+        iconSize: 64.0,
+        onPressed: AudioService.stop,
+      );
 }

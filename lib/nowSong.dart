@@ -44,7 +44,6 @@ Future<List<NowSong>> fetchNowSongs() async {
 
 class NowSongsWidget extends StatelessWidget {
   final Future<List<NowSong>> nowSongs;
-  final _font = const TextStyle(fontSize: 14.0);
 
   NowSongsWidget({Key key, this.nowSongs}) : super(key: key);
 

@@ -6,13 +6,13 @@ import 'package:html/parser.dart' as parser;
 import 'utils.dart';
 import 'program.dart';
 
-class DaySchedule{
+class DaySchedule {
   String day;
   List<ScheduleEntry> entries;
   DaySchedule();
 }
 
-class ScheduleEntry{
+class ScheduleEntry {
   String id;
   String title;
   String time;
@@ -33,18 +33,18 @@ Future<List<DaySchedule>> fetchSchedule() async {
     var trs = table.getElementsByTagName('tr');
 
     var daySchedule;
-    for(dom.Element tr in trs){
+    for (dom.Element tr in trs) {
       //each class named 'titre' is a new day in the schedule
-      if(tr.classes.first == 'titre'){
+      if (tr.classes.first == 'titre') {
         daySchedule = DaySchedule();
         daySchedule.day = tr.children[0].innerHtml;
         daySchedule.entries = <ScheduleEntry>[];
         schedule.add(daySchedule);
-      }
-      else{
+      } else {
         var scheduleEntry = ScheduleEntry();
         var tds = tr.getElementsByTagName('td');
-        scheduleEntry.id = extractProgramId(tds[1].children[0].attributes['href']);
+        scheduleEntry.id =
+            extractProgramId(tds[1].children[0].attributes['href']);
         scheduleEntry.title = stripTags(tds[1].children[0].innerHtml);
         scheduleEntry.time = stripTags(tds[0].innerHtml);
         scheduleEntry.duration = tds[2].innerHtml;
@@ -54,7 +54,6 @@ Future<List<DaySchedule>> fetchSchedule() async {
     }
 
     return schedule;
-
   } else {
     throw Exception('Failed to load schedule');
   }
@@ -91,13 +90,12 @@ class ScheduleWidget extends StatelessWidget {
     var rows = <ListTile>[];
 
     for (DaySchedule daySchedule in daySchedules) {
-      rows.add(ListTile(
-          title: Text(daySchedule.day)));
+      rows.add(ListTile(title: Text(daySchedule.day)));
 
       for (ScheduleEntry scheduleEntry in daySchedule.entries) {
         rows.add(ListTile(
             title: Text(scheduleEntry.time + ' : ' + scheduleEntry.title),
-        subtitle: Text(scheduleEntry.duration),
+            subtitle: Text(scheduleEntry.duration),
             onTap: () {
               if (scheduleEntry.id != null) {
                 Navigator.push(
@@ -106,8 +104,7 @@ class ScheduleWidget extends StatelessWidget {
                         builder: (context) => ProgramPageWidget(
                             program: fetchProgram(scheduleEntry.id))));
               }
-            }
-        ));
+            }));
       }
     }
 

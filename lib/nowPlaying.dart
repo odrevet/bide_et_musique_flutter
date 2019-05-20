@@ -14,10 +14,17 @@ Future<Song> fetchNowPlaying() async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    dom.Node titreSong = document.getElementsByClassName('titre-song')[0];
+
+    var titreSong = document.getElementsByClassName('titre-song')[0];
     String href = titreSong.children[0].attributes['href'];
     song.id = extractSongId(href);
     song.title = stripTags(titreSong.children[0].innerHtml);
+
+    var titreSong2 = document.getElementsByClassName('titre-song2')[0];
+    song.artist = stripTags(titreSong2.children[0].innerHtml);
+
+    var requete = document.getElementById('requete');
+    song.program = stripTags(requete.innerHtml);
     return song;
   } else {
     throw Exception('Failed to load top');
@@ -56,22 +63,22 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FutureBuilder<Song>(
-          future: _song,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return SongCardWidget(song: snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
+    return Center(
+      child: FutureBuilder<Song>(
+        future: _song,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SongCardWidget(song: snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner
+          return CircularProgressIndicator();
+        },
       ),
     );
   }
 }
+

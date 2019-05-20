@@ -11,7 +11,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
-import 'ident.dart';
+import 'identification.dart';
 import 'searchWidget.dart' show fetchSearchSong;
 import 'songActions.dart';
 import 'artist.dart';
@@ -20,8 +20,9 @@ class Song {
   String id;
   String title;
   String artist;
+  String program;
 
-  Song({this.id = '', this.title = ''});
+  Song({this.id = '', this.title = '', this.artist = '', this.program = ''});
 }
 
 class Comment {
@@ -53,7 +54,7 @@ class SongInformations {
       {this.title,
       this.year,
       this.artists,
-        this.artistId,
+      this.artistId,
       this.author,
       this.length,
       this.label,
@@ -112,13 +113,11 @@ class SongCardWidget extends StatelessWidget {
             },
             fullscreenDialog: true));
       },
-      child: Container(
+      child:
+      Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.scaleDown,
-          alignment: FractionalOffset.topCenter,
-          image: NetworkImage('$baseUri/images/pochettes/${song.id}.jpg'),
-        )),
+            color: Theme.of(context).canvasColor),
+        child:  Image.network('$baseUri/images/pochettes/${song.id}.jpg'),
       ),
     );
   }
@@ -238,7 +237,7 @@ class SongPageWidget extends StatelessWidget {
 
           var loadingMessage = 'Chargement';
           if (song.title.isNotEmpty) {
-            loadingMessage += ' de ${song.title}';
+            loadingMessage += ' de "${song.title}"';
           }
           return Scaffold(
             appBar: AppBar(
@@ -330,7 +329,7 @@ class SongPageWidget extends StatelessWidget {
 
     //if the song can be listen, add the song player
     if (songInformations.canListen) {
-      actions.add(SongPlayerWidget(song.id));
+      actions.add(SongPlayerWidget(song));
     }
 
     var session = Session();
@@ -428,34 +427,31 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
     for (Song song in _songs) {
       rows.add(ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.black12,
-          child: Image(
-              image: NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
-        ),
-        title: Text(
-          song.title,
-        ),
-        subtitle: Text(song.artist == null ? '' : song.artist),
-        onTap: () => launchSongPage(song, context)
-      ));
+          leading: CircleAvatar(
+            backgroundColor: Colors.black12,
+            child: Image(
+                image: NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+          ),
+          title: Text(
+            song.title,
+          ),
+          subtitle: Text(song.artist == null ? '' : song.artist),
+          onTap: () => launchSongPage(song, context)));
     }
 
     return ListView(children: rows);
   }
 }
 
-void launchSongPage(Song song, BuildContext context){
+void launchSongPage(Song song, BuildContext context) {
   if (song.id != null) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SongPageWidget(
-                song: song,
-                songInformations: fetchSongInformations(song.id))));
+                song: song, songInformations: fetchSongInformations(song.id))));
   }
 }
-
 
 class SongInformationWidget extends StatelessWidget {
   final SongInformations _songInformations;
@@ -496,7 +492,9 @@ class SongInformationWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ArtistPageWidget(artist: fetchArtist(_songInformations.artistId)))),
+                          builder: (context) => ArtistPageWidget(
+                              artist:
+                                  fetchArtist(_songInformations.artistId)))),
                 }));
     }
 

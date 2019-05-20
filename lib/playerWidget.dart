@@ -1,149 +1,160 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter_radio/flutter_radio.dart';
+import 'utils.dart';
+import 'song.dart';
+import 'nowPlaying.dart';
 
-enum PlayerState { stopped, playing, paused }
-
-class PlayerWidget extends StatefulWidget {
-  PlayerWidget({Key key}) : super(key: key);
-
-  final _PlayerWidgetState playerState = _PlayerWidgetState();
-
-  stop() {
-    playerState.stop();
-    playerState._controller.stop();
-  }
-
-  @override
-  State<StatefulWidget> createState() => playerState;
+Future<void> audioStart() async {
+  await FlutterRadio.audioStart();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>
-    with TickerProviderStateMixin {
-  PlayerState playerState = PlayerState.stopped;
-  get isPlaying => playerState == PlayerState.playing;
-  get isPaused => playerState == PlayerState.paused;
+MediaControl playControl = MediaControl(
+  androidIcon: 'drawable/ic_action_play_arrow',
+  label: 'Play',
+  action: MediaAction.play,
+);
+MediaControl pauseControl = MediaControl(
+  androidIcon: 'drawable/ic_action_pause',
+  label: 'Pause',
+  action: MediaAction.pause,
+);
+MediaControl stopControl = MediaControl(
+  androidIcon: 'drawable/ic_action_stop',
+  label: 'Stop',
+  action: MediaAction.stop,
+);
 
-  AnimationController _controller;
-  Animation _animation;
+void backgroundAudioPlayerTask() async {
+  StreamPlayer player = StreamPlayer();
+  AudioServiceBackground.run(
+      onStart: player.run,
+      onPlay: player.play,
+      onPause: player.pause,
+      onStop: player.stop,
+      onClick: (MediaButton button) => player.togglePlay(),
+      onCustomAction: (String name, dynamic arguments) {
+        switch (name) {
+          case 'song':
+            Map songMap = arguments;
+            var song = Song(
+                id: songMap['id'],
+                title: songMap['title'],
+                artist: songMap['artist']);
+            player.setSong(song);
+            break;
+        }
+      });
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Material(child: _buildPlayer()),
-          ],
-        ),
-      ),
-    );
+class StreamPlayer {
+  Song _song;
+  bool _playing;
+  Completer _completer = Completer();
+  StreamNotificationUpdater streamNotificationUpdater;
+
+  Future<void> run() async {
+    audioStart();
+    await _completer.future;
   }
 
-  Widget _buildPlayer() {
-    var playStopButton;
-    if (isPlaying) {
-      playStopButton = IconButton(
-          onPressed: isPlaying || isPaused
-              ? () {
-                  _controller.stop();
-                  stop();
-                }
-              : null,
-          iconSize: 80.0,
-          icon: Icon(Icons.stop),
-          color: Colors.orange);
+  Future<void> audioStart() async {
+    streamNotificationUpdater = StreamNotificationUpdater();
+    await FlutterRadio.audioStart();
+  }
+
+  void setSong(Song song) {
+    this._song = song;
+  }
+
+  void togglePlay() {
+    _playing ? pause() : play();
+  }
+
+  String getStreamUrl() {
+    String url = '';
+    if (this._song == null) {
+      url = 'http://relay2.bide-et-musique.com:9100';
     } else {
-      playStopButton = IconButton(
-          onPressed: isPlaying
-              ? null
-              : () {
-                  _controller.repeat();
-                  play();
-                },
-          iconSize: 80.0,
-          icon: Icon(Icons.play_arrow),
-          color: Colors.orange);
+      url = '$baseUri/stream_${this._song.id}.php';
     }
-
-    return Container(
-        child: Column(children: [
-      Row(children: [
-        RotationTransition(
-          turns: _animation,
-          child: Column(
-            children: <Widget>[
-              Image.asset('assets/vinyl_record.png', height: 80, width: 80),
-            ],
-          ),
-        ),
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.black,
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                  text: 'ECOUTEZ',
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    color: Colors.orange,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 3.0,
-                        color: Colors.black,
-                      ),
-                    ],
-                  )),
-              TextSpan(
-                  text: '\nLa radio',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.yellow,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 3.0,
-                        color: Colors.black,
-                      ),
-                    ],
-                  )),
-            ],
-          ),
-        ),
-        playStopButton
-      ])
-    ]));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 5500),
-      vsync: this,
-    );
-    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
-  }
-
-  void onComplete() {
-    setState(() => playerState = PlayerState.stopped);
+    return url;
   }
 
   void play() {
-    var url = "http://relay2.bide-et-musique.com:9100";
+    String url = getStreamUrl();
     FlutterRadio.play(url: url);
-    setState(() {
-      playerState = PlayerState.playing;
-    });
+    _playing = true;
+    AudioServiceBackground.setState(
+        controls: [pauseControl, stopControl],
+        basicState: BasicPlaybackState.playing);
+
+    if (this._song == null) {
+      streamNotificationUpdater.start();
+    } else {
+      streamNotificationUpdater.stop();
+      var mediaItem = MediaItem(
+          id: 'bm_stream',
+          album: 'Bide et Musique',
+          title: _song.title,
+          artist: _song.artist,
+          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
+      AudioServiceBackground.setMediaItem(mediaItem);
+    }
+  }
+
+  void pause() {
+    String url = getStreamUrl();
+    FlutterRadio.playOrPause(url: url);
+    AudioServiceBackground.setState(
+        controls: [playControl, stopControl],
+        basicState: BasicPlaybackState.paused);
   }
 
   void stop() {
     FlutterRadio.stop();
-    setState(() {
-      playerState = PlayerState.stopped;
+    this._song = null;
+    AudioServiceBackground.setState(
+        controls: [], basicState: BasicPlaybackState.stopped);
+  }
+}
+
+/**
+ * At the momement, song data cannot be retreive in the stream info
+ * This Class fetch song informations from the web site
+ */
+class StreamNotificationUpdater {
+  Timer timer;
+
+  StreamNotificationUpdater();
+
+  void setMediaItemFromSong(Song song){
+    var mediaItem = MediaItem(
+        id: 'bm_stream',
+        album: 'Bide&Musique ' + song.program,
+        title: song.title,
+        artist: song.artist,
+        artUri: '$baseUri/images/pochettes/${song.id}.jpg');
+    AudioServiceBackground.setMediaItem(mediaItem);
+  }
+
+  void start(){
+    fetchNowPlaying().then((song) {
+      setMediaItemFromSong(song);
     });
+
+    timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
+      fetchNowPlaying().then((song) {
+        setMediaItemFromSong(song);
+      });
+    });
+  }
+
+  void stop(){
+    timer.cancel();
+  }
+
+  void dispose() {
+    stop();
   }
 }

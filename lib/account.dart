@@ -7,7 +7,7 @@ import 'package:html/parser.dart' as parser;
 import 'package:flutter_html/flutter_html.dart';
 import 'utils.dart';
 import 'song.dart';
-import 'ident.dart';
+import 'identification.dart';
 
 class Account {
   String id;
@@ -146,7 +146,6 @@ class AccountPageWidget extends StatelessWidget {
   Widget _buildView(
       BuildContext context, AccountInformations accountInformations) {
     final url = baseUri + accountInformations.avatar;
-    final image = NetworkImage(url);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -195,7 +194,8 @@ class AccountPageWidget extends StatelessWidget {
           PageView(
             children: <Widget>[
               SingleChildScrollView(
-                  child: Html(data: accountInformations.presentation,
+                  child: Html(
+                      data: accountInformations.presentation,
                       onLinkTap: (url) {
                         onLinkTap(url, context);
                       })),
