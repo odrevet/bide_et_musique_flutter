@@ -63,7 +63,6 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: FutureBuilder<Song>(
         future: _song,
@@ -81,4 +80,3 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
     );
   }
 }
-

@@ -128,7 +128,7 @@ class StreamNotificationUpdater {
 
   StreamNotificationUpdater();
 
-  void setMediaItemFromSong(Song song){
+  void setMediaItemFromSong(Song song) {
     var mediaItem = MediaItem(
         id: 'bm_stream',
         album: 'Bide&Musique ' + song.program,
@@ -138,7 +138,7 @@ class StreamNotificationUpdater {
     AudioServiceBackground.setMediaItem(mediaItem);
   }
 
-  void start(){
+  void start() {
     fetchNowPlaying().then((song) {
       setMediaItemFromSong(song);
     });
@@ -150,7 +150,7 @@ class StreamNotificationUpdater {
     });
   }
 
-  void stop(){
+  void stop() {
     timer.cancel();
   }
 

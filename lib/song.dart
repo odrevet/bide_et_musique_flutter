@@ -113,11 +113,9 @@ class SongCardWidget extends StatelessWidget {
             },
             fullscreenDialog: true));
       },
-      child:
-      Container(
-        decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor),
-        child:  Image.network('$baseUri/images/pochettes/${song.id}.jpg'),
+      child: Container(
+        decoration: BoxDecoration(color: Theme.of(context).canvasColor),
+        child: Image.network('$baseUri/images/pochettes/${song.id}.jpg'),
       ),
     );
   }

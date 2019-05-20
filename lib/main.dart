@@ -86,8 +86,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
     var home = Scaffold(
         appBar: AppBar(title: Text(title)),
-        bottomNavigationBar: BottomAppBar(child: playerControls,
-        color: Colors.orange),
+        bottomNavigationBar:
+            BottomAppBar(child: playerControls, color: Colors.orange),
         drawer: DrawerWidget(),
         body: NowPlayingWidget());
 
