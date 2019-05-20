@@ -21,13 +21,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     connect();
-    AudioService.start(
-      backgroundTask: backgroundAudioPlayerTask,
-      resumeOnClick: true,
-      androidNotificationChannelName: 'Bide&Musique',
-      notificationColor: 0xFFFED152,
-      androidNotificationIcon: 'mipmap/ic_launcher',
-    );
   }
 
   @override
@@ -79,7 +72,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           ? [pauseButton(), stopButton()]
           : _state?.basicState == BasicPlaybackState.paused
               ? [playButton(), stopButton()]
-              : [playButton()],
+              : [startButton()],
     );
 
     var title = 'Bide&Musique';
@@ -100,6 +93,20 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         ),
         home: home);
   }
+
+  RaisedButton startButton() =>
+      RaisedButton(
+        child: Text("Ecouter la radio"),
+        onPressed: () {
+          AudioService.start(
+            backgroundTask: backgroundAudioPlayerTask,
+            resumeOnClick: true,
+            androidNotificationChannelName: 'Bide&Musique',
+            notificationColor: 0xFFFED152,
+            androidNotificationIcon: 'mipmap/ic_launcher',
+          );
+        },
+      );
 
   IconButton playButton() => IconButton(
         icon: Icon(Icons.play_arrow),

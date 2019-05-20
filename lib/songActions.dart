@@ -4,6 +4,7 @@ import 'package:share/share.dart';
 import 'utils.dart';
 import 'identification.dart';
 import 'song.dart';
+import 'playerWidget.dart';
 
 /////////////////////////////////////////////////////////////////////////////
 // Actions for the song page title bar
@@ -157,64 +158,29 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ////////////////////////////////
 // Player
 
-enum PlayerState { stopped, playing, paused }
+RaisedButton startButtonSong(Song song) => RaisedButton(
+      child: Text("PLAY SONG"),
+      onPressed: () async {
+        if (AudioService.playbackState == null ||
+            AudioService.playbackState.basicState ==
+                BasicPlaybackState.stopped ||
+            AudioService.playbackState.basicState == BasicPlaybackState.none) {
 
-class SongPlayerWidget extends StatefulWidget {
-  final Song song;
-  SongPlayerWidget(this.song, {Key key}) : super(key: key);
+          bool success = await AudioService.start(
+            backgroundTask: backgroundAudioPlayerTask,
+            resumeOnClick: true,
+            androidNotificationChannelName: 'Bide&Musique',
+            notificationColor: 0xFFFED152,
+            androidNotificationIcon: 'mipmap/ic_launcher',
+          );
+          if(success){
+            AudioService.customAction('song',
+                {'id': song.id, 'title': song.title, 'artist': song.artist});
+          }
 
-  @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this.song);
-}
-
-class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  Song song;
-
-  PlayerState playerState = PlayerState.stopped;
-  get isPlaying => playerState == PlayerState.playing;
-  get isPaused => playerState == PlayerState.paused;
-
-  _SongPlayerWidgetState(this.song);
-
-  @override
-  Widget build(BuildContext context) {
-    var playStopButton;
-
-    if (isPlaying) {
-      playStopButton = IconButton(
-        icon: Icon(Icons.stop),
-        onPressed: () {
-          stop();
-        },
-      );
-    } else {
-      playStopButton = IconButton(
-        icon: Icon(Icons.play_arrow),
-        onPressed: () {
-          play();
-        },
-      );
-    }
-
-    return playStopButton;
-  }
-
-  play() {
-    AudioService.customAction('song', {
-      'id': this.song.id,
-      'title': this.song.title,
-      'artist': this.song.artist
-    });
-    AudioService.play();
-    setState(() {
-      playerState = PlayerState.playing;
-    });
-  }
-
-  stop() {
-    AudioService.stop();
-    setState(() {
-      playerState = PlayerState.stopped;
-    });
-  }
-}
+        } else {
+          AudioService.customAction('song',
+              {'id': song.id, 'title': song.title, 'artist': song.artist});
+        }
+      },
+    );

@@ -28,7 +28,7 @@ MediaControl stopControl = MediaControl(
 void backgroundAudioPlayerTask() async {
   StreamPlayer player = StreamPlayer();
   AudioServiceBackground.run(
-      onStart: player.run,
+      onStart: player.start,
       onPlay: player.play,
       onPause: player.pause,
       onStop: player.stop,
@@ -51,20 +51,21 @@ class StreamPlayer {
   Song _song;
   bool _playing;
   Completer _completer = Completer();
-  StreamNotificationUpdater streamNotificationUpdater;
+  StreamNotificationUpdater streamNotificationUpdater = StreamNotificationUpdater();
 
-  Future<void> run() async {
+  Future<void> start() async {
     audioStart();
+    play();
     await _completer.future;
   }
 
   Future<void> audioStart() async {
-    streamNotificationUpdater = StreamNotificationUpdater();
     await FlutterRadio.audioStart();
   }
 
   void setSong(Song song) {
     this._song = song;
+    this.play();
   }
 
   void togglePlay() {
@@ -72,7 +73,7 @@ class StreamPlayer {
   }
 
   String getStreamUrl() {
-    String url = '';
+    String url;
     if (this._song == null) {
       url = 'http://relay2.bide-et-musique.com:9100';
     } else {
@@ -106,6 +107,7 @@ class StreamPlayer {
   void pause() {
     String url = getStreamUrl();
     FlutterRadio.playOrPause(url: url);
+    _playing = false;
     AudioServiceBackground.setState(
         controls: [playControl, stopControl],
         basicState: BasicPlaybackState.paused);
@@ -116,11 +118,13 @@ class StreamPlayer {
     this._song = null;
     AudioServiceBackground.setState(
         controls: [], basicState: BasicPlaybackState.stopped);
+    _playing = false;
+    _completer.complete();
   }
 }
 
 /**
- * At the momement, song data cannot be retreive in the stream info
+ * Song data cannot be retreive in the stream info
  * This Class fetch song informations from the web site
  */
 class StreamNotificationUpdater {
@@ -131,7 +135,7 @@ class StreamNotificationUpdater {
   void setMediaItemFromSong(Song song) {
     var mediaItem = MediaItem(
         id: 'bm_stream',
-        album: 'Bide&Musique ' + song.program,
+        album: song.program,
         title: song.title,
         artist: song.artist,
         artUri: '$baseUri/images/pochettes/${song.id}.jpg');

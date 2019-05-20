@@ -327,7 +327,7 @@ class SongPageWidget extends StatelessWidget {
 
     //if the song can be listen, add the song player
     if (songInformations.canListen) {
-      actions.add(SongPlayerWidget(song));
+      actions.add(startButtonSong(song));
     }
 
     var session = Session();
