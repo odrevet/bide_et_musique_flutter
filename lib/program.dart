@@ -22,8 +22,8 @@ class Program {
     for (var songEntry in json['songs']) {
       var song = Song();
       song.id = songEntry['song_id'].toString();
-      song.title = songEntry['name'];
-      song.artist = songEntry['alias'];
+      song.title = stripTags(songEntry['name']);
+      song.artist = stripTags(songEntry['alias']);
       songs.add(song);
     }
 
