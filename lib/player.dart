@@ -77,11 +77,10 @@ class StreamPlayer {
   }
 
   void setNotification(){
-    print('SET NOTIFICATION ! ');
     if (this._song == null) {
       streamNotificationUpdater.start();
     } else {
-      //streamNotificationUpdater.stop();
+      streamNotificationUpdater.stop();
       var mediaItem = MediaItem(
           id: 'bm_stream',
           album: 'Bide et Musique',
@@ -109,7 +108,6 @@ class StreamPlayer {
     AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
         basicState: BasicPlaybackState.playing);
-    //this.setNotification();
   }
 
   void pause() {

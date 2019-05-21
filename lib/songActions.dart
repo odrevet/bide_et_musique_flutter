@@ -181,7 +181,6 @@ RaisedButton startButtonSong(Song song) => RaisedButton(
           }
 
         } else {
-          //await AudioService.pause();
           await AudioService.customAction('song',
               {'id': song.id, 'title': song.title, 'artist': song.artist});
           await AudioService.customAction('setNotification', '');
