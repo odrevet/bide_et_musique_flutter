@@ -17,6 +17,7 @@ class ScheduleEntry {
   String title;
   String time;
   String duration;
+  String href;
   ScheduleEntry();
 }
 
@@ -43,11 +44,12 @@ Future<List<DaySchedule>> fetchSchedule() async {
       } else {
         var scheduleEntry = ScheduleEntry();
         var tds = tr.getElementsByTagName('td');
-        scheduleEntry.id =
-            extractProgramId(tds[1].children[0].attributes['href']);
+        String href = tds[1].children[0].attributes['href'];
+        scheduleEntry.id = extractProgramId(href);
         scheduleEntry.title = stripTags(tds[1].children[0].innerHtml);
         scheduleEntry.time = stripTags(tds[0].innerHtml);
         scheduleEntry.duration = tds[2].innerHtml;
+        scheduleEntry.href = href;
 
         daySchedule.entries.add(scheduleEntry);
       }
@@ -103,6 +105,9 @@ class ScheduleWidget extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => ProgramPageWidget(
                             program: fetchProgram(scheduleEntry.id))));
+              }
+              else{
+                onLinkTap(scheduleEntry.href, context);
               }
             }));
       }
