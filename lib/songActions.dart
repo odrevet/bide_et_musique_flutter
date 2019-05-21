@@ -4,7 +4,7 @@ import 'package:share/share.dart';
 import 'utils.dart';
 import 'identification.dart';
 import 'song.dart';
-import 'playerWidget.dart';
+import 'player.dart';
 
 /////////////////////////////////////////////////////////////////////////////
 // Actions for the song page title bar

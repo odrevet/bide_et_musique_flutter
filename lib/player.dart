@@ -51,7 +51,7 @@ class StreamPlayer {
   Song _song;
   bool _playing;
   Completer _completer = Completer();
-  StreamNotificationUpdater streamNotificationUpdater = StreamNotificationUpdater();
+            StreamNotificationUpdater streamNotificationUpdater = StreamNotificationUpdater();
 
   Future<void> start() async {
     audioStart();
@@ -72,6 +72,21 @@ class StreamPlayer {
     _playing ? pause() : play();
   }
 
+  void setNotification(){
+    if (this._song == null) {
+      streamNotificationUpdater.start();
+    } else {
+      streamNotificationUpdater.stop();
+      var mediaItem = MediaItem(
+          id: 'bm_stream',
+          album: 'Bide et Musique',
+          title: _song.title,
+          artist: _song.artist,
+          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
+      AudioServiceBackground.setMediaItem(mediaItem);
+    }
+  }
+
   String getStreamUrl() {
     String url;
     if (this._song == null) {
@@ -89,25 +104,14 @@ class StreamPlayer {
     AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
         basicState: BasicPlaybackState.playing);
-
-    if (this._song == null) {
-      streamNotificationUpdater.start();
-    } else {
-      streamNotificationUpdater.stop();
-      var mediaItem = MediaItem(
-          id: 'bm_stream',
-          album: 'Bide et Musique',
-          title: _song.title,
-          artist: _song.artist,
-          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
-      AudioServiceBackground.setMediaItem(mediaItem);
-    }
+    this.setNotification();
   }
 
   void pause() {
     String url = getStreamUrl();
     FlutterRadio.playOrPause(url: url);
     _playing = false;
+    
     AudioServiceBackground.setState(
         controls: [playControl, stopControl],
         basicState: BasicPlaybackState.paused);
