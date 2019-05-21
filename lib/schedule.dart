@@ -105,9 +105,8 @@ class ScheduleWidget extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => ProgramPageWidget(
                             program: fetchProgram(scheduleEntry.id))));
-              }
-              else{
-                onLinkTap(scheduleEntry.href, context);
+              } else {
+                onLinkTap(baseUri + scheduleEntry.href, context);
               }
             }));
       }

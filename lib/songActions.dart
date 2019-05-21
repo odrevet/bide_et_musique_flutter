@@ -165,7 +165,6 @@ RaisedButton startButtonSong(Song song) => RaisedButton(
             AudioService.playbackState.basicState ==
                 BasicPlaybackState.stopped ||
             AudioService.playbackState.basicState == BasicPlaybackState.none) {
-
           bool success = await AudioService.start(
             backgroundTask: backgroundAudioPlayerTask,
             resumeOnClick: true,
@@ -173,13 +172,12 @@ RaisedButton startButtonSong(Song song) => RaisedButton(
             notificationColor: 0xFFFED152,
             androidNotificationIcon: 'mipmap/ic_launcher',
           );
-          if(success){
+          if (success) {
             AudioService.customAction('song',
                 {'id': song.id, 'title': song.title, 'artist': song.artist});
             await AudioService.customAction('setNotification', '');
             await AudioService.play();
           }
-
         } else {
           await AudioService.customAction('song',
               {'id': song.id, 'title': song.title, 'artist': song.artist});

@@ -55,7 +55,8 @@ class StreamPlayer {
   Song _song;
   bool _playing;
   Completer _completer = Completer();
-            StreamNotificationUpdater streamNotificationUpdater = StreamNotificationUpdater();
+  StreamNotificationUpdater streamNotificationUpdater =
+      StreamNotificationUpdater();
 
   Future<void> start() async {
     audioStart();
@@ -74,7 +75,7 @@ class StreamPlayer {
     _playing ? pause() : play();
   }
 
-  void setNotification(){
+  void setNotification() {
     if (this._song == null) {
       streamNotificationUpdater.start();
     } else {
@@ -160,7 +161,7 @@ class StreamNotificationUpdater {
   }
 
   void stop() {
-    if(timer != null)timer.cancel();
+    if (timer != null) timer.cancel();
   }
 
   void dispose() {

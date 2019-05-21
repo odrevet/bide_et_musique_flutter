@@ -94,8 +94,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         home: home);
   }
 
-  RaisedButton startButton() =>
-      RaisedButton(
+  RaisedButton startButton() => RaisedButton(
         child: Text("Ecouter la radio"),
         onPressed: () async {
           bool success = await AudioService.start(
@@ -105,7 +104,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             notificationColor: 0xFFFED152,
             androidNotificationIcon: 'mipmap/ic_launcher',
           );
-          if(success){
+          if (success) {
             await AudioService.play();
             await AudioService.customAction('setNotification', '');
           }
