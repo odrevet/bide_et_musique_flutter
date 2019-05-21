@@ -34,6 +34,7 @@ void backgroundAudioPlayerTask() async {
       onStop: player.stop,
       onClick: (MediaButton button) => player.togglePlay(),
       onCustomAction: (String name, dynamic arguments) {
+        print(">>>>>>>>>>>>>>>>>>>>> ON CUSTOM ACTION " + name);
         switch (name) {
           case 'song':
             Map songMap = arguments;
@@ -42,6 +43,9 @@ void backgroundAudioPlayerTask() async {
                 title: songMap['title'],
                 artist: songMap['artist']);
             player.setSong(song);
+            break;
+          case 'setNotification':
+            player.setNotification();
             break;
         }
       });
@@ -55,7 +59,7 @@ class StreamPlayer {
 
   Future<void> start() async {
     audioStart();
-    play();
+    //play();
     await _completer.future;
   }
 
@@ -65,7 +69,7 @@ class StreamPlayer {
 
   void setSong(Song song) {
     this._song = song;
-    this.play();
+    //this.play();
   }
 
   void togglePlay() {
@@ -73,10 +77,11 @@ class StreamPlayer {
   }
 
   void setNotification(){
+    print('SET NOTIFICATION ! ');
     if (this._song == null) {
       streamNotificationUpdater.start();
     } else {
-      streamNotificationUpdater.stop();
+      //streamNotificationUpdater.stop();
       var mediaItem = MediaItem(
           id: 'bm_stream',
           album: 'Bide et Musique',
@@ -97,21 +102,21 @@ class StreamPlayer {
     return url;
   }
 
-  void play() {
+  void play() async {
     String url = getStreamUrl();
     FlutterRadio.play(url: url);
     _playing = true;
     AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
         basicState: BasicPlaybackState.playing);
-    this.setNotification();
+    //this.setNotification();
   }
 
   void pause() {
     String url = getStreamUrl();
     FlutterRadio.playOrPause(url: url);
     _playing = false;
-    
+
     AudioServiceBackground.setState(
         controls: [playControl, stopControl],
         basicState: BasicPlaybackState.paused);
@@ -159,7 +164,7 @@ class StreamNotificationUpdater {
   }
 
   void stop() {
-    timer.cancel();
+    if(timer != null)timer.cancel();
   }
 
   void dispose() {

@@ -176,11 +176,16 @@ RaisedButton startButtonSong(Song song) => RaisedButton(
           if(success){
             AudioService.customAction('song',
                 {'id': song.id, 'title': song.title, 'artist': song.artist});
+            await AudioService.customAction('setNotification', '');
+            await AudioService.play();
           }
 
         } else {
-          AudioService.customAction('song',
+          //await AudioService.pause();
+          await AudioService.customAction('song',
               {'id': song.id, 'title': song.title, 'artist': song.artist});
+          await AudioService.customAction('setNotification', '');
+          await AudioService.play();
         }
       },
     );

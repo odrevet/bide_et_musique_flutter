@@ -97,14 +97,18 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   RaisedButton startButton() =>
       RaisedButton(
         child: Text("Ecouter la radio"),
-        onPressed: () {
-          AudioService.start(
+        onPressed: () async {
+          bool success = await AudioService.start(
             backgroundTask: backgroundAudioPlayerTask,
             resumeOnClick: true,
             androidNotificationChannelName: 'Bide&Musique',
             notificationColor: 0xFFFED152,
             androidNotificationIcon: 'mipmap/ic_launcher',
           );
+          if(success){
+            await AudioService.play();
+            await AudioService.customAction('setNotification', '');
+          }
         },
       );
 
