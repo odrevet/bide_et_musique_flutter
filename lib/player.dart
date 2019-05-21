@@ -34,7 +34,6 @@ void backgroundAudioPlayerTask() async {
       onStop: player.stop,
       onClick: (MediaButton button) => player.togglePlay(),
       onCustomAction: (String name, dynamic arguments) {
-        print(">>>>>>>>>>>>>>>>>>>>> ON CUSTOM ACTION " + name);
         switch (name) {
           case 'song':
             Map songMap = arguments;

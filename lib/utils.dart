@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 import 'song.dart';
+import 'account.dart';
 
 const host = 'www.bide-et-musique.com';
 const baseUri = 'http://$host';
@@ -14,19 +15,36 @@ String stripTags(String htmlString) {
 void onLinkTap(String url, BuildContext context) {
   //check if the url point to a page that the app can handle
   //check if point to a page
-  RegExp regExp = new RegExp(r"http://www.bide-et-musique.com/song/(\d+).html",
+  RegExp regExp = new RegExp(r"http://www.bide-et-musique.com/(\w+)/(\d+).html",
       caseSensitive: false);
 
   var hasMatch = regExp.hasMatch(url);
 
   if (hasMatch == true) {
-    var songId = regExp.firstMatch(url)[1];
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SongPageWidget(
-                song: Song(id: songId),
-                songInformations: fetchSongInformations(songId))));
+    var type = regExp.firstMatch(url)[1];
+    var id = regExp.firstMatch(url)[2];
+    
+    switch (type){
+      case 'song':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SongPageWidget(
+                    song: Song(id: id),
+                    songInformations: fetchSongInformations(id))));
+        break;
+      case 'account':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AccountPageWidget(
+                    account: Account(id, ''),
+                    accountInformations: fetchAccountInformations(id))));
+        break;
+      default:
+        _launchURL(url);
+    }
+
   } else {
     // otherwise launch in a browser
     _launchURL(url);
