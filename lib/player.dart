@@ -59,7 +59,6 @@ class StreamPlayer {
 
   Future<void> start() async {
     audioStart();
-    //play();
     await _completer.future;
   }
 
@@ -69,7 +68,6 @@ class StreamPlayer {
 
   void setSong(Song song) {
     this._song = song;
-    //this.play();
   }
 
   void togglePlay() {
