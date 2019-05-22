@@ -157,32 +157,26 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 
 ////////////////////////////////
 // Player
+IconButton startButtonSong(SongLink songLink) => IconButton(
+  icon: Icon(Icons.play_arrow),
+    onPressed: () async {
+      if (AudioService.playbackState == null ||
+          AudioService.playbackState.basicState ==
+              BasicPlaybackState.stopped ||
+          AudioService.playbackState.basicState == BasicPlaybackState.none) {
+        await AudioService.start(
+          backgroundTask: backgroundAudioPlayerTask,
+          resumeOnClick: true,
+          androidNotificationChannelName: 'Bide&Musique',
+          notificationColor: 0xFFFED152,
+          androidNotificationIcon: 'mipmap/ic_launcher',
+        );
+      }
 
-RaisedButton startButtonSong(SongLink song) => RaisedButton(
-      child: Text("PLAY SONG"),
-      onPressed: () async {
-        if (AudioService.playbackState == null ||
-            AudioService.playbackState.basicState ==
-                BasicPlaybackState.stopped ||
-            AudioService.playbackState.basicState == BasicPlaybackState.none) {
-          bool success = await AudioService.start(
-            backgroundTask: backgroundAudioPlayerTask,
-            resumeOnClick: true,
-            androidNotificationChannelName: 'Bide&Musique',
-            notificationColor: 0xFFFED152,
-            androidNotificationIcon: 'mipmap/ic_launcher',
-          );
-          if (success) {
-            AudioService.customAction('song',
-                {'id': song.id, 'title': song.title, 'artist': song.artist});
-            await AudioService.customAction('setNotification', '');
-            await AudioService.play();
-          }
-        } else {
-          await AudioService.customAction('song',
-              {'id': song.id, 'title': song.title, 'artist': song.artist});
-          await AudioService.customAction('setNotification', '');
-          await AudioService.play();
-        }
-      },
-    );
+      await AudioService.customAction('song',
+          {'id': songLink.id, 'title': songLink.title, 'artist': songLink.artist});
+      await AudioService.customAction('setNotification');
+      await AudioService.play();
+    }
+);
+
