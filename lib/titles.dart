@@ -15,7 +15,12 @@ SongLink songFromTr(dom.Element tr) {
   var href = tr.children[3].innerHtml;
   song.id = extractSongId(href);
   song.artist = stripTags(tr.children[2].innerHtml);
-  song.title = stripTags(tr.children[3].innerHtml.replaceAll("\n", ""));
+  var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
+  const String newFlag = '[nouveauté]';
+  if(title.contains(newFlag)){
+    song.isNew = true;
+  }
+  song.title = title.replaceFirst(newFlag, '').trimLeft();
   return song;
 }
 
@@ -76,7 +81,7 @@ class TitlesWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Map<String, List<SongLink>> program) {
+  Widget _buildView(BuildContext context, Map<String, List<SongLink>> songLinks) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -91,8 +96,8 @@ class TitlesWidget extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SongListingWidget(program['next']),
-            SongListingWidget(program['past']),
+            SongListingWidget(songLinks['next']),
+            SongListingWidget(songLinks['past']),
           ],
         ),
       ),

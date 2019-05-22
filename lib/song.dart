@@ -21,9 +21,14 @@ class SongLink {
   String title;
   String artist;
   String program;
+  bool isNew;
 
   SongLink(
-      {this.id = '', this.title = '', this.artist = '', this.program = ''});
+      {this.id = '',
+      this.title = '',
+      this.artist = '',
+      this.program = '',
+      this.isNew = false});
 }
 
 /// information available on the song page
@@ -103,8 +108,7 @@ class SongCardWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => SongPageWidget(
-                      song: song,
-                      songInformations: fetchSong(song.id))));
+                      song: song, songInformations: fetchSong(song.id))));
         }
       },
       onLongPress: () {
@@ -130,8 +134,7 @@ Future<Song> fetchSong(String songId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      song =
-          Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
+      song = Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       song = Song(
           year: 0,
@@ -146,7 +149,7 @@ Future<Song> fetchSong(String songId) async {
     throw Exception('Failed to load song information');
   }
 
-  //If connected, fetch comments and favorite status 
+  //If connected, fetch comments and favorite status
   var session = Session();
   var response;
   if (session.id != null) {
@@ -194,9 +197,8 @@ Future<Song> fetchSong(String songId) async {
         song.isFavourite = false;
       } else {
         song.canFavourite = true;
-        song.isFavourite =
-            stripTags(divTitre[2].innerHtml).trim() ==
-                'Ce morceau est dans vos favoris';
+        song.isFavourite = stripTags(divTitre[2].innerHtml).trim() ==
+            'Ce morceau est dans vos favoris';
       }
 
       //check vote
@@ -384,8 +386,7 @@ class SongPageWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AccountPageWidget(
-                        account:
-                            fetchAccount(comment.author.id))));
+                        account: fetchAccount(comment.author.id))));
           },
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
@@ -408,12 +409,13 @@ class SongPageWidget extends StatelessWidget {
 //////////////////
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
-  final List<SongLink> _songs;
+  final List<SongLink> _songLinks;
 
-  SongListingWidget(this._songs, {Key key}) : super(key: key);
+  SongListingWidget(this._songLinks, {Key key}) : super(key: key);
 
   @override
-  SongListingWidgetState createState() => SongListingWidgetState(this._songs);
+  SongListingWidgetState createState() =>
+      SongListingWidgetState(this._songLinks);
 }
 
 class SongListingWidgetState extends State<SongListingWidget> {
@@ -423,18 +425,21 @@ class SongListingWidgetState extends State<SongListingWidget> {
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (SongLink song in _songs) {
+
+    for (SongLink songLink in _songs) {
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
             child: Image(
-                image: NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+                image:
+                    NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
           ),
           title: Text(
-            song.title,
+            songLink.title,
           ),
-          subtitle: Text(song.artist == null ? '' : song.artist),
-          onTap: () => launchSongPage(song, context)));
+          trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
+          subtitle: Text(songLink.artist == null ? '' : songLink.artist),
+          onTap: () => launchSongPage(songLink, context)));
     }
 
     return ListView(children: rows);
