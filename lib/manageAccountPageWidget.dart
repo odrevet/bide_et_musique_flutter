@@ -31,8 +31,7 @@ class ManageAccountPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(
-      BuildContext context, Account accountInformations) {
+  Widget _buildView(BuildContext context, Account accountInformations) {
     final url = baseUri + accountInformations.avatar;
     final image = NetworkImage(url);
 

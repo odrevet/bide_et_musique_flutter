@@ -116,8 +116,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     );
   }
 
-  Widget _buildView(BuildContext context, Session session,
-      Account accountInformations) {
+  Widget _buildView(
+      BuildContext context, Session session, Account accountInformations) {
     _rows.clear();
     int index = 0;
     for (SongLink song in accountInformations.favorites) {

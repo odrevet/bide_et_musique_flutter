@@ -24,7 +24,7 @@ void onLinkTap(String url, BuildContext context) {
     var type = regExp.firstMatch(url)[1];
     var id = regExp.firstMatch(url)[2];
 
-    switch (type){
+    switch (type) {
       case 'song':
         Navigator.push(
             context,
@@ -44,7 +44,6 @@ void onLinkTap(String url, BuildContext context) {
       default:
         _launchURL(url);
     }
-
   } else {
     // otherwise launch in a browser
     _launchURL(url);

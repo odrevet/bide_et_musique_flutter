@@ -143,8 +143,7 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(
-      BuildContext context, Account accountInformations) {
+  Widget _buildView(BuildContext context, Account accountInformations) {
     final url = baseUri + accountInformations.avatar;
 
     var nestedScrollView = NestedScrollView(

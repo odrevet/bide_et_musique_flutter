@@ -22,7 +22,8 @@ class SongLink {
   String artist;
   String program;
 
-  SongLink({this.id = '', this.title = '', this.artist = '', this.program = ''});
+  SongLink(
+      {this.id = '', this.title = '', this.artist = '', this.program = ''});
 }
 
 /// information available on the song page
@@ -129,8 +130,8 @@ Future<Song> fetchSongInformations(String songId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      songInformations = Song.fromJson(
-          json.decode(utf8.decode(responseJson.bodyBytes)));
+      songInformations =
+          Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       songInformations = Song(
           year: 0,
