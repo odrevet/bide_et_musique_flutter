@@ -108,7 +108,7 @@ class SongCardWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => SongPageWidget(
-                      song: song, songInformations: fetchSong(song.id))));
+                      songLink: song, song: fetchSong(song.id))));
         }
       },
       onLongPress: () {
@@ -129,7 +129,6 @@ class SongCardWidget extends StatelessWidget {
 Future<Song> fetchSong(String songId) async {
   var song;
   final url = '$baseUri/song/$songId';
-
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
@@ -219,16 +218,16 @@ Future<Song> fetchSong(String songId) async {
 }
 
 class SongPageWidget extends StatelessWidget {
-  final SongLink song;
-  final Future<Song> songInformations;
+  final SongLink songLink;
+  final Future<Song> song;
 
-  SongPageWidget({Key key, this.song, this.songInformations}) : super(key: key);
+  SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Song>(
-        future: songInformations,
+        future: song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -237,8 +236,8 @@ class SongPageWidget extends StatelessWidget {
           }
 
           var loadingMessage = 'Chargement';
-          if (song.title.isNotEmpty) {
-            loadingMessage += ' de "${song.title}"';
+          if (songLink.title.isNotEmpty) {
+            loadingMessage += ' de "${songLink.title}"';
           }
           return Scaffold(
             appBar: AppBar(
@@ -256,13 +255,13 @@ class SongPageWidget extends StatelessWidget {
   void _openCoverViewerDialog(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return CoverViewer(song.id);
+          return CoverViewer(songLink.id);
         },
         fullscreenDialog: true));
   }
 
   Widget _buildView(BuildContext context, Song songInformations) {
-    var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
+    var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 20.0);
 
     var nestedScrollView = NestedScrollView(
@@ -330,26 +329,26 @@ class SongPageWidget extends StatelessWidget {
 
     //if the song can be listen, add the song player
     if (songInformations.canListen) {
-      actions.add(startButtonSong(song));
+      actions.add(startButtonSong(songLink));
     }
 
     var session = Session();
     if (session.id != null) {
       if (songInformations.canFavourite) {
         actions
-            .add(SongFavoriteIconWidget(song.id, songInformations.isFavourite));
+            .add(SongFavoriteIconWidget(songLink.id, songInformations.isFavourite));
       }
 
-      actions.add(SongVoteIconWidget(song.id, songInformations.hasVote));
+      actions.add(SongVoteIconWidget(songLink.id, songInformations.hasVote));
     }
 
     var listenButton = IconButton(
         icon: Icon(Icons.music_note),
         onPressed: () {
-          Share.share('$baseUri/stream_${song.id}.php');
+          Share.share('$baseUri/stream_${songLink.id}.php');
         });
 
-    actionsShare.add(SongShareIconWidget(song));
+    actionsShare.add(SongShareIconWidget(songLink));
     actionsShare.add(listenButton);
 
     //build widget for overflow button
@@ -452,7 +451,7 @@ void launchSongPage(SongLink song, BuildContext context) {
         context,
         MaterialPageRoute(
             builder: (context) => SongPageWidget(
-                song: song, songInformations: fetchSong(song.id))));
+                songLink: song, song: fetchSong(song.id))));
   }
 }
 

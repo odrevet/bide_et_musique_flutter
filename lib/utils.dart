@@ -30,8 +30,8 @@ void onLinkTap(String url, BuildContext context) {
             context,
             MaterialPageRoute(
                 builder: (context) => SongPageWidget(
-                    song: SongLink(id: id),
-                    songInformations: fetchSong(id))));
+                    songLink: SongLink(id: id),
+                    song: fetchSong(id))));
         break;
       case 'account':
         Navigator.push(

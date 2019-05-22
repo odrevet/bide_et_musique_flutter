@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter/gestures.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'account.dart';
@@ -34,8 +35,8 @@ Future<List<Post>> fetchPosts() async {
       var accountLink = basmsg.children[0].children[0];
       var accountHref = accountLink.attributes['href'];
 
-      var id = extractAccountId(accountHref);
-      var account = AccountLink(id, stripTags(accountLink.innerHtml));
+      var idAccount = extractAccountId(accountHref);
+      var account = AccountLink(idAccount, stripTags(accountLink.innerHtml));
 
       post.author = account;
 
@@ -45,7 +46,7 @@ Future<List<Post>> fetchPosts() async {
 
       var title = basmsg.children[0].children[2];
       songLink.title = stripTags(title.innerHtml);
-
+      songLink.id = extractSongId(title.attributes['href']);
       post.during = songLink;
 
       final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
@@ -97,14 +98,6 @@ class WallWidget extends StatelessWidget {
     var rows = <ListTile>[];
     for (Post post in posts) {
       rows.add(ListTile(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AccountPageWidget(
-                        account:
-                            fetchAccount(post.author.id))));
-          },
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
             child: Image(
@@ -113,12 +106,37 @@ class WallWidget extends StatelessWidget {
           ),
           title: Html(
               data: post.body,
-              //style: _font,
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),
-          subtitle: Text(
-              'Par ${post.author.name} ${post.time} pendant ${post.during.title}')));
+          subtitle: RichText(
+            text:
+            TextSpan(style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ), text: 'Par ', children: [
+              TextSpan(
+                text: post.author.name,
+                recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccountPageWidget(
+                            account: fetchAccount(post.author.id)))),
+              ),
+              TextSpan(
+                text:  '${post.time} pendant ',
+              ),
+              TextSpan(
+                text: post.during.title,
+                recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SongPageWidget(
+                            songLink: SongLink(id: post.during.id, title: post.during.title),
+                            song: fetchSong(post.during.id)))),
+              ),
+            ]),
+          )));
     }
 
     return ListView(children: rows);
