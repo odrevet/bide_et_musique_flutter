@@ -95,6 +95,11 @@ class WallWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<Post> posts) {
+    var linkStyle =  TextStyle(
+      fontSize: 14.0,
+      color: Colors.blue,
+    );
+
     var rows = <ListTile>[];
     for (Post post in posts) {
       rows.add(ListTile(
@@ -117,6 +122,7 @@ class WallWidget extends StatelessWidget {
             ), text: 'Par ', children: [
               TextSpan(
                 text: post.author.name,
+                style: linkStyle,
                 recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -124,10 +130,11 @@ class WallWidget extends StatelessWidget {
                             account: fetchAccount(post.author.id)))),
               ),
               TextSpan(
-                text:  '${post.time} pendant ',
+                text:  ' ${post.time} pendant ',
               ),
               TextSpan(
                 text: post.during.title,
+                style: linkStyle,
                 recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
                     context,
                     MaterialPageRoute(
