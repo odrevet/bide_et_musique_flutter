@@ -40,15 +40,15 @@ void onLinkTap(String url, BuildContext context) {
                     AccountPageWidget(account: fetchAccount(id))));
         break;
       default:
-        _launchURL(url);
+        launchURL(url);
     }
   } else {
     // otherwise launch in a browser
-    _launchURL(url);
+    launchURL(url);
   }
 }
 
-_launchURL(String url) async {
+launchURL(String url) async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {

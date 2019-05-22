@@ -117,7 +117,7 @@ class DrawerWidget extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text('A propos'),
+          title: Text('À propos'),
           leading: Icon(Icons.info),
           onTap: () {
             Navigator.push(
