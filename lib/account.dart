@@ -193,11 +193,17 @@ class AccountPageWidget extends StatelessWidget {
           PageView(
             children: <Widget>[
               SingleChildScrollView(
-                  child: Html(
-                      data: account.presentation,
-                      onLinkTap: (url) {
-                        onLinkTap(url, context);
-                      })),
+          child: Padding(
+              padding: EdgeInsets.only(left:8.0, top:2.0),
+        child: Html(
+            data: account.presentation,
+            defaultTextStyle: TextStyle(fontSize: 18.0),
+            onLinkTap: (url) {
+              onLinkTap(url, context);
+            }),
+      )
+
+                  ),
               SongListingWidget(account.favorites)
             ],
           )
