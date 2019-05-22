@@ -305,9 +305,15 @@ class SongPageWidget extends StatelessWidget {
           PageView(
             children: <Widget>[
               SingleChildScrollView(
-                  child: Html(
-                      data: songInformations.lyrics,
-                      defaultTextStyle: _fontLyrics)),
+                  child: Padding(
+              padding: EdgeInsets.only(left:8.0, top:2.0),
+        child: Html(
+            data: songInformations.lyrics,
+            defaultTextStyle: _fontLyrics),
+      )
+
+
+                  ),
               _buildViewComments(context, songInformations.comments),
             ],
           )
