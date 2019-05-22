@@ -17,40 +17,11 @@ class DrawerWidget extends StatelessWidget {
         child: ListView(
       children: <Widget>[
         DrawerHeader(
-            child: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/bm_logo.png'),
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: 'Bide&Musique',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Colors.orange,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 3.0,
-                            color: Colors.black,
-                          ),
-                        ],
-                      )),
-                  TextSpan(
-                      text: '\nLa web radio de l\'improbable et de l\'inouïe',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.yellow,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 3.0,
-                            color: Colors.black,
-                          ),
-                        ],
-                      )),
-                ],
               ),
             ),
             decoration: BoxDecoration(color: Colors.orange)),
