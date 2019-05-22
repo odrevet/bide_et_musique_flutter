@@ -9,50 +9,60 @@ import 'dart:convert';
 
 class Program {
   String id;
+  String type;
   String name;
   String description;
   List<String> airedOn;
   List<String> inMeta;
   List<SongLink> songs;
 
-  Program({this.id, this.name, this.description, this.airedOn, this.songs});
+  Program({this.id, this.name, this.description, this.airedOn, this.type});
 
   factory Program.fromJson(Map<String, dynamic> json) {
-    var songs = <SongLink>[];
-    for (var songEntry in json['songs']) {
-      var song = SongLink();
-      song.id = songEntry['song_id'].toString();
-      song.title = stripTags(songEntry['name']);
-      song.artist = stripTags(songEntry['alias']);
-      songs.add(song);
+    var program = Program(
+        id: json['id'].toString(),
+        type: json['type'],
+        name: json['name'],
+        description: json['description']);
+
+    if (program.type == 'program-liste') {
+      var songs = <SongLink>[];
+      for (var songEntry in json['songs']) {
+        var song = SongLink();
+        song.id = songEntry['song_id'].toString();
+        song.title = stripTags(songEntry['name']);
+        song.artist = stripTags(songEntry['alias']);
+        songs.add(song);
+      }
+      program.songs = songs;
     }
 
-    return Program(
-        id: json['id'].toString(),
-        name: json['name'],
-        description: json['description'],
-        songs: songs);
+    return program;
   }
 }
 
 Future<Program> fetchProgram(String programId) async {
-  var artist;
+  var program;
   final url = '$baseUri/program/$programId';
 
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
     try {
-      artist =
+      program =
           Program.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      print('Error while decoding Program informations : ' + e.toString());
+      program = Program();
+      program.id = '?';
+      program.type = '?';
+      program.name = '?';
+      program.description = e.toString();
     }
   } else {
     throw Exception('Failed to load Program informations');
   }
 
-  return artist;
+  return program;
 }
 
 String extractProgramId(str) {
@@ -98,6 +108,14 @@ class ProgramPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Program program) {
+    var listing;
+    if (program.type == 'program-liste') {
+      listing = SongListingWidget(program.songs);
+    }
+    else{
+      listing = Text('Pas de liste disponible');
+    }
+
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -121,7 +139,7 @@ class ProgramPageWidget extends StatelessWidget {
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
-          SongListingWidget(program.songs)
+          listing
         ]),
       )),
     );
