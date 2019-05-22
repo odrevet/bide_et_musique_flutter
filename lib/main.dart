@@ -89,7 +89,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         theme: ThemeData(
           primarySwatch: Colors.orange,
           secondaryHeaderColor: Colors.deepOrange,
-          canvasColor: Color.fromARGB(190, 245, 240, 220),
+          canvasColor: Color(0xFFF5EEE5),
         ),
         home: home);
   }
