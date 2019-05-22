@@ -31,15 +31,14 @@ void onLinkTap(String url, BuildContext context) {
             MaterialPageRoute(
                 builder: (context) => SongPageWidget(
                     song: SongLink(id: id),
-                    songInformations: fetchSongInformations(id))));
+                    songInformations: fetchSong(id))));
         break;
       case 'account':
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => AccountPageWidget(
-                    account: AccountLink(id, ''),
-                    accountInformations: fetchAccountInformations(id))));
+                    account: fetchAccount(id))));
         break;
       default:
         _launchURL(url);

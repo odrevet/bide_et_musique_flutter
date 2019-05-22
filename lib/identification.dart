@@ -214,7 +214,7 @@ class _IdentWidgetState extends State<IdentWidget> {
           children: [
             ManageAccountPageWidget(
                 account: account,
-                accountInformations: fetchAccountInformations(session.id)),
+                accountInformations: fetchAccount(session.id)),
             ManageFavoritesWidget(session: session),
             SongListingFutureWidget(fetchVotes())
           ],

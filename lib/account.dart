@@ -18,6 +18,7 @@ class AccountLink {
 
 // Information present on the account page
 class Account {
+  String name;
   String type;
   String inscription;
   String messageForum;
@@ -33,8 +34,8 @@ String extractAccountId(str) {
   return match[1];
 }
 
-Future<Account> fetchAccountInformations(String accountId) async {
-  var accountInformations = Account();
+Future<Account> fetchAccount(String accountId) async {
+  var account = Account();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -42,22 +43,23 @@ Future<Account> fetchAccountInformations(String accountId) async {
     dom.Document document = parser.parse(body);
     var txtpresentation =
         document.getElementsByClassName('txtpresentation')[0].innerHtml;
-    accountInformations.presentation = txtpresentation;
+    account.presentation = txtpresentation;
+    account.name = document.getElementsByClassName('titre-utilisateur')[0].innerHtml;
 
     dom.Element divInfo = document.getElementById('gd-encartblc2');
     List<dom.Element> ps = divInfo.getElementsByTagName('p');
-    accountInformations.type = stripTags(ps[1].innerHtml);
-    accountInformations.inscription = stripTags(ps[2].innerHtml);
-    accountInformations.messageForum = stripTags(ps[3].innerHtml);
-    accountInformations.comments = stripTags(ps[4].innerHtml);
+    account.type = stripTags(ps[1].innerHtml);
+    account.inscription = stripTags(ps[2].innerHtml);
+    account.messageForum = stripTags(ps[3].innerHtml);
+    account.comments = stripTags(ps[4].innerHtml);
 
     //set avatar path (cannot be always firgured out from account id as some
     //are jpg and some are png
     var img = divInfo.getElementsByTagName('img');
     if (img.isEmpty) {
-      accountInformations.avatar = '';
+      account.avatar = '';
     } else {
-      accountInformations.avatar = img[0].attributes['src'];
+      account.avatar = img[0].attributes['src'];
     }
 
     //parse favorites
@@ -74,8 +76,8 @@ Future<Account> fetchAccountInformations(String accountId) async {
       }
     }
 
-    accountInformations.favorites = favorites;
-    return accountInformations;
+    account.favorites = favorites;
+    return account;
   } else {
     throw Exception('Failed to load account ');
   }
@@ -113,38 +115,36 @@ Future<List<SongLink>> fetchVotes() async {
 }
 
 class AccountPageWidget extends StatelessWidget {
-  final AccountLink account;
-  final Future<Account> accountInformations;
+  final Future<Account> account;
 
-  AccountPageWidget({Key key, this.account, this.accountInformations})
+  AccountPageWidget({Key key, this.account})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(account.name),
-      ),
-      body: Center(
-        child: FutureBuilder<Account>(
-          future: accountInformations,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+    return FutureBuilder<Account>(
+      future: account,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildView(context, snapshot.data);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
-      ),
+        // By default, show a loading spinner
+        return Scaffold(
+            appBar: AppBar(
+              title: Text('Chargement du compte utilisateur'),
+            ),
+            body: Center(child:CircularProgressIndicator())
+        );
+
+      },
     );
   }
 
-  Widget _buildView(BuildContext context, Account accountInformations) {
-    final url = baseUri + accountInformations.avatar;
+  Widget _buildView(BuildContext context, Account account) {
+    final url = baseUri + account.avatar;
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -164,13 +164,13 @@ class AccountPageWidget extends StatelessWidget {
                       Image.network(url),
                       Expanded(
                         child: Text(
-                            accountInformations.type +
+                            account.type +
                                 '\n' +
-                                accountInformations.inscription +
+                                account.inscription +
                                 '\n' +
-                                accountInformations.messageForum +
+                                account.messageForum +
                                 '\n' +
-                                accountInformations.comments +
+                                account.comments +
                                 '\n',
                             style: TextStyle(fontSize: 14)),
                       )
@@ -194,11 +194,11 @@ class AccountPageWidget extends StatelessWidget {
             children: <Widget>[
               SingleChildScrollView(
                   child: Html(
-                      data: accountInformations.presentation,
+                      data: account.presentation,
                       onLinkTap: (url) {
                         onLinkTap(url, context);
                       })),
-              SongListingWidget(accountInformations.favorites)
+              SongListingWidget(account.favorites)
             ],
           )
         ]),
@@ -211,7 +211,12 @@ class AccountPageWidget extends StatelessWidget {
       )),
     );
 
-    return nestedScrollView;
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(account.name),
+        ),
+        body: nestedScrollView
+    );
   }
 }
 
@@ -250,31 +255,29 @@ Future<Account> fetchAccountSession(Session session) async {
 
 ////////////////////////////////////
 class AccountListingWidget extends StatelessWidget {
-  final List<AccountLink> _accounts;
+  final List<AccountLink> _accountLinks;
 
-  AccountListingWidget(this._accounts, {Key key}) : super(key: key);
+  AccountListingWidget(this._accountLinks, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (AccountLink account in _accounts) {
+    for (AccountLink accountLink in _accountLinks) {
       rows.add(ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.black12,
           child: Image(
-              image: NetworkImage('$baseUri/images/avatars/${account.id}.png')),
+              image: NetworkImage('$baseUri/images/avatars/${accountLink.id}.png')),
         ),
         title: Text(
-          account.name,
+          accountLink.name,
         ),
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AccountPageWidget(
-                      account: account,
-                      accountInformations:
-                          fetchAccountInformations(account.id))));
+                      account: fetchAccount(accountLink.id))));
         },
       ));
     }

@@ -104,7 +104,7 @@ class SongCardWidget extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => SongPageWidget(
                       song: song,
-                      songInformations: fetchSongInformations(song.id))));
+                      songInformations: fetchSong(song.id))));
         }
       },
       onLongPress: () {
@@ -122,18 +122,18 @@ class SongCardWidget extends StatelessWidget {
   }
 }
 
-Future<Song> fetchSongInformations(String songId) async {
-  var songInformations;
+Future<Song> fetchSong(String songId) async {
+  var song;
   final url = '$baseUri/song/$songId';
 
   final responseJson = await http.get(url);
 
   if (responseJson.statusCode == 200) {
     try {
-      songInformations =
+      song =
           Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      songInformations = Song(
+      song = Song(
           year: 0,
           artists: '?',
           author: '?',
@@ -146,7 +146,7 @@ Future<Song> fetchSongInformations(String songId) async {
     throw Exception('Failed to load song information');
   }
 
-  //Fetch comments and favourited status if connected
+  //If connected, fetch comments and favorite status 
   var session = Session();
   var response;
   if (session.id != null) {
@@ -180,21 +180,21 @@ Future<Song> fetchSongInformations(String songId) async {
         print(e.toString());
       }
     }
-    songInformations.comments = comments;
+    song.comments = comments;
 
     //check if the song is available to listen
     var divTitre = document.getElementsByClassName('titreorange');
-    songInformations.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
+    song.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
 
     //information available only if logged-in
     if (session.id != null) {
       //check if favourited
       if (divTitre.length == 2) {
-        songInformations.canFavourite = false;
-        songInformations.isFavourite = false;
+        song.canFavourite = false;
+        song.isFavourite = false;
       } else {
-        songInformations.canFavourite = true;
-        songInformations.isFavourite =
+        song.canFavourite = true;
+        song.isFavourite =
             stripTags(divTitre[2].innerHtml).trim() ==
                 'Ce morceau est dans vos favoris';
       }
@@ -202,18 +202,18 @@ Future<Song> fetchSongInformations(String songId) async {
       //check vote
       var vote = document.getElementById('vote');
       if (vote == null) {
-        songInformations.hasVote = true;
+        song.hasVote = true;
       } else {
-        songInformations.hasVote = false;
+        song.hasVote = false;
       }
     } else {
-      songInformations.isFavourite = false;
-      songInformations.canFavourite = false;
+      song.isFavourite = false;
+      song.canFavourite = false;
     }
   } else {
     throw Exception('Failed to load song page');
   }
-  return songInformations;
+  return song;
 }
 
 class SongPageWidget extends StatelessWidget {
@@ -384,9 +384,8 @@ class SongPageWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AccountPageWidget(
-                        account: comment.author,
-                        accountInformations:
-                            fetchAccountInformations(comment.author.id))));
+                        account:
+                            fetchAccount(comment.author.id))));
           },
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
@@ -448,7 +447,7 @@ void launchSongPage(SongLink song, BuildContext context) {
         context,
         MaterialPageRoute(
             builder: (context) => SongPageWidget(
-                song: song, songInformations: fetchSongInformations(song.id))));
+                song: song, songInformations: fetchSong(song.id))));
   }
 }
 
