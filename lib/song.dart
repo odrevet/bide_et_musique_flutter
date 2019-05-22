@@ -12,7 +12,7 @@ import 'utils.dart';
 import 'coverViewer.dart';
 import 'account.dart';
 import 'identification.dart';
-import 'searchWidget.dart' show fetchSearchSong;
+import 'search.dart' show fetchSearchSong;
 import 'songActions.dart';
 import 'artist.dart';
 

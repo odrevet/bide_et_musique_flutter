@@ -7,8 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils.dart';
 import 'account.dart';
-import 'manageFavoritesWidget.dart';
-import 'manageAccountPageWidget.dart';
+import 'manageFavorites.dart';
+import 'manageAccount.dart';
 import 'song.dart';
 
 class Session {

@@ -4,7 +4,7 @@ import 'wall.dart';
 import 'trombidoscope.dart';
 import 'pochettoscope.dart';
 import 'about.dart';
-import 'searchWidget.dart';
+import 'search.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
 import 'identification.dart';
