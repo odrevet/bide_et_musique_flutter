@@ -30,14 +30,23 @@ Future<List<Post>> fetchPosts() async {
 
       post.author = account;
 
-      var song = SongLink();
+      var songLink = SongLink();
       var artistLink = basmsg.children[0].children[1];
-      song.artist = artistLink.innerHtml;
+      songLink.artist = artistLink.innerHtml;
 
-      var songLink = basmsg.children[0].children[2];
-      song.title = stripTags(songLink.innerHtml);
+      var title = basmsg.children[0].children[2];
+      songLink.title = stripTags(title.innerHtml);
 
-      post.during = song;
+      post.during = songLink;
+
+      final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
+      var match = idRegex.firstMatch(basmsg.innerHtml);
+      if (match != null) {
+        post.time = match[1];
+      }else{
+        post.time = '';
+      }
+
 
       posts.add(post);
     }
@@ -110,7 +119,7 @@ class WallWidget extends StatelessWidget {
                 onLinkTap(url, context);
               }),
           subtitle: Text(
-              'Par ' + post.author.name + ' pendant ' + post.during.title)));
+              'Par ${post.author.name} ${post.time} pendant ${post.during.title}')));
     }
 
     return ListView(children: rows);
