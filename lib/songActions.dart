@@ -157,6 +157,7 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 
 ////////////////////////////////
 // Player
+/*
 IconButton startButtonSong(SongLink songLink) => IconButton(
     icon: Icon(Icons.play_arrow),
     onPressed: () async {
@@ -178,5 +179,83 @@ IconButton startButtonSong(SongLink songLink) => IconButton(
         'artist': songLink.artist
       });
       await AudioService.customAction('setNotification');
+      print('>>>>>>>>>>>>>>>>>>>>' + AudioService.playbackState.basicState.toString());
       await AudioService.play();
     });
+*/
+
+enum PlayerState { stopped, playing, paused }
+
+class SongPlayerWidget extends StatefulWidget {
+  final SongLink _songLink;
+  SongPlayerWidget(this._songLink, {Key key}) : super(key: key);
+
+  @override
+  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this._songLink);
+}
+
+class _SongPlayerWidgetState extends State<SongPlayerWidget> {
+  final SongLink _songLink;
+
+  PlayerState playerState = PlayerState.stopped;
+  get isPlaying => playerState == PlayerState.playing;
+  get isPaused => playerState == PlayerState.paused;
+
+  _SongPlayerWidgetState(this._songLink);
+
+  @override
+  Widget build(BuildContext context) {
+    var playStopButton;
+
+    if (isPlaying) {
+      playStopButton = IconButton(
+        icon: Icon(Icons.stop),
+        onPressed: () {
+          stop();
+        },
+      );
+    } else {
+      playStopButton = IconButton(
+        icon: Icon(Icons.play_arrow),
+        onPressed: () {
+          play();
+        },
+      );
+    }
+
+    return playStopButton;
+  }
+
+  play() async {
+    if (AudioService.playbackState == null ||
+        AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
+        AudioService.playbackState.basicState == BasicPlaybackState.none) {
+      setState(() {
+        playerState = PlayerState.playing;
+      });
+
+      await AudioService.start(
+        backgroundTask: backgroundAudioPlayerTask,
+        resumeOnClick: true,
+        androidNotificationChannelName: 'Bide&Musique',
+        notificationColor: 0xFFFED152,
+        androidNotificationIcon: 'mipmap/ic_launcher',
+      );
+    }
+
+    await AudioService.customAction('song', {
+      'id': _songLink.id,
+      'title': _songLink.title,
+      'artist': _songLink.artist
+    });
+    await AudioService.customAction('setNotification');
+    await AudioService.play();
+  }
+
+  stop() {
+    setState(() {
+      playerState = PlayerState.stopped;
+    });
+    AudioService.stop();
+  }
+}
