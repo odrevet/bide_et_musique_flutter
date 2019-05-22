@@ -8,6 +8,15 @@ import 'utils.dart';
 import 'song.dart';
 import 'account.dart';
 
+class Post {
+  AccountLink author;
+  SongLink during;
+  String body;
+  String date;
+  String time;
+  Post();
+}
+
 Future<List<Post>> fetchPosts() async {
   var posts = <Post>[];
   final url = '$baseUri/mur-des-messages.html';
@@ -47,22 +56,12 @@ Future<List<Post>> fetchPosts() async {
         post.time = '';
       }
 
-
       posts.add(post);
     }
     return posts;
   } else {
     throw Exception('Failed to load post');
   }
-}
-
-class Post {
-  AccountLink author;
-  SongLink during;
-  String body;
-  String date;
-  String time;
-  Post();
 }
 
 class WallWidget extends StatelessWidget {
