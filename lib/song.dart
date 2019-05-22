@@ -335,8 +335,8 @@ class SongPageWidget extends StatelessWidget {
     var session = Session();
     if (session.id != null) {
       if (songInformations.canFavourite) {
-        actions
-            .add(SongFavoriteIconWidget(songLink.id, songInformations.isFavourite));
+        actions.add(
+            SongFavoriteIconWidget(songLink.id, songInformations.isFavourite));
       }
 
       actions.add(SongVoteIconWidget(songLink.id, songInformations.hasVote));
@@ -364,12 +364,18 @@ class SongPageWidget extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) => popupMenuAction));
 
+    var actionContainer = Container(
+      padding: EdgeInsets.only(left:50.0),
+      alignment: Alignment.topCenter,
+      child: Row(children: actions),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(stripTags(songInformations.title)),
         bottom: PreferredSize(
-          child: Row(children: actions),
-          preferredSize: Size(0.0, 25.0),
+          child: actionContainer,
+          preferredSize: Size(0.0, 20.0),
         ),
       ),
       body: nestedScrollView,
@@ -450,8 +456,8 @@ void launchSongPage(SongLink song, BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SongPageWidget(
-                songLink: song, song: fetchSong(song.id))));
+            builder: (context) =>
+                SongPageWidget(songLink: song, song: fetchSong(song.id))));
   }
 }
 
