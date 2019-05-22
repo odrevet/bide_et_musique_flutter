@@ -53,7 +53,7 @@ Future<List<Post>> fetchPosts() async {
       var match = idRegex.firstMatch(basmsg.innerHtml);
       if (match != null) {
         post.time = match[1];
-      }else{
+      } else {
         post.time = '';
       }
 
@@ -95,7 +95,7 @@ class WallWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<Post> posts) {
-    var linkStyle =  TextStyle(
+    var linkStyle = TextStyle(
       fontSize: 14.0,
       color: Colors.blue,
     );
@@ -115,34 +115,40 @@ class WallWidget extends StatelessWidget {
                 onLinkTap(url, context);
               }),
           subtitle: RichText(
-            text:
-            TextSpan(style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black,
-            ), text: 'Par ', children: [
-              TextSpan(
-                text: post.author.name,
-                style: linkStyle,
-                recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccountPageWidget(
-                            account: fetchAccount(post.author.id)))),
-              ),
-              TextSpan(
-                text:  ' ${post.time} pendant ',
-              ),
-              TextSpan(
-                text: post.during.title,
-                style: linkStyle,
-                recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SongPageWidget(
-                            songLink: SongLink(id: post.during.id, title: post.during.title),
-                            song: fetchSong(post.during.id)))),
-              ),
-            ]),
+            text: TextSpan(
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.black,
+                ),
+                text: 'Par ',
+                children: [
+                  TextSpan(
+                    text: post.author.name,
+                    style: linkStyle,
+                    recognizer: new TapGestureRecognizer()
+                      ..onTap = () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AccountPageWidget(
+                                  account: fetchAccount(post.author.id)))),
+                  ),
+                  TextSpan(
+                    text: ' ${post.time} pendant ',
+                  ),
+                  TextSpan(
+                    text: post.during.title,
+                    style: linkStyle,
+                    recognizer: new TapGestureRecognizer()
+                      ..onTap = () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SongPageWidget(
+                                  songLink: SongLink(
+                                      id: post.during.id,
+                                      title: post.during.title),
+                                  song: fetchSong(post.during.id)))),
+                  ),
+                ]),
           )));
       rows.add(Divider());
     }

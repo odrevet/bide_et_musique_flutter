@@ -98,12 +98,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   RaisedButton startButton() => RaisedButton.icon(
         icon: Icon(Icons.radio, size: _iconSize),
-        label: Text("Écouter la radio", style: TextStyle(
-          fontSize: 20.0,
-        )),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0)),
-    color: Colors.orangeAccent,
+        label: Text("Écouter la radio",
+            style: TextStyle(
+              fontSize: 20.0,
+            )),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        color: Colors.orangeAccent,
         onPressed: () async {
           bool success = await AudioService.start(
             backgroundTask: backgroundAudioPlayerTask,

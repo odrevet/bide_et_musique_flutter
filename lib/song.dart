@@ -306,14 +306,11 @@ class SongPageWidget extends StatelessWidget {
             children: <Widget>[
               SingleChildScrollView(
                   child: Padding(
-              padding: EdgeInsets.only(left:8.0, top:2.0),
-        child: Html(
-            data: songInformations.lyrics,
-            defaultTextStyle: _fontLyrics),
-      )
-
-
-                  ),
+                padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                child: Html(
+                    data: songInformations.lyrics,
+                    defaultTextStyle: _fontLyrics),
+              )),
               _buildViewComments(context, songInformations.comments),
             ],
           )
@@ -371,7 +368,7 @@ class SongPageWidget extends StatelessWidget {
         itemBuilder: (BuildContext context) => popupMenuAction));
 
     var actionContainer = Container(
-      padding: EdgeInsets.only(left:50.0),
+      padding: EdgeInsets.only(left: 50.0),
       alignment: Alignment.topCenter,
       child: Row(children: actions),
     );

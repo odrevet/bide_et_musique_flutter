@@ -61,7 +61,8 @@ class TrombidoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Map<String, AccountLink> accountLinks) {
+  Widget _buildView(
+      BuildContext context, Map<String, AccountLink> accountLinks) {
     var rows = <GestureDetector>[];
 
     accountLinks.forEach((img, accountLink) {
@@ -72,8 +73,7 @@ class TrombidoscopeWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => AccountPageWidget(
-                      account:
-                          fetchAccount(accountLink.id))));
+                      account: fetchAccount(accountLink.id))));
         },
         child: Container(
           child: Text(accountLink.name, style: _font),

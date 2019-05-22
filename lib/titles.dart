@@ -17,7 +17,7 @@ SongLink songFromTr(dom.Element tr) {
   song.artist = stripTags(tr.children[2].innerHtml);
   var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
-  if(title.contains(newFlag)){
+  if (title.contains(newFlag)) {
     song.isNew = true;
   }
   song.title = title.replaceFirst(newFlag, '').trimLeft();
@@ -81,7 +81,8 @@ class TitlesWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Map<String, List<SongLink>> songLinks) {
+  Widget _buildView(
+      BuildContext context, Map<String, List<SongLink>> songLinks) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(

@@ -158,11 +158,10 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ////////////////////////////////
 // Player
 IconButton startButtonSong(SongLink songLink) => IconButton(
-  icon: Icon(Icons.play_arrow),
+    icon: Icon(Icons.play_arrow),
     onPressed: () async {
       if (AudioService.playbackState == null ||
-          AudioService.playbackState.basicState ==
-              BasicPlaybackState.stopped ||
+          AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
           AudioService.playbackState.basicState == BasicPlaybackState.none) {
         await AudioService.start(
           backgroundTask: backgroundAudioPlayerTask,
@@ -173,10 +172,11 @@ IconButton startButtonSong(SongLink songLink) => IconButton(
         );
       }
 
-      await AudioService.customAction('song',
-          {'id': songLink.id, 'title': songLink.title, 'artist': songLink.artist});
+      await AudioService.customAction('song', {
+        'id': songLink.id,
+        'title': songLink.title,
+        'artist': songLink.artist
+      });
       await AudioService.customAction('setNotification');
       await AudioService.play();
-    }
-);
-
+    });

@@ -51,8 +51,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: song,
-                        song: fetchSong(song.id))));
+                        songLink: song, song: fetchSong(song.id))));
           },
         ));
   }

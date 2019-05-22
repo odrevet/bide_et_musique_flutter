@@ -111,8 +111,7 @@ class ProgramPageWidget extends StatelessWidget {
     var listing;
     if (program.type == 'program-liste') {
       listing = SongListingWidget(program.songs);
-    }
-    else{
+    } else {
       listing = Text('Pas de liste disponible');
     }
 

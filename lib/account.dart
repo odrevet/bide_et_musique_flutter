@@ -44,7 +44,8 @@ Future<Account> fetchAccount(String accountId) async {
     var txtpresentation =
         document.getElementsByClassName('txtpresentation')[0].innerHtml;
     account.presentation = txtpresentation;
-    account.name = document.getElementsByClassName('titre-utilisateur')[0].innerHtml;
+    account.name =
+        document.getElementsByClassName('titre-utilisateur')[0].innerHtml;
 
     dom.Element divInfo = document.getElementById('gd-encartblc2');
     List<dom.Element> ps = divInfo.getElementsByTagName('p');
@@ -117,8 +118,7 @@ Future<List<SongLink>> fetchVotes() async {
 class AccountPageWidget extends StatelessWidget {
   final Future<Account> account;
 
-  AccountPageWidget({Key key, this.account})
-      : super(key: key);
+  AccountPageWidget({Key key, this.account}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +136,7 @@ class AccountPageWidget extends StatelessWidget {
             appBar: AppBar(
               title: Text('Chargement du compte utilisateur'),
             ),
-            body: Center(child:CircularProgressIndicator())
-        );
-
+            body: Center(child: CircularProgressIndicator()));
       },
     );
   }
@@ -193,17 +191,15 @@ class AccountPageWidget extends StatelessWidget {
           PageView(
             children: <Widget>[
               SingleChildScrollView(
-          child: Padding(
-              padding: EdgeInsets.only(left:8.0, top:2.0),
-        child: Html(
-            data: account.presentation,
-            defaultTextStyle: TextStyle(fontSize: 18.0),
-            onLinkTap: (url) {
-              onLinkTap(url, context);
-            }),
-      )
-
-                  ),
+                  child: Padding(
+                padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                child: Html(
+                    data: account.presentation,
+                    defaultTextStyle: TextStyle(fontSize: 18.0),
+                    onLinkTap: (url) {
+                      onLinkTap(url, context);
+                    }),
+              )),
               SongListingWidget(account.favorites)
             ],
           )
@@ -221,8 +217,7 @@ class AccountPageWidget extends StatelessWidget {
         appBar: AppBar(
           title: Text(account.name),
         ),
-        body: nestedScrollView
-    );
+        body: nestedScrollView);
   }
 }
 
@@ -273,7 +268,8 @@ class AccountListingWidget extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: Colors.black12,
           child: Image(
-              image: NetworkImage('$baseUri/images/avatars/${accountLink.id}.png')),
+              image: NetworkImage(
+                  '$baseUri/images/avatars/${accountLink.id}.png')),
         ),
         title: Text(
           accountLink.name,
