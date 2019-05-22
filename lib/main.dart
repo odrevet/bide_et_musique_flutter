@@ -94,8 +94,16 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         home: home);
   }
 
-  RaisedButton startButton() => RaisedButton(
-        child: Text("Ecouter la radio"),
+  final double _iconSize = 48.0;
+
+  RaisedButton startButton() => RaisedButton.icon(
+        icon: Icon(Icons.radio, size: _iconSize),
+        label: Text("Écouter la radio", style: TextStyle(
+          fontSize: 20.0,
+        )),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0)),
+    color: Colors.orangeAccent,
         onPressed: () async {
           bool success = await AudioService.start(
             backgroundTask: backgroundAudioPlayerTask,
@@ -106,26 +114,26 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           );
           if (success) {
             await AudioService.play();
-            await AudioService.customAction('setNotification', '');
+            await AudioService.customAction('setNotification');
           }
         },
       );
 
   IconButton playButton() => IconButton(
         icon: Icon(Icons.play_arrow),
-        iconSize: 64.0,
+        iconSize: _iconSize,
         onPressed: AudioService.play,
       );
 
   IconButton pauseButton() => IconButton(
         icon: Icon(Icons.pause),
-        iconSize: 64.0,
+        iconSize: _iconSize,
         onPressed: AudioService.pause,
       );
 
   IconButton stopButton() => IconButton(
         icon: Icon(Icons.stop),
-        iconSize: 64.0,
+        iconSize: _iconSize,
         onPressed: AudioService.stop,
       );
 }

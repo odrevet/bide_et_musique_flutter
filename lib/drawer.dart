@@ -35,7 +35,7 @@ class DrawerWidget extends StatelessWidget {
         ),
         ListTile(
           title: Text('Titres'),
-          leading: Icon(Icons.album),
+          leading: Icon(Icons.queue_music),
           onTap: () {
             Navigator.push(
                 context,
