@@ -100,7 +100,7 @@ class WallWidget extends StatelessWidget {
       color: Colors.blue,
     );
 
-    var rows = <ListTile>[];
+    var rows = <Widget>[];
     for (Post post in posts) {
       rows.add(ListTile(
           leading: CircleAvatar(
@@ -144,6 +144,7 @@ class WallWidget extends StatelessWidget {
               ),
             ]),
           )));
+      rows.add(Divider());
     }
 
     return ListView(children: rows);
