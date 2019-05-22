@@ -8,7 +8,7 @@ import 'utils.dart';
 import 'song.dart';
 
 class NowSong {
-  Song song;
+  SongLink song;
   String desc; //description formated in HTML
   String date;
   NowSong();
@@ -27,7 +27,7 @@ Future<List<NowSong>> fetchNowSongs() async {
     trs.removeLast(); //remove leading pagination
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
-      var song = Song();
+      var song = SongLink();
       song.title = tds[3].children[0].innerHtml;
       song.id = extractSongId(tds[3].children[0].attributes['href']);
       var nowSong = NowSong();

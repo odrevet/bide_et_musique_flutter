@@ -7,7 +7,7 @@ import 'song.dart';
 import 'utils.dart';
 import 'account.dart';
 
-Future<List<Account>> fetchSearchAccount(String search) async {
+Future<List<AccountLink>> fetchSearchAccount(String search) async {
   String url = '$baseUri/recherche-bidonaute.html?bw=$search';
 
   //need to transform characters to url encoding
@@ -19,14 +19,14 @@ Future<List<Account>> fetchSearchAccount(String search) async {
   url = url.replaceAll(RegExp(r'è'), '%E8');
 
   final response = await http.post(url);
-  var accounts = <Account>[];
+  var accounts = <AccountLink>[];
 
   if (response.statusCode == 302) {
     var location = response.headers['location'];
     print(location);
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
-    var account = Account(extractAccountId(location), search);
+    var account = AccountLink(extractAccountId(location), search);
     accounts.add(account);
   } else if (response.statusCode == 200) {
     var body = response.body;
@@ -37,7 +37,7 @@ Future<List<Account>> fetchSearchAccount(String search) async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
-      var account = Account(
+      var account = AccountLink(
           extractAccountId(a.attributes['href']), stripTags(a.innerHtml));
       accounts.add(account);
     }
@@ -48,7 +48,7 @@ Future<List<Account>> fetchSearchAccount(String search) async {
   return accounts;
 }
 
-Future<List<Song>> fetchSearchSong(String search, String type) async {
+Future<List<SongLink>> fetchSearchSong(String search, String type) async {
   String url = '$baseUri/recherche.html?kw=$search&st=$type';
 
   //need to transform characters to url encoding
@@ -60,14 +60,14 @@ Future<List<Song>> fetchSearchSong(String search, String type) async {
   url = url.replaceAll(RegExp(r'è'), '%E8');
 
   final response = await http.post(url);
-  var songs = <Song>[];
+  var songs = <SongLink>[];
 
   if (response.statusCode == 302) {
     var location = response.headers['location'];
     print(location);
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
-    var song = Song();
+    var song = SongLink();
     song.id = extractSongId(location);
     song.title = search;
     songs.add(song);
@@ -83,7 +83,7 @@ Future<List<Song>> fetchSearchSong(String search, String type) async {
         var tds = tr.getElementsByTagName('td');
         var a = tds[3].children[0];
 
-        var song = Song();
+        var song = SongLink();
         song.id = extractSongId(a.attributes['href']);
         song.title = stripTags(a.innerHtml);
         song.artist = stripTags(tds[2].children[0].innerHtml);

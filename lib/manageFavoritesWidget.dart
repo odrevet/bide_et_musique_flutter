@@ -19,7 +19,7 @@ class ManageFavoritesWidget extends StatefulWidget {
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   _ManageFavoritesWidgetState(this.session);
   Session session;
-  Future<AccountInformations> accountInformations;
+  Future<Account> accountInformations;
 
   List<Dismissible> _rows;
 
@@ -31,7 +31,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   }
 
   Dismissible _createSongTile(
-      Song song, AccountInformations accountInformations, int index) {
+      SongLink song, Account accountInformations, int index) {
     int position = ++index;
     return Dismissible(
         key: Key(song.id),
@@ -58,7 +58,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   }
 
   Future<void> _confirmDeletion(
-      Song song, AccountInformations accountInformations) async {
+      SongLink song, Account accountInformations) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -117,10 +117,10 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   }
 
   Widget _buildView(BuildContext context, Session session,
-      AccountInformations accountInformations) {
+      Account accountInformations) {
     _rows.clear();
     int index = 0;
-    for (Song song in accountInformations.favorites) {
+    for (SongLink song in accountInformations.favorites) {
       _rows.add(_createSongTile(song, accountInformations, index));
       index++;
     }
@@ -155,7 +155,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<AccountInformations>(
+      child: FutureBuilder<Account>(
         future: accountInformations,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

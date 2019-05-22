@@ -6,12 +6,12 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 import 'utils.dart';
 
-Song songFromTr(dom.Element tr) {
+SongLink songFromTr(dom.Element tr) {
   //td 0 program / date
   //td 1 cover
   //td 2 artist
   //td 3 song
-  var song = Song();
+  var song = SongLink();
   var href = tr.children[3].innerHtml;
   song.id = extractSongId(href);
   song.artist = stripTags(tr.children[2].innerHtml);
@@ -19,14 +19,14 @@ Song songFromTr(dom.Element tr) {
   return song;
 }
 
-Future<Map<String, List<Song>>> fetchTitles() async {
+Future<Map<String, List<SongLink>>> fetchTitles() async {
   final url = '$baseUri/programmes.php';
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-    var songsNext = <Song>[];
+    var songsNext = <SongLink>[];
     var tableNext = document.getElementById('BM_next_songs').children[1];
     var trsNext = tableNext.getElementsByTagName('tr');
     for (dom.Element tr in trsNext) {
@@ -34,7 +34,7 @@ Future<Map<String, List<Song>>> fetchTitles() async {
       songsNext.add(song);
     }
 
-    var songsPast = <Song>[];
+    var songsPast = <SongLink>[];
     var tablePast = document.getElementById('BM_past_songs').children[1];
     var trsPast = tablePast.getElementsByTagName('tr');
     trsPast.removeLast(); //remove show more button
@@ -50,14 +50,14 @@ Future<Map<String, List<Song>>> fetchTitles() async {
 }
 
 class TitlesWidget extends StatelessWidget {
-  final Future<Map<String, List<Song>>> program;
+  final Future<Map<String, List<SongLink>>> program;
 
   TitlesWidget({Key key, this.program}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<Map<String, List<Song>>>(
+      child: FutureBuilder<Map<String, List<SongLink>>>(
         future: program,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -76,7 +76,7 @@ class TitlesWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Map<String, List<Song>> program) {
+  Widget _buildView(BuildContext context, Map<String, List<SongLink>> program) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(

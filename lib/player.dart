@@ -37,7 +37,7 @@ void backgroundAudioPlayerTask() async {
         switch (name) {
           case 'song':
             Map songMap = arguments;
-            var song = Song(
+            var song = SongLink(
                 id: songMap['id'],
                 title: songMap['title'],
                 artist: songMap['artist']);
@@ -51,7 +51,7 @@ void backgroundAudioPlayerTask() async {
 }
 
 class StreamPlayer {
-  Song _song;
+  SongLink _song;
   bool _playing;
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
@@ -66,7 +66,7 @@ class StreamPlayer {
     await FlutterRadio.audioStart();
   }
 
-  void setSong(Song song) {
+  void setSong(SongLink song) {
     this._song = song;
   }
 
@@ -137,7 +137,7 @@ class StreamNotificationUpdater {
 
   StreamNotificationUpdater();
 
-  void setMediaItemFromSong(Song song) {
+  void setMediaItemFromSong(SongLink song) {
     var mediaItem = MediaItem(
         id: 'bm_stream',
         album: song.program,

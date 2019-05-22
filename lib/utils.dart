@@ -23,14 +23,14 @@ void onLinkTap(String url, BuildContext context) {
   if (hasMatch == true) {
     var type = regExp.firstMatch(url)[1];
     var id = regExp.firstMatch(url)[2];
-    
+
     switch (type){
       case 'song':
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => SongPageWidget(
-                    song: Song(id: id),
+                    song: SongLink(id: id),
                     songInformations: fetchSongInformations(id))));
         break;
       case 'account':
@@ -38,7 +38,7 @@ void onLinkTap(String url, BuildContext context) {
             context,
             MaterialPageRoute(
                 builder: (context) => AccountPageWidget(
-                    account: Account(id, ''),
+                    account: AccountLink(id, ''),
                     accountInformations: fetchAccountInformations(id))));
         break;
       default:

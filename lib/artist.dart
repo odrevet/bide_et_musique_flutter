@@ -38,14 +38,14 @@ class Artist {
   String firstName;
   String lastName;
   String site;
-  List<Song> disco;
+  List<SongLink> disco;
 
   Artist({this.id, this.alias, this.site, this.disco});
 
   factory Artist.fromJson(Map<String, dynamic> json) {
-    var disco = <Song>[];
+    var disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
-      var song = Song();
+      var song = SongLink();
       song.id = discoEntry['id'].toString();
       song.title = stripTags(discoEntry['name']);
       disco.add(song);

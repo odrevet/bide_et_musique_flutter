@@ -132,7 +132,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 // Share
 
 class SongShareIconWidget extends StatelessWidget {
-  final Song song;
+  final SongLink song;
 
   SongShareIconWidget(this.song, {Key key}) : super(key: key);
 
@@ -158,7 +158,7 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ////////////////////////////////
 // Player
 
-RaisedButton startButtonSong(Song song) => RaisedButton(
+RaisedButton startButtonSong(SongLink song) => RaisedButton(
       child: Text("PLAY SONG"),
       onPressed: () async {
         if (AudioService.playbackState == null ||

@@ -16,25 +16,17 @@ import 'searchWidget.dart' show fetchSearchSong;
 import 'songActions.dart';
 import 'artist.dart';
 
-class Song {
+class SongLink {
   String id;
   String title;
   String artist;
   String program;
 
-  Song({this.id = '', this.title = '', this.artist = '', this.program = ''});
-}
-
-class Comment {
-  Account author;
-  String body;
-  String time;
-
-  Comment();
+  SongLink({this.id = '', this.title = '', this.artist = '', this.program = ''});
 }
 
 /// information available on the song page
-class SongInformations {
+class Song {
   int year;
   String title;
   String artists;
@@ -50,7 +42,7 @@ class SongInformations {
   bool isFavourite;
   bool hasVote;
 
-  SongInformations(
+  Song(
       {this.title,
       this.year,
       this.artists,
@@ -61,9 +53,9 @@ class SongInformations {
       this.reference,
       this.lyrics});
 
-  factory SongInformations.fromJson(Map<String, dynamic> json) {
+  factory Song.fromJson(Map<String, dynamic> json) {
     final String lyrics = json['lyrics'];
-    return SongInformations(
+    return Song(
         title: json['name'],
         year: json['year'],
         artists: stripTags(json['artists']['main']['alias']),
@@ -78,6 +70,14 @@ class SongInformations {
   }
 }
 
+class Comment {
+  AccountLink author;
+  String body;
+  String time;
+
+  Comment();
+}
+
 String extractSongId(str) {
   final idRegex = RegExp(r'/song/(\d+).html');
   var match = idRegex.firstMatch(str);
@@ -89,7 +89,7 @@ String extractSongId(str) {
 }
 
 class SongCardWidget extends StatelessWidget {
-  final Song song;
+  final SongLink song;
 
   SongCardWidget({Key key, this.song}) : super(key: key);
 
@@ -121,7 +121,7 @@ class SongCardWidget extends StatelessWidget {
   }
 }
 
-Future<SongInformations> fetchSongInformations(String songId) async {
+Future<Song> fetchSongInformations(String songId) async {
   var songInformations;
   final url = '$baseUri/song/$songId';
 
@@ -129,10 +129,10 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      songInformations = SongInformations.fromJson(
+      songInformations = Song.fromJson(
           json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      songInformations = SongInformations(
+      songInformations = Song(
           year: 0,
           artists: '?',
           author: '?',
@@ -169,7 +169,7 @@ Future<SongInformations> fetchSongInformations(String songId) async {
         dom.Element aAccount = tdCommentChildren[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
-        comment.author = Account(accountId, accountName);
+        comment.author = AccountLink(accountId, accountName);
         var commentLines = tdComment.innerHtml.split('<br>');
         commentLines.removeAt(0);
         comment.body = commentLines.join();
@@ -216,15 +216,15 @@ Future<SongInformations> fetchSongInformations(String songId) async {
 }
 
 class SongPageWidget extends StatelessWidget {
-  final Song song;
-  final Future<SongInformations> songInformations;
+  final SongLink song;
+  final Future<Song> songInformations;
 
   SongPageWidget({Key key, this.song, this.songInformations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<SongInformations>(
+      child: FutureBuilder<Song>(
         future: songInformations,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -258,7 +258,7 @@ class SongPageWidget extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  Widget _buildView(BuildContext context, SongInformations songInformations) {
+  Widget _buildView(BuildContext context, Song songInformations) {
     var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 20.0);
 
@@ -408,7 +408,7 @@ class SongPageWidget extends StatelessWidget {
 //////////////////
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
-  final List<Song> _songs;
+  final List<SongLink> _songs;
 
   SongListingWidget(this._songs, {Key key}) : super(key: key);
 
@@ -417,13 +417,13 @@ class SongListingWidget extends StatefulWidget {
 }
 
 class SongListingWidgetState extends State<SongListingWidget> {
-  List<Song> _songs;
+  List<SongLink> _songs;
   SongListingWidgetState(this._songs);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (Song song in _songs) {
+    for (SongLink song in _songs) {
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
@@ -441,7 +441,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
   }
 }
 
-void launchSongPage(Song song, BuildContext context) {
+void launchSongPage(SongLink song, BuildContext context) {
   if (song.id != null) {
     Navigator.push(
         context,
@@ -452,7 +452,7 @@ void launchSongPage(Song song, BuildContext context) {
 }
 
 class SongInformationWidget extends StatelessWidget {
-  final SongInformations _songInformations;
+  final Song _songInformations;
 
   SongInformationWidget(this._songInformations);
 
@@ -541,14 +541,14 @@ class SongInformationWidget extends StatelessWidget {
 //////////////////////////
 // Display songs from future song list
 class SongListingFutureWidget extends StatelessWidget {
-  final Future<List<Song>> songs;
+  final Future<List<SongLink>> songs;
 
   SongListingFutureWidget(this.songs, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<List<Song>>(
+      child: FutureBuilder<List<SongLink>>(
         future: songs,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

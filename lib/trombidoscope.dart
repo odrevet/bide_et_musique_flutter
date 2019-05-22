@@ -6,8 +6,8 @@ import 'package:html/parser.dart' as parser;
 import 'account.dart';
 import 'utils.dart';
 
-Future<Map<String, Account>> fetchTrombidoscope() async {
-  var accounts = <String, Account>{};
+Future<Map<String, AccountLink>> fetchTrombidoscope() async {
+  var accounts = <String, AccountLink>{};
 
   final url = '$baseUri/trombidoscope.html';
   final response = await http.get(url);
@@ -20,7 +20,7 @@ Future<Map<String, Account>> fetchTrombidoscope() async {
       var a = td.children[0];
       var href = a.attributes['href'];
       var id = extractAccountId(href);
-      var account = Account(id, stripTags(a.innerHtml));
+      var account = AccountLink(id, stripTags(a.innerHtml));
       accounts[a.children[0].attributes['src']] = account;
     }
     return accounts;
@@ -30,7 +30,7 @@ Future<Map<String, Account>> fetchTrombidoscope() async {
 }
 
 class TrombidoscopeWidget extends StatelessWidget {
-  final Future<Map<String, Account>> accounts; // [avatar : account]
+  final Future<Map<String, AccountLink>> accounts; // [avatar : account]
   final _font = TextStyle(
       fontSize: 18.0,
       background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
@@ -44,7 +44,7 @@ class TrombidoscopeWidget extends StatelessWidget {
         title: Text('Le trombidoscope'),
       ),
       body: Center(
-        child: FutureBuilder<Map<String, Account>>(
+        child: FutureBuilder<Map<String, AccountLink>>(
           future: accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -61,7 +61,7 @@ class TrombidoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Map<String, Account> accounts) {
+  Widget _buildView(BuildContext context, Map<String, AccountLink> accounts) {
     var rows = <GestureDetector>[];
 
     accounts.forEach((img, account) {

@@ -6,8 +6,8 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 import 'utils.dart';
 
-Future<List<Song>> fetchPochettoscope() async {
-  var songs = <Song>[];
+Future<List<SongLink>> fetchPochettoscope() async {
+  var songs = <SongLink>[];
   final url = '$baseUri/le-pochettoscope.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -19,7 +19,7 @@ Future<List<Song>> fetchPochettoscope() async {
       var src = vignette.children[1].attributes['src'];
       final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
       var match = idRegex.firstMatch(src);
-      var song = Song();
+      var song = SongLink();
       song.id = match[1];
 
       var title = vignette.children[0].children[0].attributes['title'];
@@ -33,7 +33,7 @@ Future<List<Song>> fetchPochettoscope() async {
 }
 
 class PochettoscopeWidget extends StatelessWidget {
-  final Future<List<Song>> songs;
+  final Future<List<SongLink>> songs;
 
   PochettoscopeWidget({Key key, this.songs}) : super(key: key);
 
@@ -44,7 +44,7 @@ class PochettoscopeWidget extends StatelessWidget {
         title: Text('Le pochettoscope'),
       ),
       body: Center(
-        child: FutureBuilder<List<Song>>(
+        child: FutureBuilder<List<SongLink>>(
           future: songs,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -61,9 +61,9 @@ class PochettoscopeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, List<Song> songs) {
+  Widget _buildView(BuildContext context, List<SongLink> songs) {
     var rows = <Container>[];
-    for (Song song in songs) {
+    for (SongLink song in songs) {
       rows.add(Container(child: SongCardWidget(song: song)));
     }
 

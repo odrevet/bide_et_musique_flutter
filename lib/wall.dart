@@ -26,11 +26,11 @@ Future<List<Post>> fetchPosts() async {
       var accountHref = accountLink.attributes['href'];
 
       var id = extractAccountId(accountHref);
-      var account = Account(id, stripTags(accountLink.innerHtml));
+      var account = AccountLink(id, stripTags(accountLink.innerHtml));
 
       post.author = account;
 
-      var song = Song();
+      var song = SongLink();
       var artistLink = basmsg.children[0].children[1];
       song.artist = artistLink.innerHtml;
 
@@ -48,8 +48,8 @@ Future<List<Post>> fetchPosts() async {
 }
 
 class Post {
-  Account author;
-  Song during;
+  AccountLink author;
+  SongLink during;
   String body;
   String date;
   String time;

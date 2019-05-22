@@ -13,14 +13,14 @@ class Program {
   String description;
   List<String> airedOn;
   List<String> inMeta;
-  List<Song> songs;
+  List<SongLink> songs;
 
   Program({this.id, this.name, this.description, this.airedOn, this.songs});
 
   factory Program.fromJson(Map<String, dynamic> json) {
-    var songs = <Song>[];
+    var songs = <SongLink>[];
     for (var songEntry in json['songs']) {
-      var song = Song();
+      var song = SongLink();
       song.id = songEntry['song_id'].toString();
       song.title = stripTags(songEntry['name']);
       song.artist = stripTags(songEntry['alias']);

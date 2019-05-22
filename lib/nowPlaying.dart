@@ -6,8 +6,8 @@ import 'package:html/parser.dart' as parser;
 import 'song.dart';
 import 'utils.dart';
 
-Future<Song> fetchNowPlaying() async {
-  var song = Song();
+Future<SongLink> fetchNowPlaying() async {
+  var song = SongLink();
   final url = '$baseUri/now-top.php';
   final response = await http.get(url);
 
@@ -39,7 +39,7 @@ class NowPlayingWidget extends StatefulWidget {
 }
 
 class _NowPlayingWidgetState extends State<NowPlayingWidget> {
-  Future<Song> _song;
+  Future<SongLink> _song;
   Timer timer;
 
   _NowPlayingWidgetState();
@@ -64,7 +64,7 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<Song>(
+      child: FutureBuilder<SongLink>(
         future: _song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

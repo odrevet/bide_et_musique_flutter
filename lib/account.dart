@@ -9,21 +9,21 @@ import 'utils.dart';
 import 'song.dart';
 import 'identification.dart';
 
-class Account {
+class AccountLink {
   String id;
   String name;
 
-  Account(this.id, this.name);
+  AccountLink(this.id, this.name);
 }
 
 // Information present on the account page
-class AccountInformations {
+class Account {
   String type;
   String inscription;
   String messageForum;
   String comments;
   String presentation;
-  List<Song> favorites;
+  List<SongLink> favorites;
   String avatar;
 }
 
@@ -33,8 +33,8 @@ String extractAccountId(str) {
   return match[1];
 }
 
-Future<AccountInformations> fetchAccountInformations(String accountId) async {
-  var accountInformations = AccountInformations();
+Future<Account> fetchAccountInformations(String accountId) async {
+  var accountInformations = Account();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -62,10 +62,10 @@ Future<AccountInformations> fetchAccountInformations(String accountId) async {
 
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    var favorites = <Song>[];
+    var favorites = <SongLink>[];
     if (tables.isNotEmpty) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var song = Song();
+        var song = SongLink();
         var aTitle = tr.children[4].children[0];
         song.id = extractSongId(aTitle.attributes['href']);
         song.title = stripTags(aTitle.innerHtml);
@@ -81,9 +81,9 @@ Future<AccountInformations> fetchAccountInformations(String accountId) async {
   }
 }
 
-Future<List<Song>> fetchVotes() async {
+Future<List<SongLink>> fetchVotes() async {
   var session = Session();
-  var songs = <Song>[];
+  var songs = <SongLink>[];
   final url = '$baseUri/mes-votes.html';
   final response = await session.get(url);
   if (response.statusCode == 200) {
@@ -99,7 +99,7 @@ Future<List<Song>> fetchVotes() async {
     var trs = table.children[0].children;
     trs.removeAt(0); //remove header
     for (var tr in trs) {
-      var song = Song();
+      var song = SongLink();
       song.id = extractSongId(tr.children[3].children[0].attributes['href']);
       song.title = stripTags(tr.children[3].innerHtml);
       song.artist = stripTags(tr.children[2].innerHtml);
@@ -113,8 +113,8 @@ Future<List<Song>> fetchVotes() async {
 }
 
 class AccountPageWidget extends StatelessWidget {
-  final Account account;
-  final Future<AccountInformations> accountInformations;
+  final AccountLink account;
+  final Future<Account> accountInformations;
 
   AccountPageWidget({Key key, this.account, this.accountInformations})
       : super(key: key);
@@ -126,7 +126,7 @@ class AccountPageWidget extends StatelessWidget {
         title: Text(account.name),
       ),
       body: Center(
-        child: FutureBuilder<AccountInformations>(
+        child: FutureBuilder<Account>(
           future: accountInformations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -144,7 +144,7 @@ class AccountPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(
-      BuildContext context, AccountInformations accountInformations) {
+      BuildContext context, Account accountInformations) {
     final url = baseUri + accountInformations.avatar;
 
     var nestedScrollView = NestedScrollView(
@@ -219,8 +219,8 @@ class AccountPageWidget extends StatelessWidget {
 ///////////////////////////
 // Manage the account after identification
 
-Future<AccountInformations> fetchAccountSession(Session session) async {
-  var accountInformations = AccountInformations();
+Future<Account> fetchAccountSession(Session session) async {
+  var accountInformations = Account();
   final accountId = session.id;
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await session.get(url);
@@ -230,10 +230,10 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
 
     //parse favorites
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    var favorites = <Song>[];
+    var favorites = <SongLink>[];
     if (tables.isNotEmpty) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var song = Song();
+        var song = SongLink();
         var aTitle = tr.children[4].children[0];
         song.id = extractSongId(aTitle.attributes['href']);
         song.title = stripTags(aTitle.innerHtml);
@@ -251,14 +251,14 @@ Future<AccountInformations> fetchAccountSession(Session session) async {
 
 ////////////////////////////////////
 class AccountListingWidget extends StatelessWidget {
-  final List<Account> _accounts;
+  final List<AccountLink> _accounts;
 
   AccountListingWidget(this._accounts, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (Account account in _accounts) {
+    for (AccountLink account in _accounts) {
       rows.add(ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.black12,
@@ -285,7 +285,7 @@ class AccountListingWidget extends StatelessWidget {
 }
 
 class AccountListingFutureWidget extends StatelessWidget {
-  final Future<List<Account>> accounts;
+  final Future<List<AccountLink>> accounts;
 
   AccountListingFutureWidget(this.accounts, {Key key}) : super(key: key);
 
@@ -296,7 +296,7 @@ class AccountListingFutureWidget extends StatelessWidget {
         title: Text('Recherche de bidonautes'),
       ),
       body: Center(
-        child: FutureBuilder<List<Account>>(
+        child: FutureBuilder<List<AccountLink>>(
           future: accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
