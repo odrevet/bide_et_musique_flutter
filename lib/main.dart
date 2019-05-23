@@ -72,7 +72,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           ? [pauseButton(), stopButton()]
           : _state?.basicState == BasicPlaybackState.paused
               ? [playButton(), stopButton()]
-              : [startButton()],
+              : [
+                  Padding(
+                      padding: const EdgeInsets.all(8), child: startButton())
+                ],
     );
 
     var title = 'Bide&Musique';
@@ -103,7 +106,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               fontSize: 20.0,
             )),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         color: Colors.orangeAccent,
         onPressed: () async {
           bool success = await AudioService.start(
