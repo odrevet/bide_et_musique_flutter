@@ -25,6 +25,8 @@ MediaControl stopControl = MediaControl(
   action: MediaAction.stop,
 );
 
+String streamingId;
+
 void backgroundAudioPlayerTask() async {
   StreamPlayer player = StreamPlayer();
   AudioServiceBackground.run(
@@ -51,7 +53,7 @@ void backgroundAudioPlayerTask() async {
 }
 
 class StreamPlayer {
-  SongLink _song;
+  SongLink _songLink;
   bool _playing;
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
@@ -66,8 +68,9 @@ class StreamPlayer {
     await FlutterRadio.audioStart();
   }
 
-  void setSong(SongLink song) {
-    this._song = song;
+  void setSong(SongLink songLink) {
+    this._songLink = songLink;
+    streamingId = songLink.id;
   }
 
   void togglePlay() {
@@ -75,26 +78,26 @@ class StreamPlayer {
   }
 
   void setNotification() {
-    if (this._song == null) {
+    if (this._songLink == null) {
       streamNotificationUpdater.start();
     } else {
       streamNotificationUpdater.stop();
       var mediaItem = MediaItem(
           id: 'bm_stream',
           album: 'Bide et Musique',
-          title: _song.title,
-          artist: _song.artist,
-          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
+          title: _songLink.title,
+          artist: _songLink.artist,
+          artUri: '$baseUri/images/pochettes/${_songLink.id}.jpg');
       AudioServiceBackground.setMediaItem(mediaItem);
     }
   }
 
   String getStreamUrl() {
     String url;
-    if (this._song == null) {
+    if (this._songLink == null) {
       url = 'http://relay2.bide-et-musique.com:9100';
     } else {
-      url = '$baseUri/stream_${this._song.id}.php';
+      url = '$baseUri/stream_${this._songLink.id}.php';
     }
     return url;
   }
@@ -103,28 +106,28 @@ class StreamPlayer {
     String url = getStreamUrl();
     FlutterRadio.play(url: url);
     _playing = true;
-    AudioServiceBackground.setState(
+    await AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
         basicState: BasicPlaybackState.playing);
   }
 
-  void pause() {
+  void pause() async {
     String url = getStreamUrl();
     FlutterRadio.playOrPause(url: url);
     _playing = false;
 
-    AudioServiceBackground.setState(
+    await AudioServiceBackground.setState(
         controls: [playControl, stopControl],
         basicState: BasicPlaybackState.paused);
   }
 
-  void stop() {
+  void stop() async {
     FlutterRadio.stop();
-    this._song = null;
-    AudioServiceBackground.setState(
-        controls: [], basicState: BasicPlaybackState.stopped);
+    this._songLink = null;
     _playing = false;
     _completer.complete();
+    await AudioServiceBackground.setState(
+        controls: [], basicState: BasicPlaybackState.stopped);
   }
 }
 

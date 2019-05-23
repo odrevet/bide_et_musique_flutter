@@ -110,10 +110,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             backgroundTask: backgroundAudioPlayerTask,
             resumeOnClick: true,
             androidNotificationChannelName: 'Bide&Musique',
-            notificationColor: 0xFFFED152,
+            notificationColor: 0xFFFFFFFF,
             androidNotificationIcon: 'mipmap/ic_launcher',
           );
           if (success) {
+            streamingId = null;
             await AudioService.play();
             await AudioService.customAction('setNotification');
           }

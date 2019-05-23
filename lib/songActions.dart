@@ -157,34 +157,6 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 
 ////////////////////////////////
 // Player
-/*
-IconButton startButtonSong(SongLink songLink) => IconButton(
-    icon: Icon(Icons.play_arrow),
-    onPressed: () async {
-      if (AudioService.playbackState == null ||
-          AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
-          AudioService.playbackState.basicState == BasicPlaybackState.none) {
-        await AudioService.start(
-          backgroundTask: backgroundAudioPlayerTask,
-          resumeOnClick: true,
-          androidNotificationChannelName: 'Bide&Musique',
-          notificationColor: 0xFFFED152,
-          androidNotificationIcon: 'mipmap/ic_launcher',
-        );
-      }
-
-      await AudioService.customAction('song', {
-        'id': songLink.id,
-        'title': songLink.title,
-        'artist': songLink.artist
-      });
-      await AudioService.customAction('setNotification');
-      print('>>>>>>>>>>>>>>>>>>>>' + AudioService.playbackState.basicState.toString());
-      await AudioService.play();
-    });
-*/
-
-enum PlayerState { stopped, playing, paused }
 
 class SongPlayerWidget extends StatefulWidget {
   final SongLink _songLink;
@@ -197,17 +169,34 @@ class SongPlayerWidget extends StatefulWidget {
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   final SongLink _songLink;
 
-  PlayerState playerState = PlayerState.stopped;
-  get isPlaying => playerState == PlayerState.playing;
-  get isPaused => playerState == PlayerState.paused;
+  bool _isPlaying;
 
   _SongPlayerWidgetState(this._songLink);
+
+  @override
+  void initState() {
+    super.initState();
+
+    bool isPlaying;
+    if(AudioService.playbackState == null ||
+        AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
+        AudioService.playbackState.basicState == BasicPlaybackState.none){
+      isPlaying = false;
+    }
+    else {
+       this._songLink.id == streamingId ? isPlaying = true : isPlaying = false;
+    }
+
+    this.setState(() {
+        this._isPlaying = isPlaying;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
     var playStopButton;
 
-    if (isPlaying) {
+    if (_isPlaying) {
       playStopButton = IconButton(
         icon: Icon(Icons.stop),
         onPressed: () {
@@ -230,15 +219,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     if (AudioService.playbackState == null ||
         AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
-      setState(() {
-        playerState = PlayerState.playing;
-      });
-
       await AudioService.start(
         backgroundTask: backgroundAudioPlayerTask,
         resumeOnClick: true,
         androidNotificationChannelName: 'Bide&Musique',
-        notificationColor: 0xFFFED152,
+        notificationColor: 0xFFFFFFFF,
         androidNotificationIcon: 'mipmap/ic_launcher',
       );
     }
@@ -250,12 +235,19 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     });
     await AudioService.customAction('setNotification');
     await AudioService.play();
+
+    setState(() {
+      _isPlaying = true;
+    });
+    streamingId = _songLink.id;
+
   }
 
   stop() {
-    setState(() {
-      playerState = PlayerState.stopped;
-    });
     AudioService.stop();
+    setState(() {
+      _isPlaying = false;
+    });
+
   }
 }
