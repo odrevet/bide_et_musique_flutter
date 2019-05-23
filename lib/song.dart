@@ -368,7 +368,7 @@ class SongPageWidget extends StatelessWidget {
         itemBuilder: (BuildContext context) => popupMenuAction));
 
     var actionContainer = Container(
-      padding: EdgeInsets.only(left: 50.0),
+      padding: EdgeInsets.only(left: 54.0),
       alignment: Alignment.topCenter,
       child: Row(children: actions),
     );
