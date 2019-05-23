@@ -74,7 +74,7 @@ class TitlesWidget extends StatelessWidget {
           // By default, show a loading spinner
           return Scaffold(
             appBar: AppBar(title: Text("Chargement des titres")),
-            body: CircularProgressIndicator(),
+            body: Center(child:CircularProgressIndicator()),
           );
         },
       ),
