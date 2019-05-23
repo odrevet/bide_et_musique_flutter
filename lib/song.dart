@@ -262,7 +262,7 @@ class SongPageWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, Song songInformations) {
     var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
-    final _fontLyrics = TextStyle(fontSize: 20.0);
+    final _fontLyrics = TextStyle(fontSize: 18.0);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
