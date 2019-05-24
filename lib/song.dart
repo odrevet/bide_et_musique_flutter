@@ -309,7 +309,10 @@ class SongPageWidget extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8.0, top: 2.0),
                 child: Html(
                     data: songInformations.lyrics,
-                    defaultTextStyle: _fontLyrics),
+                    defaultTextStyle: _fontLyrics,
+                    onLinkTap: (url) {
+                      onLinkTap(url, context);
+                    }),
               )),
               _buildViewComments(context, songInformations.comments),
             ],
