@@ -133,7 +133,8 @@ Future<Song> fetchSong(String songId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      song = Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
+      var decodedJson = utf8.decode(responseJson.bodyBytes);
+      song = Song.fromJson(json.decode(decodedJson));
     } catch (e) {
       song = Song(
         title: '?',
@@ -169,7 +170,6 @@ Future<Song> fetchSong(String songId) async {
       var comment = Comment();
       try {
         var tdCommentChildren = tdComment.children;
-
         dom.Element aAccount = tdCommentChildren[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
@@ -191,7 +191,7 @@ Future<Song> fetchSong(String songId) async {
 
     //information available only if logged-in
     if (session.id != null) {
-      //check if favourited
+      //check if favourite
       if (divTitre.length == 2) {
         song.canFavourite = false;
         song.isFavourite = false;
