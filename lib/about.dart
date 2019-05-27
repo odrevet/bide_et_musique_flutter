@@ -55,8 +55,8 @@ class AboutPage extends StatelessWidget {
             text: 'github.com',
             style: linkStyle,
             recognizer: new TapGestureRecognizer()
-              ..onTap = () =>
-                  launchURL('https://github.com/odrevet/bide-et-musique-flutter'),
+              ..onTap = () => launchURL(
+                  'https://github.com/odrevet/bide-et-musique-flutter'),
           )
         ],
       ),

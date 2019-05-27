@@ -137,7 +137,7 @@ Future<Song> fetchSong(String songId) async {
       song = Song.fromJson(json.decode(decodedJson));
     } catch (e) {
       song = Song(
-        title: '?',
+          title: '?',
           year: 0,
           artists: '?',
           author: '?',
@@ -192,15 +192,16 @@ Future<Song> fetchSong(String songId) async {
     song.canFavourite = false;
 
     var divTitres = document.getElementsByClassName('titreorange');
-    for(var divTitre in divTitres){
+    for (var divTitre in divTitres) {
       var title = stripTags(divTitre.innerHtml).trim();
-      switch (title){
-        case 'Écouter le morceau' : song.canListen = true;
-        break;
+      switch (title) {
+        case 'Écouter le morceau':
+          song.canListen = true;
+          break;
         case 'Ce morceau est dans vos favoris':
           song.isFavourite = true;
           song.canFavourite = true;
-        break;
+          break;
         case 'Ajouter à mes favoris':
           song.isFavourite = false;
           song.canFavourite = true;
@@ -351,8 +352,7 @@ class SongPageWidget extends StatelessWidget {
     var session = Session();
     if (session.id != null) {
       if (song.canFavourite) {
-        actions.add(
-            SongFavoriteIconWidget(songLink.id, song.isFavourite));
+        actions.add(SongFavoriteIconWidget(songLink.id, song.isFavourite));
       }
 
       actions.add(SongVoteIconWidget(songLink.id, song.hasVote));

@@ -163,7 +163,8 @@ class SongPlayerWidget extends StatefulWidget {
   SongPlayerWidget(this._songLink, {Key key}) : super(key: key);
 
   @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this._songLink);
+  _SongPlayerWidgetState createState() =>
+      _SongPlayerWidgetState(this._songLink);
 }
 
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
@@ -178,18 +179,17 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     super.initState();
 
     bool isPlaying;
-    if(AudioService.playbackState == null ||
+    if (AudioService.playbackState == null ||
         AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
-        AudioService.playbackState.basicState == BasicPlaybackState.none){
+        AudioService.playbackState.basicState == BasicPlaybackState.none) {
       isPlaying = false;
-    }
-    else {
-       this._songLink.id == streamingId ? isPlaying = true : isPlaying = false;
+    } else {
+      this._songLink.id == streamingId ? isPlaying = true : isPlaying = false;
     }
 
     this.setState(() {
-        this._isPlaying = isPlaying;
-      });
+      this._isPlaying = isPlaying;
+    });
   }
 
   @override
@@ -240,7 +240,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       _isPlaying = true;
     });
     streamingId = _songLink.id;
-
   }
 
   stop() {
@@ -248,6 +247,5 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     setState(() {
       _isPlaying = false;
     });
-
   }
 }
