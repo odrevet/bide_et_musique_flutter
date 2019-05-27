@@ -136,6 +136,7 @@ Future<Song> fetchSong(String songId) async {
       song = Song.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       song = Song(
+        title: '?',
           year: 0,
           artists: '?',
           author: '?',
@@ -260,7 +261,7 @@ class SongPageWidget extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  Widget _buildView(BuildContext context, Song songInformations) {
+  Widget _buildView(BuildContext context, Song song) {
     var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 18.0);
 
@@ -285,7 +286,7 @@ class SongPageWidget extends StatelessWidget {
                                 _openCoverViewerDialog(context);
                               },
                               child: Image.network(urlCover))),
-                      Expanded(child: SongInformationWidget(songInformations)),
+                      Expanded(child: SongInformationWidget(song)),
                     ],
                   ))
             ])),
@@ -308,13 +309,13 @@ class SongPageWidget extends StatelessWidget {
                   child: Padding(
                 padding: EdgeInsets.only(left: 8.0, top: 2.0),
                 child: Html(
-                    data: songInformations.lyrics,
+                    data: song.lyrics,
                     defaultTextStyle: _fontLyrics,
                     onLinkTap: (url) {
                       onLinkTap(url, context);
                     }),
               )),
-              _buildViewComments(context, songInformations.comments),
+              _buildViewComments(context, song.comments),
             ],
           )
         ]),
@@ -334,18 +335,18 @@ class SongPageWidget extends StatelessWidget {
     var actionsShare = <Widget>[];
 
     //if the song can be listen, add the song player
-    if (songInformations.canListen) {
+    if (song.canListen) {
       actions.add(SongPlayerWidget(songLink));
     }
 
     var session = Session();
     if (session.id != null) {
-      if (songInformations.canFavourite) {
+      if (song.canFavourite) {
         actions.add(
-            SongFavoriteIconWidget(songLink.id, songInformations.isFavourite));
+            SongFavoriteIconWidget(songLink.id, song.isFavourite));
       }
 
-      actions.add(SongVoteIconWidget(songLink.id, songInformations.hasVote));
+      actions.add(SongVoteIconWidget(songLink.id, song.hasVote));
     }
 
     var listenButton = IconButton(
@@ -378,7 +379,7 @@ class SongPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(stripTags(songInformations.title)),
+        title: Text(stripTags(song.title)),
         bottom: PreferredSize(
           child: actionContainer,
           preferredSize: Size(0.0, 20.0),
