@@ -186,21 +186,30 @@ Future<Song> fetchSong(String songId) async {
     song.comments = comments;
 
     //check if the song is available to listen
-    var divTitre = document.getElementsByClassName('titreorange');
-    song.canListen = divTitre[0].innerHtml == 'Écouter le morceau';
+    //order of title are not consistent : need to check each title content
+    song.canListen = false;
+    song.isFavourite = false;
+    song.canFavourite = false;
+
+    var divTitres = document.getElementsByClassName('titreorange');
+    for(var divTitre in divTitres){
+      var title = stripTags(divTitre.innerHtml).trim();
+      switch (title){
+        case 'Écouter le morceau' : song.canListen = true;
+        break;
+        case 'Ce morceau est dans vos favoris':
+          song.isFavourite = true;
+          song.canFavourite = true;
+        break;
+        case 'Ajouter à mes favoris':
+          song.isFavourite = false;
+          song.canFavourite = true;
+          break;
+      }
+    }
 
     //information available only if logged-in
     if (session.id != null) {
-      //check if favourite
-      if (divTitre.length == 2) {
-        song.canFavourite = false;
-        song.isFavourite = false;
-      } else {
-        song.canFavourite = true;
-        song.isFavourite = stripTags(divTitre[2].innerHtml).trim() ==
-            'Ce morceau est dans vos favoris';
-      }
-
       //check vote
       var vote = document.getElementById('vote');
       if (vote == null) {
