@@ -29,23 +29,37 @@ Future<Map<String, AccountLink>> fetchTrombidoscope() async {
   }
 }
 
-class TrombidoscopeWidget extends StatelessWidget {
-  final Future<Map<String, AccountLink>> accounts; // [avatar : account]
-  final _font = TextStyle(
-      fontSize: 18.0,
-      background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
+class TrombidoscopeWidget extends StatefulWidget {
+  Future<Map<String, AccountLink>> accounts; // [avatar : account]
 
   TrombidoscopeWidget({Key key, this.accounts}) : super(key: key);
 
   @override
+  _TrombidoscopeWidgetState createState() => _TrombidoscopeWidgetState();
+}
+
+class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
+  final _font = TextStyle(
+      fontSize: 18.0,
+      background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
+
+  @override
   Widget build(BuildContext context) {
+    var refreshButton = IconButton(
+        icon: Icon(Icons.refresh),
+        onPressed: () {
+          this.setState(() {
+            widget.accounts = fetchTrombidoscope();
+          });
+        });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Le trombidoscope'),
+        title: Row(children: [Text('Le trombidoscope'), refreshButton]),
       ),
       body: Center(
         child: FutureBuilder<Map<String, AccountLink>>(
-          future: accounts,
+          future: widget.accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);

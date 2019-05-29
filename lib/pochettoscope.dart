@@ -32,20 +32,33 @@ Future<List<SongLink>> fetchPochettoscope() async {
   }
 }
 
-class PochettoscopeWidget extends StatelessWidget {
-  final Future<List<SongLink>> songs;
+class PochettoscopeWidget extends StatefulWidget {
+  Future<List<SongLink>> songs;
 
   PochettoscopeWidget({Key key, this.songs}) : super(key: key);
 
   @override
+  _PochettoscopeWidgetState createState() => _PochettoscopeWidgetState();
+}
+
+class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
+  @override
   Widget build(BuildContext context) {
+    var refreshButton = IconButton(
+        icon: Icon(Icons.refresh),
+        onPressed: () {
+          this.setState(() {
+            widget.songs = fetchPochettoscope();
+          });
+        });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Le pochettoscope'),
+        title: Row(children: [Text('Le pochettoscope'), refreshButton]),
       ),
       body: Center(
         child: FutureBuilder<List<SongLink>>(
-          future: songs,
+          future: widget.songs,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);
