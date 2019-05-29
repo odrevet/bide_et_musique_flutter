@@ -74,7 +74,7 @@ Widget errorDisplay(final Object error) {
                 ' \n • Verifiez que votre appareil est connecté à Internet\n'),
         TextSpan(
             text:
-                ' \n • Bide et Musique est peût-être temporairement indisponible, ré-éssayez ulterieurement\n')
+                ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
       ],
     ),
   );
