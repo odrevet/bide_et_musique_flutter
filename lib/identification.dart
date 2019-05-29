@@ -20,7 +20,7 @@ class Session {
 
   Session._internal();
 
-  String id;
+  var accountLink = AccountLink();
 
   Map<String, String> headers = {};
 
@@ -64,7 +64,7 @@ Future<Session> sendIdent(String login, String password) async {
       session.updateCookie(response);
 
       dom.Element divAccount = document.getElementById('compte2');
-      session.id = extractAccountId(
+      session.accountLink.id = extractAccountId(
           divAccount.children[1].children[1].attributes['href']);
       return session;
     } else {
@@ -102,7 +102,7 @@ class _IdentWidgetState extends State<IdentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_localSession.id != null) {
+    if (_localSession.accountLink.id != null) {
       return _buildViewLoggedIn(context, _localSession);
     } else {
       return Center(
@@ -182,14 +182,14 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoggedIn(BuildContext context, Session session) {
-    var account = AccountLink(session.id, "");
+    var account = AccountLink(id: session.accountLink.id);
 
     //disconnect button
     var actions = <Widget>[];
     actions.add(IconButton(
       icon: Icon(Icons.close),
       onPressed: () {
-        _localSession.id = null;
+        _localSession.accountLink.id = null;
         _localSession.headers = {};
         Navigator.pop(context);
       },
@@ -214,7 +214,7 @@ class _IdentWidgetState extends State<IdentWidget> {
           children: [
             ManageAccountPageWidget(
                 account: account,
-                accountInformations: fetchAccount(session.id)),
+                accountInformations: fetchAccount(session.accountLink.id)),
             ManageFavoritesWidget(session: session),
             SongListingFutureWidget(fetchVotes())
           ],

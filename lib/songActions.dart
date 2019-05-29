@@ -37,7 +37,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           icon: Icon(Icons.star),
           onPressed: () async {
             final response = await session.post(
-                '$baseUri/account/${session.id}.html',
+                '$baseUri/account/${session.accountLink.id}.html',
                 {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
             if (response.statusCode == 200) {

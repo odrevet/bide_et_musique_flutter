@@ -36,7 +36,7 @@ Future<List<Post>> fetchPosts() async {
       var accountHref = accountLink.attributes['href'];
 
       var idAccount = extractAccountId(accountHref);
-      var account = AccountLink(idAccount, stripTags(accountLink.innerHtml));
+      var account = AccountLink(id: idAccount, name: stripTags(accountLink.innerHtml));
 
       post.author = account;
 

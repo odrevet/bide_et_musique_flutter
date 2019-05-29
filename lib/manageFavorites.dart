@@ -75,7 +75,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             FlatButton(
               child: Text('Oui'),
               onPressed: () async {
-                var accountId = session.id;
+                var accountId = session.accountLink.id;
                 var K = song.id;
                 var direction = 'DS';
 
@@ -129,7 +129,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = accountInformations.favorites[initialPosition];
           //update server
-          var accountId = session.id;
+          var accountId = session.accountLink.id;
           var K = draggedSong.id;
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';

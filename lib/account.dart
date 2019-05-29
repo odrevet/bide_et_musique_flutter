@@ -13,7 +13,7 @@ class AccountLink {
   String id;
   String name;
 
-  AccountLink(this.id, this.name);
+  AccountLink({this.id, this.name});
 }
 
 // Information present on the account page
@@ -226,7 +226,7 @@ class AccountPageWidget extends StatelessWidget {
 
 Future<Account> fetchAccountSession(Session session) async {
   var accountInformations = Account();
-  final accountId = session.id;
+  final accountId = session.accountLink.id;
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await session.get(url);
   if (response.statusCode == 200) {

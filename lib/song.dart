@@ -153,7 +153,7 @@ Future<Song> fetchSong(String songId) async {
   //If connected, fetch comments and favorite status
   var session = Session();
   var response;
-  if (session.id != null) {
+  if (session.accountLink.id != null) {
     response = await session.get(url + '.html');
   } else {
     response = await http.get(url + '.html');
@@ -173,7 +173,7 @@ Future<Song> fetchSong(String songId) async {
         dom.Element aAccount = tdCommentChildren[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
-        comment.author = AccountLink(accountId, accountName);
+        comment.author = AccountLink(id: accountId, name: accountName);
         var commentLines = tdComment.innerHtml.split('<br>');
         commentLines.removeAt(0);
         comment.body = commentLines.join();
@@ -210,7 +210,7 @@ Future<Song> fetchSong(String songId) async {
     }
 
     //information available only if logged-in
-    if (session.id != null) {
+    if (session.accountLink.id != null) {
       //check vote
       var vote = document.getElementById('vote');
       if (vote == null) {
@@ -353,7 +353,7 @@ class SongPageWidget extends StatelessWidget {
     }
 
     var session = Session();
-    if (session.id != null) {
+    if (session.accountLink.id != null) {
       if (song.canFavourite) {
         actions.add(SongFavoriteIconWidget(songLink.id, song.isFavourite));
       }

@@ -20,7 +20,7 @@ Future<Map<String, AccountLink>> fetchTrombidoscope() async {
       var a = td.children[0];
       var href = a.attributes['href'];
       var id = extractAccountId(href);
-      var account = AccountLink(id, stripTags(a.innerHtml));
+      var account = AccountLink(id: id, name: stripTags(a.innerHtml));
       accounts[a.children[0].attributes['src']] = account;
     }
     return accounts;
