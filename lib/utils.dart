@@ -55,3 +55,26 @@ launchURL(String url) async {
     throw 'Could not launch $url';
   }
 }
+
+Widget errorDisplay(final Object error, BuildContext context) {
+  var title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
+  var reportedError = TextStyle(fontStyle: FontStyle.italic);
+
+  return RichText(
+    text: TextSpan(
+      style: DefaultTextStyle.of(context).style,
+      children: <TextSpan>[
+        TextSpan(text: 'Ouille ouille ouille !', style: title),
+        TextSpan(text: ' \n Une erreur est survenue !'),
+        TextSpan(text: ' \n Le message reporté est : \n'),
+        TextSpan(text: ' \n ${error.toString()}\n', style: reportedError),
+        TextSpan(
+            text:
+                ' \n • Verifiez que votre appareil est connecté à Internet\n'),
+        TextSpan(
+            text:
+                ' \n • Bide et Musique est peût-être temporairement indisponible, ré-éssayez ulterieurement\n')
+      ],
+    ),
+  );
+}

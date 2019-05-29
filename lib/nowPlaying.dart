@@ -70,7 +70,21 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
           if (snapshot.hasData) {
             return SongCardWidget(song: snapshot.data);
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  errorDisplay(snapshot.error, context),
+                  RaisedButton.icon(
+                    icon: Icon(Icons.refresh),
+                    onPressed: () {
+                      this.setState(() {
+                        _song = fetchNowPlaying();
+                      });
+                    },
+                    label: Text('Ré-essayer maintenant'),
+                  )
+                ]);
           }
 
           // By default, show a loading spinner
