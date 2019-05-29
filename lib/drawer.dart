@@ -9,6 +9,7 @@ import 'newSongs.dart';
 import 'nowSong.dart';
 import 'identification.dart';
 import 'schedule.dart';
+import 'settings.dart';
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -116,6 +117,14 @@ class DrawerWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongsWidget(songs: fetchNewSongs())));
+          },
+        ),
+        ListTile(
+          title: Text('Options'),
+          leading: Icon(Icons.settings),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SettingsPage()));
           },
         ),
         ListTile(

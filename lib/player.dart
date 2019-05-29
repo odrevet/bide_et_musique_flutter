@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter_radio/flutter_radio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'utils.dart';
 import 'song.dart';
 import 'nowPlaying.dart';
@@ -92,10 +93,12 @@ class StreamPlayer {
     }
   }
 
-  String getStreamUrl() {
+  Future<String> getStreamUrl() async {
     String url;
     if (this._songLink == null) {
-      url = 'http://relay2.bide-et-musique.com:9100';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
+      url = radioHiQuality == true ? stream_hq : stream_lq;
     } else {
       url = '$baseUri/stream_${this._songLink.id}.php';
     }
@@ -103,7 +106,7 @@ class StreamPlayer {
   }
 
   void play() async {
-    String url = getStreamUrl();
+    String url = await getStreamUrl();
     FlutterRadio.play(url: url);
     _playing = true;
     await AudioServiceBackground.setState(
@@ -112,7 +115,7 @@ class StreamPlayer {
   }
 
   void pause() async {
-    String url = getStreamUrl();
+    String url = await getStreamUrl();
     FlutterRadio.playOrPause(url: url);
     _playing = false;
 
