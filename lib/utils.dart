@@ -3,6 +3,8 @@ import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 import 'song.dart';
 import 'account.dart';
+import 'artist.dart';
+import 'program.dart';
 
 const host = 'www.bide-et-musique.com';
 const baseUri = 'http://$host';
@@ -41,6 +43,20 @@ void onLinkTap(String url, BuildContext context) {
             MaterialPageRoute(
                 builder: (context) =>
                     AccountPageWidget(account: fetchAccount(id))));
+        break;
+      case 'artist':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ArtistPageWidget(artist: fetchArtist(id))));
+        break;
+      case 'program':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProgramPageWidget(program: fetchProgram(id))));
         break;
       default:
         launchURL(url);
