@@ -52,16 +52,23 @@ class AboutPage extends StatelessWidget {
             style: defaultStyle,
           ),
           TextSpan(
-            text: 'github.com',
+            text: 'github.com\n\n',
             style: linkStyle,
             recognizer: new TapGestureRecognizer()
               ..onTap = () => launchURL(
                   'https://github.com/odrevet/bide-et-musique-flutter'),
+          ),
+          TextSpan(
+            text: 'Manuel Utilisateur en ligne',
+            style: linkStyle,
+            recognizer: new TapGestureRecognizer()
+              ..onTap = () => launchURL(
+                  'https://github.com/odrevet/bide-et-musique-flutter/wiki/Manuel-Utilisateur'),
           )
         ],
       ),
     );
-
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('À propos'),
