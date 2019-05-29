@@ -25,6 +25,9 @@ class _SettingsPageState extends State<SettingsPage> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
+      _openSongPage = prefs.getBool('openSongPage') ?? false;
+      _rememberIdents = prefs.getBool('rememberIdents') ?? false;
+      _autoConnect = prefs.getBool('autoConnect') ?? false;
     });
   }
 
@@ -32,6 +35,27 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _radioHiQuality = value;
       _saveOption('radioHiQuality', value);
+    });
+  }
+
+  void _onToggleOpenSongPage(bool value) {
+    setState(() {
+      _openSongPage = value;
+      _saveOption('openSongPage', value);
+    });
+  }
+
+  void _onTogglerememberIdents(bool value) {
+    setState(() {
+      _rememberIdents = value;
+      _saveOption('rememberIdents', value);
+    });
+  }
+
+  void _onToggleautoConnect(bool value) {
+    setState(() {
+      _autoConnect = value;
+      _saveOption('autoConnect', value);
     });
   }
 
@@ -52,10 +76,10 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Container(
         child: Stack(children: [
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
             child: Container(
               decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.8)),
             ),
           ),
           PageView(
@@ -66,20 +90,20 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text('Radio haute qualitée'),
                     value: _radioHiQuality,
                     onChanged: _onToggleRadioQuality),
-                /*CheckboxListTile(
+                CheckboxListTile(
                     title: Text(
                         'Ouvrir la page de la chanson en cours de lecture lors de l\'appuye dans la barre de notification'),
                     value: _openSongPage,
-                    onChanged: ),
+                    onChanged: _onToggleOpenSongPage),
                 CheckboxListTile(
                     title: Text('Se souvenir des identifiants'),
                     value: _rememberIdents,
-                    onChanged: ),
+                    onChanged: _onTogglerememberIdents),
                 CheckboxListTile(
                     title: Text(
                         'Connexion au compte au démarrage de l\'application'),
                     value: _autoConnect,
-                    onChanged: ),*/
+                    onChanged: _onToggleautoConnect),
               ])),
             ],
           )

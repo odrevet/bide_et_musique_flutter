@@ -133,7 +133,7 @@ class _IdentWidgetState extends State<IdentWidget> {
     final prefs = await SharedPreferences.getInstance();
     _usernameController.text = prefs.getString('login') ?? '';
     _passwordController.text = prefs.getString('password') ?? '';
-    _remember = prefs.getBool('remember') ?? false;
+    _remember = prefs.getBool('rememberIdents') ?? false;
   }
 
   _saveSettings() async {
@@ -145,14 +145,14 @@ class _IdentWidgetState extends State<IdentWidget> {
   _loadRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _remember = (prefs.getBool('remember') ?? false);
+      _remember = (prefs.getBool('rememberIdents') ?? false);
     });
   }
 
   _saveRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setBool('remember', _remember);
+      prefs.setBool('rememberIdents', _remember);
     });
   }
 
