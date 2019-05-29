@@ -243,7 +243,10 @@ class SongPageWidget extends StatelessWidget {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return Scaffold(
+              appBar: AppBar(title: Text('Ouille ouille ouille !')),
+              body: Center(child: Center(child:errorDisplay(snapshot.error))),
+            );
           }
 
           var loadingMessage = 'Chargement';
