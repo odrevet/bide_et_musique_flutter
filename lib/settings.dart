@@ -11,7 +11,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool _radioHiQuality = true;
-  bool _openSongPage = false;
   bool _rememberIdents = false;
   bool _autoConnect = false;
 
@@ -25,7 +24,6 @@ class _SettingsPageState extends State<SettingsPage> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
-      _openSongPage = prefs.getBool('openSongPage') ?? false;
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
       _autoConnect = prefs.getBool('autoConnect') ?? false;
     });
@@ -35,13 +33,6 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _radioHiQuality = value;
       _saveOption('radioHiQuality', value);
-    });
-  }
-
-  void _onToggleOpenSongPage(bool value) {
-    setState(() {
-      _openSongPage = value;
-      _saveOption('openSongPage', value);
     });
   }
 
@@ -90,11 +81,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text('Radio haute qualitée'),
                     value: _radioHiQuality,
                     onChanged: _onToggleRadioQuality),
-                CheckboxListTile(
-                    title: Text(
-                        'Ouvrir la page de la chanson en cours de lecture lors de l\'appuye dans la barre de notification'),
-                    value: _openSongPage,
-                    onChanged: _onToggleOpenSongPage),
                 CheckboxListTile(
                     title: Text('Se souvenir des identifiants'),
                     value: _rememberIdents,
