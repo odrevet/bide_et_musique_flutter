@@ -56,13 +56,14 @@ launchURL(String url) async {
   }
 }
 
-Widget errorDisplay(final Object error, BuildContext context) {
+Widget errorDisplay(final Object error) {
   var title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
+  var defaultStyle = TextStyle(color: Colors.black);
   var reportedError = TextStyle(fontStyle: FontStyle.italic);
 
   return RichText(
     text: TextSpan(
-      style: DefaultTextStyle.of(context).style,
+      style: defaultStyle,
       children: <TextSpan>[
         TextSpan(text: 'Ouille ouille ouille !', style: title),
         TextSpan(text: ' \n Une erreur est survenue !'),

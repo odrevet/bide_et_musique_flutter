@@ -74,7 +74,7 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  errorDisplay(snapshot.error, context),
+                  errorDisplay(snapshot.error),
                   RaisedButton.icon(
                     icon: Icon(Icons.refresh),
                     onPressed: () {

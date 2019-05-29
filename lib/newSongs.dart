@@ -45,7 +45,7 @@ class SongsWidget extends StatelessWidget {
             if (snapshot.hasData) {
               return SongListingWidget(snapshot.data);
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return errorDisplay(snapshot.error);
             }
 
             // By default, show a loading spinner

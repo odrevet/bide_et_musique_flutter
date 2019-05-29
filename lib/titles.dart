@@ -68,12 +68,15 @@ class TitlesWidget extends StatelessWidget {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return Scaffold(
+              appBar: AppBar(title: Text('Ouille ouille ouille !')),
+              body: Center(child: Center(child:errorDisplay(snapshot.error))),
+            );
           }
 
           // By default, show a loading spinner
           return Scaffold(
-            appBar: AppBar(title: Text("Chargement des titres")),
+            appBar: AppBar(title: Text('Chargement des titres')),
             body: Center(child: CircularProgressIndicator()),
           );
         },
@@ -87,11 +90,11 @@ class TitlesWidget extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Les titres"),
+          title: Text('Les titres'),
           bottom: TabBar(
             tabs: [
-              Tab(text: "A venir sur la platine"),
-              Tab(text: "De retrour dans leur bac"),
+              Tab(text: 'A venir sur la platine'),
+              Tab(text: 'De retrour dans leur bac'),
             ],
           ),
         ),
