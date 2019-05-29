@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'drawer.dart';
 import 'player.dart';
 import 'nowPlaying.dart';
+import 'identification.dart';
 
 void main() => runApp(new BideApp());
 
@@ -21,6 +23,23 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     connect();
+
+    //auto login
+    autoLogin();
+  }
+
+  void autoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool rememberIdents = prefs.getBool('rememberIdents') ?? false;
+    bool autoConnect = prefs.getBool('autoConnect') ?? false;
+
+    if(rememberIdents && autoConnect){
+      var login = prefs.getString('login') ?? '';
+      var password = prefs.getString('password') ?? '';
+
+      sendIdent(login, password);
+
+    }
   }
 
   @override
