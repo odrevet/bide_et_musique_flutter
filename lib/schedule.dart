@@ -68,26 +68,24 @@ class ScheduleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<List<DaySchedule>>(
-        future: schedule,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
-          } else if (snapshot.hasError) {
-            return Scaffold(
-              appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: Center(child: errorDisplay(snapshot.error))),
-            );
-          }
-
-          // By default, show a loading spinner
+    return FutureBuilder<List<DaySchedule>>(
+      future: schedule,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildView(context, snapshot.data);
+        } else if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(title: Text("Chargement de la programmation")),
-            body: CircularProgressIndicator(),
+            appBar: AppBar(title: Text('Ouille ouille ouille !')),
+            body: Center(child: Center(child: errorDisplay(snapshot.error))),
           );
-        },
-      ),
+        }
+
+        // By default, show a loading spinner
+        return Scaffold(
+          appBar: AppBar(title: Text("Chargement de la programmation")),
+          body: Center(child: CircularProgressIndicator()),
+        );
+      },
     );
   }
 
