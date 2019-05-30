@@ -27,9 +27,7 @@ class DrawerWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(color: Colors.orange)),
         ListTile(
-          title: Text(Session().accountLink.id == null
-              ? 'Connexion à votre compte'
-              : '${Session().accountLink.name}'),
+          title: Text('Compte'),
           leading: Icon(Icons.account_circle),
           onTap: () {
             Navigator.push(context,
