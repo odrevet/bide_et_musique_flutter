@@ -89,7 +89,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(
                         'Connexion au compte au démarrage de l\'application'),
                     value: _autoConnect,
-                    onChanged: _onToggleautoConnect),
+                    onChanged:
+                        _rememberIdents == true ? _onToggleautoConnect : null),
               ])),
             ],
           )
