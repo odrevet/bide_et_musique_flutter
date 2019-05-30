@@ -184,7 +184,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
       isPlaying = false;
     } else {
-      this._songLink.id == streamingId ? isPlaying = true : isPlaying = false;
+      this._songLink.id == StreamPlayer().getSongLinkId() ? isPlaying = true : isPlaying = false;
     }
 
     this.setState(() {
@@ -239,7 +239,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     setState(() {
       _isPlaying = true;
     });
-    streamingId = _songLink.id;
+
+    StreamPlayer().setSongLink(_songLink);
   }
 
   stop() {

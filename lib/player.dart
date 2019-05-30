@@ -26,8 +26,6 @@ MediaControl stopControl = MediaControl(
   action: MediaAction.stop,
 );
 
-String streamingId;
-
 void backgroundAudioPlayerTask() async {
   StreamPlayer player = StreamPlayer();
   AudioServiceBackground.run(
@@ -54,6 +52,14 @@ void backgroundAudioPlayerTask() async {
 }
 
 class StreamPlayer {
+  static final StreamPlayer _singleton = StreamPlayer._internal();
+
+  factory StreamPlayer() {
+    return _singleton;
+  }
+
+  StreamPlayer._internal();
+
   SongLink _songLink;
   bool _playing;
   Completer _completer = Completer();
@@ -71,11 +77,23 @@ class StreamPlayer {
 
   void setSong(SongLink songLink) {
     this._songLink = songLink;
-    streamingId = songLink.id;
   }
 
   void togglePlay() {
     _playing ? pause() : play();
+  }
+
+  String getSongLinkId(){
+    return _songLink == null ? null : _songLink.id;
+  }
+
+
+  void setSongLink(SongLink songLink){
+    _songLink = songLink;
+  }
+
+  void resetSongLink(){
+    _songLink = null;
   }
 
   void setNotification() {
