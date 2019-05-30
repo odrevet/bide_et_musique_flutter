@@ -19,14 +19,14 @@ class ManageFavoritesWidget extends StatefulWidget {
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   _ManageFavoritesWidgetState(this.session);
   Session session;
-  Future<Account> accountInformations;
+  Future<Account> account;
 
   List<Dismissible> _rows;
 
   @override
   void initState() {
     super.initState();
-    accountInformations = fetchAccountSession(this.session);
+    account = fetchAccountSession(this.session);
     _rows = <Dismissible>[];
   }
 
@@ -48,10 +48,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           subtitle: Text(song.artist),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongPageWidget(
-                        songLink: song, song: fetchSong(song.id))));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SongPageWidget(
+                            songLink: song, song: fetchSong(song.id))))
+                .then((_) => account = fetchAccountSession(this.session));
           },
         ));
   }
@@ -115,19 +116,18 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     );
   }
 
-  Widget _buildView(
-      BuildContext context, Session session, Account accountInformations) {
+  Widget _buildView(BuildContext context, Session session, Account account) {
     _rows.clear();
     int index = 0;
-    for (SongLink song in accountInformations.favorites) {
-      _rows.add(_createSongTile(song, accountInformations, index));
+    for (SongLink song in account.favorites) {
+      _rows.add(_createSongTile(song, account, index));
       index++;
     }
 
     return ReorderableListView(
         children: _rows,
         onReorder: (int initialPosition, int targetPosition) async {
-          var draggedSong = accountInformations.favorites[initialPosition];
+          var draggedSong = account.favorites[initialPosition];
           //update server
           var accountId = session.accountLink.id;
           var K = draggedSong.id;
@@ -144,8 +144,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
 
           if (response.statusCode == 200) {
             setState(() {
-              accountInformations.favorites.removeAt(initialPosition);
-              accountInformations.favorites.insert(targetPosition, draggedSong);
+              account.favorites.removeAt(initialPosition);
+              account.favorites.insert(targetPosition, draggedSong);
             });
           }
         });
@@ -155,7 +155,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Account>(
-        future: accountInformations,
+        future: account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, session, snapshot.data);
