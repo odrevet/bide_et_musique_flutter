@@ -29,7 +29,7 @@ class DrawerWidget extends StatelessWidget {
         ListTile(
           title: Text(Session().accountLink.id == null
               ? 'Connexion à votre compte'
-              : 'Gestion de votre compte'),
+              : '${Session().accountLink.name}'),
           leading: Icon(Icons.account_circle),
           onTap: () {
             Navigator.push(context,

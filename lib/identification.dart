@@ -66,6 +66,7 @@ Future<Session> sendIdent(String login, String password) async {
       dom.Element divAccount = document.getElementById('compte2');
       session.accountLink.id = extractAccountId(
           divAccount.children[1].children[1].attributes['href']);
+      session.accountLink.name = login;
       return session;
     } else {
       return null;
