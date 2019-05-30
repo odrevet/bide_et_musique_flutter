@@ -83,16 +83,15 @@ class StreamPlayer {
     _playing ? pause() : play();
   }
 
-  String getSongLinkId(){
+  String getSongLinkId() {
     return _songLink == null ? null : _songLink.id;
   }
 
-
-  void setSongLink(SongLink songLink){
+  void setSongLink(SongLink songLink) {
     _songLink = songLink;
   }
 
-  void resetSongLink(){
+  void resetSongLink() {
     _songLink = null;
   }
 

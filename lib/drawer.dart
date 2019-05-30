@@ -123,8 +123,8 @@ class DrawerWidget extends StatelessWidget {
           title: Text('Options'),
           leading: Icon(Icons.settings),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SettingsPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SettingsPage()));
           },
         ),
         ListTile(

@@ -33,12 +33,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     bool rememberIdents = prefs.getBool('rememberIdents') ?? false;
     bool autoConnect = prefs.getBool('autoConnect') ?? false;
 
-    if(rememberIdents && autoConnect){
+    if (rememberIdents && autoConnect) {
       var login = prefs.getString('login') ?? '';
       var password = prefs.getString('password') ?? '';
 
       sendIdent(login, password);
-
     }
   }
 

@@ -245,7 +245,7 @@ class SongPageWidget extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: Center(child:errorDisplay(snapshot.error))),
+              body: Center(child: Center(child: errorDisplay(snapshot.error))),
             );
           }
 
