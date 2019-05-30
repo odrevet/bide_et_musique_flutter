@@ -11,9 +11,31 @@ import 'identification.dart';
 import 'schedule.dart';
 import 'settings.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
+  @override
+  _DrawerWidgetState createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  String _accountTitle;
+
+  @override
+  void initState() {
+    super.initState();
+    _setAccountTitle();
+  }
+
+  _setAccountTitle() {
+    setState(() {
+      _accountTitle = Session().accountLink.id == null
+          ? 'Connexion à votre compte'
+          : '${Session().accountLink.name}';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _setAccountTitle();
     return Drawer(
         child: ListView(
       children: <Widget>[
@@ -27,7 +49,7 @@ class DrawerWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(color: Colors.orange)),
         ListTile(
-          title: Text('Compte'),
+          title: Text(_accountTitle),
           leading: Icon(Icons.account_circle),
           onTap: () {
             Navigator.push(context,
