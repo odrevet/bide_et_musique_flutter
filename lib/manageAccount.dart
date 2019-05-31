@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'utils.dart';
+
 import 'account.dart';
+import 'utils.dart';
 
 class ManageAccountPageWidget extends StatelessWidget {
   final AccountLink account;

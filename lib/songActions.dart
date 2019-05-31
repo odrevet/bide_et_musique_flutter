@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:share/share.dart';
-import 'utils.dart';
+
 import 'identification.dart';
-import 'song.dart';
 import 'player.dart';
+import 'song.dart';
+import 'utils.dart';
 
 /////////////////////////////////////////////////////////////////////////////
 // Actions for the song page title bar
@@ -160,6 +161,7 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 
 class SongPlayerWidget extends StatefulWidget {
   final SongLink _songLink;
+
   SongPlayerWidget(this._songLink, {Key key}) : super(key: key);
 
   @override

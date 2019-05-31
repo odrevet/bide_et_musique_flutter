@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_html/flutter_html.dart';
-import 'utils.dart';
-import 'song.dart';
 import 'dart:convert';
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:http/http.dart' as http;
+
+import 'song.dart';
+import 'utils.dart';
 
 class Program {
   String id;

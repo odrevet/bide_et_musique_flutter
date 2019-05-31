@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'utils.dart';
+
 import 'song.dart';
-import 'dart:convert';
+import 'utils.dart';
 
 Future<Artist> fetchArtist(String artistId) async {
   var artist;

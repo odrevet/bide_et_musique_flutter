@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'titles.dart';
-import 'wall.dart';
-import 'trombidoscope.dart';
-import 'pochettoscope.dart';
+
 import 'about.dart';
-import 'search.dart';
+import 'identification.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
-import 'identification.dart';
+import 'pochettoscope.dart';
 import 'schedule.dart';
+import 'search.dart';
 import 'settings.dart';
+import 'titles.dart';
+import 'trombidoscope.dart';
+import 'wall.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override

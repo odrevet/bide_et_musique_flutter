@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter_radio/flutter_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils.dart';
-import 'song.dart';
+
 import 'nowPlaying.dart';
+import 'song.dart';
+import 'utils.dart';
 
 Future<void> audioStart() async {
   await FlutterRadio.audioStart();

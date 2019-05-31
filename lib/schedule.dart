@@ -1,14 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'utils.dart';
+import 'package:http/http.dart' as http;
+
 import 'program.dart';
+import 'utils.dart';
 
 class DaySchedule {
   String day;
   List<ScheduleEntry> entries;
+
   DaySchedule();
 }
 
@@ -18,6 +21,7 @@ class ScheduleEntry {
   String time;
   String duration;
   String href;
+
   ScheduleEntry();
 }
 

@@ -1,16 +1,19 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'utils.dart';
+import 'package:http/http.dart' as http;
+
 import 'song.dart';
+import 'utils.dart';
 
 class NowSong {
   SongLink song;
   String desc; //description formated in HTML
   String date;
+
   NowSong();
 }
 

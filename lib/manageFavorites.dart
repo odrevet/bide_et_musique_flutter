@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'utils.dart';
-import 'song.dart';
-import 'identification.dart';
+
 import 'account.dart';
+import 'identification.dart';
+import 'song.dart';
+import 'utils.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   final Session session;
@@ -18,6 +20,7 @@ class ManageFavoritesWidget extends StatefulWidget {
 
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   _ManageFavoritesWidgetState(this.session);
+
   Session session;
   Future<Account> account;
 

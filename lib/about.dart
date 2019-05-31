@@ -1,8 +1,10 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/gestures.dart';
-import 'utils.dart';
+import 'package:flutter/material.dart';
+
 import 'account.dart';
+import 'utils.dart';
 
 class AboutPage extends StatelessWidget {
   AboutPage({Key key}) : super(key: key);

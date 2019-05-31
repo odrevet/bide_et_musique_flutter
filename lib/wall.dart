@@ -1,13 +1,15 @@
 import 'dart:async';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter/gestures.dart';
-import 'utils.dart';
-import 'song.dart';
+import 'package:http/http.dart' as http;
+
 import 'account.dart';
+import 'song.dart';
+import 'utils.dart';
 
 class Post {
   AccountLink author;
@@ -15,6 +17,7 @@ class Post {
   String body;
   String date;
   String time;
+
   Post();
 }
 

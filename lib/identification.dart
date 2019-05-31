@@ -1,15 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'account.dart';
-import 'manageFavorites.dart';
 import 'manageAccount.dart';
+import 'manageFavorites.dart';
 import 'song.dart';
+import 'utils.dart';
 
 class Session {
   static final Session _singleton = Session._internal();

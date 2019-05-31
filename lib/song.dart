@@ -1,20 +1,22 @@
 import 'dart:async';
-import 'dart:ui';
 import 'dart:convert';
+import 'dart:ui';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:flutter/gestures.dart';
+import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'utils.dart';
-import 'coverViewer.dart';
+
 import 'account.dart';
+import 'artist.dart';
+import 'coverViewer.dart';
 import 'identification.dart';
 import 'search.dart' show fetchSearchSong;
 import 'songActions.dart';
-import 'artist.dart';
+import 'utils.dart';
 
 class SongLink {
   String id;
@@ -444,6 +446,7 @@ class SongListingWidget extends StatefulWidget {
 
 class SongListingWidgetState extends State<SongListingWidget> {
   List<SongLink> _songs;
+
   SongListingWidgetState(this._songs);
 
   @override

@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
-import 'utils.dart';
+
 import 'song.dart';
+import 'utils.dart';
 
 Future<List<SongLink>> fetchNewSongs() async {
   var songs = <SongLink>[];

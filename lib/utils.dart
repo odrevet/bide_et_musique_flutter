@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
-import 'song.dart';
+
 import 'account.dart';
 import 'artist.dart';
 import 'program.dart';
+import 'song.dart';
 
 const host = 'www.bide-et-musique.com';
 const baseUri = 'http://$host';

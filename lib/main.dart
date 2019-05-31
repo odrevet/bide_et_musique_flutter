@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'drawer.dart';
-import 'player.dart';
-import 'nowPlaying.dart';
 import 'identification.dart';
+import 'nowPlaying.dart';
+import 'player.dart';
 
 void main() => runApp(new BideApp());
 

@@ -1,5 +1,7 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
 import 'utils.dart';
 
 class CoverViewer extends StatefulWidget {
