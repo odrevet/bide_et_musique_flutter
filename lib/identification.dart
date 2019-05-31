@@ -271,7 +271,7 @@ class _IdentWidgetState extends State<IdentWidget> {
               Column(children: [
                 Text("Pas de compte ? "),
                 RaisedButton(
-                  onPressed: _launchURL,
+                  onPressed: () => launchURL('$baseUri/create_account.html'),
                   child: Text('En créer un sur bide-et-musique.com'),
                 ),
               ]),
@@ -285,14 +285,5 @@ class _IdentWidgetState extends State<IdentWidget> {
             ],
           ),
         ));
-  }
-
-  _launchURL() async {
-    const url = '$baseUri/create_account.html';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }
