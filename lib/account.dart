@@ -156,7 +156,7 @@ class AccountPageWidget extends StatelessWidget {
         },
         fullscreenDialog: true));
   }
-  
+
   Widget _buildView(BuildContext context, Account account) {
     final url = baseUri + account.avatar;
     final image = NetworkImage(url);

@@ -83,12 +83,28 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     );
   }
 
+  _openAvatarViewerDialog(context, image){
+    Navigator.of(context).push(MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+        fullscreenDialog: true));
+  }
+
   Widget _buildView(
       BuildContext context, Map<String, AccountLink> accountLinks) {
     var rows = <GestureDetector>[];
 
     accountLinks.forEach((img, accountLink) {
-      var url = baseUri + img;
+      final url = baseUri + img;
+
       rows.add(GestureDetector(
         onTap: () {
           Navigator.push(
@@ -96,6 +112,9 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
               MaterialPageRoute(
                   builder: (context) => AccountPageWidget(
                       account: fetchAccount(accountLink.id))));
+        },
+        onLongPress: () {
+          _openAvatarViewerDialog(context, NetworkImage(url));
         },
         child: Container(
           child: Text(accountLink.name, style: _font),
