@@ -29,6 +29,21 @@ class Account {
   String avatar;
 }
 
+openAvatarViewerDialog(context, image){
+  Navigator.of(context).push(MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: image,
+              fit: BoxFit.contain,
+            ),
+          ),
+        );
+      },
+      fullscreenDialog: true));
+}
+
 String extractAccountId(str) {
   final idRegex = RegExp(r'/account/(\d+).html');
   var match = idRegex.firstMatch(str);
@@ -142,21 +157,6 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
-  _openAvatarViewerDialog(context, image){
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
-        fullscreenDialog: true));
-  }
-
   Widget _buildView(BuildContext context, Account account) {
     final url = baseUri + account.avatar;
     final image = NetworkImage(url);
@@ -179,7 +179,7 @@ class AccountPageWidget extends StatelessWidget {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                _openAvatarViewerDialog(context, image);
+                                openAvatarViewerDialog(context, image);
                               },
                               child: Image.network(url))),
                       Expanded(

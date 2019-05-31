@@ -83,21 +83,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     );
   }
 
-  _openAvatarViewerDialog(context, image){
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
-        fullscreenDialog: true));
-  }
-
   Widget _buildView(
       BuildContext context, Map<String, AccountLink> accountLinks) {
     var rows = <GestureDetector>[];
@@ -114,7 +99,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                       account: fetchAccount(accountLink.id))));
         },
         onLongPress: () {
-          _openAvatarViewerDialog(context, NetworkImage(url));
+          openAvatarViewerDialog(context, NetworkImage(url));
         },
         child: Container(
           child: Text(accountLink.name, style: _font),
