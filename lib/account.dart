@@ -29,7 +29,7 @@ class Account {
   String avatar;
 }
 
-openAvatarViewerDialog(context, image){
+openAvatarViewerDialog(context, image) {
   Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return Container(
