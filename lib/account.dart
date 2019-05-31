@@ -69,12 +69,12 @@ Future<Account> fetchAccount(String accountId) async {
     var favorites = <SongLink>[];
     if (tables.isNotEmpty) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var song = SongLink();
+        var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
-        song.id = extractSongId(aTitle.attributes['href']);
-        song.title = stripTags(aTitle.innerHtml);
-        song.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(song);
+        songLink.id = extractSongId(aTitle.attributes['href']);
+        songLink.title = stripTags(aTitle.innerHtml);
+        songLink.artist = stripTags(tr.children[3].innerHtml);
+        favorites.add(songLink);
       }
     }
 
@@ -142,8 +142,24 @@ class AccountPageWidget extends StatelessWidget {
     );
   }
 
+  _openAvatarViewerDialog(context, image){
+    Navigator.of(context).push(MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+        fullscreenDialog: true));
+  }
+  
   Widget _buildView(BuildContext context, Account account) {
     final url = baseUri + account.avatar;
+    final image = NetworkImage(url);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -160,7 +176,12 @@ class AccountPageWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image.network(url),
+                      Expanded(
+                          child: InkWell(
+                              onTap: () {
+                                _openAvatarViewerDialog(context, image);
+                              },
+                              child: Image.network(url))),
                       Expanded(
                         child: Text(
                             account.type +
