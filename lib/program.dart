@@ -61,7 +61,7 @@ Future<Program> fetchProgram(String programId) async {
       program.description = e.toString();
     }
   } else {
-    throw Exception('Failed to load Program informations');
+    throw Exception('Failed to load Program with id $programId');
   }
 
   return program;

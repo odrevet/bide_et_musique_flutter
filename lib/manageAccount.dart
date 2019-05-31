@@ -33,8 +33,8 @@ class ManageAccountPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, Account accountInformations) {
-    final url = baseUri + accountInformations.avatar;
+  Widget _buildView(BuildContext context, Account account) {
+    final url = baseUri + account.avatar;
     final image = NetworkImage(url);
 
     return Container(
@@ -55,13 +55,13 @@ class ManageAccountPageWidget extends StatelessWidget {
                           child: Image.network(url))),
                   Expanded(
                     child: Text(
-                        accountInformations.type +
+                        account.type +
                             '\n' +
-                            accountInformations.inscription +
+                            account.inscription +
                             '\n' +
-                            accountInformations.messageForum +
+                            account.messageForum +
                             '\n' +
-                            accountInformations.comments +
+                            account.comments +
                             '\n',
                         style: TextStyle(fontSize: 14)),
                   ),
@@ -82,14 +82,12 @@ class ManageAccountPageWidget extends StatelessWidget {
                         ),
                         SingleChildScrollView(
                             child: Html(
-                                data: accountInformations.presentation,
+                                data: account.presentation,
                                 onLinkTap: (url) {
                                   onLinkTap(url, context);
                                 })),
                       ]),
                     )
-
-                    //SongListingWidget(accountInformations.favorites),
                   ],
                 )
               ]),

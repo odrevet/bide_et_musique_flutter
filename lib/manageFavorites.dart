@@ -22,46 +22,46 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   _ManageFavoritesWidgetState(this.session);
 
   Session session;
-  Future<Account> account;
+  Future<Account> _account;
 
   List<Dismissible> _rows;
 
   @override
   void initState() {
     super.initState();
-    account = fetchAccountSession(this.session);
+    _account = fetchAccountSession(this.session);
     _rows = <Dismissible>[];
   }
 
   Dismissible _createSongTile(
-      SongLink song, Account accountInformations, int index) {
+      SongLink songLink, Account account, int index) {
     int position = ++index;
     return Dismissible(
-        key: Key(song.id),
+        key: Key(songLink.id),
         onDismissed: (direction) {
-          _confirmDeletion(song, accountInformations);
+          _confirmDeletion(songLink, account);
         },
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
             child: Image(
-                image: NetworkImage('$baseUri/images/thumb25/${song.id}.jpg')),
+                image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
           ),
-          title: Text('#$position - ${song.title}'),
-          subtitle: Text(song.artist),
+          title: Text('#$position - ${songLink.title}'),
+          subtitle: Text(songLink.artist),
           onTap: () {
             Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => SongPageWidget(
-                            songLink: song, song: fetchSong(song.id))))
-                .then((_) => account = fetchAccountSession(this.session));
+                            songLink: songLink, song: fetchSong(songLink.id))))
+                .then((_) => _account = fetchAccountSession(this.session));
           },
         ));
   }
 
   Future<void> _confirmDeletion(
-      SongLink song, Account accountInformations) async {
+      SongLink songLink, Account account) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -71,7 +71,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Vraiment retirer "${song.title}" de vos favoris ? '),
+                Text('Vraiment retirer "${songLink.title}" de vos favoris ? '),
               ],
             ),
           ),
@@ -80,7 +80,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
               child: Text('Oui'),
               onPressed: () async {
                 var accountId = session.accountLink.id;
-                var K = song.id;
+                var K = songLink.id;
                 var direction = 'DS';
 
                 final response = await session.post(
@@ -93,7 +93,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
 
                 if (response.statusCode == 200) {
                   setState(() {
-                    accountInformations.favorites
+                    account.favorites
                         .removeWhere((song) => song.id == K);
                   });
                 }
@@ -103,11 +103,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             FlatButton(
               child: Text('Non'),
               onPressed: () {
-                int index = accountInformations.favorites.indexOf(song);
+                int index = account.favorites.indexOf(songLink);
 
                 setState(() {
                   _rows.insert(
-                      index, _createSongTile(song, accountInformations, index));
+                      index, _createSongTile(songLink, account, index));
                 });
 
                 Navigator.of(context).pop();
@@ -122,8 +122,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Widget _buildView(BuildContext context, Session session, Account account) {
     _rows.clear();
     int index = 0;
-    for (SongLink song in account.favorites) {
-      _rows.add(_createSongTile(song, account, index));
+    for (SongLink songLink in account.favorites) {
+      _rows.add(_createSongTile(songLink, account, index));
       index++;
     }
 
@@ -158,7 +158,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Account>(
-        future: account,
+        future: _account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, session, snapshot.data);
