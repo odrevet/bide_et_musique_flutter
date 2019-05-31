@@ -49,7 +49,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   void initState() {
     super.initState();
     _avatarAccountLink = fetchTrombidoscope();
-
   }
 
   @override

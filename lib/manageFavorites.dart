@@ -33,8 +33,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     _rows = <Dismissible>[];
   }
 
-  Dismissible _createSongTile(
-      SongLink songLink, Account account, int index) {
+  Dismissible _createSongTile(SongLink songLink, Account account, int index) {
     int position = ++index;
     return Dismissible(
         key: Key(songLink.id),
@@ -45,7 +44,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
             child: Image(
-                image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
+                image:
+                    NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
           ),
           title: Text('#$position - ${songLink.title}'),
           subtitle: Text(songLink.artist),
@@ -60,8 +60,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         ));
   }
 
-  Future<void> _confirmDeletion(
-      SongLink songLink, Account account) async {
+  Future<void> _confirmDeletion(SongLink songLink, Account account) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -93,8 +92,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
 
                 if (response.statusCode == 200) {
                   setState(() {
-                    account.favorites
-                        .removeWhere((song) => song.id == K);
+                    account.favorites.removeWhere((song) => song.id == K);
                   });
                 }
                 Navigator.of(context).pop();

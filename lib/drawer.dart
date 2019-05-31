@@ -36,7 +36,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _setAccountTitle();
     return Drawer(
         child: ListView(
       children: <Widget>[
@@ -54,7 +53,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: Icon(Icons.account_circle),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => IdentWidget()));
+                    MaterialPageRoute(builder: (context) => IdentWidget()))
+                .then((_) => _setAccountTitle());
           },
         ),
         ListTile(
@@ -112,22 +112,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text('Trombidoscope'),
           leading: Icon(Icons.apps),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TrombidoscopeWidget()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TrombidoscopeWidget()));
           },
         ),
         ListTile(
           title: Text('Pochettoscope'),
           leading: Icon(Icons.apps),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        PochettoscopeWidget()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PochettoscopeWidget()));
           },
         ),
         ListTile(

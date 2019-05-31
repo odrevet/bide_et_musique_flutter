@@ -48,7 +48,6 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   void initState() {
     super.initState();
     _songLinks = fetchPochettoscope();
-
   }
 
   @override

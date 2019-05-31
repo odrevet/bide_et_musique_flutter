@@ -506,8 +506,7 @@ class SongWidget extends StatelessWidget {
                                 body: Center(
                                   child: SongListingFutureWidget(
                                       fetchSearchSong(
-                                          _song.year.toString(),
-                                          '7')),
+                                          _song.year.toString(), '7')),
                                 ),
                               ))),
                 }));
@@ -522,8 +521,7 @@ class SongWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ArtistPageWidget(
-                              artist:
-                                  fetchArtist(_song.artistId)))),
+                              artist: fetchArtist(_song.artistId)))),
                 }));
     }
 
@@ -545,16 +543,14 @@ class SongWidget extends StatelessWidget {
                                 ),
                                 body: Center(
                                   child: SongListingFutureWidget(
-                                      fetchSearchSong(
-                                          _song.label, '5')),
+                                      fetchSearchSong(_song.label, '5')),
                                 ),
                               ))),
                 }));
     }
 
     if (_song.reference != null) {
-      textSpans
-          .add(TextSpan(text: _song.reference.toString() + '\n'));
+      textSpans.add(TextSpan(text: _song.reference.toString() + '\n'));
     }
 
     final textStyle = TextStyle(
@@ -579,17 +575,16 @@ class SongListingFutureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SongLink>>(
-      future: songs,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SongListingWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
+        future: songs,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SongListingWidget(snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
 
-        // By default, show a loading spinner
-        return CircularProgressIndicator();
-      }
-    );
+          // By default, show a loading spinner
+          return CircularProgressIndicator();
+        });
   }
 }
