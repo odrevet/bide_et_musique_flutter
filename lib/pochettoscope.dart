@@ -62,7 +62,8 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [Text('Le pochettoscope'), refreshButton]),
+        title: Text('Le pochettoscope'),
+        actions: <Widget>[refreshButton],
       ),
       body: Center(
         child: FutureBuilder<List<SongLink>>(

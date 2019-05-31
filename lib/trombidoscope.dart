@@ -63,7 +63,8 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [Text('Le trombidoscope'), refreshButton]),
+        title: Text('Le trombidoscope'),
+        actions: <Widget>[refreshButton],
       ),
       body: Center(
         child: FutureBuilder<Map<String, AccountLink>>(
