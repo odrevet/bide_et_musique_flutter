@@ -19,10 +19,10 @@ Future<Artist> fetchArtist(String artistId) async {
       artist =
           Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      print('Error while decoding artist informations : ' + e.toString());
+      print('Error while decoding artist : ' + e.toString());
     }
   } else {
-    throw Exception('Failed to load artist informations');
+    throw Exception('Failed to load artist with id $artistId');
   }
 
   return artist;

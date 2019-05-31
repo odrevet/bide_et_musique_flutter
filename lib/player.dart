@@ -154,7 +154,7 @@ class StreamPlayer {
 }
 
 ///As Song data cannot be retreive from the stream,
-///This Class fetch song information from the web site
+///This Class fetch song from the web site
 class StreamNotificationUpdater {
   Timer timer;
 

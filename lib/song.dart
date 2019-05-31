@@ -33,7 +33,6 @@ class SongLink {
       this.isNew = false});
 }
 
-/// information available on the song page
 class Song {
   int year;
   String title;
@@ -149,7 +148,7 @@ Future<Song> fetchSong(String songId) async {
           lyrics: e.toString());
     }
   } else {
-    throw Exception('Failed to load song information');
+    throw Exception('Failed to load song with id $songId');
   }
 
   //If connected, fetch comments and favorite status
@@ -211,7 +210,7 @@ Future<Song> fetchSong(String songId) async {
       }
     }
 
-    //information available only if logged-in
+    //available only if logged-in
     if (session.accountLink.id != null) {
       //check vote
       var vote = document.getElementById('vote');
@@ -301,7 +300,7 @@ class SongPageWidget extends StatelessWidget {
                                 _openCoverViewerDialog(context);
                               },
                               child: Image.network(urlCover))),
-                      Expanded(child: SongInformationWidget(song)),
+                      Expanded(child: SongWidget(song)),
                     ],
                   ))
             ])),
@@ -483,18 +482,18 @@ void launchSongPage(SongLink song, BuildContext context) {
   }
 }
 
-class SongInformationWidget extends StatelessWidget {
-  final Song _songInformations;
+class SongWidget extends StatelessWidget {
+  final Song _song;
 
-  SongInformationWidget(this._songInformations);
+  SongWidget(this._song);
 
   @override
   Widget build(BuildContext context) {
     var textSpans = <TextSpan>[];
 
-    if (_songInformations.year != 0) {
+    if (_song.year != 0) {
       textSpans.add(TextSpan(
-          text: _songInformations.year.toString() + '\n',
+          text: _song.year.toString() + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -507,16 +506,16 @@ class SongInformationWidget extends StatelessWidget {
                                 body: Center(
                                   child: SongListingFutureWidget(
                                       fetchSearchSong(
-                                          _songInformations.year.toString(),
+                                          _song.year.toString(),
                                           '7')),
                                 ),
                               ))),
                 }));
     }
 
-    if (_songInformations.artists != null) {
+    if (_song.artists != null) {
       textSpans.add(TextSpan(
-          text: _songInformations.artists + '\n',
+          text: _song.artists + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -524,17 +523,17 @@ class SongInformationWidget extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => ArtistPageWidget(
                               artist:
-                                  fetchArtist(_songInformations.artistId)))),
+                                  fetchArtist(_song.artistId)))),
                 }));
     }
 
-    if (_songInformations.length != null) {
-      textSpans.add(TextSpan(text: _songInformations.length + '\n'));
+    if (_song.length != null) {
+      textSpans.add(TextSpan(text: _song.length + '\n'));
     }
 
-    if (_songInformations.label != null) {
+    if (_song.label != null) {
       textSpans.add(TextSpan(
-          text: _songInformations.label + '\n',
+          text: _song.label + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -547,15 +546,15 @@ class SongInformationWidget extends StatelessWidget {
                                 body: Center(
                                   child: SongListingFutureWidget(
                                       fetchSearchSong(
-                                          _songInformations.label, '5')),
+                                          _song.label, '5')),
                                 ),
                               ))),
                 }));
     }
 
-    if (_songInformations.reference != null) {
+    if (_song.reference != null) {
       textSpans
-          .add(TextSpan(text: _songInformations.reference.toString() + '\n'));
+          .add(TextSpan(text: _song.reference.toString() + '\n'));
     }
 
     final textStyle = TextStyle(

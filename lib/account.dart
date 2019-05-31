@@ -18,7 +18,6 @@ class AccountLink {
   AccountLink({this.id, this.name});
 }
 
-// Information present on the account page
 class Account {
   String name;
   String type;
@@ -227,7 +226,7 @@ class AccountPageWidget extends StatelessWidget {
 // Manage the account after identification
 
 Future<Account> fetchAccountSession(Session session) async {
-  var accountInformations = Account();
+  var account = Account();
   final accountId = session.accountLink.id;
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final response = await session.get(url);
@@ -249,10 +248,10 @@ Future<Account> fetchAccountSession(Session session) async {
       }
     }
 
-    accountInformations.favorites = favorites;
-    return accountInformations;
+    account.favorites = favorites;
+    return account;
   } else {
-    throw Exception('Failed to load account ');
+    throw Exception('Failed to load account with id $accountId');
   }
 }
 

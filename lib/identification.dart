@@ -218,8 +218,8 @@ class _IdentWidgetState extends State<IdentWidget> {
           //physics: NeverScrollableScrollPhysics(),
           children: [
             ManageAccountPageWidget(
-                account: account,
-                accountInformations: fetchAccount(session.accountLink.id)),
+                accountLink: account,
+                account: fetchAccount(session.accountLink.id)),
             ManageFavoritesWidget(session: session),
             SongListingFutureWidget(fetchVotes())
           ],

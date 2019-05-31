@@ -8,17 +8,17 @@ import 'account.dart';
 import 'utils.dart';
 
 class ManageAccountPageWidget extends StatelessWidget {
-  final AccountLink account;
-  final Future<Account> accountInformations;
+  final AccountLink accountLink;
+  final Future<Account> account;
 
-  ManageAccountPageWidget({Key key, this.account, this.accountInformations})
+  ManageAccountPageWidget({Key key, this.accountLink, this.account})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Account>(
-        future: accountInformations,
+        future: account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
