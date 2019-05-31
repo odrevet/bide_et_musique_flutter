@@ -102,11 +102,14 @@ class StreamPlayer {
       streamNotificationUpdater.start();
     } else {
       streamNotificationUpdater.stop();
+      var title = _songLink.title.isEmpty ? 'Titre non disponible' : _songLink.title;
+      var artist = _songLink.artist.isEmpty ? 'Artiste non disponible' : _songLink.artist;
+
       var mediaItem = MediaItem(
           id: 'bm_stream',
           album: 'Bide et Musique',
-          title: _songLink.title,
-          artist: _songLink.artist,
+          title: title,
+          artist: artist,
           artUri: '$baseUri/images/pochettes/${_songLink.id}.jpg');
       AudioServiceBackground.setMediaItem(mediaItem);
     }
