@@ -34,9 +34,10 @@ class SongLink {
 }
 
 class Song {
+  String id;
   int year;
   String title;
-  String artists;
+  String artist;
   String artistId;
   String author;
   String length;
@@ -50,9 +51,10 @@ class Song {
   bool hasVote;
 
   Song(
-      {this.title,
+      {this.id,
+      this.title,
       this.year,
-      this.artists,
+      this.artist,
       this.artistId,
       this.author,
       this.length,
@@ -63,9 +65,10 @@ class Song {
   factory Song.fromJson(Map<String, dynamic> json) {
     final String lyrics = json['lyrics'];
     return Song(
+        id: json['id'].toString(),
         title: json['name'],
         year: json['year'],
-        artists: stripTags(json['artists']['main']['alias']),
+        artist: stripTags(json['artists']['main']['alias']),
         artistId: json['artists']['main']['id'].toString(),
         author: json['author'],
         length: json['length']['pretty'],
@@ -140,7 +143,7 @@ Future<Song> fetchSong(String songId) async {
       song = Song(
           title: '?',
           year: 0,
-          artists: '?',
+          artist: '?',
           author: '?',
           length: '?',
           label: '?',
@@ -267,16 +270,16 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  void _openCoverViewerDialog(BuildContext context) {
+  void _openCoverViewerDialog(Song song, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return CoverViewer(songLink.id);
+          return CoverViewer(song.id);
         },
         fullscreenDialog: true));
   }
 
   Widget _buildView(BuildContext context, Song song) {
-    var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
+    var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 18.0);
 
     var nestedScrollView = NestedScrollView(
@@ -297,7 +300,7 @@ class SongPageWidget extends StatelessWidget {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                _openCoverViewerDialog(context);
+                                _openCoverViewerDialog(song, context);
                               },
                               child: Image.network(urlCover))),
                       Expanded(child: SongWidget(song)),
@@ -350,25 +353,25 @@ class SongPageWidget extends StatelessWidget {
 
     //if the song can be listen, add the song player
     if (song.canListen) {
-      actions.add(SongPlayerWidget(songLink));
+      actions.add(SongPlayerWidget(song));
     }
 
     var session = Session();
     if (session.accountLink.id != null) {
       if (song.canFavourite) {
-        actions.add(SongFavoriteIconWidget(songLink.id, song.isFavourite));
+        actions.add(SongFavoriteIconWidget(song.id, song.isFavourite));
       }
 
-      actions.add(SongVoteIconWidget(songLink.id, song.hasVote));
+      actions.add(SongVoteIconWidget(song.id, song.hasVote));
     }
 
     var listenButton = IconButton(
         icon: Icon(Icons.music_note),
         onPressed: () {
-          Share.share('$baseUri/stream_${songLink.id}.php');
+          Share.share('$baseUri/stream_${song.id}.php');
         });
 
-    actionsShare.add(SongShareIconWidget(songLink));
+    actionsShare.add(SongShareIconWidget(song));
     actionsShare.add(listenButton);
 
     //build widget for overflow button
@@ -512,9 +515,9 @@ class SongWidget extends StatelessWidget {
                 }));
     }
 
-    if (_song.artists != null) {
+    if (_song.artist != null) {
       textSpans.add(TextSpan(
-          text: _song.artists + '\n',
+          text: _song.artist + '\n',
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(

@@ -133,9 +133,9 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 // Share
 
 class SongShareIconWidget extends StatelessWidget {
-  final SongLink song;
+  final Song _song;
 
-  SongShareIconWidget(this.song, {Key key}) : super(key: key);
+  SongShareIconWidget(this._song, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
@@ -143,10 +143,10 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         onPressed: () {
           Share.share(
-              '''En ce moment j'écoute '${song.title}' sur bide et musique !
+              '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-http://bide-et-musique.com/song/${song.id}.html
+http://bide-et-musique.com/song/${_song.id}.html
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
@@ -160,21 +160,20 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 // Player
 
 class SongPlayerWidget extends StatefulWidget {
-  final SongLink _songLink;
+  final Song _song;
 
-  SongPlayerWidget(this._songLink, {Key key}) : super(key: key);
+  SongPlayerWidget(this._song, {Key key}) : super(key: key);
 
   @override
-  _SongPlayerWidgetState createState() =>
-      _SongPlayerWidgetState(this._songLink);
+  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this._song);
 }
 
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  final SongLink _songLink;
+  final Song _song;
 
   bool _isPlaying;
 
-  _SongPlayerWidgetState(this._songLink);
+  _SongPlayerWidgetState(this._song);
 
   @override
   void initState() {
@@ -186,7 +185,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
       isPlaying = false;
     } else {
-      this._songLink.id == StreamPlayer().getSongLinkId()
+      this._song.id == StreamPlayer().getSongLinkId()
           ? isPlaying = true
           : isPlaying = false;
     }
@@ -232,11 +231,9 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       );
     }
 
-    await AudioService.customAction('song', {
-      'id': _songLink.id,
-      'title': _songLink.title,
-      'artist': _songLink.artist
-    });
+    await AudioService.customAction(
+        'song', {'id': _song.id, 'title': _song.title, 'artist': _song.artist});
+
     await AudioService.customAction('setNotification');
     await AudioService.play();
 
@@ -244,7 +241,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       _isPlaying = true;
     });
 
-    StreamPlayer().setSongLink(_songLink);
+    StreamPlayer().setSong(_song);
   }
 
   stop() {

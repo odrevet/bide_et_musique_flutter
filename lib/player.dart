@@ -40,7 +40,7 @@ void backgroundAudioPlayerTask() async {
         switch (name) {
           case 'song':
             Map songMap = arguments;
-            var song = SongLink(
+            var song = Song(
                 id: songMap['id'],
                 title: songMap['title'],
                 artist: songMap['artist']);
@@ -62,7 +62,7 @@ class StreamPlayer {
 
   StreamPlayer._internal();
 
-  SongLink _songLink;
+  Song _song;
   bool _playing;
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
@@ -77,8 +77,8 @@ class StreamPlayer {
     await FlutterRadio.audioStart();
   }
 
-  void setSong(SongLink songLink) {
-    this._songLink = songLink;
+  void setSong(Song song) {
+    this._song = song;
   }
 
   void togglePlay() {
@@ -86,43 +86,40 @@ class StreamPlayer {
   }
 
   String getSongLinkId() {
-    return _songLink == null ? null : _songLink.id;
-  }
-
-  void setSongLink(SongLink songLink) {
-    _songLink = songLink;
+    return _song == null ? null : _song.id;
   }
 
   void resetSongLink() {
-    _songLink = null;
+    _song = null;
   }
 
   void setNotification() {
-    if (this._songLink == null) {
+    if (this._song == null) {
       streamNotificationUpdater.start();
     } else {
       streamNotificationUpdater.stop();
-      var title = _songLink.title.isEmpty ? 'Titre non disponible' : _songLink.title;
-      var artist = _songLink.artist.isEmpty ? 'Artiste non disponible' : _songLink.artist;
+      var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
+      var artist =
+          _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
       var mediaItem = MediaItem(
           id: 'bm_stream',
           album: 'Bide et Musique',
           title: title,
           artist: artist,
-          artUri: '$baseUri/images/pochettes/${_songLink.id}.jpg');
+          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
       AudioServiceBackground.setMediaItem(mediaItem);
     }
   }
 
   Future<String> getStreamUrl() async {
     String url;
-    if (this._songLink == null) {
+    if (this._song == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       url = radioHiQuality == true ? stream_hq : stream_lq;
     } else {
-      url = '$baseUri/stream_${this._songLink.id}.php';
+      url = '$baseUri/stream_${this._song.id}.php';
     }
     return url;
   }
@@ -148,7 +145,7 @@ class StreamPlayer {
 
   void stop() async {
     FlutterRadio.stop();
-    this._songLink = null;
+    this._song = null;
     _playing = false;
     _completer.complete();
     await AudioServiceBackground.setState(
