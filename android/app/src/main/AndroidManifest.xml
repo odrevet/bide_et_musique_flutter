@@ -12,7 +12,7 @@
 
     <application
         android:name=".MainApplication"
-        android:label="Bide-et-Musique"
+        android:label="Bide et Musique"
         android:icon="@mipmap/ic_launcher">
 
         <service android:name="com.ryanheise.audioservice.AudioService">
