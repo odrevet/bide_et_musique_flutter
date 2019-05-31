@@ -116,7 +116,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TrombidoscopeWidget(accounts: fetchTrombidoscope())));
+                        TrombidoscopeWidget()));
           },
         ),
         ListTile(
@@ -127,7 +127,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        PochettoscopeWidget(songs: fetchPochettoscope())));
+                        PochettoscopeWidget()));
           },
         ),
         ListTile(

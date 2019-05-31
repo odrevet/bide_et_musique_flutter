@@ -32,18 +32,25 @@ Future<Map<String, AccountLink>> fetchTrombidoscope() async {
 }
 
 class TrombidoscopeWidget extends StatefulWidget {
-  Future<Map<String, AccountLink>> accounts; // [avatar : account]
-
-  TrombidoscopeWidget({Key key, this.accounts}) : super(key: key);
+  TrombidoscopeWidget({Key key}) : super(key: key);
 
   @override
   _TrombidoscopeWidgetState createState() => _TrombidoscopeWidgetState();
 }
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
+  Future<Map<String, AccountLink>> _avatarAccountLink; // [avatar : account]
+
   final _font = TextStyle(
       fontSize: 18.0,
       background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
+
+  @override
+  void initState() {
+    super.initState();
+    _avatarAccountLink = fetchTrombidoscope();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +58,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
         icon: Icon(Icons.refresh),
         onPressed: () {
           this.setState(() {
-            widget.accounts = fetchTrombidoscope();
+            _avatarAccountLink = fetchTrombidoscope();
           });
         });
 
@@ -61,7 +68,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
       ),
       body: Center(
         child: FutureBuilder<Map<String, AccountLink>>(
-          future: widget.accounts,
+          future: _avatarAccountLink,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);

@@ -578,20 +578,18 @@ class SongListingFutureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<List<SongLink>>(
-        future: songs,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SongListingWidget(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
+    return FutureBuilder<List<SongLink>>(
+      future: songs,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return SongListingWidget(snapshot.data);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
 
-          // By default, show a loading spinner
-          return CircularProgressIndicator();
-        },
-      ),
+        // By default, show a loading spinner
+        return CircularProgressIndicator();
+      }
     );
   }
 }
