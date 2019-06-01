@@ -141,6 +141,7 @@ Future<Song> fetchSong(String songId) async {
       song = Song.fromJson(json.decode(decodedJson));
     } catch (e) {
       song = Song(
+          id: songId,
           title: '?',
           year: 0,
           artist: '?',
