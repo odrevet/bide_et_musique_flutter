@@ -29,7 +29,7 @@ avec une interface pensée pour le mobile, vous pouvez :
 
 ## Titres 
 
-<img src="/screenshots/Screenshot_titres" width="240px" />
+<img src="/screenshots/Screenshot_titres.jpg" width="240px" />
 
 ## Page d'une chanson
 <img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />
