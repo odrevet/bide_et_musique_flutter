@@ -23,11 +23,9 @@ Télécharger dans le menu "Release" de github ou sur Google play store : https:
 
 # Captures d'écran 
 
-| |<img width="240px" alt="" src="/screenshots/Screenshot_Principale.jpg">  | |<img width="240px" alt="" src="/screenshots/Screenshot_menu.jpg">   |
+|  1 |  2 |
 |---|---|
-| <img width="240px" alt="" src="/screenshots/Screenshot_titres.jpg">   | <img width="240px" alt="" src="/screenshots/Screenshot_page_chanson.jpg">    |
-
-
+| 3  | 4  |
 
 
 
