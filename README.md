@@ -15,6 +15,7 @@ avec une interface pensée pour le mobile, vous pouvez :
 * Voir les nouvelles entrées dans la base
 * Organiser les favoris
 
+Télécharger dans le menu "Release" de github ou sur Google play store : https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 
 # Vidéo de présentation 
 
