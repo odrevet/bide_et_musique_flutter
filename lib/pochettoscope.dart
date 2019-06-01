@@ -9,7 +9,7 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<List<SongLink>> fetchPochettoscope() async {
-  var songs = <SongLink>[];
+  var songLinks = <SongLink>[];
   final url = '$baseUri/le-pochettoscope.html';
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -21,14 +21,14 @@ Future<List<SongLink>> fetchPochettoscope() async {
       var src = vignette.children[1].attributes['src'];
       final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
       var match = idRegex.firstMatch(src);
-      var song = SongLink();
-      song.id = match[1];
+      var songLink = SongLink();
+      songLink.id = match[1];
 
       var title = vignette.children[0].children[0].attributes['title'];
-      song.title = title;
-      songs.add(song);
+      songLink.title = title;
+      songLinks.add(songLink);
     }
-    return songs;
+    return songLinks;
   } else {
     throw Exception('Failed to load pochette');
   }
