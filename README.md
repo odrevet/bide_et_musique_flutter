@@ -15,25 +15,6 @@ avec une interface pensée pour le mobile, vous pouvez :
 * Voir les nouvelles entrées dans la base
 * Organiser les favoris
 
-# Utilisation 
-
-## Voir les commentaires
-
-Sur la page d'une chanson, glisser la page horizontalement a droite
-
-## Voir les favoris 
-
-Sur la page d'un bidaunote, glisser la page horizontalement a droite
-
-## Organiser ses favoris
-
-Sur la page Compte, appuye long sur un titre puis glisser deposer a la nouvelle place. Puis attendre la synchronisation avec bide et musique. 
-
-## Voir une pochette 3D
-
-Sur la page d'une chanson, tape sur la couverture en haut a gauche. 
-
-ou appuye long sur la pochette au dessus du player
 
 # Captures d'écran 
 
