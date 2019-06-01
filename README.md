@@ -18,21 +18,18 @@ avec une interface pensée pour le mobile, vous pouvez :
 
 # Captures d'écran 
 
-## Player 
+## Page principale 
 
-<img src="/screenshots/Screenshot_Bide-et-Musique_Player.jpg" width="240px" />
+<img src="/screenshots/Screenshot_Principale.jpg" width="240px" />
 
 ## Menu
 
-<img src="/screenshots/Screenshot_Bide-et-Musique_Menu.jpg" width="240px" />
+<img src="/screenshots/Screenshot_menu.jpg" width="240px" />
 
-## Pochettoscope
 
-<img src="/screenshots/Screenshot_Bide-et-Musique_Pochettoscope.png" width="240px" />
+## Titres 
 
-## Programmation 
-
-<img src="/screenshots/Screenshot_Bide-et-Musique_Program.png" width="240px" />
+<img src="/screenshots/Screenshot_titres" width="240px" />
 
 ## Page d'une chanson
-<img src="/screenshots/Screenshot_Bide-et-Musique_Song.jpg" width="240px" />
+<img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />
