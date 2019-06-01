@@ -25,7 +25,7 @@ Télécharger dans le menu "Release" de github ou sur Google play store : https:
 
 |  <img src="/screenshots/Screenshot_Principale.jpg" width="240px" /> |  <img src="/screenshots/Screenshot_menu.jpg" width="240px" /> |
 |---|---|
-| <img src="/screenshots/Screenshot_titres.jpg" width="240px" />  | 4  |
+| <img src="/screenshots/Screenshot_titres.jpg" width="240px" />  | <img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />  |
 
 
 
