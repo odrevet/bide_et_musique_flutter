@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
@@ -7,29 +5,6 @@ import 'package:http/http.dart' as http;
 
 import 'account.dart';
 import 'utils.dart';
-
-Future<Map<String, AccountLink>> fetchTrombidoscope() async {
-  var accounts = <String, AccountLink>{};
-
-  final url = '$baseUri/trombidoscope.html';
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    var body = response.body;
-    dom.Document document = parser.parse(body);
-
-    var table = document.getElementsByClassName('bmtable')[0];
-    for (dom.Element td in table.getElementsByTagName('td')) {
-      var a = td.children[0];
-      var href = a.attributes['href'];
-      var id = extractAccountId(href);
-      var account = AccountLink(id: id, name: stripTags(a.innerHtml));
-      accounts[a.children[0].attributes['src']] = account;
-    }
-    return accounts;
-  } else {
-    throw Exception('Failed to load trombines');
-  }
-}
 
 class TrombidoscopeWidget extends StatefulWidget {
   TrombidoscopeWidget({Key key}) : super(key: key);
@@ -39,7 +14,8 @@ class TrombidoscopeWidget extends StatefulWidget {
 }
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
-  Future<Map<String, AccountLink>> _avatarAccountLink; // [avatar : account]
+  var _accounts = <Account>[];
+  var _controller =  ScrollController();
 
   final _font = TextStyle(
       fontSize: 18.0,
@@ -48,73 +24,86 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   @override
   void initState() {
     super.initState();
-    _avatarAccountLink = fetchTrombidoscope();
+    _controller.addListener(_scrollListener);
+    fetchTrombidoscope();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      fetchTrombidoscope();
+    }
+  }
+
+  fetchTrombidoscope() async {
+    final url = '$baseUri/trombidoscope.html';
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      var body = response.body;
+      dom.Document document = parser.parse(body);
+
+      var table = document.getElementsByClassName('bmtable')[0];
+      for (dom.Element td in table.getElementsByTagName('td')) {
+        var a = td.children[0];
+        var href = a.attributes['href'];
+        var id = extractAccountId(href);
+        var account = Account();
+        account.id = id;
+        account.name = stripTags(a.innerHtml);
+        account.avatar = a.children[0].attributes['src'];
+        setState(() {
+          _accounts.add(account);
+        });
+
+      }
+    } else {
+      throw Exception('Failed to load trombines');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var refreshButton = IconButton(
-        icon: Icon(Icons.refresh),
-        onPressed: () {
-          this.setState(() {
-            _avatarAccountLink = fetchTrombidoscope();
-          });
-        });
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Le trombidoscope'),
-        actions: <Widget>[refreshButton],
-      ),
-      body: Center(
-        child: FutureBuilder<Map<String, AccountLink>>(
-          future: _avatarAccountLink,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return errorDisplay(snapshot.error);
-            }
-
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
+        appBar: AppBar(
+          title: Text('Le trombidoscope'),
         ),
-      ),
-    );
-  }
-
-  Widget _buildView(
-      BuildContext context, Map<String, AccountLink> accountLinks) {
-    var rows = <GestureDetector>[];
-
-    accountLinks.forEach((img, accountLink) {
-      final url = baseUri + img;
-
-      rows.add(GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPageWidget(
-                      account: fetchAccount(accountLink.id))));
-        },
-        onLongPress: () {
-          openAvatarViewerDialog(context, NetworkImage(url));
-        },
-        child: Container(
-          child: Text(accountLink.name, style: _font),
-          decoration: BoxDecoration(
-              color: Colors.orangeAccent,
-              image: DecorationImage(
-                fit: BoxFit.contain,
-                alignment: FractionalOffset.topCenter,
-                image: NetworkImage(url),
-              )),
-        ),
-      ));
-    });
-
-    return GridView.count(crossAxisCount: 2, children: rows);
+        body: GridView.builder(
+            itemCount: _accounts.length,
+            controller: _controller,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (BuildContext context, int index) {
+              print("PRINT " + index.toString());
+              var account = _accounts[index];
+              final url = baseUri + account.avatar;
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountPageWidget(
+                              account: fetchAccount(account.id))));
+                },
+                onLongPress: () {
+                  openAvatarViewerDialog(context, NetworkImage(url));
+                },
+                child: Container(
+                  child: Text(account.name, style: _font),
+                  decoration: BoxDecoration(
+                      color: Colors.orangeAccent,
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        alignment: FractionalOffset.topCenter,
+                        image: NetworkImage(url),
+                      )),
+                ),
+              );
+            }));
   }
 }

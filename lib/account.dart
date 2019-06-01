@@ -19,6 +19,7 @@ class AccountLink {
 }
 
 class Account {
+  String id;
   String name;
   String type;
   String inscription;
