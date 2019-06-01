@@ -23,7 +23,7 @@ Télécharger dans le menu "Release" de github ou sur Google play store : https:
 
 # Captures d'écran 
 
-|  <img src="/screenshots/Screenshot_Principale.jpg" width="240px" /> |  2 |
+|  <img src="/screenshots/Screenshot_Principale.jpg" width="240px" /> |  <img src="/screenshots/Screenshot_menu.jpg" width="240px" /> |
 |---|---|
 | 3  | 4  |
 
