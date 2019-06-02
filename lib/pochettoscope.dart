@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
@@ -7,32 +5,6 @@ import 'package:http/http.dart' as http;
 
 import 'song.dart';
 import 'utils.dart';
-
-Future<List<SongLink>> fetchPochettoscope() async {
-  var songLinks = <SongLink>[];
-  final url = '$baseUri/le-pochettoscope.html';
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    var body = response.body;
-    dom.Document document = parser.parse(body);
-
-    for (dom.Element vignette
-        in document.getElementsByClassName('vignette75')) {
-      var src = vignette.children[1].attributes['src'];
-      final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
-      var match = idRegex.firstMatch(src);
-      var songLink = SongLink();
-      songLink.id = match[1];
-
-      var title = vignette.children[0].children[0].attributes['title'];
-      songLink.title = title;
-      songLinks.add(songLink);
-    }
-    return songLinks;
-  } else {
-    throw Exception('Failed to load pochette');
-  }
-}
 
 class PochettoscopeWidget extends StatefulWidget {
   PochettoscopeWidget({Key key}) : super(key: key);
@@ -42,53 +14,70 @@ class PochettoscopeWidget extends StatefulWidget {
 }
 
 class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
-  Future<List<SongLink>> _songLinks;
+  var _songLinks = <SongLink>[];
+  var _controller =  ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _songLinks = fetchPochettoscope();
+    _controller.addListener(_scrollListener);
+    fetchPochettoscope();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      fetchPochettoscope();
+    }
+  }
+
+  fetchPochettoscope() async {
+    final url = '$baseUri/le-pochettoscope.html';
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      var body = response.body;
+      dom.Document document = parser.parse(body);
+
+      for (dom.Element vignette
+      in document.getElementsByClassName('vignette75')) {
+        var src = vignette.children[1].attributes['src'];
+        final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
+        var match = idRegex.firstMatch(src);
+        var songLink = SongLink();
+        songLink.id = match[1];
+
+        var title = vignette.children[0].children[0].attributes['title'];
+        songLink.title = title;
+
+        setState(() {
+          _songLinks.add(songLink);
+        });
+      }
+    } else {
+      throw Exception('Failed to load pochette');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var refreshButton = IconButton(
-        icon: Icon(Icons.refresh),
-        onPressed: () {
-          this.setState(() {
-            _songLinks = fetchPochettoscope();
-          });
-        });
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Le pochettoscope'),
-        actions: <Widget>[refreshButton],
-      ),
-      body: Center(
-        child: FutureBuilder<List<SongLink>>(
-          future: this._songLinks,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
-            } else if (snapshot.hasError) {
-              return errorDisplay(snapshot.error);
-            }
-
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
+        appBar: AppBar(
+          title: Text('Le pochettoscope'),
         ),
-      ),
-    );
-  }
-
-  Widget _buildView(BuildContext context, List<SongLink> songs) {
-    var rows = <Container>[];
-    for (SongLink song in songs) {
-      rows.add(Container(child: SongCardWidget(song: song)));
-    }
-
-    return GridView.count(crossAxisCount: 2, children: rows);
+        body: GridView.builder(
+            itemCount: _songLinks.length,
+            controller: _controller,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (BuildContext context, int index) {
+              var songLink = _songLinks[index];
+              return SongCardWidget(songLink: songLink);
+            }));
   }
 }

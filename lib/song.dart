@@ -99,32 +99,32 @@ String extractSongId(str) {
 }
 
 class SongCardWidget extends StatelessWidget {
-  final SongLink song;
+  final SongLink songLink;
 
-  SongCardWidget({Key key, this.song}) : super(key: key);
+  SongCardWidget({Key key, this.songLink}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (song.id != null) {
+        if (songLink.id != null) {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SongPageWidget(
-                      songLink: song, song: fetchSong(song.id))));
+                      songLink: songLink, song: fetchSong(songLink.id))));
         }
       },
       onLongPress: () {
         Navigator.of(context).push(MaterialPageRoute<Null>(
             builder: (BuildContext context) {
-              return CoverViewer(song.id);
+              return CoverViewer(songLink.id);
             },
             fullscreenDialog: true));
       },
       child: Container(
         decoration: BoxDecoration(color: Theme.of(context).canvasColor),
-        child: Image.network('$baseUri/images/pochettes/${song.id}.jpg'),
+        child: Image.network('$baseUri/images/pochettes/${songLink.id}.jpg'),
       ),
     );
   }

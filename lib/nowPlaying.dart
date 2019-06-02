@@ -70,7 +70,7 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
         future: _song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return SongCardWidget(song: snapshot.data);
+            return SongCardWidget(songLink: snapshot.data);
           } else if (snapshot.hasError) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,

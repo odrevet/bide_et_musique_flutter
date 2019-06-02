@@ -79,7 +79,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             itemBuilder: (BuildContext context, int index) {
-              print("PRINT " + index.toString());
               var account = _accounts[index];
               final url = baseUri + account.avatar;
               return GestureDetector(
