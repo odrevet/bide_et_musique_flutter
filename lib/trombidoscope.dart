@@ -68,6 +68,10 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery
+        .of(context)
+        .orientation;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Le trombidoscope'),
@@ -76,7 +80,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
             itemCount: _accountLinks.length,
             controller: _controller,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+                crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
             itemBuilder: (BuildContext context, int index) {
               var account = _accountLinks[index];
               final url = baseUri + account.avatar;
