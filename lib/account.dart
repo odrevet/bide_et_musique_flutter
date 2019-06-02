@@ -14,7 +14,7 @@ import 'utils.dart';
 class AccountLink {
   String id;
   String name;
-
+  String avatar;
   AccountLink({this.id, this.name});
 }
 

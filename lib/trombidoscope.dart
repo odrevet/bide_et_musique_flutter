@@ -14,7 +14,7 @@ class TrombidoscopeWidget extends StatefulWidget {
 }
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
-  var _accounts = <Account>[];
+  var _accountLinks = <AccountLink>[];
   var _controller = ScrollController();
 
   final _font = TextStyle(
@@ -53,12 +53,12 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
         var a = td.children[0];
         var href = a.attributes['href'];
         var id = extractAccountId(href);
-        var account = Account();
+        var account = AccountLink();
         account.id = id;
         account.name = stripTags(a.innerHtml);
         account.avatar = a.children[0].attributes['src'];
         setState(() {
-          _accounts.add(account);
+          _accountLinks.add(account);
         });
       }
     } else {
@@ -73,12 +73,12 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
           title: Text('Le trombidoscope'),
         ),
         body: GridView.builder(
-            itemCount: _accounts.length,
+            itemCount: _accountLinks.length,
             controller: _controller,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             itemBuilder: (BuildContext context, int index) {
-              var account = _accounts[index];
+              var account = _accountLinks[index];
               final url = baseUri + account.avatar;
               return GestureDetector(
                 onTap: () {
