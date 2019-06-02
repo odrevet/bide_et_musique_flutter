@@ -70,17 +70,16 @@ Future<List<SongLink>> fetchSearchSong(String search, String type) async {
     print(location);
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
-    var song = SongLink();
-    song.id = extractSongId(location);
-    song.title = search;
-    songs.add(song);
+    var songLink = SongLink();
+    songLink.id = extractSongId(location);
+    songLink.title = search;
+    songs.add(songLink);
   } else if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
     var resultat = document.getElementById('resultat');
     var trs = resultat.getElementsByTagName('tr');
-    //trs.removeAt(0); //remove header (result count)
-    //if(trs[0].className == 'entete'){trs.removeAt(0);}
+
     for (dom.Element tr in trs) {
       if (tr.className == 'p1' || tr.className == 'p0') {
         var tds = tr.getElementsByTagName('td');
