@@ -15,7 +15,7 @@ class TrombidoscopeWidget extends StatefulWidget {
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accounts = <Account>[];
-  var _controller =  ScrollController();
+  var _controller = ScrollController();
 
   final _font = TextStyle(
       fontSize: 18.0,
@@ -60,7 +60,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
         setState(() {
           _accounts.add(account);
         });
-
       }
     } else {
       throw Exception('Failed to load trombines');
