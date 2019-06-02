@@ -52,8 +52,8 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
 }
 
 class SearchResultsWidget extends StatefulWidget {
-  String search;
-  String type;
+  final String search;
+  final String type;
   SearchResultsWidget(this.search, this.type, {Key key}) : super(key: key);
 
   @override
@@ -65,8 +65,8 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   int _pages;
   int _pageCurrent;
   var _songLinks = <SongLink>[];
-  String search;
-  String type;
+  final String search;
+  final String type;
 
   var _controller = ScrollController();
 
@@ -76,7 +76,6 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   void initState() {
     super.initState();
     _controller.addListener(_scrollListener);
-    _pages;
     _pageCurrent = 1;
     fetchSearchSong();
   }
@@ -250,9 +249,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                       title: Text('Recherche de chansons'),
                     ),
                     body: Center(
-                      child: SearchResultsWidget(
-                          _controller.text, this._currentItem)
-                    ),
+                        child: SearchResultsWidget(
+                            _controller.text, this._currentItem)),
                   )));
     }
   }
