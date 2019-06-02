@@ -305,7 +305,10 @@ class SongPageWidget extends StatelessWidget {
                               onTap: () {
                                 _openCoverViewerDialog(song, context);
                               },
-                              child: Image.network(urlCover))),
+                              child: FadeInImage(
+                                  image: NetworkImage(urlCover),
+                                  placeholder: NetworkImage(
+                                      '$baseUri/images/vinyl-default.jpg')))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))
