@@ -219,6 +219,7 @@ class AccountPageWidget extends StatelessWidget {
                 child: Html(
                     data: account.presentation,
                     defaultTextStyle: TextStyle(fontSize: 18.0),
+                    useRichText: false,
                     onLinkTap: (url) {
                       onLinkTap(url, context);
                     }),
