@@ -408,6 +408,11 @@ class SongPageWidget extends StatelessWidget {
 
   Widget _buildViewComments(BuildContext context, List<Comment> comments) {
     var rows = <ListTile>[];
+    String loginName = Session().accountLink.name;
+    var selfComment = TextStyle(
+      color: Colors.red,
+    );
+
     for (Comment comment in comments) {
       rows.add(ListTile(
           onTap: () {
@@ -428,7 +433,8 @@ class SongPageWidget extends StatelessWidget {
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),
-          subtitle: Text('Par ' + comment.author.name + ' ' + comment.time)));
+          subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
+              style: comment.author.name == loginName ? selfComment : null)));
     }
 
     return ListView(children: rows);
