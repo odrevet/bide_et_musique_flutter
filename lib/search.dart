@@ -51,53 +51,143 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   return accounts;
 }
 
-Future<List<SongLink>> fetchSearchSong(String search, String type) async {
-  String url = '$baseUri/recherche.html?kw=$search&st=$type';
+class SearchResultsWidget extends StatefulWidget {
+  String search;
+  String type;
+  SearchResultsWidget(this.search, this.type, {Key key}) : super(key: key);
 
-  //need to transform characters to url encoding
-  // cannot use Uri.encodeFull because it will encode from UTF-8 and the
-  //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
-  //see https://www.w3schools.com/tags/ref_urlencode.asp
-  //TODO convert from  CP-1252
-  url = url.replaceAll(RegExp(r'é'), '%E9');
-  url = url.replaceAll(RegExp(r'è'), '%E8');
+  @override
+  _SearchResultsWidgetState createState() =>
+      _SearchResultsWidgetState(this.search, this.type);
+}
 
-  final response = await http.post(url);
-  var songs = <SongLink>[];
+class _SearchResultsWidgetState extends State<SearchResultsWidget> {
+  int _pages;
+  int _pageCurrent;
+  var _songLinks = <SongLink>[];
+  String search;
+  String type;
 
-  if (response.statusCode == 302) {
-    var location = response.headers['location'];
-    print(location);
-    //when the result is a single song, the host redirect to the song page
-    //in our case parse the page and return a list with one song
-    var songLink = SongLink();
-    songLink.id = extractSongId(location);
-    songLink.title = search;
-    songs.add(songLink);
-  } else if (response.statusCode == 200) {
-    var body = response.body;
-    dom.Document document = parser.parse(body);
-    var resultat = document.getElementById('resultat');
-    var trs = resultat.getElementsByTagName('tr');
+  var _controller = ScrollController();
 
-    for (dom.Element tr in trs) {
-      if (tr.className == 'p1' || tr.className == 'p0') {
-        var tds = tr.getElementsByTagName('td');
-        var a = tds[3].children[0];
+  _SearchResultsWidgetState(this.search, this.type);
 
-        var song = SongLink();
-        song.id = extractSongId(a.attributes['href']);
-        song.title = stripTags(a.innerHtml);
-        song.artist = stripTags(tds[2].children[0].innerHtml);
-        songs.add(song);
-      }
-    }
-  } else {
-    throw Exception('Failed to load search');
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_scrollListener);
+    _pages;
+    _pageCurrent = 1;
+    fetchSearchSong();
   }
 
-  return songs;
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange &&
+        _pageCurrent < _pages) {
+      setState(() {
+        _pageCurrent++;
+      });
+      fetchSearchSong();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        controller: _controller,
+        itemCount: _songLinks.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Image(
+                    image: NetworkImage(
+                        '$baseUri/images/thumb25/${_songLinks[index].id}.jpg')),
+              ),
+              title: Text(
+                _songLinks[index].title,
+              ),
+              subtitle: Text(_songLinks[index].artist == null
+                  ? ''
+                  : _songLinks[index].artist),
+              onTap: () => launchSongPage(_songLinks[index], context));
+        });
+  }
+
+  fetchSearchSong() async {
+    String url =
+        '$baseUri/recherche.html?kw=$search&st=$type&Page=$_pageCurrent';
+
+    //need to transform characters to url encoding
+    // cannot use Uri.encodeFull because it will encode from UTF-8 and the
+    //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
+    //see https://www.w3schools.com/tags/ref_urlencode.asp
+    //TODO convert from  CP-1252
+    url = url.replaceAll(RegExp(r'é'), '%E9');
+    url = url.replaceAll(RegExp(r'è'), '%E8');
+
+    final response = await http.post(url);
+    if (response.statusCode == 302) {
+      var location = response.headers['location'];
+      //when the result is a single song, the host redirect to the song page
+      //in our case parse the page and return a list with one song
+      var songLink = SongLink();
+      songLink.id = extractSongId(location);
+      songLink.title = search;
+      setState(() {
+        _pages = 1;
+        _songLinks.add(songLink);
+      });
+    } else if (response.statusCode == 200) {
+      var body = response.body;
+      dom.Document document = parser.parse(body);
+      var result = document.getElementById('resultat');
+      var trs = result.getElementsByTagName('tr');
+
+      //if page is null this mean this is the first time the result page has
+      //been fetched, check how many pages this search has
+      if (_pages == null) {
+        var navbar = document.getElementsByClassName('navbar');
+        if (navbar.isEmpty) {
+          setState(() {
+            _pages = 1;
+          });
+        } else {
+          setState(() {
+            _pages = navbar[0].getElementsByTagName('td').length - 1;
+          });
+        }
+      }
+
+      for (dom.Element tr in trs) {
+        if (tr.className == 'p1' || tr.className == 'p0') {
+          var tds = tr.getElementsByTagName('td');
+          var a = tds[3].children[0];
+
+          var songLink = SongLink();
+          songLink.id = extractSongId(a.attributes['href']);
+          songLink.title = stripTags(a.innerHtml);
+          songLink.artist = stripTags(tds[2].children[0].innerHtml);
+
+          setState(() {
+            _songLinks.add(songLink);
+          });
+        }
+      }
+    } else {
+      throw Exception('Failed to load search');
+    }
+  }
 }
+
+/////////////////////////////////////////////////////////////////////
 
 class SearchWidget extends StatefulWidget {
   SearchWidget({Key key}) : super(key: key);
@@ -160,8 +250,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                       title: Text('Recherche de chansons'),
                     ),
                     body: Center(
-                      child: SongListingFutureWidget(
-                          fetchSearchSong(_controller.text, this._currentItem)),
+                      child: SearchResultsWidget(
+                          _controller.text, this._currentItem)
                     ),
                   )));
     }
@@ -184,9 +274,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).accentColor, width: 2.0),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                              24.0) //                 <--- border radius here
-                          ),
+                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(3.0),

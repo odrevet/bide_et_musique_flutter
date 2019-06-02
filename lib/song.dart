@@ -14,7 +14,7 @@ import 'account.dart';
 import 'artist.dart';
 import 'coverViewer.dart';
 import 'identification.dart';
-import 'search.dart' show fetchSearchSong;
+import 'search.dart';
 import 'songActions.dart';
 import 'utils.dart';
 
@@ -513,15 +513,12 @@ class SongWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
-                                appBar: AppBar(
-                                  title: Text('Recherche par année'),
-                                ),
-                                body: Center(
-                                  child: SongListingFutureWidget(
-                                      fetchSearchSong(
-                                          _song.year.toString(), '7')),
-                                ),
-                              ))),
+                              appBar: AppBar(
+                                title: Text(
+                                    'Recherche de l\'année "${_song.year.toString()}"'),
+                              ),
+                              body: SearchResultsWidget(
+                                  _song.year.toString(), '7')))),
                 }));
     }
 
@@ -551,14 +548,11 @@ class SongWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
-                                appBar: AppBar(
-                                  title: Text('Recherche par label'),
-                                ),
-                                body: Center(
-                                  child: SongListingFutureWidget(
-                                      fetchSearchSong(_song.label, '5')),
-                                ),
-                              ))),
+                              appBar: AppBar(
+                                title:
+                                    Text('Recherche du label "${_song.label}"'),
+                              ),
+                              body: SearchResultsWidget(_song.label, '5')))),
                 }));
     }
 
