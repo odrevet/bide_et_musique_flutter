@@ -68,9 +68,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery
-        .of(context)
-        .orientation;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
         appBar: AppBar(

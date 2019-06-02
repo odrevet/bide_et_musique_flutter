@@ -66,9 +66,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery
-        .of(context)
-        .orientation;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
         appBar: AppBar(

@@ -305,7 +305,8 @@ class SongPageWidget extends StatelessWidget {
                               onTap: () {
                                 _openCoverViewerDialog(song, context);
                               },
-                              child: Image.network('$baseUri/images/pochettes/${songLink.id}.jpg'))),
+                              child: Image.network(
+                                  '$baseUri/images/pochettes/${songLink.id}.jpg'))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))
