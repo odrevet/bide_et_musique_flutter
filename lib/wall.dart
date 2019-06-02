@@ -35,14 +35,14 @@ Future<List<Post>> fetchPosts() async {
 
       var basmsg = msg.getElementsByClassName('basmsg')[0];
 
-      var accountLink = basmsg.children[0].children[0];
-      var accountHref = accountLink.attributes['href'];
+      var accountA = basmsg.children[0].children[0];
+      var accountHref = accountA.attributes['href'];
 
       var idAccount = extractAccountId(accountHref);
-      var account =
-          AccountLink(id: idAccount, name: stripTags(accountLink.innerHtml));
+      var accountLink =
+          AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
 
-      post.author = account;
+      post.author = accountLink;
 
       var songLink = SongLink();
       var artistLink = basmsg.children[0].children[1];
