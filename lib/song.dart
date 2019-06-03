@@ -66,7 +66,7 @@ class Song {
     final String lyrics = json['lyrics'];
     return Song(
         id: json['id'].toString(),
-        title: json['name'],
+        title: stripTags(json['name']),
         year: json['year'],
         artist: stripTags(json['artists']['main']['alias']),
         artistId: json['artists']['main']['id'].toString(),
@@ -399,7 +399,7 @@ class SongPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(stripTags(song.title)),
+        title: Text(song.title),
         bottom: PreferredSize(
           child: actionContainer,
           preferredSize: Size(0.0, 20.0),
