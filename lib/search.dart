@@ -25,7 +25,6 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
 
   if (response.statusCode == 302) {
     var location = response.headers['location'];
-    print(location);
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
     var account = AccountLink(id: extractAccountId(location), name: search);
