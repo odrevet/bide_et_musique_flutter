@@ -13,17 +13,17 @@ Future<void> audioStart() async {
 }
 
 MediaControl playControl = MediaControl(
-  androidIcon: 'drawable/ic_action_play_arrow',
+  androidIcon: 'drawable/ic_stat_play_arrow',
   label: 'Play',
   action: MediaAction.play,
 );
 MediaControl pauseControl = MediaControl(
-  androidIcon: 'drawable/ic_action_pause',
+  androidIcon: 'drawable/ic_stat_pause',
   label: 'Pause',
   action: MediaAction.pause,
 );
 MediaControl stopControl = MediaControl(
-  androidIcon: 'drawable/ic_action_stop',
+  androidIcon: 'drawable/ic_stat_stop',
   label: 'Stop',
   action: MediaAction.stop,
 );
