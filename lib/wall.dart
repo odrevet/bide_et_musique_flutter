@@ -7,6 +7,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
+import 'identification.dart';
 import 'account.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -71,15 +72,71 @@ Future<List<Post>> fetchPosts() async {
 
 class WallWidget extends StatelessWidget {
   final Future<List<Post>> posts;
+  final _newMessageController = TextEditingController();
 
   WallWidget({Key key, this.posts}) : super(key: key);
 
+  void _sendMessage() async {
+    String message = _newMessageController.text;
+    final url = '$baseUri/mur-des-messages.html';
+    var session = Session();
+
+    if (message.isNotEmpty) {
+      await session.post(url, {'T': message, 'Type': '2'});
+    }
+  }
+
+  _newMessageDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nouveau message'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                    controller: _newMessageController,
+                    decoration: InputDecoration(
+                      hintText: 'entrez votre message ici',
+                    )),
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      'Envoyer',
+                    ),
+                    onPressed: () {
+                      _sendMessage();
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.orangeAccent),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var session = Session();
+    var postNew = session.accountLink.id == null
+        ? null
+        : FloatingActionButton(
+            onPressed: () {
+              _newMessageDialog(context);
+            },
+            child: Icon(Icons.add),
+          );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Quoi de neuf ?'),
       ),
+      floatingActionButton: postNew,
       body: Center(
         child: FutureBuilder<List<Post>>(
           future: posts,
