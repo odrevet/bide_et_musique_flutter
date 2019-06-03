@@ -214,7 +214,6 @@ class _IdentWidgetState extends State<IdentWidget> {
           title: Text('Gestion de votre compte'),
         ),
         body: TabBarView(
-          //physics: NeverScrollableScrollPhysics(),
           children: [
             ManageAccountPageWidget(
                 accountLink: account,
