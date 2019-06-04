@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
 Future<SongLink> fetchNowPlaying() async {
   var song = SongLink();
   final url = '$baseUri/now-top.php';
-  final response = await http.get(url);
+  final response = await Session.get(url);
 
   if (response.statusCode == 200) {
     var body = response.body;

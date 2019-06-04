@@ -11,6 +11,7 @@ import 'settings.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
+import 'session.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override

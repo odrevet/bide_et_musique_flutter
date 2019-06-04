@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 
 import 'song.dart';
 import 'utils.dart';
+import 'session.dart';
 
 class NowSong {
   SongLink song;
@@ -20,7 +20,7 @@ class NowSong {
 Future<List<NowSong>> fetchNowSongs() async {
   var nowSongs = <NowSong>[];
   final url = '$baseUri/morceaux-du-moment.html';
-  final response = await http.get(url);
+  final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);

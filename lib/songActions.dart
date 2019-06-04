@@ -2,8 +2,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
-import 'identification.dart';
 import 'player.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
@@ -38,7 +38,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           onPressed: () async {
             final response = await Session.post(
                 '$baseUri/account/${Session.accountLink.id}.html',
-                {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
+                body: {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
             if (response.statusCode == 200) {
               setState(() {
@@ -57,7 +57,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           Session.headers['Origin'] = baseUri;
           Session.headers['Referer'] = url;
 
-          final response = await Session.post(url, {'M': 'AS'});
+          final response = await Session.post(url, body: {'M': 'AS'});
 
           Session.headers.remove('Referer');
           Session.headers.remove('Content-Type');
@@ -109,7 +109,8 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
           Session.headers['Origin'] = baseUri;
           Session.headers['Referer'] = url;
 
-          final response = await Session.post(url, {'Note': '1', 'M': 'CN'});
+          final response =
+              await Session.post(url, body: {'Note': '1', 'M': 'CN'});
 
           Session.headers.remove('Referer');
           Session.headers.remove('Content-Type');

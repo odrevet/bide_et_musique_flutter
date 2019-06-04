@@ -3,46 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account.dart';
 import 'manageAccount.dart';
 import 'manageFavorites.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
-
-class Session {
-  static var accountLink = AccountLink();
-
-  static Map<String, String> headers = {};
-
-  static Future<http.Response> get(String url) async {
-    http.Response response = await http.get(url, headers: headers);
-    updateCookie(response);
-    return response;
-  }
-
-  static Future<http.Response> post(String url, dynamic data) async {
-    http.Response response = await http.post(url, body: data, headers: headers);
-    updateCookie(response);
-    return response;
-  }
-
-  static void updateCookie(http.Response response) {
-    String rawCookie = response.headers['set-cookie'];
-    if (rawCookie != null) {
-      int index = rawCookie.indexOf(';');
-      headers['cookie'] =
-          (index == -1) ? rawCookie : rawCookie.substring(0, index);
-    }
-  }
-}
 
 Future<bool> sendIdent(String login, String password) async {
   final url = '$baseUri/ident.html';
   final response =
-      await http.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+      await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
 
   if (response.statusCode == 200) {
     var body = response.body;
@@ -76,6 +49,7 @@ class IdentWidget extends StatefulWidget {
 
 class _IdentWidgetState extends State<IdentWidget> {
   _IdentWidgetState();
+
   Future<bool> _isLoggedIn;
 
   final _usernameController = TextEditingController();

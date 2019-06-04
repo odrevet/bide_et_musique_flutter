@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 
 import 'account.dart';
 import 'artist.dart';
 import 'coverViewer.dart';
-import 'identification.dart';
 import 'search.dart';
+import 'session.dart';
 import 'songActions.dart';
 import 'utils.dart';
 
@@ -135,7 +134,7 @@ class SongCardWidget extends StatelessWidget {
 Future<Song> fetchSong(String songId) async {
   var song;
   final url = '$baseUri/song/$songId';
-  final responseJson = await http.get(url);
+  final responseJson = await Session.get(url);
 
   if (responseJson.statusCode == 200) {
     try {
@@ -162,7 +161,7 @@ Future<Song> fetchSong(String songId) async {
   if (Session.accountLink.id != null) {
     response = await Session.get(url + '.html');
   } else {
-    response = await http.get(url + '.html');
+    response = await Session.get(url + '.html');
   }
 
   if (response.statusCode == 200) {

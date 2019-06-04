@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 
 import 'account.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
@@ -20,7 +20,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   url = url.replaceAll(RegExp(r'é'), '%E9');
   url = url.replaceAll(RegExp(r'è'), '%E8');
 
-  final response = await http.post(url);
+  final response = await Session.post(url);
   var accounts = <AccountLink>[];
 
   if (response.statusCode == 302) {
@@ -53,6 +53,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
 class SearchResultsWidget extends StatefulWidget {
   final String search;
   final String type;
+
   SearchResultsWidget(this.search, this.type, {Key key}) : super(key: key);
 
   @override
@@ -131,7 +132,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     url = url.replaceAll(RegExp(r'é'), '%E9');
     url = url.replaceAll(RegExp(r'è'), '%E8');
 
-    final response = await http.post(url);
+    final response = await Session.post(url);
     if (response.statusCode == 302) {
       var location = response.headers['location'];
       //when the result is a single song, the host redirect to the song page

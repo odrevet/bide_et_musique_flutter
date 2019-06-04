@@ -4,8 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:http/http.dart' as http;
 
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
@@ -47,7 +47,7 @@ Future<Program> fetchProgram(String programId) async {
   var program;
   final url = '$baseUri/program/$programId';
 
-  final responseJson = await http.get(url);
+  final responseJson = await Session.get(url);
 
   if (responseJson.statusCode == 200) {
     try {

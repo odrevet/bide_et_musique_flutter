@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart' as http;
 
-import 'identification.dart';
 import 'account.dart';
 import 'song.dart';
 import 'utils.dart';
+import 'session.dart';
 
 class Post {
   AccountLink author;
@@ -25,7 +24,7 @@ class Post {
 Future<List<Post>> fetchPosts() async {
   var posts = <Post>[];
   final url = '$baseUri/mur-des-messages.html';
-  final response = await http.get(url);
+  final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
@@ -81,7 +80,7 @@ class WallWidget extends StatelessWidget {
     final url = '$baseUri/mur-des-messages.html';
 
     if (message.isNotEmpty) {
-      await Session.post(url, {'T': message, 'Type': '2'});
+      await Session.post(url, body: {'T': message, 'Type': '2'});
     }
   }
 

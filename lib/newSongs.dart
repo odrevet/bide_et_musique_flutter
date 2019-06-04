@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
 Future<List<SongLink>> fetchNewSongs() async {
   var songs = <SongLink>[];
   final url = '$baseUri/new_song.rss';
-  final response = await http.get(url);
+  final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     var document = xml.parse(body);

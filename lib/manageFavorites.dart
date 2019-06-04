@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'account.dart';
-import 'identification.dart';
 import 'song.dart';
 import 'utils.dart';
+import 'session.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
@@ -79,12 +79,13 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 var direction = 'DS';
 
                 final response = await Session.post(
-                    '$baseUri/account/$accountId.html', {
-                  'K': K,
-                  'Step': '',
-                  direction + '.x': '1',
-                  direction + '.y': '1'
-                });
+                    '$baseUri/account/$accountId.html',
+                    body: {
+                      'K': K,
+                      'Step': '',
+                      direction + '.x': '1',
+                      direction + '.y': '1'
+                    });
 
                 if (response.statusCode == 200) {
                   setState(() {
@@ -132,7 +133,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           var direction = step < 0 ? 'down' : 'up';
 
           final response =
-              await Session.post('$baseUri/account/$accountId.html', {
+              await Session.post('$baseUri/account/$accountId.html', body: {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',
