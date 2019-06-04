@@ -32,13 +32,12 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var session = Session();
     if (_isFavourite) {
       return IconButton(
           icon: Icon(Icons.star),
           onPressed: () async {
-            final response = await session.post(
-                '$baseUri/account/${session.accountLink.id}.html',
+            final response = await Session.post(
+                '$baseUri/account/${Session.accountLink.id}.html',
                 {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
             if (response.statusCode == 200) {
@@ -53,15 +52,15 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
         onPressed: () async {
           var url = '$baseUri/song/$_songId.html';
 
-          session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-          session.headers['Host'] = host;
-          session.headers['Origin'] = baseUri;
-          session.headers['Referer'] = url;
+          Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+          Session.headers['Host'] = host;
+          Session.headers['Origin'] = baseUri;
+          Session.headers['Referer'] = url;
 
-          final response = await session.post(url, {'M': 'AS'});
+          final response = await Session.post(url, {'M': 'AS'});
 
-          session.headers.remove('Referer');
-          session.headers.remove('Content-Type');
+          Session.headers.remove('Referer');
+          Session.headers.remove('Content-Type');
           if (response.statusCode == 200) {
             setState(() {
               _isFavourite = true;
@@ -97,7 +96,6 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var session = Session();
     if (_hasVote) {
       return IconButton(icon: Icon(Icons.exposure_plus_1), onPressed: null);
     } else {
@@ -106,15 +104,15 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
         onPressed: () async {
           var url = '$baseUri/song/$_songId.html';
 
-          session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-          session.headers['Host'] = host;
-          session.headers['Origin'] = baseUri;
-          session.headers['Referer'] = url;
+          Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+          Session.headers['Host'] = host;
+          Session.headers['Origin'] = baseUri;
+          Session.headers['Referer'] = url;
 
-          final response = await session.post(url, {'Note': '1', 'M': 'CN'});
+          final response = await Session.post(url, {'Note': '1', 'M': 'CN'});
 
-          session.headers.remove('Referer');
-          session.headers.remove('Content-Type');
+          Session.headers.remove('Referer');
+          Session.headers.remove('Content-Type');
           if (response.statusCode == 200) {
             setState(() {
               _hasVote = true;

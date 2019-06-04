@@ -102,10 +102,9 @@ Future<Account> fetchAccount(String accountId) async {
 }
 
 Future<List<SongLink>> fetchVotes() async {
-  var session = Session();
   var songs = <SongLink>[];
   final url = '$baseUri/mes-votes.html';
-  final response = await session.get(url);
+  final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
@@ -248,11 +247,11 @@ class AccountPageWidget extends StatelessWidget {
 ///////////////////////////
 // Manage the account after identification
 
-Future<Account> fetchAccountSession(Session session) async {
+Future<Account> fetchAccountSession() async {
   var account = Account();
-  final accountId = session.accountLink.id;
+  final accountId = Session.accountLink.id;
   final url = '$baseUri/account.html?N=$accountId&Page=all';
-  final response = await session.get(url);
+  final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);

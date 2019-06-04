@@ -158,10 +158,9 @@ Future<Song> fetchSong(String songId) async {
   }
 
   //If connected, fetch comments and favorite status
-  var session = Session();
   var response;
-  if (session.accountLink.id != null) {
-    response = await session.get(url + '.html');
+  if (Session.accountLink.id != null) {
+    response = await Session.get(url + '.html');
   } else {
     response = await http.get(url + '.html');
   }
@@ -217,7 +216,7 @@ Future<Song> fetchSong(String songId) async {
     }
 
     //available only if logged-in
-    if (session.accountLink.id != null) {
+    if (Session.accountLink.id != null) {
       //check vote
       var vote = document.getElementById('vote');
       if (vote == null) {
@@ -360,8 +359,7 @@ class SongPageWidget extends StatelessWidget {
       actions.add(SongPlayerWidget(song));
     }
 
-    var session = Session();
-    if (session.accountLink.id != null) {
+    if (Session.accountLink.id != null) {
       if (song.canFavourite) {
         actions.add(SongFavoriteIconWidget(song.id, song.isFavourite));
       }
@@ -411,7 +409,7 @@ class SongPageWidget extends StatelessWidget {
 
   Widget _buildViewComments(BuildContext context, List<Comment> comments) {
     var rows = <ListTile>[];
-    String loginName = Session().accountLink.name;
+    String loginName = Session.accountLink.name;
     var selfComment = TextStyle(
       color: Colors.red,
     );

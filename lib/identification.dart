@@ -13,31 +13,23 @@ import 'song.dart';
 import 'utils.dart';
 
 class Session {
-  static final Session _singleton = Session._internal();
+  static var accountLink = AccountLink();
 
-  factory Session() {
-    return _singleton;
-  }
+  static Map<String, String> headers = {};
 
-  Session._internal();
-
-  var accountLink = AccountLink();
-
-  Map<String, String> headers = {};
-
-  Future<http.Response> get(String url) async {
+  static Future<http.Response> get(String url) async {
     http.Response response = await http.get(url, headers: headers);
     updateCookie(response);
     return response;
   }
 
-  Future<http.Response> post(String url, dynamic data) async {
+  static Future<http.Response> post(String url, dynamic data) async {
     http.Response response = await http.post(url, body: data, headers: headers);
     updateCookie(response);
     return response;
   }
 
-  void updateCookie(http.Response response) {
+  static void updateCookie(http.Response response) {
     String rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
@@ -47,7 +39,7 @@ class Session {
   }
 }
 
-Future<Session> sendIdent(String login, String password) async {
+Future<bool> sendIdent(String login, String password) async {
   final url = '$baseUri/ident.html';
   final response =
       await http.post(url, body: {'LOGIN': login, 'PASSWORD': password});
@@ -61,17 +53,15 @@ Future<Session> sendIdent(String login, String password) async {
         .children[0]
         .innerHtml;
     if (confirm == 'Vous avez été identifié !') {
-      var session = Session();
-      session.updateCookie(response);
+      Session.updateCookie(response);
 
       dom.Element divAccount = document.getElementById('compte2');
-      session.accountLink.id = extractAccountId(
+      Session.accountLink.id = extractAccountId(
           divAccount.children[1].children[1].attributes['href']);
-      session.accountLink.name = login;
-      return session;
-    } else {
-      return null;
+      Session.accountLink.name = login;
+      return true;
     }
+    else return false;
   } else {
     throw Exception('Failed to load login reponse');
   }
@@ -86,9 +76,7 @@ class IdentWidget extends StatefulWidget {
 
 class _IdentWidgetState extends State<IdentWidget> {
   _IdentWidgetState();
-
-  Future<Session> _session;
-  Session _localSession;
+  Future<bool> _isLoggedIn;
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -97,22 +85,21 @@ class _IdentWidgetState extends State<IdentWidget> {
   @override
   void initState() {
     super.initState();
-    _localSession = Session();
     _loadRemember();
     _loadSettings();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_localSession.accountLink.id != null) {
-      return _buildViewLoggedIn(context, _localSession);
+    if (Session.accountLink.id != null) {
+      return _buildViewLoggedIn(context);
     } else {
       return Center(
-        child: FutureBuilder<Session>(
-          future: _session,
+        child: FutureBuilder<bool>(
+          future: _isLoggedIn,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildViewLoggedIn(context, snapshot.data);
+            if (snapshot.hasData && snapshot.data == true) {
+              return _buildViewLoggedIn(context);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -176,7 +163,7 @@ class _IdentWidgetState extends State<IdentWidget> {
 
     if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
-        _session = sendIdent(username, password);
+        sendIdent(username, password);
       });
 
       if (_remember == true) {
@@ -185,16 +172,16 @@ class _IdentWidgetState extends State<IdentWidget> {
     }
   }
 
-  Widget _buildViewLoggedIn(BuildContext context, Session session) {
-    var account = AccountLink(id: session.accountLink.id);
+  Widget _buildViewLoggedIn(BuildContext context) {
+    var account = AccountLink(id: Session.accountLink.id);
 
     //disconnect button
     var actions = <Widget>[];
     actions.add(IconButton(
       icon: Icon(Icons.close),
       onPressed: () {
-        _localSession.accountLink.id = null;
-        _localSession.headers = {};
+        Session.accountLink.id = null;
+        Session.headers = {};
         Navigator.pop(context);
       },
     ));
@@ -217,8 +204,8 @@ class _IdentWidgetState extends State<IdentWidget> {
           children: [
             ManageAccountPageWidget(
                 accountLink: account,
-                account: fetchAccount(session.accountLink.id)),
-            ManageFavoritesWidget(session: session),
+                account: fetchAccount(Session.accountLink.id)),
+            ManageFavoritesWidget(),
             SongListingFutureWidget(fetchVotes())
           ],
         ),

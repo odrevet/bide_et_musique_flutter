@@ -9,19 +9,16 @@ import 'song.dart';
 import 'utils.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
-  final Session session;
-
-  ManageFavoritesWidget({Key key, this.session}) : super(key: key);
+  ManageFavoritesWidget({Key key}) : super(key: key);
 
   @override
   _ManageFavoritesWidgetState createState() =>
-      _ManageFavoritesWidgetState(this.session);
+      _ManageFavoritesWidgetState();
 }
 
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
-  _ManageFavoritesWidgetState(this.session);
+  _ManageFavoritesWidgetState();
 
-  Session session;
   Future<Account> _account;
 
   List<Dismissible> _rows;
@@ -29,7 +26,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   @override
   void initState() {
     super.initState();
-    _account = fetchAccountSession(this.session);
+    _account = fetchAccountSession();
     _rows = <Dismissible>[];
   }
 
@@ -55,7 +52,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                     MaterialPageRoute(
                         builder: (context) => SongPageWidget(
                             songLink: songLink, song: fetchSong(songLink.id))))
-                .then((_) => _account = fetchAccountSession(this.session));
+                .then((_) => _account = fetchAccountSession());
           },
         ));
   }
@@ -78,11 +75,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             FlatButton(
               child: Text('Oui'),
               onPressed: () async {
-                var accountId = session.accountLink.id;
+                var accountId = Session.accountLink.id;
                 var K = songLink.id;
                 var direction = 'DS';
 
-                final response = await session.post(
+                final response = await Session.post(
                     '$baseUri/account/$accountId.html', {
                   'K': K,
                   'Step': '',
@@ -117,7 +114,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     );
   }
 
-  Widget _buildView(BuildContext context, Session session, Account account) {
+  Widget _buildView(BuildContext context, Account account) {
     _rows.clear();
     int index = 0;
     for (SongLink songLink in account.favorites) {
@@ -130,13 +127,13 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = account.favorites[initialPosition];
           //update server
-          var accountId = session.accountLink.id;
+          var accountId = Session.accountLink.id;
           var K = draggedSong.id;
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 
           final response =
-              await session.post('$baseUri/account/$accountId.html', {
+              await Session.post('$baseUri/account/$accountId.html', {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',
@@ -159,7 +156,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         future: _account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, session, snapshot.data);
+            return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }

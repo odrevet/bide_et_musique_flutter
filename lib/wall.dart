@@ -79,10 +79,9 @@ class WallWidget extends StatelessWidget {
   void _sendMessage() async {
     String message = _newMessageController.text;
     final url = '$baseUri/mur-des-messages.html';
-    var session = Session();
 
     if (message.isNotEmpty) {
-      await session.post(url, {'T': message, 'Type': '2'});
+      await Session.post(url, {'T': message, 'Type': '2'});
     }
   }
 
@@ -122,8 +121,7 @@ class WallWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var session = Session();
-    var postNew = session.accountLink.id == null
+    var postNew = Session.accountLink.id == null
         ? null
         : FloatingActionButton(
             onPressed: () {
