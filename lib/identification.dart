@@ -145,8 +145,6 @@ class _IdentWidgetState extends State<IdentWidget> {
   }
 
   Widget _buildViewLoggedIn(BuildContext context) {
-    var account = AccountLink(id: Session.accountLink.id);
-
     //disconnect button
     var actions = <Widget>[];
     actions.add(IconButton(
