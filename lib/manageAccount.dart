@@ -8,10 +8,9 @@ import 'account.dart';
 import 'utils.dart';
 
 class ManageAccountPageWidget extends StatelessWidget {
-  final AccountLink accountLink;
   final Future<Account> account;
 
-  ManageAccountPageWidget({Key key, this.accountLink, this.account})
+  ManageAccountPageWidget({Key key, this.account})
       : super(key: key);
 
   @override

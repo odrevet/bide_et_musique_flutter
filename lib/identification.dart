@@ -175,7 +175,6 @@ class _IdentWidgetState extends State<IdentWidget> {
         body: TabBarView(
           children: [
             ManageAccountPageWidget(
-                accountLink: account,
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
             SongListingFutureWidget(fetchVotes())

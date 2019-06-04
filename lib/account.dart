@@ -71,7 +71,7 @@ Future<Account> fetchAccount(String accountId) async {
     account.messageForum = stripTags(ps[3].innerHtml);
     account.comments = stripTags(ps[4].innerHtml);
 
-    //set avatar path (cannot be always firgured out from account id as some
+    //set avatar path (cannot be always figured out from account id as some
     //are jpg and some are png
     var img = divInfo.getElementsByTagName('img');
     if (img.isEmpty) {
@@ -102,7 +102,7 @@ Future<Account> fetchAccount(String accountId) async {
 }
 
 Future<List<SongLink>> fetchVotes() async {
-  var songs = <SongLink>[];
+  var songLinks = <SongLink>[];
   final url = '$baseUri/mes-votes.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
@@ -111,7 +111,7 @@ Future<List<SongLink>> fetchVotes() async {
     var tables = document.getElementsByClassName('bmtable');
 
     if (tables.isEmpty) {
-      return songs;
+      return songLinks;
     }
 
     var table = tables[0];
@@ -122,13 +122,13 @@ Future<List<SongLink>> fetchVotes() async {
       song.id = extractSongId(tr.children[3].children[0].attributes['href']);
       song.title = stripTags(tr.children[3].innerHtml);
       song.artist = stripTags(tr.children[2].innerHtml);
-      songs.add(song);
+      songLinks.add(song);
     }
   } else {
-    throw Exception('Failed to load account ');
+    throw Exception('Failed to load votes');
   }
 
-  return songs;
+  return songLinks;
 }
 
 class AccountPageWidget extends StatelessWidget {
