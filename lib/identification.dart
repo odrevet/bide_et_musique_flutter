@@ -60,8 +60,8 @@ Future<bool> sendIdent(String login, String password) async {
           divAccount.children[1].children[1].attributes['href']);
       Session.accountLink.name = login;
       return true;
-    }
-    else return false;
+    } else
+      return false;
   } else {
     throw Exception('Failed to load login reponse');
   }

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 
 import 'account.dart';
 
-
 abstract class Session {
   static var accountLink = AccountLink();
 
@@ -27,7 +26,7 @@ abstract class Session {
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
       headers['cookie'] =
-      (index == -1) ? rawCookie : rawCookie.substring(0, index);
+          (index == -1) ? rawCookie : rawCookie.substring(0, index);
     }
   }
 }

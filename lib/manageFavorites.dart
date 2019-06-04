@@ -12,8 +12,7 @@ class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
 
   @override
-  _ManageFavoritesWidgetState createState() =>
-      _ManageFavoritesWidgetState();
+  _ManageFavoritesWidgetState createState() => _ManageFavoritesWidgetState();
 }
 
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
