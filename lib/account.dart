@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:http/http.dart' as http;
 
 import 'session.dart';
 import 'song.dart';
@@ -54,7 +55,7 @@ String extractAccountId(str) {
 Future<Account> fetchAccount(String accountId) async {
   var account = Account();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
-  final response = await Session.get(url);
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
