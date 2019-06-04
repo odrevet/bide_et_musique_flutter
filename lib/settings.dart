@@ -37,14 +37,14 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  void _onTogglerememberIdents(bool value) {
+  void _onToggleRememberIdents(bool value) {
     setState(() {
       _rememberIdents = value;
       _saveOption('rememberIdents', value);
     });
   }
 
-  void _onToggleautoConnect(bool value) {
+  void _onToggleAutoConnect(bool value) {
     setState(() {
       _autoConnect = value;
       _saveOption('autoConnect', value);
@@ -85,13 +85,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 CheckboxListTile(
                     title: Text('Se souvenir des identifiants'),
                     value: _rememberIdents,
-                    onChanged: _onTogglerememberIdents),
+                    onChanged: _onToggleRememberIdents),
                 CheckboxListTile(
                     title: Text(
                         'Connexion au compte au démarrage de l\'application'),
                     value: _autoConnect,
                     onChanged:
-                        _rememberIdents == true ? _onToggleautoConnect : null),
+                        _rememberIdents == true ? _onToggleAutoConnect : null),
               ])),
             ],
           )

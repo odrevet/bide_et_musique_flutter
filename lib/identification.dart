@@ -26,8 +26,6 @@ Future<bool> sendIdent(String login, String password) async {
         .children[0]
         .innerHtml;
     if (confirm == 'Vous avez été identifié !') {
-      Session.updateCookie(response);
-
       dom.Element divAccount = document.getElementById('compte2');
       Session.accountLink.id = extractAccountId(
           divAccount.children[1].children[1].attributes['href']);
