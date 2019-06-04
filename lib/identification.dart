@@ -163,7 +163,7 @@ class _IdentWidgetState extends State<IdentWidget> {
 
     if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
-        sendIdent(username, password);
+        _isLoggedIn = sendIdent(username, password);
       });
 
       if (_remember == true) {
