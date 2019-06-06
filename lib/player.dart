@@ -8,10 +8,6 @@ import 'nowPlaying.dart';
 import 'song.dart';
 import 'utils.dart';
 
-Future<void> audioStart() async {
-  await FlutterRadio.audioStart();
-}
-
 MediaControl playControl = MediaControl(
   androidIcon: 'drawable/ic_stat_play_arrow',
   label: 'Play',
