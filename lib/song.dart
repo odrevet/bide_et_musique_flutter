@@ -97,12 +97,6 @@ String extractSongId(str) {
   }
 }
 
-Hero heroCover(String songId) {
-  return Hero(
-      tag: 'cover_$songId',
-      child: Image(image: NetworkImage('$baseUri/images/thumb25/$songId.jpg')));
-}
-
 class SongCardWidget extends StatelessWidget {
   final SongLink songLink;
 
@@ -165,7 +159,7 @@ Future<Song> fetchSong(String songId) async {
     throw Exception('Failed to load song with id $songId');
   }
 
-  //If connected, fetch comments and favorite status
+  //If connected, fetch comments and favorite status TODO remove if
   var response;
   if (Session.accountLink.id != null) {
     response = await Session.get(url + '.html');
@@ -263,18 +257,7 @@ class SongPageWidget extends StatelessWidget {
             );
           }
 
-          var loadingMessage = 'Chargement';
-          if (songLink.title.isNotEmpty) {
-            loadingMessage += ' de "${songLink.title}"';
-          }
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(loadingMessage),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return _pageLoading(context, songLink);
         },
       ),
     );
@@ -286,6 +269,62 @@ class SongPageWidget extends StatelessWidget {
           return CoverViewer(song.id);
         },
         fullscreenDialog: true));
+  }
+
+  ///Mimic the song page to be displayed while the song is fetched
+  Widget _pageLoading(BuildContext context, SongLink songLink) {
+    var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
+
+    var loadingMessage = '';
+    if (songLink.title.isNotEmpty) {
+      loadingMessage += songLink.title;
+    } else {
+      loadingMessage = 'Chargement';
+    }
+
+    var body = Column(
+      children: <Widget>[
+        Expanded(
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                    child: Hero(
+                        tag: 'cover_${songLink.id}',
+                        child: Image.network(urlCover))),
+                Expanded(child: Center(child: CircularProgressIndicator())),
+              ],
+            )),
+        Expanded(
+          flex: 7,
+          child: Container(
+            child: Stack(children: [
+              Container(
+                decoration:
+                    BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+              ),
+              Center(child: CircularProgressIndicator())
+            ]),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              fit: BoxFit.fill,
+              alignment: FractionalOffset.topCenter,
+              image: NetworkImage(urlCover),
+            )),
+          ),
+        ),
+      ],
+    );
+
+    return Scaffold(
+        appBar: AppBar(
+            title: Text(loadingMessage),
+            bottom: PreferredSize(
+              child: CircularProgressIndicator(),
+              preferredSize: Size(0.0, 20.0),
+            )),
+        body: body);
   }
 
   Widget _buildView(BuildContext context, Song song) {
@@ -596,7 +635,6 @@ class SongListingFutureWidget extends StatelessWidget {
             return Text("${snapshot.error}");
           }
 
-          // By default, show a loading spinner
           return CircularProgressIndicator();
         });
   }
