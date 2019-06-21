@@ -15,7 +15,7 @@ class CoverViewer extends StatefulWidget {
 
 class _CoverViewerState extends State<CoverViewer> {
   String songId;
-  Offset _offset = Offset.zero; // changed
+  Offset _offset = Offset.zero;
 
   _CoverViewerState(this.songId);
 
@@ -30,11 +30,11 @@ class _CoverViewerState extends State<CoverViewer> {
         child: GestureDetector(
           onPanUpdate: (details) => setState(() => _offset += details.delta),
           onDoubleTap: () => setState(() => _offset = Offset.zero),
-          child: _buildView(context, this.songId),
+          child: _buildView(context),
         ));
   }
 
-  _buildView(BuildContext context, String songId) {
+  _buildView(BuildContext context) {
     var url = '$baseUri/images/pochettes/$songId.jpg';
 
     return Hero(
