@@ -97,6 +97,12 @@ String extractSongId(str) {
   }
 }
 
+Hero heroCover(String songId) {
+  return Hero(
+      tag: 'cover_$songId',
+      child: Image(image: NetworkImage('$baseUri/images/thumb25/$songId.jpg')));
+}
+
 class SongCardWidget extends StatelessWidget {
   final SongLink songLink;
 
@@ -123,10 +129,13 @@ class SongCardWidget extends StatelessWidget {
       },
       child: Container(
           decoration: BoxDecoration(color: Theme.of(context).canvasColor),
-          child: FadeInImage(
-              image:
-                  NetworkImage('$baseUri/images/pochettes/${songLink.id}.jpg'),
-              placeholder: NetworkImage('$baseUri/images/vinyl-default.jpg'))),
+          child: Hero(
+              tag: 'cover_${songLink.id}',
+              child: FadeInImage(
+                  image: NetworkImage(
+                      '$baseUri/images/pochettes/${songLink.id}.jpg'),
+                  placeholder:
+                      NetworkImage('$baseUri/images/vinyl-default.jpg')))),
     );
   }
 }
@@ -299,12 +308,14 @@ class SongPageWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                          child: InkWell(
-                              onTap: () {
-                                _openCoverViewerDialog(song, context);
-                              },
-                              child: Image.network(
-                                  '$baseUri/images/pochettes/${songLink.id}.jpg'))),
+                          child: Hero(
+                              tag: 'cover_${songLink.id}',
+                              child: InkWell(
+                                  onTap: () {
+                                    _openCoverViewerDialog(song, context);
+                                  },
+                                  child: Image.network(
+                                      '$baseUri/images/pochettes/${songLink.id}.jpg')))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))
@@ -441,7 +452,6 @@ class SongPageWidget extends StatelessWidget {
   }
 }
 
-//////////////////
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
   final List<SongLink> _songLinks;
@@ -569,7 +579,6 @@ class SongWidget extends StatelessWidget {
   }
 }
 
-//////////////////////////
 // Display songs from future song list
 class SongListingFutureWidget extends StatelessWidget {
   final Future<List<SongLink>> songs;

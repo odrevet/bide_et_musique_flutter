@@ -39,9 +39,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
-            child: Image(
-                image:
-                    NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
+            child: heroCover(songLink.id),
           ),
           title: Text('#$position - ${songLink.title}'),
           subtitle: Text(songLink.artist),
