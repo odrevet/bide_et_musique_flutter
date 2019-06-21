@@ -8,6 +8,12 @@ import 'song.dart';
 import 'utils.dart';
 import 'session.dart';
 
+Hero _heroThumbCover(String songId) {
+  return Hero(
+      tag: 'cover_$songId',
+      child: Image(image: NetworkImage('$baseUri/images/thumb25/$songId.jpg')));
+}
+
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
 
@@ -39,7 +45,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
-            child: heroCover(songLink.id),
+            child: _heroThumbCover(songLink.id),
           ),
           title: Text('#$position - ${songLink.title}'),
           subtitle: Text(songLink.artist),
