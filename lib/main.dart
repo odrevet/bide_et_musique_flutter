@@ -25,8 +25,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     connect();
-
-    //auto login
     autoLogin();
   }
 

@@ -159,13 +159,8 @@ Future<Song> fetchSong(String songId) async {
     throw Exception('Failed to load song with id $songId');
   }
 
-  //If connected, fetch comments and favorite status TODO remove if
-  var response;
-  if (Session.accountLink.id != null) {
-    response = await Session.get(url + '.html');
-  } else {
-    response = await Session.get(url + '.html');
-  }
+  //If connected, fetch comments and favorite status
+  var response = await Session.get(url + '.html');
 
   if (response.statusCode == 200) {
     var body = response.body;
