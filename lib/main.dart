@@ -9,11 +9,11 @@ import 'identification.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
 
-void main() => runApp(new BideApp());
+void main() => runApp(BideApp());
 
 class BideApp extends StatefulWidget {
   @override
-  _BideAppState createState() => new _BideAppState();
+  _BideAppState createState() => _BideAppState();
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {

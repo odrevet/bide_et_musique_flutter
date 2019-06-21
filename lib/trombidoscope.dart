@@ -77,7 +77,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
         body: GridView.builder(
             itemCount: _accountLinks.length,
             controller: _controller,
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
             itemBuilder: (BuildContext context, int index) {
               var account = _accountLinks[index];

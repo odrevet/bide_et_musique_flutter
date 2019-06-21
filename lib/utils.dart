@@ -21,7 +21,7 @@ String stripTags(String htmlString) {
 void onLinkTap(String url, BuildContext context) {
   //check if the url point to a page that the app can handle
   //check if point to a page
-  RegExp regExp = new RegExp(r"http://www.bide-et-musique.com/(\w+)/(\d+).html",
+  RegExp regExp = RegExp(r"http://www.bide-et-musique.com/(\w+)/(\d+).html",
       caseSensitive: false);
 
   var hasMatch = regExp.hasMatch(url);

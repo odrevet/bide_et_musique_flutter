@@ -183,7 +183,7 @@ class WallWidget extends StatelessWidget {
                   TextSpan(
                     text: post.author.name,
                     style: linkStyle,
-                    recognizer: new TapGestureRecognizer()
+                    recognizer: TapGestureRecognizer()
                       ..onTap = () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -196,7 +196,7 @@ class WallWidget extends StatelessWidget {
                   TextSpan(
                     text: post.during.title,
                     style: linkStyle,
-                    recognizer: new TapGestureRecognizer()
+                    recognizer: TapGestureRecognizer()
                       ..onTap = () => Navigator.push(
                           context,
                           MaterialPageRoute(

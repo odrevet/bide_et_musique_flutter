@@ -75,7 +75,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         body: GridView.builder(
             itemCount: _songLinks.length,
             controller: _controller,
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
             itemBuilder: (BuildContext context, int index) {
               var songLink = _songLinks[index];

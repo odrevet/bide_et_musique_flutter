@@ -266,7 +266,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             margin: EdgeInsets.only(top: 20.0),
             child: ListView(
               shrinkWrap: true,
-              padding: new EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               children: [
                 Container(
                     decoration: BoxDecoration(

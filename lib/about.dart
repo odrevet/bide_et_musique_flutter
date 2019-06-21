@@ -31,7 +31,7 @@ class AboutPage extends StatelessWidget {
           TextSpan(
             text: 'Olivier Drevet',
             style: linkStyle,
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -45,7 +45,7 @@ class AboutPage extends StatelessWidget {
           TextSpan(
             text: 'license GPLv3',
             style: linkStyle,
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () =>
                   launchURL('https://www.gnu.org/licenses/gpl-3.0.fr.html'),
           ),
@@ -56,14 +56,14 @@ class AboutPage extends StatelessWidget {
           TextSpan(
             text: 'github.com\n\n',
             style: linkStyle,
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () => launchURL(
                   'https://github.com/odrevet/bide-et-musique-flutter'),
           ),
           TextSpan(
             text: 'Manuel Utilisateur en ligne',
             style: linkStyle,
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () => launchURL(
                   'https://github.com/odrevet/bide-et-musique-flutter/wiki/Manuel-Utilisateur'),
           )
