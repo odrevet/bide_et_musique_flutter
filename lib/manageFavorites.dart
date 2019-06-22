@@ -8,7 +8,6 @@ import 'song.dart';
 import 'utils.dart';
 import 'session.dart';
 
-
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
 

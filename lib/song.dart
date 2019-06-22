@@ -104,11 +104,12 @@ String createTag(SongLink songLink) {
       : 'cover_${songLink.id}_${songLink.index}';
 }
 
-Hero heroThumbCover(SongLink songLink){
+Hero heroThumbCover(SongLink songLink) {
   final tag = createTag(songLink);
   return Hero(
       tag: tag,
-      child: Image(image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')));
+      child: Image(
+          image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')));
 }
 
 class SongCardWidget extends StatelessWidget {
@@ -342,7 +343,6 @@ class SongPageWidget extends StatelessWidget {
     final _fontLyrics = TextStyle(fontSize: 18.0);
     final tag = createTag(songLink);
 
-
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -524,7 +524,6 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
 
     for (SongLink songLink in _songLinks) {
-
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
