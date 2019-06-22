@@ -8,22 +8,22 @@ import 'song.dart';
 import 'utils.dart';
 import 'session.dart';
 
-SongLink songFromTr(dom.Element tr) {
+SongLink songLinkFromTr(dom.Element tr) {
   //td 0 program / date
   //td 1 cover
   //td 2 artist
   //td 3 song
-  var song = SongLink();
+  var songLink = SongLink();
   var href = tr.children[3].innerHtml;
-  song.id = extractSongId(href);
-  song.artist = stripTags(tr.children[2].innerHtml);
+  songLink.id = extractSongId(href);
+  songLink.artist = stripTags(tr.children[2].innerHtml);
   var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
   if (title.contains(newFlag)) {
-    song.isNew = true;
+    songLink.isNew = true;
   }
-  song.title = title.replaceFirst(newFlag, '').trimLeft();
-  return song;
+  songLink.title = title.replaceFirst(newFlag, '').trimLeft();
+  return songLink;
 }
 
 Future<Map<String, List<SongLink>>> fetchTitles() async {
@@ -33,24 +33,30 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-    var songsNext = <SongLink>[];
+    var songLinksNext = <SongLink>[];
     var tableNext = document.getElementById('BM_next_songs').children[1];
     var trsNext = tableNext.getElementsByTagName('tr');
+    int indexNext = 0;
     for (dom.Element tr in trsNext) {
-      var song = songFromTr(tr);
-      songsNext.add(song);
+      var songLink = songLinkFromTr(tr);
+      songLink.index = indexNext;
+      indexNext++;
+      songLinksNext.add(songLink);
     }
 
-    var songsPast = <SongLink>[];
+    var songLinksPast = <SongLink>[];
     var tablePast = document.getElementById('BM_past_songs').children[1];
     var trsPast = tablePast.getElementsByTagName('tr');
-    trsPast.removeLast(); //remove show more button
+    trsPast.removeLast(); //remove the 'show more' button
+    int indexPast = 0;
     for (dom.Element tr in trsPast) {
-      var song = songFromTr(tr);
-      songsPast.add(song);
+      var songLink = songLinkFromTr(tr);
+      songLink.index = indexPast;
+      indexPast++;
+      songLinksPast.add(songLink);
     }
 
-    return {'next': songsNext, 'past': songsPast};
+    return {'next': songLinksNext, 'past': songLinksPast};
   } else {
     throw Exception('Failed to load program');
   }

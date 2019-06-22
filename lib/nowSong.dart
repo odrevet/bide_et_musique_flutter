@@ -10,8 +10,8 @@ import 'utils.dart';
 import 'session.dart';
 
 class NowSong {
-  SongLink song;
-  String desc; //description formated in HTML
+  SongLink songLink;
+  String desc; //description formatted in HTML
   String date;
 
   NowSong();
@@ -28,15 +28,18 @@ Future<List<NowSong>> fetchNowSongs() async {
     var trs = table.getElementsByTagName('tr');
     trs.removeAt(0); //remove heading pagination
     trs.removeLast(); //remove leading pagination
+    int index = 0;
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
-      var song = SongLink();
-      song.title = tds[3].children[0].innerHtml;
-      song.id = extractSongId(tds[3].children[0].attributes['href']);
+      var songLink = SongLink();
+      songLink.title = tds[3].children[0].innerHtml;
+      songLink.id = extractSongId(tds[3].children[0].attributes['href']);
+      songLink.index = index;
       var nowSong = NowSong();
       nowSong.date = tds[0].innerHtml.trim();
       nowSong.desc = tds[4].innerHtml;
-      nowSong.song = song;
+      nowSong.songLink = songLink;
+      index++;
       nowSongs.add(nowSong);
     }
     return nowSongs;
@@ -76,17 +79,21 @@ class NowSongsWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, List<NowSong> nowSongs) {
     var rows = <ListTile>[];
+
     for (NowSong nowSong in nowSongs) {
+      final tag = createTag(nowSong.songLink);
       rows.add(ListTile(
-          onTap: () => launchSongPage(nowSong.song, context),
+          onTap: () => launchSongPage(nowSong.songLink, context),
           leading: CircleAvatar(
-            child: Image(
-                image: NetworkImage(
-                    '$baseUri/images/thumb25/${nowSong.song.id}.jpg')),
+            child: Hero(
+                tag: tag,
+                child: Image(
+                    image: NetworkImage(
+                        '$baseUri/images/thumb25/${nowSong.songLink.id}.jpg'))),
             backgroundColor: Colors.black12,
           ),
           title: Html(
-              data: nowSong.song.title + '<br/>' + nowSong.desc,
+              data: nowSong.songLink.title + '<br/>' + nowSong.desc,
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

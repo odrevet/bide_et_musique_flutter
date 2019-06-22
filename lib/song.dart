@@ -23,6 +23,7 @@ class SongLink {
   String artist;
   String program;
   bool isNew;
+  int index;
 
   SongLink(
       {this.id = '',
@@ -97,6 +98,19 @@ String extractSongId(str) {
   }
 }
 
+String createTag(SongLink songLink) {
+  return songLink.index == null
+      ? 'cover_${songLink.id}'
+      : 'cover_${songLink.id}_${songLink.index}';
+}
+
+Hero heroThumbCover(SongLink songLink){
+  final tag = createTag(songLink);
+  return Hero(
+      tag: tag,
+      child: Image(image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')));
+}
+
 class SongCardWidget extends StatelessWidget {
   final SongLink songLink;
 
@@ -104,6 +118,8 @@ class SongCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tag = createTag(songLink);
+
     return GestureDetector(
       onTap: () {
         if (songLink.id != null) {
@@ -124,7 +140,7 @@ class SongCardWidget extends StatelessWidget {
       child: Container(
           decoration: BoxDecoration(color: Theme.of(context).canvasColor),
           child: Hero(
-              tag: 'cover_${songLink.id}',
+              tag: tag,
               child: FadeInImage(
                   image: NetworkImage(
                       '$baseUri/images/pochettes/${songLink.id}.jpg'),
@@ -277,6 +293,8 @@ class SongPageWidget extends StatelessWidget {
       loadingMessage = 'Chargement';
     }
 
+    final tag = createTag(songLink);
+
     var body = Column(
       children: <Widget>[
         Expanded(
@@ -284,10 +302,7 @@ class SongPageWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                    child: Hero(
-                        tag: 'cover_${songLink.id}',
-                        child: Image.network(urlCover))),
+                Expanded(child: Hero(tag: tag, child: Image.network(urlCover))),
                 Expanded(child: Center(child: CircularProgressIndicator())),
               ],
             )),
@@ -325,6 +340,8 @@ class SongPageWidget extends StatelessWidget {
   Widget _buildView(BuildContext context, Song song) {
     var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 18.0);
+    final tag = createTag(songLink);
+
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -343,7 +360,7 @@ class SongPageWidget extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Hero(
-                              tag: 'cover_${songLink.id}',
+                              tag: tag,
                               child: InkWell(
                                   onTap: () {
                                     _openCoverViewerDialog(song, context);
@@ -507,12 +524,11 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
 
     for (SongLink songLink in _songLinks) {
+
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
-            child: Image(
-                image:
-                    NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')),
+            child: heroThumbCover(songLink),
           ),
           title: Text(
             songLink.title,
@@ -531,8 +547,8 @@ void launchSongPage(SongLink songLink, BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
+            builder: (context) => SongPageWidget(
+                songLink: songLink, song: fetchSong(songLink.id))));
   }
 }
 
@@ -615,14 +631,14 @@ class SongWidget extends StatelessWidget {
 
 // Display songs from future song list
 class SongListingFutureWidget extends StatelessWidget {
-  final Future<List<SongLink>> songs;
+  final Future<List<SongLink>> songLinks;
 
-  SongListingFutureWidget(this.songs, {Key key}) : super(key: key);
+  SongListingFutureWidget(this.songLinks, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SongLink>>(
-        future: songs,
+        future: songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SongListingWidget(snapshot.data);
