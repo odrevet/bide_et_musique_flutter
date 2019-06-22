@@ -498,15 +498,15 @@ class SongListingWidget extends StatefulWidget {
 }
 
 class SongListingWidgetState extends State<SongListingWidget> {
-  List<SongLink> _songs;
+  List<SongLink> _songLinks;
 
-  SongListingWidgetState(this._songs);
+  SongListingWidgetState(this._songLinks);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
 
-    for (SongLink songLink in _songs) {
+    for (SongLink songLink in _songLinks) {
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
@@ -526,13 +526,13 @@ class SongListingWidgetState extends State<SongListingWidget> {
   }
 }
 
-void launchSongPage(SongLink song, BuildContext context) {
-  if (song.id != null) {
+void launchSongPage(SongLink songLink, BuildContext context) {
+  if (songLink.id != null) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                SongPageWidget(songLink: song, song: fetchSong(song.id))));
+                SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
   }
 }
 
