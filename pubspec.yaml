@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   audio_service: ^0.3.0
   flutter_radio: ^0.1.7
-  flutter_html: ^0.10.3
+  flutter_html: ^0.10.4
   url_launcher: ^5.0.3
   share: ^0.6.1
   shared_preferences: ^0.5.3
