@@ -2,22 +2,23 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'song.dart';
 import 'utils.dart';
 
 class CoverViewer extends StatefulWidget {
-  final String songId;
+  final SongLink songLink;
 
-  CoverViewer(this.songId, {Key key}) : super(key: key);
+  CoverViewer(this.songLink, {Key key}) : super(key: key);
 
   @override
-  _CoverViewerState createState() => _CoverViewerState(this.songId);
+  _CoverViewerState createState() => _CoverViewerState(this.songLink);
 }
 
 class _CoverViewerState extends State<CoverViewer> {
-  String songId;
+  SongLink songLink;
   Offset _offset = Offset.zero;
 
-  _CoverViewerState(this.songId);
+  _CoverViewerState(this.songLink);
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,10 @@ class _CoverViewerState extends State<CoverViewer> {
   }
 
   _buildView(BuildContext context) {
-    var url = '$baseUri/images/pochettes/$songId.jpg';
-
+    var url = '$baseUri/images/pochettes/${songLink.id}.jpg';
+    var tag = createTag(songLink);
     return Hero(
-        tag: 'cover_$songId',
+        tag: tag,
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

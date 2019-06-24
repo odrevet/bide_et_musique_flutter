@@ -134,7 +134,7 @@ class SongCardWidget extends StatelessWidget {
       onLongPress: () {
         Navigator.of(context).push(MaterialPageRoute<Null>(
             builder: (BuildContext context) {
-              return CoverViewer(songLink.id);
+              return CoverViewer(songLink);
             },
             fullscreenDialog: true));
       },
@@ -275,10 +275,10 @@ class SongPageWidget extends StatelessWidget {
     );
   }
 
-  void _openCoverViewerDialog(Song song, BuildContext context) {
+  void _openCoverViewerDialog(SongLink songLink, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return CoverViewer(song.id);
+          return CoverViewer(songLink);
         },
         fullscreenDialog: true));
   }
@@ -363,7 +363,7 @@ class SongPageWidget extends StatelessWidget {
                               tag: tag,
                               child: InkWell(
                                   onTap: () {
-                                    _openCoverViewerDialog(song, context);
+                                    _openCoverViewerDialog(songLink, context);
                                   },
                                   child: Image.network(
                                       '$baseUri/images/pochettes/${songLink.id}.jpg')))),
