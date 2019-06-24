@@ -299,11 +299,13 @@ class SongPageWidget extends StatelessWidget {
     var body = Column(
       children: <Widget>[
         Expanded(
-            flex: 3,
+            flex: 4,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(child: Hero(tag: tag, child: Image.network(urlCover))),
+                Container(
+                    padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
+                    child: Hero(tag: tag, child: Image.network(urlCover))),
                 Expanded(child: Center(child: CircularProgressIndicator())),
               ],
             )),
