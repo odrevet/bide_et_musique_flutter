@@ -5,7 +5,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'account.dart';
+import 'manageFavorites.dart';
+import 'session.dart';
+import 'song.dart';
 import 'utils.dart';
+
+class LoggedInPage extends StatelessWidget {
+  LoggedInPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    //disconnect button
+    var actions = <Widget>[];
+    actions.add(IconButton(
+      icon: Icon(Icons.close),
+      onPressed: () {
+        Session.accountLink.id = null;
+        Session.headers = {};
+        Navigator.pop(context);
+      },
+    ));
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: actions,
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.account_circle)),
+              Tab(icon: Icon(Icons.star)),
+              Tab(icon: Icon(Icons.exposure_plus_1)),
+            ],
+          ),
+          title: Text('Gestion de votre compte'),
+        ),
+        body: TabBarView(
+          children: [
+            ManageAccountPageWidget(
+                account: fetchAccount(Session.accountLink.id)),
+            ManageFavoritesWidget(),
+            SongListingFutureWidget(fetchVotes())
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class ManageAccountPageWidget extends StatelessWidget {
   final Future<Account> account;

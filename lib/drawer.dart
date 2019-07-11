@@ -7,11 +7,11 @@ import 'nowSong.dart';
 import 'pochettoscope.dart';
 import 'schedule.dart';
 import 'search.dart';
+import 'session.dart';
 import 'settings.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
-import 'session.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override

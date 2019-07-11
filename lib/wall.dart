@@ -7,9 +7,9 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
 import 'account.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
-import 'session.dart';
 
 class Post {
   AccountLink author;

@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 import 'account.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
-import 'session.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);

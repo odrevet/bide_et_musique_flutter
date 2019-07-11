@@ -7,9 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account.dart';
 import 'manageAccount.dart';
-import 'manageFavorites.dart';
 import 'session.dart';
-import 'song.dart';
 import 'utils.dart';
 
 class IdentificationResponse {
@@ -21,13 +19,14 @@ Future<IdentificationResponse> sendIdentifiers(
     String login, String password) async {
   var identificationResponse = IdentificationResponse();
 
-  if(login.isEmpty){
+  if (login.isEmpty) {
     identificationResponse.isLoggedIn = false;
-    identificationResponse.loginMessage = 'Veuillez entrer votre nom d\'utilisateur';
+    identificationResponse.loginMessage =
+        'Veuillez entrer votre nom d\'utilisateur';
     return identificationResponse;
   }
 
-  if(password.isEmpty){
+  if (password.isEmpty) {
     identificationResponse.isLoggedIn = false;
     identificationResponse.loginMessage = 'Veuillez entrer votre mot de passe';
     return identificationResponse;
@@ -35,15 +34,14 @@ Future<IdentificationResponse> sendIdentifiers(
 
   final url = '$baseUri/ident.html';
   var response;
-  try{
-    response = await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
-  }
-  catch(e){
+  try {
+    response =
+        await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+  } catch (e) {
     identificationResponse.isLoggedIn = false;
     identificationResponse.loginMessage = e.toString();
     return identificationResponse;
   }
-
 
   if (response.statusCode == 200) {
     var body = response.body;
@@ -60,9 +58,11 @@ Future<IdentificationResponse> sendIdentifiers(
       identificationResponse.isLoggedIn = true;
     } else {
       identificationResponse.isLoggedIn = false;
-
-      if(confirm.innerHtml.startsWith('Vous n\'avez pas été reconnu dans la base')){
-        identificationResponse.loginMessage = 'Vous n\'avez pas été reconnu dans la base';
+      
+      if (confirm.innerHtml
+          .contains('Vous n\'avez pas été reconnu dans la base')) {
+        identificationResponse.loginMessage =
+            'Vous n\'avez pas été reconnu dans la base';
       }
     }
   } else {
@@ -100,7 +100,7 @@ class _IdentificationWidgetState extends State<IdentificationWidget> {
   @override
   Widget build(BuildContext context) {
     if (Session.accountLink.id != null) {
-      return _buildViewLoggedIn(context);
+      return LoggedInPage();
     } else {
       return Center(
         child: FutureBuilder<IdentificationResponse>(
@@ -108,7 +108,7 @@ class _IdentificationWidgetState extends State<IdentificationWidget> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.isLoggedIn == true)
-                return _buildViewLoggedIn(context);
+                return LoggedInPage();
               else if (snapshot.data.isLoggedIn == false) {
                 return Scaffold(
                   appBar: AppBar(
@@ -178,51 +178,13 @@ class _IdentificationWidgetState extends State<IdentificationWidget> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-      this.setState(() {
-        _identificationResponse = sendIdentifiers(username, password);
-      });
+    this.setState(() {
+      _identificationResponse = sendIdentifiers(username, password);
+    });
 
-      if (_remember == true) {
-        _saveSettings();
-      }
+    if (_remember == true) {
+      _saveSettings();
     }
-
-  Widget _buildViewLoggedIn(BuildContext context) {
-    //disconnect button
-    var actions = <Widget>[];
-    actions.add(IconButton(
-      icon: Icon(Icons.close),
-      onPressed: () {
-        Session.accountLink.id = null;
-        Session.headers = {};
-        Navigator.pop(context);
-      },
-    ));
-
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          actions: actions,
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.account_circle)),
-              Tab(icon: Icon(Icons.star)),
-              Tab(icon: Icon(Icons.exposure_plus_1)),
-            ],
-          ),
-          title: Text('Gestion de votre compte'),
-        ),
-        body: TabBarView(
-          children: [
-            ManageAccountPageWidget(
-                account: fetchAccount(Session.accountLink.id)),
-            ManageFavoritesWidget(),
-            SongListingFutureWidget(fetchVotes())
-          ],
-        ),
-      ),
-    );
   }
 
   void _onRememberToggle(bool value) {
