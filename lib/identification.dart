@@ -12,43 +12,79 @@ import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
-Future<bool> sendIdent(String login, String password) async {
+class IdentificationResponse {
+  bool isLoggedIn;
+  String loginMessage;
+}
+
+Future<IdentificationResponse> sendIdentifiers(
+    String login, String password) async {
+  var identificationResponse = IdentificationResponse();
+
+  if(login.isEmpty){
+    identificationResponse.isLoggedIn = false;
+    identificationResponse.loginMessage = 'Veuillez entrer votre nom d\'utilisateur';
+    return identificationResponse;
+  }
+
+  if(password.isEmpty){
+    identificationResponse.isLoggedIn = false;
+    identificationResponse.loginMessage = 'Veuillez entrer votre mot de passe';
+    return identificationResponse;
+  }
+
   final url = '$baseUri/ident.html';
-  final response =
-      await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+  var response;
+  try{
+    response = await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+  }
+  catch(e){
+    identificationResponse.isLoggedIn = false;
+    identificationResponse.loginMessage = e.toString();
+    return identificationResponse;
+  }
+
 
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var confirm = document
-        .getElementById('gd-encartblc')
-        .children[1]
-        .children[0]
-        .innerHtml;
-    if (confirm == 'Vous avez été identifié !') {
+    var confirm = document.getElementById('gd-encartblc').children[1];
+
+    identificationResponse.loginMessage = confirm.innerHtml;
+
+    if (confirm.children[0].innerHtml == 'Vous avez été identifié !') {
       dom.Element divAccount = document.getElementById('compte2');
       Session.accountLink.id = extractAccountId(
           divAccount.children[1].children[1].attributes['href']);
       Session.accountLink.name = login;
-      return true;
-    } else
-      return false;
+      identificationResponse.isLoggedIn = true;
+    } else {
+      identificationResponse.isLoggedIn = false;
+
+      if(confirm.innerHtml.startsWith('Vous n\'avez pas été reconnu dans la base')){
+        identificationResponse.loginMessage = 'Vous n\'avez pas été reconnu dans la base';
+      }
+    }
   } else {
-    throw Exception('Failed to load login reponse');
+    identificationResponse.isLoggedIn = false;
+    identificationResponse.loginMessage =
+        'Erreur (code status ${response.statusCode})';
   }
+
+  return identificationResponse;
 }
 
-class IdentWidget extends StatefulWidget {
-  IdentWidget({Key key}) : super(key: key);
+class IdentificationWidget extends StatefulWidget {
+  IdentificationWidget({Key key}) : super(key: key);
 
   @override
-  _IdentWidgetState createState() => _IdentWidgetState();
+  _IdentificationWidgetState createState() => _IdentificationWidgetState();
 }
 
-class _IdentWidgetState extends State<IdentWidget> {
-  _IdentWidgetState();
+class _IdentificationWidgetState extends State<IdentificationWidget> {
+  _IdentificationWidgetState();
 
-  Future<bool> _isLoggedIn;
+  Future<IdentificationResponse> _identificationResponse;
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -67,11 +103,20 @@ class _IdentWidgetState extends State<IdentWidget> {
       return _buildViewLoggedIn(context);
     } else {
       return Center(
-        child: FutureBuilder<bool>(
-          future: _isLoggedIn,
+        child: FutureBuilder<IdentificationResponse>(
+          future: _identificationResponse,
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data == true) {
-              return _buildViewLoggedIn(context);
+            if (snapshot.hasData) {
+              if (snapshot.data.isLoggedIn == true)
+                return _buildViewLoggedIn(context);
+              else if (snapshot.data.isLoggedIn == false) {
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text("Connexion à votre compte"),
+                  ),
+                  body: _buildViewLoginForm(context, snapshot.data),
+                );
+              }
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -133,16 +178,14 @@ class _IdentWidgetState extends State<IdentWidget> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    if (username.isNotEmpty && password.isNotEmpty) {
       this.setState(() {
-        _isLoggedIn = sendIdent(username, password);
+        _identificationResponse = sendIdentifiers(username, password);
       });
 
       if (_remember == true) {
         _saveSettings();
       }
     }
-  }
 
   Widget _buildViewLoggedIn(BuildContext context) {
     //disconnect button
@@ -189,55 +232,65 @@ class _IdentWidgetState extends State<IdentWidget> {
     });
   }
 
-  Widget _buildViewLoginForm(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(30.0),
-        child: Form(
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    hintText: 'Nom utilisateur',
-                  )),
-              TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Mot de passe',
-                  )),
-              CheckboxListTile(
-                  title: Text("Se souvenir des identifiants"),
-                  value: _remember,
-                  onChanged: _onRememberToggle),
-              Container(
-                child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      'Se connecter',
-                    ),
-                    onPressed: _performLogin,
-                    color: Colors.orangeAccent),
-                margin: EdgeInsets.only(top: 20.0),
-              ),
-              Divider(),
-              Column(children: [
-                Text("Pas de compte ? "),
-                RaisedButton(
-                  onPressed: () => launchURL('$baseUri/create_account.html'),
-                  child: Text('En créer un sur bide-et-musique.com'),
+  Widget _buildViewLoginForm(BuildContext context,
+      [IdentificationResponse identificationResponse]) {
+    var form = Form(
+      child: ListView(
+        children: <Widget>[
+          TextFormField(
+              controller: _usernameController,
+              decoration: InputDecoration(
+                hintText: 'Nom utilisateur',
+              )),
+          TextFormField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                hintText: 'Mot de passe',
+              )),
+          identificationResponse != null &&
+                  identificationResponse.isLoggedIn == false
+              ? Container(
+                  margin: EdgeInsets.only(top: 20.0),
+                  child: Text(
+                      'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.red)))
+              : Text(''),
+          CheckboxListTile(
+              title: Text("Se souvenir des identifiants"),
+              value: _remember,
+              onChanged: _onRememberToggle),
+          Container(
+            child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(
+                  'Se connecter',
                 ),
-              ]),
-              Divider(),
-              Column(children: [
-                RaisedButton(
-                  onPressed: _clearSettings,
-                  child: Text('Oublier les identifiants'),
-                ),
-              ])
-            ],
+                onPressed: _performLogin,
+                color: Colors.orangeAccent),
+            margin: EdgeInsets.only(top: 2.0),
           ),
-        ));
+          Divider(),
+          Column(children: [
+            Text("Pas de compte ? "),
+            RaisedButton(
+              onPressed: () => launchURL('$baseUri/create_account.html'),
+              child: Text('En créer un sur bide-et-musique.com'),
+            ),
+          ]),
+          Divider(),
+          Column(children: [
+            RaisedButton(
+              onPressed: _clearSettings,
+              child: Text('Oublier les identifiants'),
+            ),
+          ])
+        ],
+      ),
+    );
+
+    return Container(padding: EdgeInsets.all(30.0), child: form);
   }
 }

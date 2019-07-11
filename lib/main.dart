@@ -37,7 +37,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       var login = prefs.getString('login') ?? '';
       var password = prefs.getString('password') ?? '';
 
-      sendIdent(login, password);
+      sendIdentifiers(login, password);
     }
   }
 

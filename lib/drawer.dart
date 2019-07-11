@@ -53,8 +53,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text(_accountTitle),
           leading: Icon(Icons.account_circle),
           onTap: () {
-            Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => IdentWidget()))
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => IdentificationWidget()))
                 .then((_) => _setAccountTitle());
           },
         ),
