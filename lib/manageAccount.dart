@@ -45,11 +45,36 @@ class LoggedInPage extends StatelessWidget {
             ManageAccountPageWidget(
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
-            SongListingFutureWidget(fetchVotes())
+            voteListing(fetchVotes())
           ],
         ),
       ),
     );
+  }
+}
+
+// Display songs from future song list
+class voteListing extends StatelessWidget {
+  final Future<List<SongLink>> songLinks;
+
+  voteListing(this.songLinks, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<SongLink>>(
+        future: songLinks,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.isEmpty)
+              return Center(child:Text('Vous n\'avez pas voté cette semaine. '));
+            else
+              return SongListingWidget(snapshot.data);
+          } else if (snapshot.hasError) {
+            return Center(child:Text("${snapshot.error}"));
+          }
+
+          return Center(child:CircularProgressIndicator());
+        });
   }
 }
 

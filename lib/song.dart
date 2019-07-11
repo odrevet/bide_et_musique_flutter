@@ -629,25 +629,3 @@ class SongWidget extends StatelessWidget {
             text: TextSpan(style: textStyle, children: textSpans)));
   }
 }
-
-// Display songs from future song list
-class SongListingFutureWidget extends StatelessWidget {
-  final Future<List<SongLink>> songLinks;
-
-  SongListingFutureWidget(this.songLinks, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<SongLink>>(
-        future: songLinks,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SongListingWidget(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-
-          return CircularProgressIndicator();
-        });
-  }
-}

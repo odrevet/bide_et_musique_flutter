@@ -58,7 +58,7 @@ Future<IdentificationResponse> sendIdentifiers(
       identificationResponse.isLoggedIn = true;
     } else {
       identificationResponse.isLoggedIn = false;
-      
+
       if (confirm.innerHtml
           .contains('Vous n\'avez pas été reconnu dans la base')) {
         identificationResponse.loginMessage =
