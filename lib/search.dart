@@ -276,7 +276,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                     ),
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(3.0),
-                    child: DropdownButton(
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration.collapsed(hintText: ''),
                       value: this._currentItem,
                       items: _dropDownMenuItems,
                       onChanged: changedDropDownItem,
