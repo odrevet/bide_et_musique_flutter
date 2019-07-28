@@ -98,25 +98,26 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
     var title = 'Bide&Musique';
 
-
-
-    var home = OrientationBuilder(
-        builder: (context, orientation) {
-          if(orientation == Orientation.portrait){
-            return Scaffold(
-                appBar: AppBar(title: Text(title)),
-                bottomNavigationBar:
+    var home = OrientationBuilder(builder: (context, orientation) {
+      if (orientation == Orientation.portrait) {
+        return Scaffold(
+            appBar: AppBar(title: Text(title)),
+            bottomNavigationBar:
                 BottomAppBar(child: playerControls, color: Colors.orange),
-                drawer: DrawerWidget(),
-                body: NowPlayingWidget());
-          }
-          else{
-            return Scaffold(
-                appBar: AppBar(title: Text(title)),
-                drawer: DrawerWidget(),
-                body: Row(children: <Widget>[NowPlayingWidget(), Expanded(child: playerControls)],));
-          }}
-    );
+            drawer: DrawerWidget(),
+            body: NowPlayingWidget());
+      } else {
+        return Scaffold(
+            appBar: AppBar(title: Text(title)),
+            drawer: DrawerWidget(),
+            body: Row(
+              children: <Widget>[
+                NowPlayingWidget(),
+                Expanded(child: playerControls)
+              ],
+            ));
+      }
+    });
 
     return MaterialApp(
         title: title,

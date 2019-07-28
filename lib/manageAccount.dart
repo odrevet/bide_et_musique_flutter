@@ -45,7 +45,7 @@ class LoggedInPage extends StatelessWidget {
             ManageAccountPageWidget(
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
-            voteListing(fetchVotes())
+            VoteListing(fetchVotes())
           ],
         ),
       ),
@@ -54,10 +54,10 @@ class LoggedInPage extends StatelessWidget {
 }
 
 // Display songs from future song list
-class voteListing extends StatelessWidget {
+class VoteListing extends StatelessWidget {
   final Future<List<SongLink>> songLinks;
 
-  voteListing(this.songLinks, {Key key}) : super(key: key);
+  VoteListing(this.songLinks, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +66,15 @@ class voteListing extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isEmpty)
-              return Center(child:Text('Vous n\'avez pas voté cette semaine. '));
+              return Center(
+                  child: Text('Vous n\'avez pas voté cette semaine. '));
             else
               return SongListingWidget(snapshot.data);
           } else if (snapshot.hasError) {
-            return Center(child:Text("${snapshot.error}"));
+            return Center(child: Text("${snapshot.error}"));
           }
 
-          return Center(child:CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         });
   }
 }
