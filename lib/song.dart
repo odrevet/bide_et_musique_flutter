@@ -40,7 +40,8 @@ class Song {
   String artist;
   String artistId;
   String author;
-  String length;
+  Duration duration;
+  String durationPretty;
   String label;
   String reference;
   String lyrics;
@@ -57,7 +58,8 @@ class Song {
       this.artist,
       this.artistId,
       this.author,
-      this.length,
+      this.duration,
+      this.durationPretty,
       this.label,
       this.reference,
       this.lyrics});
@@ -71,7 +73,8 @@ class Song {
         artist: stripTags(json['artists']['main']['alias']),
         artistId: json['artists']['main']['id'].toString(),
         author: json['author'],
-        length: json['length']['pretty'],
+        duration: Duration(seconds: json['length']['raw']),
+        durationPretty: json['length']['pretty'],
         label: stripTags(json['label']),
         reference: stripTags(json['reference']),
         lyrics: lyrics == null
@@ -167,7 +170,7 @@ Future<Song> fetchSong(String songId) async {
           year: 0,
           artist: '?',
           author: '?',
-          length: '?',
+          duration: null,
           label: '?',
           reference: '?',
           lyrics: e.toString());
@@ -593,8 +596,8 @@ class SongWidget extends StatelessWidget {
                 }));
     }
 
-    if (_song.length != null) {
-      textSpans.add(TextSpan(text: _song.length + '\n'));
+    if (_song.durationPretty != null) {
+      textSpans.add(TextSpan(text: _song.durationPretty + '\n'));
     }
 
     if (_song.label != null) {

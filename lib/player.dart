@@ -131,7 +131,8 @@ class StreamPlayer extends BackgroundAudioTask {
         this.setSong(Song(
             id: songMap['id'],
             title: songMap['title'],
-            artist: songMap['artist']));
+            artist: songMap['artist'],
+            duration: Duration(seconds: songMap['duration'])));
         break;
       case 'resetSong':
         _resetSong();

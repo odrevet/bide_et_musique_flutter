@@ -227,8 +227,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       );
     }
 
-    await AudioService.customAction(
-        'song', {'id': _song.id, 'title': _song.title, 'artist': _song.artist});
+    await AudioService.customAction('song', {
+      'id': _song.id,
+      'title': _song.title,
+      'artist': _song.artist,
+      'duration': _song.duration.inSeconds
+    });
 
     await AudioService.customAction('setNotification');
     await AudioService.play();
