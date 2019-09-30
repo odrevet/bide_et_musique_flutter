@@ -1,7 +1,7 @@
 name: bide_et_musique
 description: Ecouter et gerer son compte bide et musique
 
-version: 2.3.3+20
+version: 2.3.4+21
 
 environment:
   sdk: '>=2.2.0 <3.0.0'
@@ -13,10 +13,10 @@ dependencies:
   html: ^0.14.0
   xml:
   cupertino_icons: ^0.1.2
-  audio_service: ^0.3.0
+  audio_service: ^0.4.1
   flutter_radio: ^0.1.7
-  flutter_html: ^0.10.4
-  url_launcher: ^5.1.1
+  flutter_html: ^0.11.0
+  url_launcher: ^5.1.4
   share: ^0.6.2
   shared_preferences: ^0.5.3
 

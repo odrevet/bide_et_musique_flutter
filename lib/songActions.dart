@@ -222,7 +222,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
       await AudioService.start(
-        backgroundTask: backgroundAudioPlayerTask,
+        backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
         resumeOnClick: true,
         androidNotificationChannelName: 'Bide&Musique',
         notificationColor: 0xFFFFFFFF,

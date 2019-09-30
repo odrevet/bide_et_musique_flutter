@@ -142,7 +142,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         color: Colors.orangeAccent,
         onPressed: () async {
           bool success = await AudioService.start(
-            backgroundTask: backgroundAudioPlayerTask,
+            backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
             resumeOnClick: true,
             androidNotificationChannelName: 'Bide&Musique',
             notificationColor: 0xFFFFFFFF,

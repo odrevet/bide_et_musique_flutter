@@ -24,32 +24,11 @@ MediaControl stopControl = MediaControl(
   action: MediaAction.stop,
 );
 
-void backgroundAudioPlayerTask() async {
-  StreamPlayer player = StreamPlayer();
-  AudioServiceBackground.run(
-      onStart: player.start,
-      onPlay: player.play,
-      onPause: player.pause,
-      onStop: player.stop,
-      onClick: (MediaButton button) => player.togglePlay(),
-      onCustomAction: (String name, dynamic arguments) {
-        switch (name) {
-          case 'song':
-            Map songMap = arguments;
-            var song = Song(
-                id: songMap['id'],
-                title: songMap['title'],
-                artist: songMap['artist']);
-            player.setSong(song);
-            break;
-          case 'setNotification':
-            player.setNotification();
-            break;
-        }
-      });
+void audioPlayerTaskEntrypoint() async {
+  AudioServiceBackground.run(() => StreamPlayer());
 }
 
-class StreamPlayer {
+class StreamPlayer extends BackgroundAudioTask{
   static final StreamPlayer _singleton = StreamPlayer._internal();
 
   factory StreamPlayer() {
@@ -64,9 +43,41 @@ class StreamPlayer {
   StreamNotificationUpdater streamNotificationUpdater =
       StreamNotificationUpdater();
 
-  Future<void> start() async {
+  @override
+  Future<void> onStart() async {
     audioStart();
     await _completer.future;
+  }
+
+  @override
+  void onPlay() async {
+    String url = await getStreamUrl();
+    FlutterRadio.play(url: url);
+    _playing = true;
+    await AudioServiceBackground.setState(
+        controls: [pauseControl, stopControl],
+        basicState: BasicPlaybackState.playing);
+  }
+
+  @override
+  void onPause() async {
+    String url = await getStreamUrl();
+    FlutterRadio.playOrPause(url: url);
+    _playing = false;
+
+    await AudioServiceBackground.setState(
+        controls: [playControl, stopControl],
+        basicState: BasicPlaybackState.paused);
+  }
+
+  @override
+  void onStop() async {
+    FlutterRadio.stop();
+    this._song = null;
+    _playing = false;
+    _completer.complete();
+    await AudioServiceBackground.setState(
+        controls: [], basicState: BasicPlaybackState.stopped);
   }
 
   Future<void> audioStart() async {
@@ -78,7 +89,7 @@ class StreamPlayer {
   }
 
   void togglePlay() {
-    _playing ? pause() : play();
+    _playing ? onPause() : onPlay();
   }
 
   String getSongLinkId() {
@@ -120,32 +131,29 @@ class StreamPlayer {
     return url;
   }
 
-  void play() async {
-    String url = await getStreamUrl();
-    FlutterRadio.play(url: url);
-    _playing = true;
-    await AudioServiceBackground.setState(
-        controls: [pauseControl, stopControl],
-        basicState: BasicPlaybackState.playing);
-  }
+  /*
+  @override
+  void onClick(MediaButton button) {
+    // TODO: implement onClick
+    super.onClick(button);
+  }*/
 
-  void pause() async {
-    String url = await getStreamUrl();
-    FlutterRadio.playOrPause(url: url);
-    _playing = false;
-
-    await AudioServiceBackground.setState(
-        controls: [playControl, stopControl],
-        basicState: BasicPlaybackState.paused);
-  }
-
-  void stop() async {
-    FlutterRadio.stop();
-    this._song = null;
-    _playing = false;
-    _completer.complete();
-    await AudioServiceBackground.setState(
-        controls: [], basicState: BasicPlaybackState.stopped);
+  @override
+  void onCustomAction(String name, arguments) {
+    switch (name) {
+      case 'song':
+        Map songMap = arguments;
+        var song = Song(
+            id: songMap['id'],
+            title: songMap['title'],
+            artist: songMap['artist']);
+        this.setSong(song);
+        break;
+      case 'setNotification':
+        this.setNotification();
+        break;
+    }
+    super.onCustomAction(name, arguments);
   }
 }
 
