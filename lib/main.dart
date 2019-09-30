@@ -103,7 +103,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         return Scaffold(
             appBar: AppBar(title: Text(title)),
             bottomNavigationBar:
-                BottomAppBar(child: playerControls, color: Colors.orange),
+                BottomAppBar(child: playerControls, color: Theme.of(context).primaryColor),
             drawer: DrawerWidget(),
             body: NowPlayingWidget());
       } else {
@@ -123,6 +123,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         title: title,
         theme: ThemeData(
           primarySwatch: Colors.orange,
+          buttonColor: Colors.orangeAccent,
           secondaryHeaderColor: Colors.deepOrange,
           canvasColor: Color(0xFFF5EEE5),
         ),
@@ -139,7 +140,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             )),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        color: Colors.orangeAccent,
         onPressed: () async {
           bool success = await AudioService.start(
             backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
