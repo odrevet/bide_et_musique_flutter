@@ -95,10 +95,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     onChanged: _onToggleRadioQuality),
                 ListTile(
                   title: Text('Relais'),
-                  trailing: RaisedButton(
-                    
+                  trailing: SizedBox(
+                      width: 42,
+                      child: FlatButton(
                       child: Text(_relay.toString()),
-                      onPressed: _onToggleRelay),
+                      onPressed: _onToggleRelay)),
                 ),
                 Divider(),
                 CheckboxListTile(
