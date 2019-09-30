@@ -14,6 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _radioHiQuality = true;
   bool _rememberIdents = false;
   bool _autoConnect = false;
+  int _relay = 1;
 
   @override
   void initState() {
@@ -27,31 +28,41 @@ class _SettingsPageState extends State<SettingsPage> {
       _radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
       _autoConnect = prefs.getBool('autoConnect') ?? false;
+      _relay = prefs.getInt('relay') ?? 1;
     });
   }
 
   void _onToggleRadioQuality(bool value) {
     setState(() {
       _radioHiQuality = value;
-      _saveOption('radioHiQuality', value);
+      _saveOptionBool('radioHiQuality', value);
     });
   }
 
   void _onToggleRememberIdents(bool value) {
     setState(() {
       _rememberIdents = value;
-      _saveOption('rememberIdents', value);
+      _saveOptionBool('rememberIdents', value);
     });
   }
 
   void _onToggleAutoConnect(bool value) {
     setState(() {
       _autoConnect = value;
-      _saveOption('autoConnect', value);
+      _saveOptionBool('autoConnect', value);
     });
   }
 
-  _saveOption(String name, bool value) async {
+  void _onToggleRelay() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _relay == 1 ? _relay = 2 : _relay = 1;
+    });
+    prefs.setInt('relay', _relay);
+  }
+
+  _saveOptionBool(String name, bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setBool(name, value);
@@ -82,6 +93,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text('Radio haute qualitée'),
                     value: _radioHiQuality,
                     onChanged: _onToggleRadioQuality),
+                ListTile(
+                  title: Text('Relais'),
+                  trailing: RaisedButton(
+                    
+                      child: Text(_relay.toString()),
+                      onPressed: _onToggleRelay),
+                ),
+                Divider(),
                 CheckboxListTile(
                     title: Text('Se souvenir des identifiants'),
                     value: _rememberIdents,

@@ -7,11 +7,9 @@ import 'artist.dart';
 import 'program.dart';
 import 'song.dart';
 
-const host = 'www.bide-et-musique.com';
+const site = 'bide-et-musique.com';
+const host = 'www.$site';
 const baseUri = 'http://$host';
-
-const streamHq = 'http://relay2.bide-et-musique.com:9100';
-const streamLq = 'http://relay2.bide-et-musique.com:9200';
 
 String stripTags(String htmlString) {
   var document = parser.parse(htmlString);
