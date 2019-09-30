@@ -149,7 +149,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             androidNotificationIcon: 'mipmap/ic_launcher',
           );
           if (success) {
-            StreamPlayer().resetSongLink();
+            await AudioService.customAction('resetSong');
             await AudioService.play();
             await AudioService.customAction('setNotification');
           }

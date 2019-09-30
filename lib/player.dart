@@ -28,15 +28,7 @@ void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => StreamPlayer());
 }
 
-class StreamPlayer extends BackgroundAudioTask{
-  static final StreamPlayer _singleton = StreamPlayer._internal();
-
-  factory StreamPlayer() {
-    return _singleton;
-  }
-
-  StreamPlayer._internal();
-
+class StreamPlayer extends BackgroundAudioTask {
   Song _song;
   bool _playing;
   Completer _completer = Completer();
@@ -51,7 +43,7 @@ class StreamPlayer extends BackgroundAudioTask{
 
   @override
   void onPlay() async {
-    String url = await getStreamUrl();
+    String url = await _getStreamUrl();
     FlutterRadio.play(url: url);
     _playing = true;
     await AudioServiceBackground.setState(
@@ -61,7 +53,7 @@ class StreamPlayer extends BackgroundAudioTask{
 
   @override
   void onPause() async {
-    String url = await getStreamUrl();
+    String url = await _getStreamUrl();
     FlutterRadio.playOrPause(url: url);
     _playing = false;
 
@@ -96,7 +88,7 @@ class StreamPlayer extends BackgroundAudioTask{
     return _song == null ? null : _song.id;
   }
 
-  void resetSongLink() {
+  void _resetSong() {
     _song = null;
   }
 
@@ -110,7 +102,7 @@ class StreamPlayer extends BackgroundAudioTask{
           _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
       var mediaItem = MediaItem(
-          id: 'bm_stream',
+          id: _song.id,
           album: 'Bide et Musique',
           title: title,
           artist: artist,
@@ -119,7 +111,7 @@ class StreamPlayer extends BackgroundAudioTask{
     }
   }
 
-  Future<String> getStreamUrl() async {
+  Future<String> _getStreamUrl() async {
     String url;
     if (this._song == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -131,23 +123,18 @@ class StreamPlayer extends BackgroundAudioTask{
     return url;
   }
 
-  /*
-  @override
-  void onClick(MediaButton button) {
-    // TODO: implement onClick
-    super.onClick(button);
-  }*/
-
   @override
   void onCustomAction(String name, arguments) {
     switch (name) {
       case 'song':
         Map songMap = arguments;
-        var song = Song(
+        this.setSong(Song(
             id: songMap['id'],
             title: songMap['title'],
-            artist: songMap['artist']);
-        this.setSong(song);
+            artist: songMap['artist']));
+        break;
+      case 'resetSong':
+        _resetSong();
         break;
       case 'setNotification':
         this.setNotification();
@@ -166,7 +153,7 @@ class StreamNotificationUpdater {
 
   void setMediaItemFromSong(SongLink song) {
     var mediaItem = MediaItem(
-        id: 'bm_stream',
+        id: song.id,
         album: song.program,
         title: song.title,
         artist: song.artist,

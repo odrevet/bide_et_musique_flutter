@@ -183,11 +183,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
       isPlaying = false;
-    } else {
-      this._song.id == StreamPlayer().getSongLinkId()
-          ? isPlaying = true
-          : isPlaying = false;
-    }
+    } else
+      isPlaying = _song.id == AudioService.currentMediaItem.id;
 
     this.setState(() {
       this._isPlaying = isPlaying;
@@ -239,8 +236,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     setState(() {
       _isPlaying = true;
     });
-
-    StreamPlayer().setSong(_song);
   }
 
   stop() {
