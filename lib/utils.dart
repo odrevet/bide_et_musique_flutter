@@ -10,8 +10,8 @@ import 'song.dart';
 const host = 'www.bide-et-musique.com';
 const baseUri = 'http://$host';
 
-const stream_hq = 'http://relay2.bide-et-musique.com:9100';
-const stream_lq = 'http://relay2.bide-et-musique.com:9200';
+const streamHq = 'http://relay2.bide-et-musique.com:9100';
+const streamLq = 'http://relay2.bide-et-musique.com:9200';
 
 String stripTags(String htmlString) {
   var document = parser.parse(htmlString);

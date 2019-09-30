@@ -116,7 +116,7 @@ class StreamPlayer extends BackgroundAudioTask {
     if (this._song == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
-      url = radioHiQuality == true ? stream_hq : stream_lq;
+      url = radioHiQuality == true ? streamHq : streamLq;
     } else {
       url = '$baseUri/stream_${this._song.id}.php';
     }
@@ -151,24 +151,24 @@ class StreamNotificationUpdater {
 
   StreamNotificationUpdater();
 
-  void setMediaItemFromSong(SongLink song) {
+  void setMediaItemFromSongLink(SongLink songLink) {
     var mediaItem = MediaItem(
-        id: song.id,
-        album: song.program,
-        title: song.title,
-        artist: song.artist,
-        artUri: '$baseUri/images/pochettes/${song.id}.jpg');
+        id: songLink.id,
+        album: songLink.program,
+        title: songLink.title,
+        artist: songLink.artist,
+        artUri: '$baseUri/images/pochettes/${songLink.id}.jpg');
     AudioServiceBackground.setMediaItem(mediaItem);
   }
 
   void start() {
     fetchNowPlaying().then((song) {
-      setMediaItemFromSong(song);
+      setMediaItemFromSongLink(song);
     });
 
     timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
       fetchNowPlaying().then((song) {
-        setMediaItemFromSong(song);
+        setMediaItemFromSongLink(song);
       });
     });
   }
