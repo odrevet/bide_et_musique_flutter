@@ -98,8 +98,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: SizedBox(
                       width: 42,
                       child: FlatButton(
-                      child: Text(_relay.toString()),
-                      onPressed: _onToggleRelay)),
+                          child: Text(_relay.toString()),
+                          onPressed: _onToggleRelay)),
                 ),
                 Divider(),
                 CheckboxListTile(

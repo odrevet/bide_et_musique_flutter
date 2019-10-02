@@ -48,11 +48,13 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   @override
   void initState() {
-    super.initState();
     _songLink = fetchNowPlaying();
     _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      setState(() { _songLink = fetchNowPlaying();});
+      setState(() {
+        _songLink = fetchNowPlaying();
+      });
     });
+    super.initState();
   }
 
   @override
@@ -77,8 +79,9 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
                   errorDisplay(snapshot.error),
                   RaisedButton.icon(
                     icon: Icon(Icons.refresh),
-                    onPressed: () =>
-                        setState(() { _songLink = fetchNowPlaying();}),
+                    onPressed: () => setState(() {
+                      _songLink = fetchNowPlaying();
+                    }),
                     label: Text('Ré-essayer maintenant'),
                   )
                 ]);

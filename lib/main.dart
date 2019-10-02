@@ -102,8 +102,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       if (orientation == Orientation.portrait) {
         return Scaffold(
             appBar: AppBar(title: Text(title)),
-            bottomNavigationBar:
-                BottomAppBar(child: playerControls, color: Theme.of(context).primaryColor),
+            bottomNavigationBar: BottomAppBar(
+                child: playerControls, color: Theme.of(context).primaryColor),
             drawer: DrawerWidget(),
             body: NowPlayingWidget());
       } else {

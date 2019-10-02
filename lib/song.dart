@@ -122,8 +122,6 @@ class SongCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tag = createTag(songLink);
-
     return GestureDetector(
       onTap: () {
         if (songLink.id != null) {
@@ -142,14 +140,12 @@ class SongCardWidget extends StatelessWidget {
             fullscreenDialog: true));
       },
       child: Container(
-          decoration: BoxDecoration(color: Theme.of(context).canvasColor),
-          child: Hero(
-              tag: tag,
-              child: FadeInImage(
-                  image: NetworkImage(
-                      '$baseUri/images/pochettes/${songLink.id}.jpg'),
-                  placeholder:
-                      NetworkImage('$baseUri/images/vinyl-default.jpg')))),
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            image: DecorationImage(
+                image: NetworkImage(
+                    '$baseUri/images/pochettes/${songLink.id}.jpg'))),
+      ),
     );
   }
 }

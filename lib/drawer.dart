@@ -73,7 +73,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         ListTile(
           title: Text('Programmation'),
-          leading: Icon(Icons.calendar_view_day ),
+          leading: Icon(Icons.calendar_view_day),
           onTap: () {
             Navigator.push(
                 context,
