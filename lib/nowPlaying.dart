@@ -51,7 +51,7 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
     super.initState();
     _songLink = fetchNowPlaying();
     _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      _songLink = fetchNowPlaying();
+      setState(() { _songLink = fetchNowPlaying();});
     });
   }
 
