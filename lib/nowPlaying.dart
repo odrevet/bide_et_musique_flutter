@@ -9,7 +9,7 @@ import 'song.dart';
 import 'utils.dart';
 
 Future<SongLink> fetchNowPlaying() async {
-  var song = SongLink();
+  var songLink = SongLink();
   final url = '$baseUri/now-top.php';
   final response = await Session.get(url);
 
@@ -19,15 +19,15 @@ Future<SongLink> fetchNowPlaying() async {
 
     var titreSong = document.getElementsByClassName('titre-song')[0];
     String href = titreSong.children[0].attributes['href'];
-    song.id = extractSongId(href);
-    song.title = stripTags(titreSong.children[0].innerHtml);
+    songLink.id = extractSongId(href);
+    songLink.title = stripTags(titreSong.children[0].innerHtml);
 
     var titreSong2 = document.getElementsByClassName('titre-song2')[0];
-    song.artist = stripTags(titreSong2.children[0].innerHtml);
+    songLink.artist = stripTags(titreSong2.children[0].innerHtml);
 
     var requete = document.getElementById('requete');
-    song.program = stripTags(requete.innerHtml);
-    return song;
+    songLink.program = stripTags(requete.innerHtml);
+    return songLink;
   } else {
     throw Exception('Failed to load top');
   }
@@ -41,33 +41,31 @@ class NowPlayingWidget extends StatefulWidget {
 }
 
 class _NowPlayingWidgetState extends State<NowPlayingWidget> {
-  Future<SongLink> _song;
-  Timer timer;
+  Future<SongLink> _songLink;
+  Timer _timer;
 
   _NowPlayingWidgetState();
 
   @override
   void initState() {
     super.initState();
-    _song = fetchNowPlaying();
-    timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      this.setState(() {
-        _song = fetchNowPlaying();
-      });
+    _songLink = fetchNowPlaying();
+    _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
+      _songLink = fetchNowPlaying();
     });
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    _timer.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<SongLink>(
-        future: _song,
+        future: _songLink,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SongCardWidget(songLink: snapshot.data);
@@ -79,11 +77,8 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
                   errorDisplay(snapshot.error),
                   RaisedButton.icon(
                     icon: Icon(Icons.refresh),
-                    onPressed: () {
-                      this.setState(() {
-                        _song = fetchNowPlaying();
-                      });
-                    },
+                    onPressed: () =>
+                        setState(() { _songLink = fetchNowPlaying();}),
                     label: Text('Ré-essayer maintenant'),
                   )
                 ]);
