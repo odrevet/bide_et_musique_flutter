@@ -9,7 +9,7 @@ import 'song.dart';
 
 const site = 'bide-et-musique.com';
 const host = 'www.$site';
-const baseUri = 'http://$host';
+const baseUri = 'https://$host';
 
 String stripTags(String htmlString) {
   var document = parser.parse(htmlString);
@@ -19,7 +19,7 @@ String stripTags(String htmlString) {
 void onLinkTap(String url, BuildContext context) {
   //check if the url point to a page that the app can handle
   //check if point to a page
-  RegExp regExp = RegExp(r"http://www.bide-et-musique.com/(\w+)/(\d+).html",
+  RegExp regExp = RegExp("$baseUri/(\w+)/(\d+).html",
       caseSensitive: false);
 
   var hasMatch = regExp.hasMatch(url);

@@ -145,7 +145,7 @@ class SongShareIconWidget extends StatelessWidget {
               '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-http://bide-et-musique.com/song/${_song.id}.html
+$baseUri/song/${_song.id}.html
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
