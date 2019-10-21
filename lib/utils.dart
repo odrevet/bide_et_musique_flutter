@@ -19,11 +19,10 @@ String stripTags(String htmlString) {
 void onLinkTap(String url, BuildContext context) {
   //check if the url point to a page that the app can handle
   //check if point to a page
-  RegExp regExp = RegExp("$baseUri/(\w+)/(\d+).html",
+  RegExp regExp = RegExp(r'https:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
       caseSensitive: false);
 
   var hasMatch = regExp.hasMatch(url);
-
   if (hasMatch == true) {
     var type = regExp.firstMatch(url)[1];
     var id = regExp.firstMatch(url)[2];
