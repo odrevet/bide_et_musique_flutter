@@ -250,7 +250,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           return Scaffold(
               appBar: AppBar(title: Text(title)),
               bottomNavigationBar: BottomAppBar(
-                  child: playerControls, color: Theme.of(context).primaryColor),
+                  child: playerControls),
               drawer: DrawerWidget(),
               body: NowPlayingWidget());
         } else {
@@ -268,7 +268,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     else
       home = Scaffold(
           bottomNavigationBar: BottomAppBar(
-              child: playerControls, color: Theme.of(context).primaryColor),
+              child: playerControls),
           body: body);
 
     return MaterialApp(
@@ -277,6 +277,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           primarySwatch: Colors.orange,
           buttonColor: Colors.orangeAccent,
           secondaryHeaderColor: Colors.deepOrange,
+          bottomAppBarColor: Colors.orange,
           canvasColor: Color(0xFFF5EEE5),
         ),
         home: home);
