@@ -16,53 +16,45 @@ String stripTags(String htmlString) {
   return parser.parse(document.body.text).documentElement.text;
 }
 
-void onLinkTap(String url, BuildContext context) {
-  //check if the url point to a page that the app can handle
-  //check if point to a page
-  RegExp regExp = RegExp(r'https:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
+//handle an url (e.g deep link) if the app can understand it returns the
+//corresponding Widget or returns false otherwise
+Widget handleLink(String url, BuildContext context) {
+  RegExp regExp = RegExp(
+      r'https:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
       caseSensitive: false);
 
-  var hasMatch = regExp.hasMatch(url);
-  if (hasMatch == true) {
+  if (regExp.hasMatch(url) == true) {
     var type = regExp.firstMatch(url)[1];
     var id = regExp.firstMatch(url)[2];
 
     switch (type) {
       case 'song':
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SongPageWidget(
-                    songLink: SongLink(id: id), song: fetchSong(id))));
+        return SongPageWidget(songLink: SongLink(id: id), song: fetchSong(id));
         break;
       case 'account':
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    AccountPageWidget(account: fetchAccount(id))));
+        return AccountPageWidget(account: fetchAccount(id));
         break;
       case 'artist':
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtistPageWidget(artist: fetchArtist(id))));
+        return ArtistPageWidget(artist: fetchArtist(id));
         break;
       case 'program':
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ProgramPageWidget(program: fetchProgram(id))));
+        return ProgramPageWidget(program: fetchProgram(id));
         break;
       default:
-        launchURL(url);
+        return null;
     }
-  } else {
-    // otherwise launch in a browser
-    launchURL(url);
   }
+
+  return null;
+}
+
+void onLinkTap(String url, BuildContext context) {
+  //if (!handleLink(url, context)) launchURL(url);
+  Widget widget = handleLink(url, context);
+  if (widget == null)
+    launchURL(url);
+  else
+    Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 }
 
 launchURL(String url) async {
