@@ -435,7 +435,7 @@ class SongPageWidget extends StatelessWidget {
           Share.share('$baseUri/stream_${song.id}.php');
         });
 
-    actionsShare.add(SongShareIconWidget(song));
+    actionsShare.add(SongShareIconWidget(songLink));
     actionsShare.add(listenButton);
 
     //build widget for overflow button

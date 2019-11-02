@@ -164,9 +164,9 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 // Share
 
 class SongShareIconWidget extends StatelessWidget {
-  final Song _song;
+  final SongLink _songLink;
 
-  SongShareIconWidget(this._song, {Key key}) : super(key: key);
+  SongShareIconWidget(this._songLink, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
@@ -174,10 +174,10 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         onPressed: () {
           Share.share(
-              '''En ce moment j'écoute '${_song.title}' sur bide et musique !
+              '''En ce moment j'écoute '${_songLink.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-$baseUri/song/${_song.id}.html
+$baseUri/song/${_songLink.id}.html
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
