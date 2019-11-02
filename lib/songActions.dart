@@ -10,7 +10,9 @@ import 'utils.dart';
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   Future<SongLink> _songLink;
 
-  SongAppBar(this._songLink, {Key key}) : preferredSize = Size.fromHeight(kToolbarHeight), super(key: key);
+  SongAppBar(this._songLink, {Key key})
+      : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
 
   @override
   final Size preferredSize;
@@ -19,17 +21,16 @@ class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   _SongAppBarState createState() => _SongAppBarState();
 }
 
-class _SongAppBarState extends State<SongAppBar>{
-
+class _SongAppBarState extends State<SongAppBar> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SongLink>(
       future: widget._songLink,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return AppBar( title: Text(snapshot.data.title) );
+          return AppBar(title: Text(snapshot.data.title));
         } else if (snapshot.hasError) {
-          return AppBar( title: Text("Chargement") );
+          return AppBar(title: Text("Chargement"));
         }
 
         // By default, show a loading spinner
@@ -45,36 +46,35 @@ class _SongAppBarState extends State<SongAppBar>{
 ////////////////////////////////
 //// Add to favorite
 class SongFavoriteIconWidget extends StatefulWidget {
-  final String _songId;
-  final bool _isFavourite;
+  Song _song;
 
-  SongFavoriteIconWidget(this._songId, this._isFavourite, {Key key})
-      : super(key: key);
+  SongFavoriteIconWidget(this._song, {Key key}) : super(key: key);
 
   @override
-  _SongFavoriteIconWidgetState createState() =>
-      _SongFavoriteIconWidgetState(this._songId, this._isFavourite);
+  _SongFavoriteIconWidgetState createState() => _SongFavoriteIconWidgetState();
 }
 
 class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
-  final String _songId;
-  bool _isFavourite;
-
-  _SongFavoriteIconWidgetState(this._songId, this._isFavourite);
+  _SongFavoriteIconWidgetState();
 
   @override
   Widget build(BuildContext context) {
-    if (_isFavourite) {
+    if (widget._song.isFavourite) {
       return IconButton(
           icon: Icon(Icons.star),
           onPressed: () async {
             final response = await Session.post(
                 '$baseUri/account/${Session.accountLink.id}.html',
-                body: {'K': _songId, 'Step': '', 'DS.x': '1', 'DS.y': '1'});
+                body: {
+                  'K': widget._song.id,
+                  'Step': '',
+                  'DS.x': '1',
+                  'DS.y': '1'
+                });
 
             if (response.statusCode == 200) {
               setState(() {
-                _isFavourite = false;
+                widget._song.isFavourite = false;
               });
             }
           });
@@ -82,7 +82,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
       return IconButton(
         icon: Icon(Icons.star_border),
         onPressed: () async {
-          var url = '$baseUri/song/$_songId.html';
+          var url = '$baseUri/song/${widget._song.id}.html';
 
           Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           Session.headers['Host'] = host;
@@ -95,7 +95,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           Session.headers.remove('Content-Type');
           if (response.statusCode == 200) {
             setState(() {
-              _isFavourite = true;
+              widget._song.isFavourite = true;
             });
           } else {
             print("Add song to favorites returned status code " +

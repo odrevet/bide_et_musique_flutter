@@ -423,7 +423,7 @@ class SongPageWidget extends StatelessWidget {
 
     if (Session.accountLink.id != null) {
       if (song.canFavourite) {
-        actions.add(SongFavoriteIconWidget(song.id, song.isFavourite));
+        actions.add(SongFavoriteIconWidget(song));
       }
 
       actions.add(SongVoteIconWidget(song.id, song.hasVote));
@@ -460,6 +460,16 @@ class SongPageWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(song.title),
+        /*actions: <Widget>[
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: SongFavoriteIconWidget(song),
+              ),
+            ],
+          ),
+        ],*/
         bottom: PreferredSize(
           child: actionContainer,
           preferredSize: Size(0.0, 20.0),
