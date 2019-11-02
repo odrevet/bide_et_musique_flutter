@@ -238,19 +238,21 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     var title = 'Bide&Musique';
 
     Widget home;
-
     Widget body;
+
+    //if the app is launched from deep linking, try to fetch the widget that
+    //match the url
     if (_latestLink != null) {
       body = handleLink(_latestLink, context);
     }
 
+    //no url match from deep link or not launched from deep link
     if (body == null)
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: AppBar(title: Text(title)),
-              bottomNavigationBar: BottomAppBar(
-                  child: playerControls),
+              bottomNavigationBar: BottomAppBar(child: playerControls),
               drawer: DrawerWidget(),
               body: NowPlayingWidget());
         } else {
@@ -259,7 +261,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  NowPlayingWidget(),
+                  Expanded(child: NowPlayingWidget()),
                   Expanded(child: playerControls)
                 ],
               ));
@@ -267,9 +269,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       });
     else
       home = Scaffold(
-          bottomNavigationBar: BottomAppBar(
-              child: playerControls),
-          body: body);
+          bottomNavigationBar: BottomAppBar(child: playerControls), body: body);
 
     return MaterialApp(
         title: title,
