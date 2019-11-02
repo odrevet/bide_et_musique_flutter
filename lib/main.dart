@@ -11,6 +11,8 @@ import 'identification.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
 import 'utils.dart' show handleLink;
+import 'song.dart';
+import 'songActions.dart';
 
 enum UniLinksType { string, uri }
 
@@ -25,13 +27,22 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   PlaybackState _state;
   StreamSubscription _playbackStateSubscription;
 
+  Future<SongLink> _songLink;
+  Timer _timer;
+
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
     connect();
     autoLogin();
     initPlatformState();
+    _songLink = fetchNowPlaying();
+    _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
+      setState(() {
+        _songLink = fetchNowPlaying();
+      });
+    });
+    super.initState();
   }
 
   // DEEP LINKING
@@ -184,6 +195,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     disconnect();
     WidgetsBinding.instance.removeObserver(this);
     if (_sub != null) _sub.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -235,8 +247,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                 ],
     );
 
-    var title = 'Bide&Musique';
-
     Widget home;
     Widget body;
 
@@ -251,17 +261,17 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: AppBar(title: Text(title)),
+              appBar: SongAppBar(this._songLink),
               bottomNavigationBar: BottomAppBar(child: playerControls),
               drawer: DrawerWidget(),
-              body: NowPlayingWidget());
+              body: NowPlayingWidget(_songLink));
         } else {
           return Scaffold(
-              appBar: AppBar(title: Text(title)),
+              appBar: SongAppBar(this._songLink),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: NowPlayingWidget()),
+                  Expanded(child: NowPlayingWidget(_songLink)),
                   Expanded(child: playerControls)
                 ],
               ));
@@ -272,7 +282,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: BottomAppBar(child: playerControls), body: body);
 
     return MaterialApp(
-        title: title,
+        title: 'Bide&Musique',
         theme: ThemeData(
           primarySwatch: Colors.orange,
           buttonColor: Colors.orangeAccent,

@@ -7,6 +7,38 @@ import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
+class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
+  Future<SongLink> _songLink;
+
+  SongAppBar(this._songLink, {Key key}) : preferredSize = Size.fromHeight(kToolbarHeight), super(key: key);
+
+  @override
+  final Size preferredSize;
+
+  @override
+  _SongAppBarState createState() => _SongAppBarState();
+}
+
+class _SongAppBarState extends State<SongAppBar>{
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SongLink>(
+      future: widget._songLink,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return AppBar( title: Text(snapshot.data.title) );
+        } else if (snapshot.hasError) {
+          return AppBar( title: Text("Chargement") );
+        }
+
+        // By default, show a loading spinner
+        return CircularProgressIndicator();
+      },
+    );
+  }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Actions for the song page title bar
 
