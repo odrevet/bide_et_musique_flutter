@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:share/share.dart';
 
 import 'account.dart';
 import 'artist.dart';

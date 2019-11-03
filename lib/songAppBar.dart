@@ -8,8 +8,8 @@ import 'song.dart';
 import 'utils.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
-  Future<Song> _song;
-  var _actions = <Widget>[];
+  final Future<Song> _song;
+  final _actions = <Widget>[];
 
   SongAppBar(this._song, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
@@ -108,7 +108,7 @@ class _SongAppBarState extends State<SongAppBar> {
 ////////////////////////////////
 //// Add to favorite
 class SongFavoriteIconWidget extends StatefulWidget {
-  Song _song;
+  final Song _song;
 
   SongFavoriteIconWidget(this._song, {Key key}) : super(key: key);
 

@@ -17,7 +17,7 @@ enum UniLinksType { string, uri }
 
 
 class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
-  Future<SongLink> _songLink;
+  final Future<SongLink> _songLink;
 
   SongLinkAppBar(this._songLink, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
