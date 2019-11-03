@@ -79,8 +79,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   // DEEP LINKING
   /////////////////////////////////////////////////////////////////////////
-  String _latestLink = 'Unknown';
-  Uri _latestUri;
+  String _deepLink;
   UniLinksType _type = UniLinksType.string;
   StreamSubscription _sub;
 
@@ -107,17 +106,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _sub = getLinksStream().listen((String link) {
       if (!mounted) return;
       setState(() {
-        _latestLink = link ?? 'Unknown';
-        _latestUri = null;
-        try {
-          if (link != null) _latestUri = Uri.parse(link);
-        } on FormatException {}
+        _deepLink = link ?? null;
       });
     }, onError: (err) {
+      print('Failed to get deep link: $err.');
       if (!mounted) return;
       setState(() {
-        _latestLink = 'Failed to get latest link: $err.';
-        _latestUri = null;
+        _deepLink = null;
       });
     });
 
@@ -130,18 +125,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
     // Get the latest link
     String initialLink;
-    Uri initialUri;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       initialLink = await getInitialLink();
       print('initial link: $initialLink');
-      if (initialLink != null) initialUri = Uri.parse(initialLink);
     } on PlatformException {
       initialLink = 'Failed to get initial link.';
-      initialUri = null;
     } on FormatException {
       initialLink = 'Failed to parse the initial link as Uri.';
-      initialUri = null;
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -150,8 +141,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     if (!mounted) return;
 
     setState(() {
-      _latestLink = initialLink;
-      _latestUri = initialUri;
+      _deepLink = initialLink;
     });
   }
 
@@ -161,14 +151,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _sub = getUriLinksStream().listen((Uri uri) {
       if (!mounted) return;
       setState(() {
-        _latestUri = uri;
-        _latestLink = uri?.toString() ?? 'Unknown';
+        _deepLink = uri?.toString() ?? null;
       });
     }, onError: (err) {
+      print('Failed to get latest link: $err.');
       if (!mounted) return;
       setState(() {
-        _latestUri = null;
-        _latestLink = 'Failed to get latest link: $err.';
+        _deepLink = null;
       });
     });
 
@@ -202,8 +191,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     if (!mounted) return;
 
     setState(() {
-      _latestUri = initialUri;
-      _latestLink = initialLink;
+      _deepLink = initialLink;
     });
   }
 
@@ -284,8 +272,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
     //if the app is launched from deep linking, try to fetch the widget that
     //match the url
-    if (_latestLink != null) {
-      body = handleLink(_latestLink, context);
+    if (_deepLink != null) {
+      body = handleLink(_deepLink, context);
     }
 
     //no url match from deep link or not launched from deep link
