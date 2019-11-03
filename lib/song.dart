@@ -328,10 +328,7 @@ class SongPageWidget extends StatelessWidget {
       ],
     );
 
-    return Scaffold(
-        appBar: AppBar(
-            title: Text(loadingMessage)),
-        body: body);
+    return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
 
   Widget _buildView(BuildContext context, Song song) {

@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
-import 'package:flutter/services.dart';
 
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
-import 'utils.dart' show handleLink;
 import 'song.dart';
+import 'utils.dart' show handleLink;
 
 enum UniLinksType { string, uri }
-
 
 class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<SongLink> _songLink;
@@ -48,7 +47,6 @@ class _SongLinkAppBarState extends State<SongLinkAppBar> {
     );
   }
 }
-
 
 void main() => runApp(BideApp());
 

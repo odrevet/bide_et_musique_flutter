@@ -43,14 +43,15 @@ class _SongAppBarState extends State<SongAppBar> {
           //if the user if logged in
           if (Session.accountLink.id != null) {
             if (song.canFavourite) {
-              widget._actions.add(PopupMenuItem(child: SongFavoriteIconWidget(song)));
+              widget._actions
+                  .add(PopupMenuItem(child: SongFavoriteIconWidget(song)));
             }
 
             widget._actions.add(SongVoteIconWidget(song));
           }
 
           // Share buttons (message and song id)
-          
+
           //list of actions for sharing
           var actionsShare = <Widget>[];
 
@@ -75,13 +76,13 @@ class _SongAppBarState extends State<SongAppBar> {
               ),
               itemBuilder: (BuildContext context) => popupMenuShare));
           ///////////////////////////////////
-          
+
           //wrap all actions in a PopupMenuItem to be added in the action menu
           var popupMenuAction = <PopupMenuEntry<Widget>>[];
           for (Widget actionWidget in widget._actions) {
             popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
           }
-          
+
           var buttonActions = PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (context) => popupMenuAction,
@@ -177,12 +178,10 @@ class SongVoteIconWidget extends StatefulWidget {
   SongVoteIconWidget(this._song, {Key key}) : super(key: key);
 
   @override
-  _SongVoteIconWidgetState createState() =>
-      _SongVoteIconWidgetState();
+  _SongVoteIconWidgetState createState() => _SongVoteIconWidgetState();
 }
 
 class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
-
   _SongVoteIconWidgetState();
 
   @override

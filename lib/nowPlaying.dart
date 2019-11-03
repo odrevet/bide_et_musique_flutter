@@ -42,7 +42,6 @@ class NowPlayingWidget extends StatefulWidget {
 }
 
 class _NowPlayingWidgetState extends State<NowPlayingWidget> {
-
   _NowPlayingWidgetState();
 
   @override
