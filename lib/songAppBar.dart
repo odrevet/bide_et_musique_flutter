@@ -35,6 +35,11 @@ class _SongAppBarState extends State<SongAppBar> {
           //some action buttons are added when user is logged in
           //some action buttons are not available on some songs
 
+          //if the song can be listen, add the song player
+          if (song.canListen) {
+            widget._actions.add(SongPlayerWidget(song));
+          }
+
           //if the user if logged in
           if (Session.accountLink.id != null) {
             if (song.canFavourite) {
@@ -44,51 +49,39 @@ class _SongAppBarState extends State<SongAppBar> {
             widget._actions.add(SongVoteIconWidget(song));
           }
 
-          //if the song can be listen, add the song player
-          if (song.canListen) {
-            widget._actions.add(SongPlayerWidget(song));
-          }
-
-          //wrap all actions in a PopupMenuItem to be added in the action menu
-          var popupMenuAction = <PopupMenuEntry<Widget>>[];
-          for (Widget actionWidget in widget._actions) {
-            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
-          }
-
-          /*
+          // Share buttons (message and song id)
+          
           //list of actions for sharing
           var actionsShare = <Widget>[];
 
-
-
-          var listenButton = IconButton(
+          var shareSongStream = IconButton(
               icon: Icon(Icons.music_note),
               onPressed: () {
                 Share.share('$baseUri/stream_${song.id}.php');
               });
 
-          //actionsShare.add(SongShareIconWidget(songLink));
-          actionsShare.add(listenButton);
+          actionsShare.add(SongShareIconWidget(song));
+          actionsShare.add(shareSongStream);
 
           //build widget for overflow button
-          var popupMenuAction = <PopupMenuEntry<Widget>>[];
+          var popupMenuShare = <PopupMenuEntry<Widget>>[];
           for (Widget actionWidget in actionsShare) {
-            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+            popupMenuShare.add(PopupMenuItem<Widget>(child: actionWidget));
           }
 
-          //overflow menu
           widget._actions.add(PopupMenuButton<Widget>(
               icon: Icon(
                 Icons.share,
               ),
-              itemBuilder: (BuildContext context) => popupMenuAction));
-
-          var actionContainer = Container(
-            padding: EdgeInsets.only(left: 54.0),
-            alignment: Alignment.topCenter,
-            child: Row(children: widget._actions),
-          );
-*/
+              itemBuilder: (BuildContext context) => popupMenuShare));
+          ///////////////////////////////////
+          
+          //wrap all actions in a PopupMenuItem to be added in the action menu
+          var popupMenuAction = <PopupMenuEntry<Widget>>[];
+          for (Widget actionWidget in widget._actions) {
+            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+          }
+          
           var buttonActions = PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (context) => popupMenuAction,
@@ -230,9 +223,9 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 //// Share
 
 class SongShareIconWidget extends StatelessWidget {
-  final SongLink _songLink;
+  final Song _song;
 
-  SongShareIconWidget(this._songLink, {Key key}) : super(key: key);
+  SongShareIconWidget(this._song, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
@@ -240,10 +233,10 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         onPressed: () {
           Share.share(
-              '''En ce moment j'écoute '${_songLink.title}' sur bide et musique !
+              '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-$baseUri/song/${_songLink.id}.html
+$baseUri/song/${_song.id}.html
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
