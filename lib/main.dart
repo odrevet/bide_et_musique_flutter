@@ -12,9 +12,43 @@ import 'nowPlaying.dart';
 import 'player.dart';
 import 'utils.dart' show handleLink;
 import 'song.dart';
-import 'songActions.dart';
 
 enum UniLinksType { string, uri }
+
+
+class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
+  Future<SongLink> _songLink;
+
+  SongLinkAppBar(this._songLink, {Key key})
+      : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
+
+  @override
+  final Size preferredSize;
+
+  @override
+  _SongLinkAppBarState createState() => _SongLinkAppBarState();
+}
+
+class _SongLinkAppBarState extends State<SongLinkAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SongLink>(
+      future: widget._songLink,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return AppBar(title: Text(snapshot.data.title));
+        } else if (snapshot.hasError) {
+          return AppBar(title: Text("Chargement"));
+        }
+
+        // By default, show a loading spinner
+        return CircularProgressIndicator();
+      },
+    );
+  }
+}
+
 
 void main() => runApp(BideApp());
 
@@ -261,13 +295,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongAppBar(this._songLink),
+              appBar: SongLinkAppBar(this._songLink),
               bottomNavigationBar: BottomAppBar(child: playerControls),
               drawer: DrawerWidget(),
               body: NowPlayingWidget(_songLink));
         } else {
           return Scaffold(
-              appBar: SongAppBar(this._songLink),
+              appBar: SongLinkAppBar(this._songLink),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[

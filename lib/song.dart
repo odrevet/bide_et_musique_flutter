@@ -14,7 +14,7 @@ import 'artist.dart';
 import 'coverViewer.dart';
 import 'search.dart';
 import 'session.dart';
-import 'songActions.dart';
+import 'songAppBar.dart';
 import 'utils.dart';
 
 class SongLink {
@@ -331,11 +331,7 @@ class SongPageWidget extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(loadingMessage),
-            bottom: PreferredSize(
-              child: CircularProgressIndicator(),
-              preferredSize: Size(0.0, 20.0),
-            )),
+            title: Text(loadingMessage)),
         body: body);
   }
 
@@ -410,71 +406,8 @@ class SongPageWidget extends StatelessWidget {
       )),
     );
 
-    //list of actions in the title bar
-    var actions = <Widget>[];
-
-    //list of actions for sharing
-    var actionsShare = <Widget>[];
-
-    //if the song can be listen, add the song player
-    if (song.canListen) {
-      actions.add(SongPlayerWidget(song));
-    }
-
-    if (Session.accountLink.id != null) {
-      if (song.canFavourite) {
-        actions.add(SongFavoriteIconWidget(song));
-      }
-
-      actions.add(SongVoteIconWidget(song.id, song.hasVote));
-    }
-
-    var listenButton = IconButton(
-        icon: Icon(Icons.music_note),
-        onPressed: () {
-          Share.share('$baseUri/stream_${song.id}.php');
-        });
-
-    actionsShare.add(SongShareIconWidget(songLink));
-    actionsShare.add(listenButton);
-
-    //build widget for overflow button
-    var popupMenuAction = <PopupMenuEntry<Widget>>[];
-    for (Widget actionWidget in actionsShare) {
-      popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
-    }
-
-    //overflow menu
-    actions.add(PopupMenuButton<Widget>(
-        icon: Icon(
-          Icons.share,
-        ),
-        itemBuilder: (BuildContext context) => popupMenuAction));
-
-    var actionContainer = Container(
-      padding: EdgeInsets.only(left: 54.0),
-      alignment: Alignment.topCenter,
-      child: Row(children: actions),
-    );
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(song.title),
-        /*actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: SongFavoriteIconWidget(song),
-              ),
-            ],
-          ),
-        ],*/
-        bottom: PreferredSize(
-          child: actionContainer,
-          preferredSize: Size(0.0, 20.0),
-        ),
-      ),
+      appBar: SongAppBar(this.song),
       body: nestedScrollView,
     );
   }

@@ -8,9 +8,10 @@ import 'song.dart';
 import 'utils.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
-  Future<SongLink> _songLink;
+  Future<Song> _song;
+  var _actions = <Widget>[];
 
-  SongAppBar(this._songLink, {Key key})
+  SongAppBar(this._song, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -24,24 +25,92 @@ class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _SongAppBarState extends State<SongAppBar> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SongLink>(
-      future: widget._songLink,
+    return FutureBuilder<Song>(
+      future: widget._song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return AppBar(title: Text(snapshot.data.title));
+          Song song = snapshot.data;
+
+          //add buttons to the actions menu
+          //some action buttons are added when user is logged in
+          //some action buttons are not available on some songs
+
+          //if the user if logged in
+          if (Session.accountLink.id != null) {
+            if (song.canFavourite) {
+              widget._actions.add(PopupMenuItem(child: SongFavoriteIconWidget(song)));
+            }
+
+            widget._actions.add(SongVoteIconWidget(song));
+          }
+
+          //if the song can be listen, add the song player
+          if (song.canListen) {
+            widget._actions.add(SongPlayerWidget(song));
+          }
+
+          //wrap all actions in a PopupMenuItem to be added in the action menu
+          var popupMenuAction = <PopupMenuEntry<Widget>>[];
+          for (Widget actionWidget in widget._actions) {
+            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+          }
+
+          /*
+          //list of actions for sharing
+          var actionsShare = <Widget>[];
+
+
+
+          var listenButton = IconButton(
+              icon: Icon(Icons.music_note),
+              onPressed: () {
+                Share.share('$baseUri/stream_${song.id}.php');
+              });
+
+          //actionsShare.add(SongShareIconWidget(songLink));
+          actionsShare.add(listenButton);
+
+          //build widget for overflow button
+          var popupMenuAction = <PopupMenuEntry<Widget>>[];
+          for (Widget actionWidget in actionsShare) {
+            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+          }
+
+          //overflow menu
+          widget._actions.add(PopupMenuButton<Widget>(
+              icon: Icon(
+                Icons.share,
+              ),
+              itemBuilder: (BuildContext context) => popupMenuAction));
+
+          var actionContainer = Container(
+            padding: EdgeInsets.only(left: 54.0),
+            alignment: Alignment.topCenter,
+            child: Row(children: widget._actions),
+          );
+*/
+          var buttonActions = PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (context) => popupMenuAction,
+          );
+
+          return AppBar(
+            title: Text(snapshot.data.title),
+            actions: <Widget>[buttonActions],
+          );
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Chargement"));
         }
 
         // By default, show a loading spinner
-        return CircularProgressIndicator();
+        return AppBar(title: CircularProgressIndicator());
       },
     );
   }
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// Actions for the song page title bar
+// Actions Buttons
 
 ////////////////////////////////
 //// Add to favorite
@@ -110,31 +179,28 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 ////////////////////////////////
 //// Vote
 class SongVoteIconWidget extends StatefulWidget {
-  final String _songId;
-  final bool _hasVote;
+  final Song _song;
 
-  SongVoteIconWidget(this._songId, this._hasVote, {Key key}) : super(key: key);
+  SongVoteIconWidget(this._song, {Key key}) : super(key: key);
 
   @override
   _SongVoteIconWidgetState createState() =>
-      _SongVoteIconWidgetState(this._songId, this._hasVote);
+      _SongVoteIconWidgetState();
 }
 
 class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
-  final String _songId;
-  bool _hasVote;
 
-  _SongVoteIconWidgetState(this._songId, this._hasVote);
+  _SongVoteIconWidgetState();
 
   @override
   Widget build(BuildContext context) {
-    if (_hasVote) {
+    if (widget._song.hasVote) {
       return IconButton(icon: Icon(Icons.exposure_plus_1), onPressed: null);
     } else {
       return IconButton(
         icon: Icon(Icons.exposure_plus_1),
         onPressed: () async {
-          var url = '$baseUri/song/$_songId.html';
+          var url = '$baseUri/song/${widget._song.id}.html';
 
           Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           Session.headers['Host'] = host;
@@ -148,7 +214,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
           Session.headers.remove('Content-Type');
           if (response.statusCode == 200) {
             setState(() {
-              _hasVote = true;
+              widget._song.hasVote = true;
             });
           } else {
             print("Vote for song returned status code " +
@@ -161,7 +227,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 }
 
 ////////////////////////////////
-// Share
+//// Share
 
 class SongShareIconWidget extends StatelessWidget {
   final SongLink _songLink;
@@ -188,7 +254,7 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 }
 
 ////////////////////////////////
-// Player
+//// Player
 
 class SongPlayerWidget extends StatefulWidget {
   final Song _song;
