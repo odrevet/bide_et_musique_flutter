@@ -38,7 +38,7 @@ class _SongLinkAppBarState extends State<SongLinkAppBar> {
         if (snapshot.hasData) {
           return AppBar(title: Text(snapshot.data.title));
         } else if (snapshot.hasError) {
-          return AppBar(title: Text("Error"));
+          return AppBar(title: Text("Erreur"));
         }
 
         // By default, show a loading spinner

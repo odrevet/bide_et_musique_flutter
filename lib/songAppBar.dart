@@ -9,7 +9,6 @@ import 'utils.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song> _song;
-  final _actions = <Widget>[];
 
   SongAppBar(this._song, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
@@ -30,67 +29,11 @@ class _SongAppBarState extends State<SongAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           Song song = snapshot.data;
-
-          //add buttons to the actions menu
-          //some action buttons are added when user is logged in
-          //some action buttons are not available on some songs
-
-          //if the song can be listen, add the song player
-          if (song.canListen) {
-            widget._actions.add(SongPlayerWidget(song));
-          }
-
-          //if the user if logged in
-          if (Session.accountLink.id != null) {
-            if (song.canFavourite) {
-              widget._actions
-                  .add(PopupMenuItem(child: SongFavoriteIconWidget(song)));
-            }
-
-            widget._actions.add(SongVoteIconWidget(song));
-          }
-
-          // Share buttons (message and song id)
-
-          //list of actions for sharing
-          var actionsShare = <Widget>[];
-
-          var shareSongStream = IconButton(
-              icon: Icon(Icons.music_note),
-              onPressed: () {
-                Share.share('$baseUri/stream_${song.id}.php');
-              });
-
-          actionsShare.add(SongShareIconWidget(song));
-          actionsShare.add(shareSongStream);
-
-          //build widget for overflow button
-          var popupMenuShare = <PopupMenuEntry<Widget>>[];
-          for (Widget actionWidget in actionsShare) {
-            popupMenuShare.add(PopupMenuItem<Widget>(child: actionWidget));
-          }
-
-          widget._actions.add(PopupMenuButton<Widget>(
-              icon: Icon(
-                Icons.share,
-              ),
-              itemBuilder: (BuildContext context) => popupMenuShare));
-          ///////////////////////////////////
-
-          //wrap all actions in a PopupMenuItem to be added in the action menu
-          var popupMenuAction = <PopupMenuEntry<Widget>>[];
-          for (Widget actionWidget in widget._actions) {
-            popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
-          }
-
-          var buttonActions = PopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (context) => popupMenuAction,
-          );
+          var songActionButton = SongActionButton(song);
 
           return AppBar(
             title: Text(snapshot.data.title),
-            actions: <Widget>[buttonActions],
+            actions: <Widget>[songActionButton],
           );
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Chargement"));
@@ -105,6 +48,76 @@ class _SongAppBarState extends State<SongAppBar> {
 
 /////////////////////////////////////////////////////////////////////////////
 // Actions Buttons
+
+class SongActionButton extends StatelessWidget {
+  final Song _song;
+  final _actions = <Widget>[];
+
+  SongActionButton(this._song);
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    //add buttons to the actions menu
+    //some action buttons are added when user is logged in
+    //some action buttons are not available on some songs
+
+    //if the song can be listen, add the song player
+    if (_song.canListen) {
+      _actions.add(SongPlayerWidget(_song));
+    }
+
+    //if the user if logged in
+    if (Session.accountLink.id != null) {
+      if (_song.canFavourite) {
+        _actions
+            .add(PopupMenuItem(child: SongFavoriteIconWidget(_song)));
+      }
+
+      _actions.add(SongVoteIconWidget(_song));
+    }
+
+    // Share buttons (message and song id)
+
+    //list of actions for sharing
+    var actionsShare = <Widget>[];
+
+    var shareSongStream = IconButton(
+        icon: Icon(Icons.music_note),
+        onPressed: () {
+          Share.share('$baseUri/stream_${_song.id}.php');
+        });
+
+    actionsShare.add(SongShareIconWidget(_song));
+    actionsShare.add(shareSongStream);
+
+    //build widget for overflow button
+    var popupMenuShare = <PopupMenuEntry<Widget>>[];
+    for (Widget actionWidget in actionsShare) {
+      popupMenuShare.add(PopupMenuItem<Widget>(child: actionWidget));
+    }
+
+    _actions.add(PopupMenuButton<Widget>(
+        icon: Icon(
+          Icons.share,
+        ),
+        itemBuilder: (BuildContext context) => popupMenuShare));
+    ///////////////////////////////////
+
+    //wrap all actions in a PopupMenuItem to be added in the action menu
+    var popupMenuAction = <PopupMenuEntry<Widget>>[];
+    for (Widget actionWidget in _actions) {
+      popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+    }
+
+    return PopupMenuButton(
+      icon: Icon(Icons.more_vert),
+      itemBuilder: (context) => popupMenuAction,
+    );
+  }
+}
+
 
 ////////////////////////////////
 //// Add to favorite
