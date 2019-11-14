@@ -202,9 +202,6 @@ Future<Song> fetchSong(String songId) async {
       }
     }
     song.comments = comments;
-
-    //check if the song is available to listen
-    //order of title are not consistent : need to check each title content
     song.canListen = false;
     song.isFavourite = false;
     song.canFavourite = false;

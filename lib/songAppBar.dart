@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 import 'player.dart';
 import 'session.dart';
@@ -55,10 +56,8 @@ class SongActionButton extends StatelessWidget {
 
   SongActionButton(this._song);
 
-
   @override
   Widget build(BuildContext context) {
-
     //add buttons to the actions menu
     //some action buttons are added when user is logged in
     //some action buttons are not available on some songs
@@ -71,8 +70,7 @@ class SongActionButton extends StatelessWidget {
     //if the user if logged in
     if (Session.accountLink.id != null) {
       if (_song.canFavourite) {
-        _actions
-            .add(PopupMenuItem(child: SongFavoriteIconWidget(_song)));
+        _actions.add(PopupMenuItem(child: SongFavoriteIconWidget(_song)));
       }
 
       _actions.add(SongVoteIconWidget(_song));
@@ -104,7 +102,20 @@ class SongActionButton extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) => popupMenuShare));
     ///////////////////////////////////
+    //// Copy
+    var popupMenuCopy = <PopupMenuEntry<Widget>>[];
+    popupMenuCopy
+        .add(PopupMenuItem<Widget>(child: SongCopyLinkIconWidget(_song)));
+    popupMenuCopy
+        .add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
 
+    _actions.add(PopupMenuButton<Widget>(
+        icon: Icon(
+          Icons.content_copy,
+        ),
+        itemBuilder: (BuildContext context) => popupMenuCopy));
+
+    ///////////////////////////////////
     //wrap all actions in a PopupMenuItem to be added in the action menu
     var popupMenuEntries = <PopupMenuEntry<Widget>>[];
     for (Widget actionWidget in _actions) {
@@ -117,7 +128,6 @@ class SongActionButton extends StatelessWidget {
     );
   }
 }
-
 
 ////////////////////////////////
 //// Add to favorite
@@ -259,6 +269,40 @@ https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 }
 
 ////////////////////////////////
+//// Copy
+
+class SongCopyLinkIconWidget extends StatelessWidget {
+  final Song _song;
+
+  SongCopyLinkIconWidget(this._song, {Key key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    //share song button
+    return IconButton(
+        icon: Icon(Icons.link),
+        onPressed: () {
+          ClipboardManager.copyToClipBoard('$baseUri/song/${_song.id}.html');
+        });
+  }
+}
+
+class SongCopyLinkHtmlIconWidget extends StatelessWidget {
+  final Song _song;
+
+  SongCopyLinkHtmlIconWidget(this._song, {Key key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    //share song button
+    return IconButton(
+        icon: Icon(Icons.code),
+        onPressed: () {
+          ClipboardManager.copyToClipBoard(
+              '<a href="$baseUri/song/${_song.id}.html">${_song.title}</a>');
+        });
+  }
+}
+
+////////////////////////////////
 //// Player
 
 class SongPlayerWidget extends StatefulWidget {
@@ -267,15 +311,13 @@ class SongPlayerWidget extends StatefulWidget {
   SongPlayerWidget(this._song, {Key key}) : super(key: key);
 
   @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState(this._song);
+  _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
 }
 
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  final Song _song;
-
   bool _isPlaying;
 
-  _SongPlayerWidgetState(this._song);
+  _SongPlayerWidgetState();
 
   @override
   void initState() {
@@ -287,7 +329,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         AudioService.playbackState.basicState == BasicPlaybackState.none) {
       isPlaying = false;
     } else
-      isPlaying = _song.id == AudioService.currentMediaItem.id;
+      isPlaying = widget._song.id == AudioService.currentMediaItem.id;
 
     this.setState(() {
       this._isPlaying = isPlaying;
@@ -331,10 +373,10 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     }
 
     await AudioService.customAction('song', {
-      'id': _song.id,
-      'title': _song.title,
-      'artist': _song.artist,
-      'duration': _song.duration.inSeconds
+      'id': widget._song.id,
+      'title': widget._song.title,
+      'artist': widget._song.artist,
+      'duration': widget._song.duration.inSeconds
     });
 
     await AudioService.customAction('setNotification');

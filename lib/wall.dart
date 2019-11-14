@@ -98,7 +98,7 @@ class WallWidget extends StatelessWidget {
                     maxLines : 5,
                     controller: _newMessageController,
                     decoration: InputDecoration(
-                      hintText: 'entrez votre message ici',
+                      hintText: 'Entrez votre message ici',
                     )),
                 RaisedButton(
                     shape: RoundedRectangleBorder(
