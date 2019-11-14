@@ -62,19 +62,42 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
   }
 }
 
-class TitlesWidget extends StatelessWidget {
-  final Future<Map<String, List<SongLink>>> program;
+class TitlesWidget extends StatefulWidget {
+  TitlesWidget({Key key}) : super(key: key);
 
-  TitlesWidget({Key key, this.program}) : super(key: key);
+  @override
+  _TitlesWidgetState createState() => _TitlesWidgetState();
+}
+
+class _TitlesWidgetState extends State<TitlesWidget> {
+  Timer _timer;
+  Future<Map<String, List<SongLink>>> _songLinks;
+
+  @override
+  void initState() {
+    _songLinks = fetchTitles();
+    _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
+      setState(() {
+        _songLinks = fetchTitles();
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Map<String, List<SongLink>>>(
-        future: program,
+        future: _songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            return _buildView(snapshot.data);
           } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(title: Text('Ouille ouille ouille !')),
@@ -92,8 +115,7 @@ class TitlesWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(
-      BuildContext context, Map<String, List<SongLink>> songLinks) {
+  Widget _buildView(Map<String, List<SongLink>> songLinks) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(

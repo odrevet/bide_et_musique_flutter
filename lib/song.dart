@@ -451,19 +451,17 @@ class SongListingWidget extends StatefulWidget {
 
   @override
   SongListingWidgetState createState() =>
-      SongListingWidgetState(this._songLinks);
+      SongListingWidgetState();
 }
 
 class SongListingWidgetState extends State<SongListingWidget> {
-  List<SongLink> _songLinks;
-
-  SongListingWidgetState(this._songLinks);
+  SongListingWidgetState();
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
 
-    for (SongLink songLink in _songLinks) {
+    for (SongLink songLink in widget._songLinks) {
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,

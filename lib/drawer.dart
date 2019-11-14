@@ -68,7 +68,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TitlesWidget(program: fetchTitles())));
+                        TitlesWidget()));
           },
         ),
         ListTile(
@@ -103,7 +103,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         ListTile(
           title: Text('Mur des messages'),
-          leading: Icon(Icons.message),
+          leading: Icon(Icons.question_answer),
           onTap: () {
             Navigator.push(
                 context,
