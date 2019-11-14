@@ -16,13 +16,13 @@ SongLink songLinkFromTr(dom.Element tr) {
   var songLink = SongLink();
   var href = tr.children[3].innerHtml;
   songLink.id = extractSongId(href);
-  songLink.artist = stripTags(tr.children[2].innerHtml);
+  songLink.artist = stripTags(tr.children[2].innerHtml).trim();
   var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
   if (title.contains(newFlag)) {
     songLink.isNew = true;
   }
-  songLink.title = title.replaceFirst(newFlag, '').trimLeft();
+  songLink.title = title.replaceFirst(newFlag, '').trim();
   return songLink;
 }
 
