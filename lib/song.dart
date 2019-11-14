@@ -81,7 +81,7 @@ class Song {
             : lyrics);
   }
 
-  String getLink(){
+  String getLink() {
     return '$baseUri/song/${this.id}.html';
   }
 }
@@ -248,17 +248,25 @@ Future<Song> fetchSong(String songId) async {
   return song;
 }
 
-class SongPageWidget extends StatelessWidget {
+class SongPageWidget extends StatefulWidget {
   final SongLink songLink;
   final Future<Song> song;
 
   SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
 
   @override
+  _SongPageWidgetState createState() => _SongPageWidgetState();
+}
+
+class _SongPageWidgetState extends State<SongPageWidget> {
+  int _currentPage;
+  final _newMessageController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Song>(
-        future: song,
+        future: widget.song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -269,7 +277,7 @@ class SongPageWidget extends StatelessWidget {
             );
           }
 
-          return _pageLoading(context, songLink);
+          return _pageLoading(context, widget.songLink);
         },
       ),
     );
@@ -333,10 +341,63 @@ class SongPageWidget extends StatelessWidget {
     return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
 
+  _newMessageDialog(BuildContext context, Song song) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nouveau commentaire'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                    maxLines: 5,
+                    controller: _newMessageController,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre commentaire ici',
+                    )),
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      'Envoyer',
+                    ),
+                    onPressed: () {
+                      _sendMessage(song);
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.orangeAccent),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _sendMessage(Song song) async {
+    String comment = _newMessageController.text;
+    final url = song.getLink();
+
+    if (comment.isNotEmpty) {
+      print("POSTING $comment");
+      await Session.post(url, body: {
+        'T': 'Song',
+        'N': song.id,
+        'Mode': 'AddComment',
+        'Thread_': '',
+        'Text': comment,
+        'x': '42',
+        'y': '42'
+      });
+    }
+  }
+
   Widget _buildView(BuildContext context, Song song) {
     var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
     final _fontLyrics = TextStyle(fontSize: 18.0);
-    final tag = createTag(songLink);
+    final tag = createTag(widget.songLink);
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -358,10 +419,11 @@ class SongPageWidget extends StatelessWidget {
                               tag: tag,
                               child: InkWell(
                                   onTap: () {
-                                    _openCoverViewerDialog(songLink, context);
+                                    _openCoverViewerDialog(
+                                        widget.songLink, context);
                                   },
                                   child: Image.network(
-                                      '$baseUri/images/pochettes/${songLink.id}.jpg')))),
+                                      '$baseUri/images/pochettes/${widget.songLink.id}.jpg')))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))
@@ -380,6 +442,9 @@ class SongPageWidget extends StatelessWidget {
             ),
           ),
           PageView(
+            onPageChanged: (int page) => setState(() {
+              _currentPage = page;
+            }),
             children: <Widget>[
               SingleChildScrollView(
                   child: Padding(
@@ -404,9 +469,17 @@ class SongPageWidget extends StatelessWidget {
       )),
     );
 
+    var postNewComment = Session.accountLink.id == null || _currentPage != 1
+        ? null
+        : FloatingActionButton(
+            onPressed: () => _newMessageDialog(context, song),
+            child: Icon(Icons.add),
+          );
+
     return Scaffold(
-      appBar: SongAppBar(this.song),
+      appBar: SongAppBar(widget.song),
       body: nestedScrollView,
+      floatingActionButton: postNewComment,
     );
   }
 
@@ -452,8 +525,7 @@ class SongListingWidget extends StatefulWidget {
   SongListingWidget(this._songLinks, {Key key}) : super(key: key);
 
   @override
-  SongListingWidgetState createState() =>
-      SongListingWidgetState();
+  SongListingWidgetState createState() => SongListingWidgetState();
 }
 
 class SongListingWidgetState extends State<SongListingWidget> {
