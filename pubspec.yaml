@@ -12,12 +12,12 @@ dependencies:
   http: ^0.12.0+2
   html: ^0.14.0+3
   xml: ^3.5.0
-  audio_service: ^0.4.1
+  audio_service: ^0.4.2
   flutter_radio: ^0.1.7
   flutter_html: ^0.11.0
   url_launcher: ^5.2.5
   share: ^0.6.3+1
-  shared_preferences: ^0.5.4+3
+  shared_preferences: ^0.5.4+5
   uni_links: ^0.2.0
 
 dev_dependencies:
