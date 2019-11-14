@@ -70,15 +70,13 @@ class SongActionButton extends StatelessWidget {
     //if the user if logged in
     if (Session.accountLink.id != null) {
       if (_song.canFavourite) {
-        _actions.add(PopupMenuItem(child: SongFavoriteIconWidget(_song)));
+        _actions.add(SongFavoriteIconWidget(_song));
       }
 
       _actions.add(SongVoteIconWidget(_song));
     }
 
     // Share buttons (message and song id)
-
-    //list of actions for sharing
     var actionsShare = <Widget>[];
 
     var shareSongStream = IconButton(
