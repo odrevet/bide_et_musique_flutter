@@ -80,6 +80,10 @@ class Song {
             ? 'Paroles non renseignées pour cette chanson '
             : lyrics);
   }
+
+  String getLink(){
+    return '$baseUri/song/${this.id}.html';
+  }
 }
 
 class Comment {
@@ -202,6 +206,7 @@ Future<Song> fetchSong(String songId) async {
       }
     }
     song.comments = comments;
+
     song.canListen = false;
     song.isFavourite = false;
     song.canFavourite = false;

@@ -171,7 +171,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
       return IconButton(
         icon: Icon(Icons.star_border),
         onPressed: () async {
-          var url = '$baseUri/song/${widget._song.id}.html';
+          String url = widget._song.getLink();
 
           Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           Session.headers['Host'] = host;
@@ -218,7 +218,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
       return IconButton(
         icon: Icon(Icons.exposure_plus_1),
         onPressed: () async {
-          var url = '$baseUri/song/${widget._song.id}.html';
+          String url = widget._song.getLink();
 
           Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           Session.headers['Host'] = host;
@@ -261,7 +261,7 @@ class SongShareIconWidget extends StatelessWidget {
               '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-$baseUri/song/${_song.id}.html
+${_song.getLink()}
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
@@ -284,7 +284,7 @@ class SongCopyLinkIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.link),
         onPressed: () {
-          ClipboardManager.copyToClipBoard('$baseUri/song/${_song.id}.html');
+          ClipboardManager.copyToClipBoard(_song.getLink());
         });
   }
 }
@@ -300,7 +300,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
         icon: Icon(Icons.code),
         onPressed: () {
           ClipboardManager.copyToClipBoard(
-              '<a href="$baseUri/song/${_song.id}.html">${_song.title}</a>');
+              '<a href="${_song.getLink()}">${_song.title}</a>');
         });
   }
 }
@@ -319,7 +319,7 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.open_in_browser),
         onPressed: () {
-          launchURL('$baseUri/song/${_song.id}.html');
+          launchURL(_song.getLink());
         });
   }
 }
