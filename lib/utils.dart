@@ -20,7 +20,7 @@ String stripTags(String htmlString) {
 //corresponding Widget or returns false otherwise
 Widget handleLink(String url, BuildContext context) {
   RegExp regExp = RegExp(
-      r'https:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
+      r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
       caseSensitive: false);
 
   if (regExp.hasMatch(url) == true) {
