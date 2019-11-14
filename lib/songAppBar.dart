@@ -212,35 +212,31 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget._song.hasVote) {
-      return IconButton(icon: Icon(Icons.exposure_plus_1), onPressed: null);
-    } else {
-      return IconButton(
+    var callbackVote = () async {
+      String url = widget._song.getLink();
+
+      Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      Session.headers['Host'] = host;
+      Session.headers['Origin'] = baseUri;
+      Session.headers['Referer'] = url;
+
+      final response = await Session.post(url, body: {'Note': '1', 'M': 'CN'});
+
+      Session.headers.remove('Referer');
+      Session.headers.remove('Content-Type');
+      if (response.statusCode == 200) {
+        setState(() {
+          widget._song.hasVote = true;
+        });
+      } else {
+        print("Vote for song returned status code " +
+            response.statusCode.toString());
+      }
+    };
+
+    return IconButton(
         icon: Icon(Icons.exposure_plus_1),
-        onPressed: () async {
-          String url = widget._song.getLink();
-
-          Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-          Session.headers['Host'] = host;
-          Session.headers['Origin'] = baseUri;
-          Session.headers['Referer'] = url;
-
-          final response =
-              await Session.post(url, body: {'Note': '1', 'M': 'CN'});
-
-          Session.headers.remove('Referer');
-          Session.headers.remove('Content-Type');
-          if (response.statusCode == 200) {
-            setState(() {
-              widget._song.hasVote = true;
-            });
-          } else {
-            print("Vote for song returned status code " +
-                response.statusCode.toString());
-          }
-        },
-      );
-    }
+        onPressed: (widget._song.hasVote ? null : callbackVote));
   }
 }
 
@@ -305,7 +301,6 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
   }
 }
 
-
 ////////////////////////////////
 //// Open in browser
 
@@ -323,7 +318,6 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
         });
   }
 }
-
 
 ////////////////////////////////
 //// Player
