@@ -101,6 +101,7 @@ class SongActionButton extends StatelessWidget {
           Icons.share,
         ),
         itemBuilder: (BuildContext context) => popupMenuShare));
+
     ///////////////////////////////////
     //// Copy
     var popupMenuCopy = <PopupMenuEntry<Widget>>[];
@@ -114,6 +115,8 @@ class SongActionButton extends StatelessWidget {
           Icons.content_copy,
         ),
         itemBuilder: (BuildContext context) => popupMenuCopy));
+
+    _actions.add(SongOpenInBrowserIconWidget(_song));
 
     ///////////////////////////////////
     //wrap all actions in a PopupMenuItem to be added in the action menu
@@ -301,6 +304,26 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
         });
   }
 }
+
+
+////////////////////////////////
+//// Open in browser
+
+class SongOpenInBrowserIconWidget extends StatelessWidget {
+  final Song _song;
+
+  SongOpenInBrowserIconWidget(this._song, {Key key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    //share song button
+    return IconButton(
+        icon: Icon(Icons.open_in_browser),
+        onPressed: () {
+          launchURL('$baseUri/song/${_song.id}.html');
+        });
+  }
+}
+
 
 ////////////////////////////////
 //// Player
