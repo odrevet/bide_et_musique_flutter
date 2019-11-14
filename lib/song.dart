@@ -381,7 +381,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     final url = song.getLink();
 
     if (comment.isNotEmpty) {
-      print("POSTING $comment");
       await Session.post(url, body: {
         'T': 'Song',
         'N': song.id,
