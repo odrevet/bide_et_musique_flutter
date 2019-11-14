@@ -106,14 +106,14 @@ class SongActionButton extends StatelessWidget {
     ///////////////////////////////////
 
     //wrap all actions in a PopupMenuItem to be added in the action menu
-    var popupMenuAction = <PopupMenuEntry<Widget>>[];
+    var popupMenuEntries = <PopupMenuEntry<Widget>>[];
     for (Widget actionWidget in _actions) {
-      popupMenuAction.add(PopupMenuItem<Widget>(child: actionWidget));
+      popupMenuEntries.add(PopupMenuItem<Widget>(child: actionWidget));
     }
 
     return PopupMenuButton(
       icon: Icon(Icons.more_vert),
-      itemBuilder: (context) => popupMenuAction,
+      itemBuilder: (context) => popupMenuEntries,
     );
   }
 }
