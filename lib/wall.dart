@@ -95,6 +95,7 @@ class WallWidget extends StatelessWidget {
             child: ListBody(
               children: <Widget>[
                 TextFormField(
+                    maxLines : 5,
                     controller: _newMessageController,
                     decoration: InputDecoration(
                       hintText: 'entrez votre message ici',
