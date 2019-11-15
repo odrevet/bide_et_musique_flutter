@@ -87,6 +87,7 @@ class Song {
 }
 
 class Comment {
+  String id;
   AccountLink author;
   String body;
   String time;
@@ -186,19 +187,21 @@ Future<Song> fetchSong(String songId) async {
     dom.Document document = parser.parse(body);
     var comments = <Comment>[];
     var divComments = document.getElementById('comments');
-    var tdsComments = divComments.getElementsByClassName('normal');
+    var divsNormal = divComments.getElementsByClassName('normal');
 
-    for (dom.Element tdComment in tdsComments) {
+    for (dom.Element divNormal in divsNormal) {
       var comment = Comment();
       try {
-        var tdCommentChildren = tdComment.children;
+        var tdCommentChildren = divNormal.children;
+        //get comment id (remove 'comment' string)
+        comment.id = tdCommentChildren[0].attributes['id'].substring(8);
         dom.Element aAccount = tdCommentChildren[1].children[0];
         String accountId = extractAccountId(aAccount.attributes['href']);
         String accountName = aAccount.innerHtml;
         comment.author = AccountLink(id: accountId, name: accountName);
-        var commentLines = tdComment.innerHtml.split('<br>');
+        var commentLines = divNormal.innerHtml.split('<br>');
         commentLines.removeAt(0);
-        comment.body = commentLines.join();
+        comment.body = stripTags(commentLines.join().trim());
         comment.time = tdCommentChildren[2].innerHtml;
         comments.add(comment);
       } catch (e) {
@@ -260,7 +263,7 @@ class SongPageWidget extends StatefulWidget {
 
 class _SongPageWidgetState extends State<SongPageWidget> {
   int _currentPage;
-  final _newMessageController = TextEditingController();
+  final _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -342,6 +345,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   }
 
   _newMessageDialog(BuildContext context, Song song) {
+    _commentController.text = '';
+
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -353,7 +358,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               children: <Widget>[
                 TextFormField(
                     maxLines: 5,
-                    controller: _newMessageController,
+                    controller: _commentController,
                     decoration: InputDecoration(
                       hintText: 'Entrez votre commentaire ici',
                     )),
@@ -376,8 +381,58 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     );
   }
 
+  _editMessageDialog(BuildContext context, Song song, Comment comment) {
+    _commentController.text = comment.body;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edition d\'un commentaire'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                    maxLines: 5,
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre commentaire ici',
+                    )),
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      'Envoyer',
+                    ),
+                    onPressed: () {
+                      _sendEditComment(song, comment);
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.orangeAccent),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _sendEditComment(Song song, Comment comment) async {
+    String text = _commentController.text;
+
+    if (text.isNotEmpty) {
+      await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
+          body: {
+            'mode': 'Edit',
+            'REF': song.getLink(),
+            'Comment__': comment.id,
+            'Text': text,
+          });
+    }
+  }
+
   void _sendMessage(Song song) async {
-    String comment = _newMessageController.text;
+    String comment = _commentController.text;
     final url = song.getLink();
 
     if (comment.isNotEmpty) {
@@ -455,7 +510,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                       onLinkTap(url, context);
                     }),
               )),
-              _buildViewComments(context, song.comments),
+              _buildViewComments(context, song),
             ],
           )
         ]),
@@ -482,7 +537,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     );
   }
 
-  Widget _buildViewComments(BuildContext context, List<Comment> comments) {
+  Widget _buildViewComments(BuildContext context, Song song) {
+    List<Comment> comments = song.comments;
     var rows = <ListTile>[];
     String loginName = Session.accountLink.name;
     var selfComment = TextStyle(
@@ -510,7 +566,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                 onLinkTap(url, context);
               }),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
-              style: comment.author.name == loginName ? selfComment : null)));
+              style: comment.author.name == loginName ? selfComment : null),
+          trailing: comment.author.name == loginName ?  IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              _editMessageDialog(context, song, comment);
+            },
+          ) : null));
     }
 
     return ListView(children: rows);
