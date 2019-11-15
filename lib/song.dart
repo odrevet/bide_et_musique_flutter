@@ -527,7 +527,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         ? null
         : FloatingActionButton(
             onPressed: () => _newMessageDialog(context, song),
-            child: Icon(Icons.add),
+            child: Icon(Icons.add_comment),
           );
 
     return Scaffold(

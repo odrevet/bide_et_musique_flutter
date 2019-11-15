@@ -127,7 +127,7 @@ class WallWidget extends StatelessWidget {
             onPressed: () {
               _newMessageDialog(context);
             },
-            child: Icon(Icons.add),
+            child: Icon(Icons.add_comment),
           );
 
     return Scaffold(
