@@ -419,6 +419,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   void _sendEditComment(Song song, Comment comment) async {
     String text = _commentController.text;
+    text = text.replaceAll(RegExp(r'é'), 'e');
+    text = text.replaceAll(RegExp(r'è'), 'e');
 
     if (text.isNotEmpty) {
       await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
@@ -433,6 +435,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   void _sendAddComment(Song song) async {
     String comment = _commentController.text;
+    comment = comment.replaceAll(RegExp(r'é'), 'e');
+    comment = comment.replaceAll(RegExp(r'è'), 'e');
+
     final url = song.getLink();
 
     if (comment.isNotEmpty) {
