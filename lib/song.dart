@@ -369,7 +369,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                       'Envoyer',
                     ),
                     onPressed: () {
-                      _sendMessage(song);
+                      _sendAddComment(song);
                       Navigator.of(context).pop();
                     },
                     color: Colors.orangeAccent),
@@ -431,7 +431,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     }
   }
 
-  void _sendMessage(Song song) async {
+  void _sendAddComment(Song song) async {
     String comment = _commentController.text;
     final url = song.getLink();
 
