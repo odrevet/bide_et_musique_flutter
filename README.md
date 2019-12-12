@@ -28,6 +28,9 @@ Télécharger dans le menu "Release" de github ou sur [Google play store](https:
 | <img src="/screenshots/Screenshot_titres.jpg" width="240px" />  | <img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />  |
 
 
+# Idées futures
 
-
+* Gestion des bidebox 
+* Playlist local
+* Lecteur complet pour les chansons (sauter a une position, detecter la fin de la chanson)
 
