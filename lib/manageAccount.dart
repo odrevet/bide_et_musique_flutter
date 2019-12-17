@@ -104,7 +104,7 @@ class ManageAccountPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Account account) {
-    final url = baseUri + account.avatar;
+    final url = baseUri + account.image;
     final image = NetworkImage(url);
 
     return Container(
@@ -120,7 +120,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            openAvatarViewerDialog(context, image);
+                            openAccountImageViewerDialog(context, image);
                           },
                           child: Image.network(url))),
                   Expanded(

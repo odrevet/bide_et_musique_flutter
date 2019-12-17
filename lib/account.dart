@@ -14,7 +14,7 @@ import 'utils.dart';
 class AccountLink {
   String id;
   String name;
-  String avatar;
+  String image;
 
   AccountLink({this.id, this.name});
 }
@@ -28,10 +28,10 @@ class Account {
   String comments;
   String presentation;
   List<SongLink> favorites;
-  String avatar;
+  String image;
 }
 
-openAvatarViewerDialog(context, image) {
+openAccountImageViewerDialog(context, image) {
   Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return Container(
@@ -76,9 +76,9 @@ Future<Account> fetchAccount(String accountId) async {
     //are jpg and some are png
     var img = divInfo.getElementsByTagName('img');
     if (img.isEmpty) {
-      account.avatar = '';
+      account.image = '';
     } else {
-      account.avatar = img[0].attributes['src'];
+      account.image = img[0].attributes['src'];
     }
 
     //parse favorites
@@ -159,7 +159,7 @@ class AccountPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Account account) {
-    final url = baseUri + account.avatar;
+    final url = baseUri + account.image;
     final image = NetworkImage(url);
 
     var nestedScrollView = NestedScrollView(
@@ -180,7 +180,7 @@ class AccountPageWidget extends StatelessWidget {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                openAvatarViewerDialog(context, image);
+                                openAccountImageViewerDialog(context, image);
                               },
                               child: Image.network(url))),
                       Expanded(

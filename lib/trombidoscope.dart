@@ -56,7 +56,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
         var account = AccountLink();
         account.id = id;
         account.name = stripTags(a.innerHtml);
-        account.avatar = a.children[0].attributes['src'];
+        account.image = a.children[0].attributes['src'];
         setState(() {
           _accountLinks.add(account);
         });
@@ -81,7 +81,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                 crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
             itemBuilder: (BuildContext context, int index) {
               var account = _accountLinks[index];
-              final url = baseUri + account.avatar;
+              final url = baseUri + account.image;
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -91,7 +91,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                               account: fetchAccount(account.id))));
                 },
                 onLongPress: () {
-                  openAvatarViewerDialog(context, NetworkImage(url));
+                  openAccountImageViewerDialog(context, NetworkImage(url));
                 },
                 child: Container(
                   child: Text(account.name, style: _font),
