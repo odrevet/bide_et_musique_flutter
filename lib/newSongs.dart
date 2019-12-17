@@ -18,7 +18,7 @@ Future<List<SongLink>> fetchNewSongs() async {
       var link = item.children[2].text;
       var song = SongLink();
       song.id = extractSongId(link);
-      var artistTitle = stripTags(item.firstChild.text).split('-');
+      var artistTitle = stripTags(item.firstChild.text).split(' - ');
       song.title = artistTitle[1];
       song.artist = artistTitle[0];
       songs.add(song);
