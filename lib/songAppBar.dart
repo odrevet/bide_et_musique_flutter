@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share/share.dart';
-import 'package:clipboard_manager/clipboard_manager.dart';
 
 import 'player.dart';
 import 'session.dart';
@@ -278,7 +278,7 @@ class SongCopyLinkIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.link),
         onPressed: () {
-          ClipboardManager.copyToClipBoard(_song.getLink());
+          Clipboard.setData(new ClipboardData(text: _song.getLink()));
         });
   }
 }
@@ -293,8 +293,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.code),
         onPressed: () {
-          ClipboardManager.copyToClipBoard(
-              '<a href="${_song.getLink()}">${_song.title}</a>');
+          Clipboard.setData(new ClipboardData(text: '<a href="${_song.getLink()}">${_song.title}</a>'));
         });
   }
 }
