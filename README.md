@@ -33,4 +33,5 @@ Télécharger dans le menu "Release" de github ou sur [Google play store](https:
 * Gestion des bidebox 
 * Playlist local
 * Lecteur complet pour les chansons (sauter a une position, detecter la fin de la chanson)
-
+* Faire une requete de chanson
+* Afficher dans le player si le morceau en cours de lecture est de la radio en live ou une simple chanson. 
