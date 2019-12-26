@@ -305,41 +305,23 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       loadingMessage = 'Chargement';
     }
 
-    final tag = createTag(songLink);
-
-    var body = Column(
-      children: <Widget>[
-        Expanded(
-            flex: 4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
-                    child: Hero(tag: tag, child: Image.network(urlCover))),
-                Expanded(child: Center(child: CircularProgressIndicator())),
-              ],
-            )),
-        Expanded(
-          flex: 7,
-          child: Container(
-            child: Stack(children: [
-              Container(
-                decoration:
-                    BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
-              ),
-              Center(child: CircularProgressIndicator())
-            ]),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.fill,
-              alignment: FractionalOffset.topCenter,
-              image: NetworkImage(urlCover),
-            )),
+    Widget body = Container(
+        alignment: Alignment.center,
+        child: Stack(children: [
+          Container(
+            alignment: Alignment.center,
+            decoration:
+            BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
           ),
-        ),
-      ],
-    );
+          Center(child: CircularProgressIndicator())
+        ]),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fitWidth,
+              alignment: FractionalOffset.center,
+              image: NetworkImage(urlCover),
+            )));
+
 
     return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
