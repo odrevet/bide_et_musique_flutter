@@ -81,7 +81,7 @@ class Song {
             : lyrics);
   }
 
-  String getLink() {
+  String get link {
     return '$baseUri/song/${this.id}.html';
   }
 }
@@ -426,7 +426,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
           body: {
             'mode': 'Edit',
-            'REF': song.getLink(),
+            'REF': song.link,
             'Comment__': comment.id,
             'Text': text,
           });
@@ -438,7 +438,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     comment = comment.replaceAll(RegExp(r'é'), 'e');
     comment = comment.replaceAll(RegExp(r'è'), 'e');
 
-    final url = song.getLink();
+    final url = song.link;
 
     if (comment.isNotEmpty) {
       await Session.post(url, body: {

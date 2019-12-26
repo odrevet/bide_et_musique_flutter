@@ -169,7 +169,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
       return IconButton(
         icon: Icon(Icons.star_border),
         onPressed: () async {
-          String url = widget._song.getLink();
+          String url = widget._song.link;
 
           Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           Session.headers['Host'] = host;
@@ -211,7 +211,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   @override
   Widget build(BuildContext context) {
     var callbackVote = () async {
-      String url = widget._song.getLink();
+      String url = widget._song.link;
 
       Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       Session.headers['Host'] = host;
@@ -255,7 +255,7 @@ class SongShareIconWidget extends StatelessWidget {
               '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
-${_song.getLink()}
+${_song.link}
           
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
@@ -278,7 +278,7 @@ class SongCopyLinkIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.link),
         onPressed: () {
-          Clipboard.setData(new ClipboardData(text: _song.getLink()));
+          Clipboard.setData(new ClipboardData(text: _song.link));
         });
   }
 }
@@ -293,7 +293,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.code),
         onPressed: () {
-          Clipboard.setData(new ClipboardData(text: '<a href="${_song.getLink()}">${_song.title}</a>'));
+          Clipboard.setData(new ClipboardData(text: '<a href="${_song.link}">${_song.title}</a>'));
         });
   }
 }
@@ -311,7 +311,7 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.open_in_browser),
         onPressed: () {
-          launchURL(_song.getLink());
+          launchURL(_song.link);
         });
   }
 }
