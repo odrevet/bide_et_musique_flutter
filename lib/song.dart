@@ -544,7 +544,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   Widget _buildViewComments(BuildContext context, Song song) {
     List<Comment> comments = song.comments;
-    var rows = <ListTile>[];
+    var rows = <Widget>[];
     String loginName = Session.accountLink.name;
     var selfComment = TextStyle(
       color: Colors.red,
@@ -559,12 +559,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     builder: (context) => AccountPageWidget(
                         account: fetchAccount(comment.author.id))));
           },
-          leading: CircleAvatar(
-            backgroundColor: Colors.black12,
-            child: Image(
-                image: NetworkImage(
-                    '$baseUri/images/avatars/${comment.author.id}.jpg')),
-          ),
           title: Html(
               data: comment.body,
               onLinkTap: (url) {
@@ -578,6 +572,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               _editMessageDialog(context, song, comment);
             },
           ) : null));
+      rows.add(Divider());
     }
 
     return ListView(children: rows);

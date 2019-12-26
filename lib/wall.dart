@@ -162,12 +162,6 @@ class WallWidget extends StatelessWidget {
     var rows = <Widget>[];
     for (Post post in posts) {
       rows.add(ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.black12,
-            child: Image(
-                image: NetworkImage(
-                    '$baseUri/images/avatars/${post.author.id}.jpg')),
-          ),
           title: Html(
               data: post.body,
               onLinkTap: (url) {
