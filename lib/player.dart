@@ -106,7 +106,7 @@ class StreamPlayer extends BackgroundAudioTask {
           album: 'Bide et Musique',
           title: title,
           artist: artist,
-          artUri: '$baseUri/images/pochettes/${_song.id}.jpg');
+          artUri: _song.coverLink);
       AudioServiceBackground.setMediaItem(mediaItem);
     }
   }

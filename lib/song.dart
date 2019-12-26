@@ -30,13 +30,25 @@ class SongLink {
       this.artist = '',
       this.program = '',
       this.isNew = false});
+
+  String get link {
+    return '$baseUri/song/${this.id}.html';
+  }
+
+  String get coverLink {
+    return '$baseUri/images/pochettes/${this.id}.jpg';
+  }
+
+  String get thumbLink {
+    return '$baseUri/images/thumb25/${this.id}.jpg';
+  }
 }
 
-class Song {
+class Song extends SongLink {
   String id;
-  int year;
   String title;
   String artist;
+  int year;
   String artistId;
   String author;
   Duration duration;
@@ -79,10 +91,6 @@ class Song {
         lyrics: lyrics == null
             ? 'Paroles non renseignées pour cette chanson '
             : lyrics);
-  }
-
-  String get link {
-    return '$baseUri/song/${this.id}.html';
   }
 }
 
@@ -146,9 +154,7 @@ class SongCardWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
-            image: DecorationImage(
-                image: NetworkImage(
-                    '$baseUri/images/pochettes/${songLink.id}.jpg'))),
+            image: DecorationImage(image: NetworkImage(songLink.coverLink))),
       ),
     );
   }
@@ -294,9 +300,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         fullscreenDialog: true));
   }
 
-  ///Mimic the song page to be displayed while the song is fetched
   Widget _pageLoading(BuildContext context, SongLink songLink) {
-    var urlCover = '$baseUri/images/pochettes/${songLink.id}.jpg';
+    var coverLink = songLink.coverLink;
 
     var loadingMessage = '';
     if (songLink.title.isNotEmpty) {
@@ -311,17 +316,16 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           Container(
             alignment: Alignment.center,
             decoration:
-            BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+                BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
           ),
           Center(child: CircularProgressIndicator())
         ]),
         decoration: BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.fitWidth,
-              alignment: FractionalOffset.center,
-              image: NetworkImage(urlCover),
-            )));
-
+          fit: BoxFit.fitWidth,
+          alignment: FractionalOffset.center,
+          image: NetworkImage(coverLink),
+        )));
 
     return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
@@ -436,7 +440,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   }
 
   Widget _buildView(BuildContext context, Song song) {
-    var urlCover = '$baseUri/images/pochettes/${song.id}.jpg';
+    final String coverLink = song.coverLink;
     final _fontLyrics = TextStyle(fontSize: 18.0);
     final tag = createTag(widget.songLink);
 
@@ -463,8 +467,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     _openCoverViewerDialog(
                                         widget.songLink, context);
                                   },
-                                  child: Image.network(
-                                      '$baseUri/images/pochettes/${widget.songLink.id}.jpg')))),
+                                  child: Image.network(coverLink)))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))
@@ -505,7 +508,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             image: DecorationImage(
           fit: BoxFit.fill,
           alignment: FractionalOffset.topCenter,
-          image: NetworkImage(urlCover),
+          image: NetworkImage(coverLink),
         )),
       )),
     );
@@ -548,12 +551,14 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               }),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
               style: comment.author.name == loginName ? selfComment : null),
-          trailing: comment.author.name == loginName ?  IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () async {
-              _editMessageDialog(context, song, comment);
-            },
-          ) : null));
+          trailing: comment.author.name == loginName
+              ? IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () async {
+                    _editMessageDialog(context, song, comment);
+                  },
+                )
+              : null));
       rows.add(Divider());
     }
 

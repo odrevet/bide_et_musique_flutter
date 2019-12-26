@@ -36,7 +36,6 @@ class _CoverViewerState extends State<CoverViewer> {
   }
 
   _buildView(BuildContext context) {
-    var url = '$baseUri/images/pochettes/${songLink.id}.jpg';
     var tag = createTag(songLink);
     return Hero(
         tag: tag,
@@ -44,7 +43,7 @@ class _CoverViewerState extends State<CoverViewer> {
           decoration: BoxDecoration(
               image: DecorationImage(
             fit: BoxFit.contain,
-            image: NetworkImage(url),
+            image: NetworkImage(songLink.coverLink),
           )),
           alignment: Alignment(0.0, 0.0),
         ));
