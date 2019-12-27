@@ -112,19 +112,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Trombidoscope'),
-          leading: Icon(Icons.apps),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TrombidoscopeWidget()));
-          },
-        ),
-        ListTile(
           title: Text('Pochettoscope'),
-          leading: Icon(Icons.apps),
+          leading: Icon(Icons.image),
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => PochettoscopeWidget()));
+          },
+        ),
+        ListTile(
+          title: Text('Trombidoscope'),
+          leading: Icon(Icons.face),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TrombidoscopeWidget()));
           },
         ),
         ListTile(
