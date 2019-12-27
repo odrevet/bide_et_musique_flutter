@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:diacritic/diacritic.dart';
 
 import 'account.dart';
 import 'artist.dart';
@@ -421,8 +422,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   void _sendAddComment(Song song) async {
     String comment = _commentController.text;
-    comment = comment.replaceAll(RegExp(r'é'), 'e');
-    comment = comment.replaceAll(RegExp(r'è'), 'e');
+    comment = removeDiacritics(comment);
 
     final url = song.link;
 

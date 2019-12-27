@@ -8,17 +8,13 @@ import 'account.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
+import 'package:diacritic/diacritic.dart';
 
 Future<List<AccountLink>> fetchSearchAccount(String search) async {
   String url = '$baseUri/recherche-bidonaute.html?bw=$search';
 
-  //need to transform characters to url encoding
-  // cannot use Uri.encodeFull because it will encode from UTF-8 and the
-  //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
-  //see https://www.w3schools.com/tags/ref_urlencode.asp
-  //TODO convert from  CP-1252
-  url = url.replaceAll(RegExp(r'é'), '%E9');
-  url = url.replaceAll(RegExp(r'è'), '%E8');
+  //Server uses latin-1
+  url = removeDiacritics(url);
 
   final response = await Session.post(url);
   var accounts = <AccountLink>[];
@@ -124,13 +120,8 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     String url =
         '$baseUri/recherche.html?kw=$search&st=$type&Page=$_pageCurrent';
 
-    //need to transform characters to url encoding
-    // cannot use Uri.encodeFull because it will encode from UTF-8 and the
-    //target expect CP-1252 (e.g will convert 'é' to '%C3%A9' instead of '%E9')
-    //see https://www.w3schools.com/tags/ref_urlencode.asp
-    //TODO convert from  CP-1252
-    url = url.replaceAll(RegExp(r'é'), '%E9');
-    url = url.replaceAll(RegExp(r'è'), '%E8');
+    //server uses latin-1
+    url = removeDiacritics(url);
 
     final response = await Session.post(url);
     if (response.statusCode == 302) {
