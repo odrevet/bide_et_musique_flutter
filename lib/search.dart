@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
@@ -8,7 +9,6 @@ import 'account.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
-import 'package:diacritic/diacritic.dart';
 
 Future<List<AccountLink>> fetchSearchAccount(String search) async {
   String url = '$baseUri/recherche-bidonaute.html?bw=$search';

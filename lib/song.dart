@@ -466,45 +466,53 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     final tag = createTag(widget.songLink);
 
     var nestedScrollView = NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverAppBar(
-            backgroundColor: Theme.of(context).canvasColor,
-            expandedHeight: 200.0,
-            automaticallyImplyLeading: false,
-            floating: true,
-            flexibleSpace: FlexibleSpaceBar(
-                background: Row(children: [
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: Hero(
-                              tag: tag,
-                              child: InkWell(
-                                  onTap: () {
-                                    _openCoverViewerDialog(
-                                        widget.songLink, context);
-                                  },
-                                  child: CachedNetworkImage(
-                                      imageUrl: coverLink)))),
-                      Expanded(child: SongWidget(song)),
-                    ],
-                  ))
-            ])),
-          ),
-        ];
-      },
-      body: Container(
-        child: Stack(children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: Container(
-              decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: Theme.of(context).canvasColor,
+              expandedHeight: 200.0,
+              automaticallyImplyLeading: false,
+              floating: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  background: Row(children: [
+                Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            child: Hero(
+                                tag: tag,
+                                child: InkWell(
+                                    onTap: () {
+                                      _openCoverViewerDialog(
+                                          widget.songLink, context);
+                                    },
+                                    child: CachedNetworkImage(
+                                        imageUrl: coverLink)))),
+                        Expanded(child: SongWidget(song)),
+                      ],
+                    ))
+              ])),
             ),
+          ];
+        },
+        body: Stack(children: [
+          CachedNetworkImage(
+            imageUrl: song.coverLink,
+            imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover)),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade200.withOpacity(0.7)),
+                  ),
+                )),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           PageView(
             onPageChanged: (int page) => setState(() {
@@ -524,15 +532,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               _buildViewComments(context, song),
             ],
           )
-        ]),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.fill,
-          alignment: FractionalOffset.topCenter,
-          image: NetworkImage(coverLink),
-        )),
-      ),
-    );
+        ]));
 
     var postNewComment = Session.accountLink.id == null || _currentPage != 1
         ? null
