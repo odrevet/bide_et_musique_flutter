@@ -200,13 +200,14 @@ class WallWidget extends StatelessWidget {
                   ]),
             ),
             Html(
-                data: post.body,
-                onLinkTap: (url) {
-                  onLinkTap(url, context);
-                },
+              data: post.body,
+              onLinkTap: (url) {
+                onLinkTap(url, context);
+              },
               linkStyle: const TextStyle(
                 color: Colors.redAccent,
-              ),)
+              ),
+            )
           ],
         ),
       ));

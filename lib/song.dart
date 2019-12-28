@@ -497,8 +497,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           ),
         ];
       },
-      body: Center(
-          child: Container(
+      body: Container(
         child: Stack(children: [
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
@@ -532,7 +531,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           alignment: FractionalOffset.topCenter,
           image: NetworkImage(coverLink),
         )),
-      )),
+      ),
     );
 
     var postNewComment = Session.accountLink.id == null || _currentPage != 1

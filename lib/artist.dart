@@ -111,7 +111,8 @@ class ArtistPageWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: InkWell(child: Image.network(urlArtistImage))),
+                      Expanded(
+                          child: InkWell(child: Image.network(urlArtistImage))),
                       Expanded(child: Text(artist.alias)),
                     ],
                   ))

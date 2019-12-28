@@ -302,8 +302,4 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         ),
         home: home);
   }
-
-
-
-
 }

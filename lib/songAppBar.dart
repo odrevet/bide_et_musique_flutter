@@ -293,7 +293,8 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.code),
         onPressed: () {
-          Clipboard.setData(new ClipboardData(text: '<a href="${_song.link}">${_song.title}</a>'));
+          Clipboard.setData(new ClipboardData(
+              text: '<a href="${_song.link}">${_song.title}</a>'));
         });
   }
 }
