@@ -38,13 +38,6 @@ class _CoverViewerState extends State<CoverViewer> {
     var tag = createTag(songLink);
     return Hero(
         tag: tag,
-        child: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            fit: BoxFit.contain,
-            image: NetworkImage(songLink.coverLink),
-          )),
-          alignment: Alignment(0.0, 0.0),
-        ));
+        child: Cover(songLink.coverLink));
   }
 }

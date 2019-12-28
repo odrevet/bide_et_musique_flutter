@@ -8,6 +8,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:diacritic/diacritic.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'account.dart';
 import 'artist.dart';
@@ -152,11 +153,28 @@ class SongCardWidget extends StatelessWidget {
             },
             fullscreenDialog: true));
       },
-      child: Container(
+      child: Cover(songLink.coverLink),
+    );
+  }
+}
+
+class Cover extends StatelessWidget {
+  final String _url;
+
+  Cover(this._url);
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: _url,
+      placeholder: (context, url) => DecoratedBox(
         decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            image: DecorationImage(image: NetworkImage(songLink.coverLink))),
+          image: DecorationImage(
+            image: AssetImage('assets/vinyl-default.jpg'),
+          ),
+        ),
       ),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }
@@ -311,22 +329,25 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       loadingMessage = 'Chargement';
     }
 
-    Widget body = Container(
-        alignment: Alignment.center,
-        child: Stack(children: [
-          Container(
-            alignment: Alignment.center,
-            decoration:
-                BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+    Widget body = Stack(children: <Widget>[
+      CachedNetworkImage(
+        imageUrl: coverLink,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth),
           ),
-          Center(child: CircularProgressIndicator())
-        ]),
-        decoration: BoxDecoration(
+        ),
+        placeholder: (context, url) => DecoratedBox(
+          decoration: BoxDecoration(
             image: DecorationImage(
-          fit: BoxFit.fitWidth,
-          alignment: FractionalOffset.center,
-          image: NetworkImage(coverLink),
-        )));
+              image: AssetImage('assets/vinyl-default.jpg'),
+            ),
+          ),
+        ),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ),
+      Align(alignment: Alignment.center, child: CircularProgressIndicator())
+    ]);
 
     return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
@@ -467,7 +488,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     _openCoverViewerDialog(
                                         widget.songLink, context);
                                   },
-                                  child: Image.network(coverLink)))),
+                                  child: CachedNetworkImage(
+                                      imageUrl: coverLink)))),
                       Expanded(child: SongWidget(song)),
                     ],
                   ))

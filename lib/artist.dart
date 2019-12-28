@@ -94,7 +94,7 @@ class ArtistPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Artist artist) {
-    var urlCover = '$baseUri/images/photos/ART${artist.id}.jpg';
+    var urlArtistImage = '$baseUri/images/photos/ART${artist.id}.jpg';
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -111,7 +111,7 @@ class ArtistPageWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: InkWell(child: Image.network(urlCover))),
+                      Expanded(child: InkWell(child: Image.network(urlArtistImage))),
                       Expanded(child: Text(artist.alias)),
                     ],
                   ))
@@ -135,7 +135,7 @@ class ArtistPageWidget extends StatelessWidget {
             image: DecorationImage(
           fit: BoxFit.fill,
           alignment: FractionalOffset.topCenter,
-          image: NetworkImage(urlCover),
+          image: NetworkImage(urlArtistImage),
         )),
       )),
     );
