@@ -167,14 +167,14 @@ class Cover extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: _url,
-      placeholder: (context, url) => DecoratedBox(
+      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+      errorWidget: (context, url, error) => DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/vinyl-default.jpg'),
           ),
         ),
       ),
-      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }
