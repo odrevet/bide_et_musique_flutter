@@ -28,8 +28,8 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   } else if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var resultat = document.getElementsByClassName('bmtable')[0];
-    var trs = resultat.getElementsByTagName('tr');
+    var table = document.getElementsByClassName('bmtable')[0];
+    var trs = table.getElementsByTagName('tr');
 
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');

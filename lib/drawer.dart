@@ -6,6 +6,7 @@ import 'newSongs.dart';
 import 'nowSong.dart';
 import 'pochettoscope.dart';
 import 'schedule.dart';
+import 'thematics.dart';
 import 'search.dart';
 import 'session.dart';
 import 'settings.dart';
@@ -77,6 +78,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ScheduleWidget(schedule: fetchSchedule())));
+          },
+        ),
+        ListTile(
+          title: Text('Thématiques'),
+          leading: Icon(Icons.photo_album),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ThematicPageWidget(programLinks: fetchThematics())));
           },
         ),
         ListTile(
