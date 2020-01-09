@@ -1,15 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-
 import 'session.dart';
-import 'song.dart';
 import 'program.dart';
 import 'utils.dart';
 

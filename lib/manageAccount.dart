@@ -38,7 +38,7 @@ class LoggedInPage extends StatelessWidget {
               Tab(icon: Icon(Icons.account_circle)),
               Tab(icon: Icon(Icons.star)),
               Tab(icon: Icon(Icons.exposure_plus_1)),
-              Tab(icon: Icon(Icons.priority_high)),
+              Tab(icon: Icon(Icons.feedback)),
             ],
           ),
           title: Text('Gestion de votre compte'),

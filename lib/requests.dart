@@ -1,14 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ui';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:diacritic/diacritic.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'song.dart';
 import 'session.dart';
@@ -43,7 +36,8 @@ Future<List<Request>> fetchRequests() async {
       var tds = tr.getElementsByTagName('td');
       tds.removeLast();
       var songLink = songLinkFromTr(tr);
-      bool isAvailable = true;
+      String alt = tr.children[4].children[0].attributes['alt'];
+      bool isAvailable = alt != 'Pas disponible pour le moment';
       var request = Request(songLink: songLink, isAvailable: isAvailable);
       requests.add(request);
     }
@@ -54,16 +48,24 @@ Future<List<Request>> fetchRequests() async {
   return requests;
 }
 
-class RequestsPageWidget extends StatelessWidget {
+class RequestsPageWidget extends StatefulWidget {
   final Future<List<Request>> requests;
 
   RequestsPageWidget({Key key, this.requests}) : super(key: key);
 
   @override
+  _RequestsPageWidgetState createState() => _RequestsPageWidgetState();
+}
+
+class _RequestsPageWidgetState extends State<RequestsPageWidget> {
+  String _selectedRequestId;
+  final _dedicateController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<Request>>(
-        future: requests,
+        future: widget.requests,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -71,37 +73,70 @@ class RequestsPageWidget extends StatelessWidget {
             return Text("${snapshot.error}");
           }
 
-          var loadingMessage = 'Chargement';
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(loadingMessage),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return CircularProgressIndicator();
         },
       ),
     );
   }
 
   Widget _buildView(BuildContext context, List<Request> requests) {
-    return ListView.builder(
+    Widget listview = ListView.builder(
       itemCount: requests.length,
       itemBuilder: (context, index) {
         var songLink = requests[index].songLink;
-        return ListTile(
+        bool isAvailable = requests[index].isAvailable;
+
+        Widget listTile = ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.black12,
               child: heroThumbCover(songLink),
             ),
             title: Text(songLink.title),
             subtitle: Text(songLink.artist),
-            trailing:
-                songLink.isNew ? Icon(Icons.fiber_new) : null,
-            onTap: () => print('tap!'));
+            trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
+            onTap: () => setState(() {
+                  if(isAvailable)_selectedRequestId = songLink.id;
+                }));
+
+        if (songLink.id == _selectedRequestId)
+          return Material(color: Colors.grey[300], child: listTile);
+        else if (isAvailable != true)
+          return Material(color: Colors.red[300], child: listTile);
+        else
+          return listTile;
       },
     );
+
+    return Column(
+      children: <Widget>[
+        Expanded(child: listview),
+        Row(
+          children: <Widget>[
+            Flexible(
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: 'Dédicace (facultative, 40 caractères maximum)'),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () {
+                if (_selectedRequestId != null) this._sendRequest();
+              },
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  void _sendRequest() async {
+    final url = '$baseUri/requetes.html';
+    String dedicate = _dedicateController.text;
+    await Session.post(url, body: {
+      'Nb': _selectedRequestId,
+      'Dedicate': dedicate,
+      'Dedicate2': Null
+    });
   }
 }
