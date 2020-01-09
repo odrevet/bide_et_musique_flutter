@@ -88,11 +88,8 @@ class ThematicPageWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
     Widget listView = ListView.builder(
-      // Must have an item count equal to the number of items!
       itemCount: programLinks.length,
-      // A callback that will return a widget.
       itemBuilder: (context, index) {
-        // In our case, a DogCard for each doggo.
         return ListTile(title: Text(programLinks[index].name), subtitle: Text(programLinks[index].songCount), onTap: () {
           Navigator.push(
               context,

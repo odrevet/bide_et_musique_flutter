@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:bide_et_musique/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -8,6 +9,7 @@ import 'account.dart';
 import 'manageFavorites.dart';
 import 'session.dart';
 import 'song.dart';
+import 'requests.dart';
 import 'utils.dart';
 
 class LoggedInPage extends StatelessWidget {
@@ -27,7 +29,7 @@ class LoggedInPage extends StatelessWidget {
     ));
 
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           actions: actions,
@@ -36,6 +38,7 @@ class LoggedInPage extends StatelessWidget {
               Tab(icon: Icon(Icons.account_circle)),
               Tab(icon: Icon(Icons.star)),
               Tab(icon: Icon(Icons.exposure_plus_1)),
+              Tab(icon: Icon(Icons.priority_high)),
             ],
           ),
           title: Text('Gestion de votre compte'),
@@ -45,7 +48,8 @@ class LoggedInPage extends StatelessWidget {
             ManageAccountPageWidget(
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
-            VoteListing(fetchVotes())
+            VoteListing(fetchVotes()),
+            RequestsPageWidget(requests: fetchRequests())
           ],
         ),
       ),
