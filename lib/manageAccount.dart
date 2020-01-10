@@ -49,7 +49,7 @@ class LoggedInPage extends StatelessWidget {
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
-            RequestsPageWidget(requests: fetchRequests())
+            RequestsPageWidget()
           ],
         ),
       ),

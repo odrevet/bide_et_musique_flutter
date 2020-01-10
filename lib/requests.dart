@@ -49,9 +49,7 @@ Future<List<Request>> fetchRequests() async {
 }
 
 class RequestsPageWidget extends StatefulWidget {
-  final Future<List<Request>> requests;
-
-  RequestsPageWidget({Key key, this.requests}) : super(key: key);
+  RequestsPageWidget({Key key}) : super(key: key);
 
   @override
   _RequestsPageWidgetState createState() => _RequestsPageWidgetState();
@@ -60,12 +58,26 @@ class RequestsPageWidget extends StatefulWidget {
 class _RequestsPageWidgetState extends State<RequestsPageWidget> {
   String _selectedRequestId;
   final _dedicateController = TextEditingController();
+  Future<List<Request>> _requests;
+
+  @override
+  void initState() {
+    _updateRequests();
+    super.initState();
+  }
+
+  void _updateRequests() async{
+    setState(() {
+      _selectedRequestId = null;
+      _requests = fetchRequests();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<Request>>(
-        future: widget.requests,
+        future: this._requests,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -107,6 +119,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
       },
     );
 
+    var onPressed = _selectedRequestId == null ? null : _sendRequest();
     return Column(
       children: <Widget>[
         Expanded(child: listview),
@@ -120,9 +133,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             ),
             IconButton(
               icon: Icon(Icons.send),
-              onPressed: () {
-                if (_selectedRequestId != null) this._sendRequest();
-              },
+              onPressed: () => onPressed,
             )
           ],
         )
@@ -133,10 +144,11 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
   void _sendRequest() async {
     final url = '$baseUri/requetes.html';
     String dedicate = _dedicateController.text;
-    final response = await Session.post(url, body: {
+    await Session.post(url, body: {
       'Nb': _selectedRequestId.toString(),
       'Dedicate': dedicate,
       'Dedicate2': ''
     });
+    _updateRequests();
   }
 }
