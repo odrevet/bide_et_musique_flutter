@@ -179,6 +179,33 @@ class Cover extends StatelessWidget {
   }
 }
 
+List<Comment> _parseComments(document){
+  var comments = <Comment>[];
+  var divComments = document.getElementById('comments');
+  var divsNormal = divComments.getElementsByClassName('normal');
+
+  for (dom.Element divNormal in divsNormal) {
+    var comment = Comment();
+    try {
+      var tdCommentChildren = divNormal.children;
+      //get comment id (remove 'comment' string)
+      comment.id = tdCommentChildren[0].attributes['id'].substring(8);
+      dom.Element aAccount = tdCommentChildren[1].children[0];
+      String accountId = extractAccountId(aAccount.attributes['href']);
+      String accountName = aAccount.innerHtml;
+      comment.author = AccountLink(id: accountId, name: accountName);
+      var commentLines = divNormal.innerHtml.split('<br>');
+      commentLines.removeAt(0);
+      comment.body = stripTags(commentLines.join().trim());
+      comment.time = tdCommentChildren[2].innerHtml;
+      comments.add(comment);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+  return comments;
+}
+
 Future<Song> fetchSong(String songId) async {
   var song;
   final url = '$baseUri/song/$songId';
@@ -204,40 +231,18 @@ Future<Song> fetchSong(String songId) async {
     throw Exception('Failed to load song with id $songId');
   }
 
-  //If connected, fetch comments and favorite status
+  //fetch comments and, if connected, the favorite status
   var response = await Session.get(url + '.html');
 
   if (response.statusCode == 200) {
-    var body = response.body;
-    dom.Document document = parser.parse(body);
-    var comments = <Comment>[];
-    var divComments = document.getElementById('comments');
-    var divsNormal = divComments.getElementsByClassName('normal');
-
-    for (dom.Element divNormal in divsNormal) {
-      var comment = Comment();
-      try {
-        var tdCommentChildren = divNormal.children;
-        //get comment id (remove 'comment' string)
-        comment.id = tdCommentChildren[0].attributes['id'].substring(8);
-        dom.Element aAccount = tdCommentChildren[1].children[0];
-        String accountId = extractAccountId(aAccount.attributes['href']);
-        String accountName = aAccount.innerHtml;
-        comment.author = AccountLink(id: accountId, name: accountName);
-        var commentLines = divNormal.innerHtml.split('<br>');
-        commentLines.removeAt(0);
-        comment.body = stripTags(commentLines.join().trim());
-        comment.time = tdCommentChildren[2].innerHtml;
-        comments.add(comment);
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-    song.comments = comments;
-
     song.canListen = false;
     song.isFavourite = false;
     song.canFavourite = false;
+
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+
+    song.comments = _parseComments(document);
 
     var divTitres = document.getElementsByClassName('titreorange');
     for (var divTitre in divTitres) {
@@ -278,7 +283,7 @@ Future<Song> fetchSong(String songId) async {
 
 class SongPageWidget extends StatefulWidget {
   final SongLink songLink;
-  final Future<Song> song;
+  Future<Song> song;
 
   SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
 
@@ -379,6 +384,10 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     onPressed: () {
                       _sendAddComment(song);
                       Navigator.of(context).pop();
+                      setState(() {
+                        widget.song = fetchSong(song.id);
+                      });
+
                     },
                     color: Colors.orangeAccent),
               ],
@@ -414,6 +423,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     ),
                     onPressed: () {
                       _sendEditComment(song, comment);
+                      setState(() {
+                        widget.song = fetchSong(song.id);
+                      });
                       Navigator.of(context).pop();
                     },
                     color: Colors.orangeAccent),
@@ -426,9 +438,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   }
 
   void _sendEditComment(Song song, Comment comment) async {
-    String text = _commentController.text;
-    text = text.replaceAll(RegExp(r'é'), 'e');
-    text = text.replaceAll(RegExp(r'è'), 'e');
+    String text = removeDiacritics(_commentController.text);
 
     if (text.isNotEmpty) {
       await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
