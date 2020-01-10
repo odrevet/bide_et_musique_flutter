@@ -133,10 +133,10 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
   void _sendRequest() async {
     final url = '$baseUri/requetes.html';
     String dedicate = _dedicateController.text;
-    await Session.post(url, body: {
-      'Nb': _selectedRequestId,
+    final response = await Session.post(url, body: {
+      'Nb': _selectedRequestId.toString(),
       'Dedicate': dedicate,
-      'Dedicate2': Null
+      'Dedicate2': ''
     });
   }
 }
