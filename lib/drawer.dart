@@ -41,15 +41,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Drawer(
         child: ListView(
       children: <Widget>[
-        DrawerHeader(
-            child: DecoratedBox(
+        SizedBox(
+          height : 120.0,
+          child: DrawerHeader(
+            child:Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/bm_logo.png'),
+                  fit: BoxFit.fitWidth,
+                  image: AssetImage('assets/bm_logo_white.png'),
                 ),
               ),
+              child: Container(),
             ),
-            decoration: BoxDecoration(color: Colors.orange)),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: AssetImage('assets/bandeau.png'),
+              ),
+            )
+          ),
+        ),
         ListTile(
           title: Text(_accountTitle),
           leading: Icon(Icons.account_circle),
