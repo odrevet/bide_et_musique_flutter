@@ -117,7 +117,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => WallWidget(posts: fetchPosts())));
+                    builder: (context) => WallWidget()));
           },
         ),
         ListTile(

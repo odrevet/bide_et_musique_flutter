@@ -69,11 +69,22 @@ Future<List<Post>> fetchPosts() async {
   }
 }
 
-class WallWidget extends StatelessWidget {
-  final Future<List<Post>> posts;
+class WallWidget extends StatefulWidget {
+  WallWidget({Key key}) : super(key: key);
+
+  @override
+  _WallWidgetState createState() => _WallWidgetState();
+}
+
+class _WallWidgetState extends State<WallWidget> {
+  Future<List<Post>> posts;
   final _newMessageController = TextEditingController();
 
-  WallWidget({Key key, this.posts}) : super(key: key);
+  @override
+  void initState() {
+    _updatePosts();
+    super.initState();
+  }
 
   void _sendMessage() async {
     String message = _newMessageController.text;
@@ -82,6 +93,12 @@ class WallWidget extends StatelessWidget {
     if (message.isNotEmpty) {
       await Session.post(url, body: {'T': message, 'Type': '2'});
     }
+  }
+
+  _updatePosts() async{
+    setState(() {
+      posts = fetchPosts();
+    });
   }
 
   _newMessageDialog(BuildContext context) {
@@ -106,9 +123,12 @@ class WallWidget extends StatelessWidget {
                     child: Text(
                       'Envoyer',
                     ),
-                    onPressed: () {
-                      _sendMessage();
+                    onPressed: () async {
+                      await _sendMessage();
+                      _updatePosts();
+                      _newMessageController.text = '';
                       Navigator.of(context).pop();
+
                     },
                     color: Colors.orangeAccent),
               ],
@@ -137,7 +157,7 @@ class WallWidget extends StatelessWidget {
       floatingActionButton: postNew,
       body: Center(
         child: FutureBuilder<List<Post>>(
-          future: posts,
+          future: this.posts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);
