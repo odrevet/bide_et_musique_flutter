@@ -39,11 +39,10 @@ Future<List<Message>> fetchMessages() async {
       var message = Message();
       String id = extractAccountLinkId(tr.children[0].children[0].attributes['href']);
       message.from = AccountLink(id: id, name: tr.children[0].text.trim());
-      String secondTdText = tr.children[1].text.trim();
+      List<String> secondTdText = tr.children[1].text.split('\n');
       print(secondTdText);
-      
-      message.receivedCount = '0';
-      message.sentCount = '0';
+      message.sentCount = secondTdText[2].trim();
+      message.receivedCount = secondTdText[3].trim();
       messages.add(message);
     }
   } else {
@@ -88,7 +87,7 @@ class BideBoxWidget extends StatelessWidget {
             title: Text(
               message.from.name,
             ),
-            subtitle: Text('Envoyé: ${message.sentCount}, Reçu: ${message.receivedCount}'),
+            subtitle: Text('${message.sentCount} ${message.receivedCount}'),
             leading: Icon(Icons.mail)
           );
         });
