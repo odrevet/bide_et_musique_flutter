@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:diacritic/diacritic.dart';
 import 'account.dart';
 import 'session.dart';
 import 'utils.dart';
@@ -37,10 +38,10 @@ Future<List<Message>> fetchMessages() async {
     trs.removeLast();
     for (var tr in trs) {
       var message = Message();
-      String id = extractAccountLinkId(tr.children[0].children[0].attributes['href']);
+      String id =
+          extractAccountLinkId(tr.children[0].children[0].attributes['href']);
       message.from = AccountLink(id: id, name: tr.children[0].text.trim());
       List<String> secondTdText = tr.children[1].text.split('\n');
-      print(secondTdText);
       message.sentCount = secondTdText[2].trim();
       message.receivedCount = secondTdText[3].trim();
       messages.add(message);
@@ -54,6 +55,7 @@ Future<List<Message>> fetchMessages() async {
 
 class BideBoxWidget extends StatelessWidget {
   final Future<List<Message>> messages;
+  final _newMessageController = TextEditingController();
 
   BideBoxWidget({Key key, this.messages}) : super(key: key);
 
@@ -82,14 +84,62 @@ class BideBoxWidget extends StatelessWidget {
     return ListView.builder(
         itemCount: messages.length,
         itemBuilder: (BuildContext context, int index) {
-          Message message =  messages[index];
+          Message message = messages[index];
           return ListTile(
-            title: Text(
-              message.from.name,
-            ),
-            subtitle: Text('${message.sentCount} ${message.receivedCount}'),
-            leading: Icon(Icons.mail)
-          );
+              title: Text(
+                message.from.name,
+              ),
+              subtitle: Text('${message.sentCount} ${message.receivedCount}'),
+              leading: GestureDetector(
+                  onTap: () {
+                    _newMessageDialog(context, message.from);
+                  },
+                  child: Icon(Icons.mail)));
         });
+  }
+
+  void _sendMessage(id) async {
+    String message = removeDiacritics(_newMessageController.text);
+    final url = '$baseUri/bidebox_send.html';
+
+    if (message.isNotEmpty) {
+      await Session.post(url, body: {'Message': message, 'T': id, 'R' : '', 'M': 'S'});
+    }
+  }
+
+  _newMessageDialog(BuildContext context, AccountLink to) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Message pour ${to.name}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                    maxLines: 5,
+                    controller: _newMessageController,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre message ici',
+                    )),
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      'Envoyer',
+                    ),
+                    onPressed: () async {
+                      await _sendMessage(to.id);
+                      _newMessageController.text = '';
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.orangeAccent),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
