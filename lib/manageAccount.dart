@@ -9,6 +9,7 @@ import 'account.dart';
 import 'manageFavorites.dart';
 import 'session.dart';
 import 'song.dart';
+import 'bidebox.dart';
 import 'requests.dart';
 import 'utils.dart';
 
@@ -29,7 +30,7 @@ class LoggedInPage extends StatelessWidget {
     ));
 
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           actions: actions,
@@ -38,6 +39,7 @@ class LoggedInPage extends StatelessWidget {
               Tab(icon: Icon(Icons.account_circle)),
               Tab(icon: Icon(Icons.star)),
               Tab(icon: Icon(Icons.exposure_plus_1)),
+              Tab(icon: Icon(Icons.mail)),
               Tab(icon: Icon(Icons.feedback)),
             ],
           ),
@@ -49,6 +51,7 @@ class LoggedInPage extends StatelessWidget {
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
+            BideBoxWidget(messages: fetchMessages()),
             RequestsPageWidget()
           ],
         ),
