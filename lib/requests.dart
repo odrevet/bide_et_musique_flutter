@@ -99,9 +99,18 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
         bool isAvailable = requests[index].isAvailable;
 
         Widget listTile = ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.black12,
-              child: heroThumbCover(songLink),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: heroThumbCover(songLink),
+              ),
             ),
             title: Text(songLink.title),
             subtitle: Text(songLink.artist),
