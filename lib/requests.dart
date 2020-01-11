@@ -127,6 +127,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
           children: <Widget>[
             Flexible(
               child: TextField(
+                enabled: _selectedRequestId != null,
                 controller: _dedicateController,
                 decoration: InputDecoration(
                     hintText: 'Dédicace (facultative, 40 caractères maximum)'),
