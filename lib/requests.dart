@@ -119,7 +119,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
       },
     );
 
-    var onPressed = _selectedRequestId == null ? null : _sendRequest();
+    Function onPressed = _selectedRequestId == null ? null : _sendRequest;
     return Column(
       children: <Widget>[
         Expanded(child: listview),
@@ -127,13 +127,14 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
           children: <Widget>[
             Flexible(
               child: TextField(
+                controller: _dedicateController,
                 decoration: InputDecoration(
                     hintText: 'Dédicace (facultative, 40 caractères maximum)'),
               ),
             ),
             IconButton(
               icon: Icon(Icons.send),
-              onPressed: () => onPressed,
+              onPressed: onPressed,
             )
           ],
         )
@@ -149,6 +150,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
       'Dedicate': dedicate,
       'Dedicate2': ''
     });
+
     _updateRequests();
   }
 }
