@@ -136,24 +136,26 @@ class SongCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (songLink.id != null) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SongPageWidget(
-                      songLink: songLink, song: fetchSong(songLink.id))));
-        }
-      },
-      onLongPress: () {
-        Navigator.of(context).push(MaterialPageRoute<Null>(
-            builder: (BuildContext context) {
-              return CoverViewer(songLink);
-            },
-            fullscreenDialog: true));
-      },
-      child: Cover(songLink.coverLink),
+    return Card(
+      child: GestureDetector(
+        onTap: () {
+          if (songLink.id != null) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SongPageWidget(
+                        songLink: songLink, song: fetchSong(songLink.id))));
+          }
+        },
+        onLongPress: () {
+          Navigator.of(context).push(MaterialPageRoute<Null>(
+              builder: (BuildContext context) {
+                return CoverViewer(songLink);
+              },
+              fullscreenDialog: true));
+        },
+        child: Cover(songLink.coverLink),
+      ),
     );
   }
 }
@@ -171,6 +173,7 @@ class Cover extends StatelessWidget {
       errorWidget: (context, url, error) => DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
+            fit: BoxFit.fill,
             image: AssetImage('assets/vinyl-default.jpg'),
           ),
         ),
