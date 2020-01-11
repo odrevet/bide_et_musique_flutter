@@ -219,6 +219,7 @@ class _WallWidgetState extends State<WallWidget> {
                     ),
                   ]),
             ),
+            Divider(),
             Html(
               data: post.body,
               onLinkTap: (url) {
