@@ -95,10 +95,10 @@ Future<Account> fetchAccount(String accountId) async {
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
     bool hasMessage = Session.accountLink != null &&
         document.getElementsByClassName('titre-message').isNotEmpty;
-
-    //parse favorites
     bool hasFavorite = (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
+
+    //parse favorites
     var favorites = <SongLink>[];
     if (hasFavorite) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
@@ -165,15 +165,22 @@ Future<List<SongLink>> fetchVotes() async {
   return songLinks;
 }
 
-class AccountPageWidget extends StatelessWidget {
+class AccountPageWidget extends StatefulWidget {
   final Future<Account> account;
 
   AccountPageWidget({Key key, this.account}) : super(key: key);
 
   @override
+  _AccountPageWidgetState createState() => _AccountPageWidgetState();
+}
+
+class _AccountPageWidgetState extends State<AccountPageWidget> {
+  int _currentPage;
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Account>(
-      future: account,
+      future: widget.account,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildView(context, snapshot.data);
@@ -245,6 +252,9 @@ class AccountPageWidget extends StatelessWidget {
             ),
           ),
           PageView(
+            onPageChanged: (int page) => setState(() {
+              _currentPage = page;
+            }),
             children: <Widget>[
               SingleChildScrollView(
                   child: Padding(
@@ -271,10 +281,18 @@ class AccountPageWidget extends StatelessWidget {
       )),
     );
 
+    Widget sendMessage = Session.accountLink.id == null || _currentPage != 2
+        ? null
+        : FloatingActionButton(
+      //onPressed: () => _newMessageDialog(context, account),  //TODO
+      child: Icon(Icons.mail),
+    );
+
     return Scaffold(
         appBar: AppBar(
           title: Text(account.name),
         ),
+        floatingActionButton: sendMessage,
         body: nestedScrollView);
   }
 }

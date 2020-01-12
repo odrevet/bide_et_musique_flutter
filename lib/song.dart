@@ -547,7 +547,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           )
         ]));
 
-    var postNewComment = Session.accountLink.id == null || _currentPage != 1
+    Widget postNewComment = Session.accountLink.id == null || _currentPage != 1
         ? null
         : FloatingActionButton(
             onPressed: () => _newMessageDialog(context, song),
