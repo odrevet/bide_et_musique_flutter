@@ -89,7 +89,7 @@ class BideBoxWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AccountPageWidget(
-                          account: fetchAccount(message.recipient.id)))),
+                          account: fetchAccount(message.recipient.id), defaultPage: 2,))),
               title: Text(
                 message.recipient.name,
               ),

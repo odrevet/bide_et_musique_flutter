@@ -167,8 +167,9 @@ Future<List<SongLink>> fetchVotes() async {
 
 class AccountPageWidget extends StatefulWidget {
   final Future<Account> account;
+  final int defaultPage;
 
-  AccountPageWidget({Key key, this.account}) : super(key: key);
+  AccountPageWidget({Key key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
   _AccountPageWidgetState createState() => _AccountPageWidgetState();
@@ -176,6 +177,14 @@ class AccountPageWidget extends StatefulWidget {
 
 class _AccountPageWidgetState extends State<AccountPageWidget> {
   int _currentPage;
+  PageController controller;
+
+  @override
+  void initState() {
+    _currentPage = widget.defaultPage;
+    controller = PageController(initialPage: widget.defaultPage);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,6 +261,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
             ),
           ),
           PageView(
+            controller: controller,
             onPageChanged: (int page) => setState(() {
               _currentPage = page;
             }),
