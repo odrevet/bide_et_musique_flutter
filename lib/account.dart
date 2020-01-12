@@ -29,6 +29,12 @@ class Account {
   String presentation;
   List<SongLink> favorites;
   String image;
+  List <Message> messages;
+}
+
+class Message{
+  String header;
+  String body;
 }
 
 openAccountImageViewerDialog(context, image) {
@@ -55,7 +61,9 @@ String extractAccountId(str) {
 Future<Account> fetchAccount(String accountId) async {
   var account = Account();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
-  final response = await http.get(url);
+  final bool ownAccount = accountId == Session.accountLink.id;
+  
+  final response = ownAccount ? await http.get(url) : await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
@@ -72,8 +80,7 @@ Future<Account> fetchAccount(String accountId) async {
     account.messageForum = stripTags(ps[3].innerHtml);
     account.comments = stripTags(ps[4].innerHtml);
 
-    //set avatar path (cannot be always figured out from account id as some
-    //are jpg and some are png
+    //set avatar path
     var img = divInfo.getElementsByTagName('img');
     if (img.isEmpty) {
       account.image = '';
@@ -81,10 +88,18 @@ Future<Account> fetchAccount(String accountId) async {
       account.image = img[0].attributes['src'];
     }
 
-    //parse favorites
+    //parse bm tables
+    //bm table may list favourite songs or messages.
+    //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
+    bool hasMessage = Session.accountLink != null &&
+        document.getElementsByClassName('titre-message').isNotEmpty;
+
+    //parse favorites
+    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
+        (tables.length == 2 && hasMessage);
     var favorites = <SongLink>[];
-    if (tables.isNotEmpty) {
+    if (hasFavorite) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
@@ -94,8 +109,22 @@ Future<Account> fetchAccount(String accountId) async {
         favorites.add(songLink);
       }
     }
-
     account.favorites = favorites;
+
+    //parse message
+    List<Message> messages = [];
+    if (hasMessage) {
+      int index = hasFavorite ? 1 : 0;
+      dom.Element table  = tables [index];
+      for (dom.Element tr in table.getElementsByTagName('tr')) {
+        var message = Message();
+        dom.Element td = tr.children[0];
+        message.header = td.getElementsByClassName('txtred')[0].text.trim();
+        message.body = td.getElementsByTagName('p')[0].text;
+        messages.add(message);
+      }
+    }
+
     return account;
   } else {
     throw Exception('Failed to load account ');

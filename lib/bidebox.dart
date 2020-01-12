@@ -7,8 +7,8 @@ import 'account.dart';
 import 'session.dart';
 import 'utils.dart';
 
-class Message {
-  AccountLink from;
+class Exchange {
+  AccountLink recipient;
   String receivedCount;
   String sentCount;
 }
@@ -23,8 +23,8 @@ String extractAccountLinkId(str) {
   }
 }
 
-Future<List<Message>> fetchMessages() async {
-  List<Message> messages = [];
+Future<List<Exchange>> fetchMessages() async {
+  List<Exchange> messages = [];
 
   String url = '$baseUri/bidebox_list.html';
   final response = await Session.get(url);
@@ -37,10 +37,10 @@ Future<List<Message>> fetchMessages() async {
     trs.removeLast();
     trs.removeLast();
     for (var tr in trs) {
-      var message = Message();
+      var message = Exchange();
       String id =
           extractAccountLinkId(tr.children[0].children[0].attributes['href']);
-      message.from = AccountLink(id: id, name: tr.children[0].text.trim());
+      message.recipient = AccountLink(id: id, name: tr.children[0].text.trim());
       List<String> secondTdText = tr.children[1].text.split('\n');
       message.sentCount = secondTdText[2].trim();
       message.receivedCount = secondTdText[3].trim();
@@ -54,7 +54,7 @@ Future<List<Message>> fetchMessages() async {
 }
 
 class BideBoxWidget extends StatelessWidget {
-  final Future<List<Message>> messages;
+  final Future<List<Exchange>> messages;
   final _newMessageController = TextEditingController();
 
   BideBoxWidget({Key key, this.messages}) : super(key: key);
@@ -62,7 +62,7 @@ class BideBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<List<Message>>(
+      child: FutureBuilder<List<Exchange>>(
         future: this.messages,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -80,19 +80,19 @@ class BideBoxWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildView(BuildContext context, List<Message> messages) {
+  Widget _buildView(BuildContext context, List<Exchange> messages) {
     return ListView.builder(
         itemCount: messages.length,
         itemBuilder: (BuildContext context, int index) {
-          Message message = messages[index];
+          Exchange message = messages[index];
           return ListTile(
               title: Text(
-                message.from.name,
+                message.recipient.name,
               ),
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
                   onTap: () {
-                    _newMessageDialog(context, message.from);
+                    _newMessageDialog(context, message.recipient);
                   },
                   child: Icon(Icons.mail)));
         });
