@@ -66,7 +66,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
     super.initState();
   }
 
-  void _updateRequests() async{
+  void _updateRequests() async {
     setState(() {
       _selectedRequestId = null;
       _requests = fetchRequests();
@@ -104,8 +104,8 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
+                        builder: (context) => SongPageWidget(
+                            songLink: songLink, song: fetchSong(songLink.id))));
               },
               child: CircleAvatar(
                 backgroundColor: Colors.black12,
@@ -116,7 +116,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             subtitle: Text(songLink.artist),
             trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
             onTap: () => setState(() {
-                  if(isAvailable)_selectedRequestId = songLink.id;
+                  if (isAvailable) _selectedRequestId = songLink.id;
                 }));
 
         if (songLink.id == _selectedRequestId)

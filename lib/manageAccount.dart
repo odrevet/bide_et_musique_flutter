@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'account.dart';
+import 'bidebox.dart';
 import 'manageFavorites.dart';
+import 'requests.dart';
 import 'session.dart';
 import 'song.dart';
-import 'bidebox.dart';
-import 'requests.dart';
 import 'utils.dart';
 
 class LoggedInPage extends StatelessWidget {

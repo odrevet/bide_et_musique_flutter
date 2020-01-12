@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:diacritic/diacritic.dart';
+import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:diacritic/diacritic.dart';
+
 import 'account.dart';
 import 'session.dart';
 import 'utils.dart';
@@ -55,7 +57,6 @@ Future<List<Exchange>> fetchMessages() async {
 
 class BideBoxWidget extends StatelessWidget {
   final Future<List<Exchange>> messages;
-  final _newMessageController = TextEditingController();
 
   BideBoxWidget({Key key, this.messages}) : super(key: key);
 
@@ -98,9 +99,10 @@ class BideBoxWidget extends StatelessWidget {
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
                   onTap: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => MessageEditor(message.recipient),
-                  ),
+                        context: context,
+                        builder: (BuildContext context) =>
+                            MessageEditor(message.recipient),
+                      ),
                   child: Icon(Icons.mail)));
         });
   }

@@ -42,24 +42,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         child: ListView(
       children: <Widget>[
         SizedBox(
-          height : 120.0,
+          height: 120.0,
           child: DrawerHeader(
-            child:Container(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: AssetImage('assets/bm_logo_white.png'),
+                  ),
+                ),
+                child: Container(),
+              ),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: AssetImage('assets/bm_logo_white.png'),
+                  image: AssetImage('assets/bandeau.png'),
                 ),
-              ),
-              child: Container(),
-            ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                image: AssetImage('assets/bandeau.png'),
-              ),
-            )
-          ),
+              )),
         ),
         ListTile(
           title: Text(_accountTitle),
@@ -126,9 +125,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: Icon(Icons.question_answer),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WallWidget()));
+                context, MaterialPageRoute(builder: (context) => WallWidget()));
           },
         ),
         ListTile(

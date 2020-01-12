@@ -20,7 +20,7 @@ class AccountLink {
   AccountLink({this.id, this.name});
 }
 
-class Account extends AccountLink{
+class Account extends AccountLink {
   String type;
   String inscription;
   String messageForum;
@@ -120,7 +120,8 @@ Future<Account> fetchAccount(String accountId) async {
       for (dom.Element tr in table.getElementsByTagName('tr')) {
         var message = Message();
         dom.Element td = tr.children[0];
-        List<String> header = td.getElementsByClassName('txtred')[0].text.split('\n');
+        List<String> header =
+            td.getElementsByClassName('txtred')[0].text.split('\n');
         message.body = td.getElementsByTagName('p')[0].text;
         message.recipient = header[1].trim();
         message.date = header[2].trim();
@@ -169,7 +170,8 @@ class AccountPageWidget extends StatefulWidget {
   final Future<Account> account;
   final int defaultPage;
 
-  AccountPageWidget({Key key, this.account, this.defaultPage = 0}) : super(key: key);
+  AccountPageWidget({Key key, this.account, this.defaultPage = 0})
+      : super(key: key);
 
   @override
   _AccountPageWidgetState createState() => _AccountPageWidgetState();
@@ -294,12 +296,12 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
     Widget mailButton = Session.accountLink.id == null || _currentPage != 2
         ? null
         : FloatingActionButton(
-      onPressed: () => showDialog(
-        context: context,
-        builder: (BuildContext context) => MessageEditor(account),
-      ),
-      child: Icon(Icons.mail),
-    );
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => MessageEditor(account),
+            ),
+            child: Icon(Icons.mail),
+          );
 
     return Scaffold(
         appBar: AppBar(

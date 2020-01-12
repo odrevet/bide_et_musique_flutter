@@ -1,12 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'session.dart';
 import 'program.dart';
+import 'session.dart';
 import 'utils.dart';
-
 
 class ProgramLink {
   String id;
@@ -14,7 +14,6 @@ class ProgramLink {
   String songCount;
 
   ProgramLink({this.id, this.name, this.songCount});
-
 }
 
 Future<List<ProgramLink>> fetchThematics() async {
@@ -84,13 +83,16 @@ class ThematicPageWidget extends StatelessWidget {
     Widget listView = ListView.builder(
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
-        return ListTile(title: Text(programLinks[index].name), subtitle: Text(programLinks[index].songCount), onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProgramPageWidget(
-                      program: fetchProgram(programLinks[index].id))));
-        });
+        return ListTile(
+            title: Text(programLinks[index].name),
+            subtitle: Text(programLinks[index].songCount),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProgramPageWidget(
+                          program: fetchProgram(programLinks[index].id))));
+            });
       },
     );
 
