@@ -29,11 +29,12 @@ class Account {
   String presentation;
   List<SongLink> favorites;
   String image;
-  List <Message> messages;
+  List<Message> messages;
 }
 
-class Message{
-  String header;
+class Message {
+  String recipient;
+  String date;
   String body;
 }
 
@@ -62,7 +63,7 @@ Future<Account> fetchAccount(String accountId) async {
   var account = Account();
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final bool ownAccount = accountId == Session.accountLink.id;
-  
+
   final response = ownAccount ? await http.get(url) : await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -115,15 +116,18 @@ Future<Account> fetchAccount(String accountId) async {
     List<Message> messages = [];
     if (hasMessage) {
       int index = hasFavorite ? 1 : 0;
-      dom.Element table  = tables [index];
+      dom.Element table = tables[index];
       for (dom.Element tr in table.getElementsByTagName('tr')) {
         var message = Message();
         dom.Element td = tr.children[0];
-        message.header = td.getElementsByClassName('txtred')[0].text.trim();
+        List<String> header = td.getElementsByClassName('txtred')[0].text.split('\n');
         message.body = td.getElementsByTagName('p')[0].text;
+        message.recipient = header[1].trim();
+        message.date = header[2].trim();
         messages.add(message);
       }
     }
+    account.messages = messages;
 
     return account;
   } else {
@@ -253,7 +257,8 @@ class AccountPageWidget extends StatelessWidget {
                       onLinkTap(url, context);
                     }),
               )),
-              SongListingWidget(account.favorites)
+              SongListingWidget(account.favorites),
+              MessageListingWidget(account.messages)
             ],
           )
         ]),
@@ -271,6 +276,23 @@ class AccountPageWidget extends StatelessWidget {
           title: Text(account.name),
         ),
         body: nestedScrollView);
+  }
+}
+
+class MessageListingWidget extends StatelessWidget {
+  final List<Message> messages;
+  MessageListingWidget(this.messages);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: messages.length,
+        itemBuilder: (BuildContext context, int index) {
+          Message message = messages[index];
+          return ListTile(
+              title: Text('${message.recipient} ${message.date}'),
+              subtitle: Text(message.body));
+        });
   }
 }
 

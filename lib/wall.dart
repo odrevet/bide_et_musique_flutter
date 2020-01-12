@@ -86,7 +86,7 @@ class _WallWidgetState extends State<WallWidget> {
     super.initState();
   }
 
-  void _sendMessage() async {
+  _sendMessage() async {
     String message = _newMessageController.text;
     final url = '$baseUri/mur-des-messages.html';
 

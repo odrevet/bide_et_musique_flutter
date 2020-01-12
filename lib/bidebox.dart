@@ -85,15 +85,13 @@ class BideBoxWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           Exchange message = messages[index];
           return ListTile(
-              title: GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccountPageWidget(
-                            account: fetchAccount(message.recipient.id)))),
-                child: Text(
-                  message.recipient.name,
-                ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AccountPageWidget(
+                          account: fetchAccount(message.recipient.id)))),
+              title: Text(
+                message.recipient.name,
               ),
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
@@ -104,7 +102,7 @@ class BideBoxWidget extends StatelessWidget {
         });
   }
 
-  void _sendMessage(id) async {
+  _sendMessage(id) async {
     String message = removeDiacritics(_newMessageController.text);
     final url = '$baseUri/bidebox_send.html';
 
