@@ -89,62 +89,58 @@ class BideBoxWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AccountPageWidget(
-                          account: fetchAccount(message.recipient.id), defaultPage: 2,))),
+                            account: fetchAccount(message.recipient.id),
+                            defaultPage: 2,
+                          ))),
               title: Text(
                 message.recipient.name,
               ),
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
-                  onTap: () {
-                    _newMessageDialog(context, message.recipient);
-                  },
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) => MessageEditor(message.recipient),
+                  ),
                   child: Icon(Icons.mail)));
         });
   }
+}
 
-  _sendMessage(id) async {
+class MessageEditor extends StatelessWidget {
+  final _newMessageController = TextEditingController();
+  final AccountLink _accountLink;
+
+  MessageEditor(this._accountLink);
+
+  _sendMessage() async {
     String message = removeDiacritics(_newMessageController.text);
     final url = '$baseUri/bidebox_send.html';
 
     if (message.isNotEmpty) {
       await Session.post(url,
-          body: {'Message': message, 'T': id, 'R': '', 'M': 'S'});
+          body: {'Message': message, 'T': _accountLink.id, 'R': '', 'M': 'S'});
     }
   }
 
-  _newMessageDialog(BuildContext context, AccountLink to) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Message pour ${to.name}'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextFormField(
-                    maxLines: 5,
-                    controller: _newMessageController,
-                    decoration: InputDecoration(
-                      hintText: 'Entrez votre message ici',
-                    )),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      'Envoyer',
-                    ),
-                    onPressed: () async {
-                      await _sendMessage(to.id);
-                      _newMessageController.text = '';
-                      Navigator.of(context).pop();
-                    },
-                    color: Colors.orangeAccent),
-              ],
-            ),
-          ),
-        );
-      },
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      actions: [
+        MaterialButton(
+          child: Text("Envoyer"),
+          onPressed: () async {
+            await _sendMessage();
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+      title: Text('Message pour ${_accountLink.name}'),
+      content: TextFormField(
+          maxLines: 5,
+          controller: _newMessageController,
+          decoration: InputDecoration(
+            hintText: 'Entrez votre message ici',
+          )),
     );
   }
 }

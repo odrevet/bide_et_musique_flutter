@@ -8,6 +8,7 @@ import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 import 'session.dart';
+import 'bidebox.dart';
 import 'song.dart';
 import 'utils.dart';
 
@@ -19,16 +20,13 @@ class AccountLink {
   AccountLink({this.id, this.name});
 }
 
-class Account {
-  String id;
-  String name;
+class Account extends AccountLink{
   String type;
   String inscription;
   String messageForum;
   String comments;
   String presentation;
   List<SongLink> favorites;
-  String image;
   List<Message> messages;
 }
 
@@ -61,6 +59,8 @@ String extractAccountId(str) {
 
 Future<Account> fetchAccount(String accountId) async {
   var account = Account();
+  account.id = accountId;
+
   final url = '$baseUri/account.html?N=$accountId&Page=all';
   final bool ownAccount = accountId == Session.accountLink.id;
 
@@ -291,10 +291,13 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
       )),
     );
 
-    Widget sendMessage = Session.accountLink.id == null || _currentPage != 2
+    Widget mailButton = Session.accountLink.id == null || _currentPage != 2
         ? null
         : FloatingActionButton(
-      //onPressed: () => _newMessageDialog(context, account),  //TODO
+      onPressed: () => showDialog(
+        context: context,
+        builder: (BuildContext context) => MessageEditor(account),
+      ),
       child: Icon(Icons.mail),
     );
 
@@ -302,7 +305,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
         appBar: AppBar(
           title: Text(account.name),
         ),
-        floatingActionButton: sendMessage,
+        floatingActionButton: mailButton,
         body: nestedScrollView);
   }
 }
