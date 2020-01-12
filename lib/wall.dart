@@ -95,7 +95,7 @@ class _WallWidgetState extends State<WallWidget> {
     }
   }
 
-  _updatePosts() async{
+  _updatePosts() async {
     setState(() {
       posts = fetchPosts();
     });
@@ -107,33 +107,27 @@ class _WallWidgetState extends State<WallWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          actions: <Widget>[
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(
+                  'Envoyer',
+                ),
+                onPressed: () async {
+                  await _sendMessage();
+                  _updatePosts();
+                  _newMessageController.text = '';
+                  Navigator.of(context).pop();
+                })
+          ],
           title: Text('Nouveau message'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextFormField(
-                    maxLines: 5,
-                    controller: _newMessageController,
-                    decoration: InputDecoration(
-                      hintText: 'Entrez votre message ici',
-                    )),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      'Envoyer',
-                    ),
-                    onPressed: () async {
-                      await _sendMessage();
-                      _updatePosts();
-                      _newMessageController.text = '';
-                      Navigator.of(context).pop();
-
-                    },
-                    color: Colors.orangeAccent),
-              ],
-            ),
-          ),
+          content: TextFormField(
+              maxLines: 5,
+              controller: _newMessageController,
+              decoration: InputDecoration(
+                hintText: 'Entrez votre message ici',
+              )),
         );
       },
     );
