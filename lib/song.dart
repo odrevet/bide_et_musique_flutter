@@ -182,7 +182,7 @@ class Cover extends StatelessWidget {
   }
 }
 
-List<Comment> _parseComments(document){
+List<Comment> _parseComments(document) {
   var comments = <Comment>[];
   var divComments = document.getElementById('comments');
   var divsNormal = divComments.getElementsByClassName('normal');
@@ -368,34 +368,28 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          actions: [
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(
+                  'Envoyer',
+                ),
+                onPressed: () {
+                  _sendAddComment(song);
+                  Navigator.of(context).pop();
+                  setState(() {
+                    widget.song = fetchSong(song.id);
+                  });
+                })
+          ],
           title: Text('Nouveau commentaire'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextFormField(
-                    maxLines: 5,
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      hintText: 'Entrez votre commentaire ici',
-                    )),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      'Envoyer',
-                    ),
-                    onPressed: () {
-                      _sendAddComment(song);
-                      Navigator.of(context).pop();
-                      setState(() {
-                        widget.song = fetchSong(song.id);
-                      });
-
-                    },
-                    color: Colors.orangeAccent),
-              ],
-            ),
-          ),
+          content: TextFormField(
+              maxLines: 5,
+              controller: _commentController,
+              decoration: InputDecoration(
+                hintText: 'Entrez votre commentaire ici',
+              )),
         );
       },
     );
@@ -408,33 +402,29 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          actions: [
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(
+                  'Envoyer',
+                ),
+                onPressed: () {
+                  _sendEditComment(song, comment);
+                  setState(() {
+                    widget.song = fetchSong(song.id);
+                  });
+                  Navigator.of(context).pop();
+                },
+                color: Colors.orangeAccent)
+          ],
           title: Text('Edition d\'un commentaire'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextFormField(
-                    maxLines: 5,
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      hintText: 'Entrez votre commentaire ici',
-                    )),
-                RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      'Envoyer',
-                    ),
-                    onPressed: () {
-                      _sendEditComment(song, comment);
-                      setState(() {
-                        widget.song = fetchSong(song.id);
-                      });
-                      Navigator.of(context).pop();
-                    },
-                    color: Colors.orangeAccent),
-              ],
-            ),
-          ),
+          content: TextFormField(
+              maxLines: 5,
+              controller: _commentController,
+              decoration: InputDecoration(
+                hintText: 'Entrez votre commentaire ici',
+              )),
         );
       },
     );
