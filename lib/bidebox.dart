@@ -68,9 +68,8 @@ class BideBoxWidget extends StatelessWidget {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
-            return Scaffold(
-              appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: Center(child: errorDisplay(snapshot.error))),
+            return Center(
+              child: errorDisplay(snapshot.error),
             );
           }
 
@@ -86,8 +85,15 @@ class BideBoxWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           Exchange message = messages[index];
           return ListTile(
-              title: Text(
-                message.recipient.name,
+              title: GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccountPageWidget(
+                            account: fetchAccount(message.recipient.id)))),
+                child: Text(
+                  message.recipient.name,
+                ),
               ),
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
@@ -103,7 +109,8 @@ class BideBoxWidget extends StatelessWidget {
     final url = '$baseUri/bidebox_send.html';
 
     if (message.isNotEmpty) {
-      await Session.post(url, body: {'Message': message, 'T': id, 'R' : '', 'M': 'S'});
+      await Session.post(url,
+          body: {'Message': message, 'T': id, 'R': '', 'M': 'S'});
     }
   }
 
