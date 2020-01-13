@@ -478,7 +478,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
+                        Card(
                             child: Hero(
                                 tag: tag,
                                 child: InkWell(
