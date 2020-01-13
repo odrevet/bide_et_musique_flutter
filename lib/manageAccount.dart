@@ -43,7 +43,7 @@ class LoggedInPage extends StatelessWidget {
               Tab(icon: Icon(Icons.feedback)),
             ],
           ),
-          title: Text('Gestion de votre compte'),
+          title: Text(Session.accountLink.name),
         ),
         body: TabBarView(
           children: [

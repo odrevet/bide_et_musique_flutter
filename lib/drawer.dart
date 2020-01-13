@@ -31,7 +31,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   _setAccountTitle() {
     setState(() {
       _accountTitle = Session.accountLink.id == null
-          ? 'Connexion à votre compte'
+          ? 'Connexion'
           : '${Session.accountLink.name}';
     });
   }
