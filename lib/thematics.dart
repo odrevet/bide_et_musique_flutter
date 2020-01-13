@@ -98,7 +98,7 @@ class ThematicPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Programmations thématiques'),
+        title: Text('Thématiques'),
       ),
       body: listView,
     );
