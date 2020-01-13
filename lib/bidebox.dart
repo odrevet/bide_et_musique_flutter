@@ -139,6 +139,7 @@ class MessageEditor extends StatelessWidget {
       ],
       title: Text('Message pour ${_accountLink.name}'),
       content: TextFormField(
+          maxLength: 500,
           maxLines: 5,
           controller: _newMessageController,
           decoration: InputDecoration(

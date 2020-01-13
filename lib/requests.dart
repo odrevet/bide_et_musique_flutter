@@ -120,7 +120,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 }));
 
         if (songLink.id == _selectedRequestId)
-          return Material(color: Colors.grey[300], child: listTile);
+          return Material(color: Colors.orange[400], child: listTile);
         else if (isAvailable != true)
           return Material(color: Colors.red[300], child: listTile);
         else
@@ -136,6 +136,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
           children: <Widget>[
             Flexible(
               child: TextField(
+                maxLength: 40,
                 enabled: _selectedRequestId != null,
                 controller: _dedicateController,
                 decoration: InputDecoration(
