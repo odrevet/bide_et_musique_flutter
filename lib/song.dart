@@ -369,19 +369,17 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       builder: (BuildContext context) {
         return AlertDialog(
           actions: [
-            RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Text(
-                  'Envoyer',
-                ),
-                onPressed: () {
-                  _sendAddComment(song);
-                  Navigator.of(context).pop();
-                  setState(() {
-                    widget.song = fetchSong(song.id);
-                  });
-                })
+            RaisedButton.icon(
+              icon: Icon(Icons.send),
+              label: Text("Envoyer"),
+              onPressed: () async {
+                _sendAddComment(song);
+                Navigator.of(context).pop();
+                setState(() {
+                  widget.song = fetchSong(song.id);
+                });
+              },
+            )
           ],
           title: Text('Nouveau commentaire'),
           content: TextFormField(
@@ -403,20 +401,17 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       builder: (BuildContext context) {
         return AlertDialog(
           actions: [
-            RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Text(
-                  'Envoyer',
-                ),
-                onPressed: () {
-                  _sendEditComment(song, comment);
-                  setState(() {
-                    widget.song = fetchSong(song.id);
-                  });
-                  Navigator.of(context).pop();
-                },
-                color: Colors.orangeAccent)
+            RaisedButton.icon(
+              icon: Icon(Icons.send),
+              label: Text("Envoyer"),
+              onPressed: () async {
+                _sendEditComment(song, comment);
+                setState(() {
+                  widget.song = fetchSong(song.id);
+                });
+                Navigator.of(context).pop();
+              },
+            )
           ],
           title: Text('Edition d\'un commentaire'),
           content: TextFormField(

@@ -128,13 +128,14 @@ class MessageEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       actions: [
-        MaterialButton(
-          child: Text("Envoyer"),
+        RaisedButton.icon(
+          icon: Icon(Icons.send),
+          label: Text("Envoyer"),
           onPressed: () async {
             await _sendMessage();
             Navigator.of(context).pop();
           },
-        ),
+        )
       ],
       title: Text('Message pour ${_accountLink.name}'),
       content: TextFormField(

@@ -108,18 +108,16 @@ class _WallWidgetState extends State<WallWidget> {
       builder: (BuildContext context) {
         return AlertDialog(
           actions: <Widget>[
-            RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Text(
-                  'Envoyer',
-                ),
-                onPressed: () async {
-                  await _sendMessage();
-                  _updatePosts();
-                  _newMessageController.text = '';
-                  Navigator.of(context).pop();
-                })
+            RaisedButton.icon(
+              icon: Icon(Icons.send),
+              label: Text("Envoyer"),
+              onPressed: () async {
+                await _sendMessage();
+                _updatePosts();
+                _newMessageController.text = '';
+                Navigator.of(context).pop();
+              },
+            )
           ],
           title: Text('Nouveau message'),
           content: TextFormField(
