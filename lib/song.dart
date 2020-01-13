@@ -90,7 +90,7 @@ class Song extends SongLink {
         durationPretty: json['length']['pretty'],
         label: stripTags(json['label']),
         reference: stripTags(json['reference']),
-        lyrics: lyrics == null
+        lyrics: (lyrics == null || lyrics == '')
             ? 'Paroles non renseignées pour cette chanson '
             : lyrics);
   }
