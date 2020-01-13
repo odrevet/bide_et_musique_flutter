@@ -69,7 +69,7 @@ Future<Account> fetchAccount(String accountId) async {
     var body = response.body;
     dom.Document document = parser.parse(body);
     var txtpresentation =
-        document.getElementsByClassName('txtpresentation')[0].innerHtml;
+        document.getElementsByClassName('txtpresentation')[0].innerHtml.trim();
     account.presentation = txtpresentation;
     account.name =
         document.getElementsByClassName('titre-utilisateur')[0].innerHtml;
@@ -268,18 +268,24 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
               _currentPage = page;
             }),
             children: <Widget>[
-              SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                child: Html(
-                    data: account.presentation,
-                    defaultTextStyle: TextStyle(fontSize: 18.0),
-                    useRichText: false,
-                    onLinkTap: (url) {
-                      onLinkTap(url, context);
-                    }),
-              )),
-              SongListingWidget(account.favorites),
+              account.presentation == ''
+                  ? Center(
+                      child: Text(
+                          '${account.name} n\'a pas renseigné sa présentation. '))
+                  : SingleChildScrollView(
+                      child: Padding(
+                      padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                      child: Html(
+                          data: account.presentation,
+                          defaultTextStyle: TextStyle(fontSize: 18.0),
+                          useRichText: false,
+                          onLinkTap: (url) {
+                            onLinkTap(url, context);
+                          }),
+                    )),
+              account.favorites.isEmpty
+                  ? Center(child: Text('${account.name} n\'a pas de favoris. '))
+                  : SongListingWidget(account.favorites),
               MessageListingWidget(account.messages)
             ],
           )
