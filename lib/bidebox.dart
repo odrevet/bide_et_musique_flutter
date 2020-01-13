@@ -108,11 +108,17 @@ class BideBoxWidget extends StatelessWidget {
   }
 }
 
-class MessageEditor extends StatelessWidget {
-  final _newMessageController = TextEditingController();
+class MessageEditor extends StatefulWidget {
   final AccountLink _accountLink;
 
   MessageEditor(this._accountLink);
+
+  @override
+  _MessageEditorState createState() => _MessageEditorState();
+}
+
+class _MessageEditorState extends State<MessageEditor> {
+  final _newMessageController = TextEditingController();
 
   _sendMessage() async {
     String message = removeDiacritics(_newMessageController.text);
@@ -120,7 +126,7 @@ class MessageEditor extends StatelessWidget {
 
     if (message.isNotEmpty) {
       await Session.post(url,
-          body: {'Message': message, 'T': _accountLink.id, 'R': '', 'M': 'S'});
+          body: {'Message': message, 'T': widget._accountLink.id, 'R': '', 'M': 'S'});
     }
   }
 
@@ -137,7 +143,7 @@ class MessageEditor extends StatelessWidget {
           },
         )
       ],
-      title: Text('Message pour ${_accountLink.name}'),
+      title: Text('Message pour ${widget._accountLink.name}'),
       content: TextFormField(
           maxLength: 500,
           maxLines: 5,
