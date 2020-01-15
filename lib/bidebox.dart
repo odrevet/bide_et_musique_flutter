@@ -33,8 +33,12 @@ Future<List<Exchange>> fetchMessages() async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var table = document.getElementsByClassName('bmtable')[0];
+    List<dom.Element> tables =  document.getElementsByClassName('bmtable');
+    if(tables.isEmpty){
+      return messages;
+    }
 
+    dom.Element table = tables[0];
     var trs = table.children[0].children;
     trs.removeLast();
     trs.removeLast();

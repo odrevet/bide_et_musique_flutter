@@ -62,9 +62,12 @@ Future<Account> fetchAccount(String accountId) async {
   account.id = accountId;
 
   final url = '$baseUri/account.html?N=$accountId&Page=all';
+  //own account page looks differant of other account pages
+  //so we never fetch this special own account page, we fetch it
+  //without identification and parse it like any other page
   final bool ownAccount = accountId == Session.accountLink.id;
-
   final response = ownAccount ? await http.get(url) : await Session.get(url);
+
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
@@ -347,17 +350,26 @@ Future<Account> fetchAccountSession() async {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-    //parse favorites
+
+    //parse bm tables
+    //bm table may list favourite songs or messages.
+    //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
+    bool hasMessage = Session.accountLink != null &&
+        document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
+        (tables.length == 2 && hasMessage);
+
+    //parse favorites
     var favorites = <SongLink>[];
-    if (tables.isNotEmpty) {
+    if (hasFavorite) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var song = SongLink();
+        var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
-        song.id = extractSongId(aTitle.attributes['href']);
-        song.title = stripTags(aTitle.innerHtml);
-        song.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(song);
+        songLink.id = extractSongId(aTitle.attributes['href']);
+        songLink.title = stripTags(aTitle.innerHtml);
+        songLink.artist = stripTags(tr.children[3].innerHtml);
+        favorites.add(songLink);
       }
     }
 
