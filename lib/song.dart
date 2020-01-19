@@ -509,8 +509,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                         color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 )),
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           PageView(
             onPageChanged: (int page) => setState(() {
