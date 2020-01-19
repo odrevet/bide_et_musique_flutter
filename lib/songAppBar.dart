@@ -76,14 +76,17 @@ class SongActionButton extends StatelessWidget {
       _actions.add(SongVoteIconWidget(_song));
     }
 
+    _actions.add(SongOpenInBrowserIconWidget(_song));
+
     // Share buttons (message and song id)
     var actionsShare = <Widget>[];
 
-    var shareSongStream = IconButton(
+    var shareSongStream = RaisedButton.icon(
         icon: Icon(Icons.music_note),
-        onPressed: () {
-          Share.share('$baseUri/stream_${_song.id}.php');
-        });
+        label: Text('Flux musical'),
+        onPressed: () =>
+          Share.share('$baseUri/stream_${_song.id}.php')
+        );
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);
@@ -114,8 +117,6 @@ class SongActionButton extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) => popupMenuCopy));
 
-    _actions.add(SongOpenInBrowserIconWidget(_song));
-
     ///////////////////////////////////
     //wrap all actions in a PopupMenuItem to be added in the action menu
     var popupMenuEntries = <PopupMenuEntry<Widget>>[];
@@ -123,10 +124,21 @@ class SongActionButton extends StatelessWidget {
       popupMenuEntries.add(PopupMenuItem<Widget>(child: actionWidget));
     }
 
-    return PopupMenuButton(
-      icon: Icon(Icons.more_vert),
-      itemBuilder: (context) => popupMenuEntries,
-    );
+    return FlatButton.icon(
+        icon: Icon(Icons.menu),
+        label: Text(''),
+        onPressed: () => showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  contentPadding: EdgeInsets.all(20.0),
+                  children: _actions,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                );
+              },
+            ));
   }
 }
 
@@ -147,8 +159,9 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget._song.isFavourite) {
-      return IconButton(
+      return RaisedButton.icon(
           icon: Icon(Icons.star),
+          label: Text('Retirer des favoris'),
           onPressed: () async {
             final response = await Session.post(
                 '$baseUri/account/${Session.accountLink.id}.html',
@@ -166,8 +179,9 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
             }
           });
     } else {
-      return IconButton(
+      return RaisedButton.icon(
         icon: Icon(Icons.star_border),
+        label: Text('Ajouter aux favoris'),
         onPressed: () async {
           String url = widget._song.link;
 
@@ -232,8 +246,9 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
       }
     };
 
-    return IconButton(
+    return RaisedButton.icon(
         icon: Icon(Icons.exposure_plus_1),
+        label: Text('Voter'),
         onPressed: (widget._song.hasVote ? null : callbackVote));
   }
 }
@@ -248,9 +263,10 @@ class SongShareIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return IconButton(
+    return RaisedButton.icon(
         icon: Icon(Icons.message),
-        onPressed: () {
+        label: Text('Message'),
+        onPressed: () =>
           Share.share(
               '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
@@ -260,8 +276,8 @@ ${_song.link}
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-''');
-        });
+''')
+        );
   }
 }
 
@@ -275,8 +291,9 @@ class SongCopyLinkIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return IconButton(
+    return RaisedButton.icon(
         icon: Icon(Icons.link),
+        label: Text('Copier l\'url'),
         onPressed: () {
           Clipboard.setData(new ClipboardData(text: _song.link));
         });
@@ -290,12 +307,13 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return IconButton(
+    return RaisedButton.icon(
         icon: Icon(Icons.code),
-        onPressed: () {
-          Clipboard.setData(new ClipboardData(
-              text: '<a href="${_song.link}">${_song.title}</a>'));
-        });
+        label: Text('Code HTML du lien'),
+        onPressed: () =>
+          Clipboard.setData(ClipboardData(
+              text: '<a href="${_song.link}">${_song.title}</a>'))
+        );
   }
 }
 
@@ -309,11 +327,10 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return IconButton(
+    return RaisedButton.icon(
         icon: Icon(Icons.open_in_browser),
-        onPressed: () {
-          launchURL(_song.link);
-        });
+        label: Text('Ouvrir l\'url'),
+        onPressed: () => launchURL(_song.link));
   }
 }
 
@@ -356,19 +373,13 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     var playStopButton;
 
     if (_isPlaying) {
-      playStopButton = IconButton(
-        icon: Icon(Icons.stop),
-        onPressed: () {
-          stop();
-        },
-      );
+      playStopButton = RaisedButton.icon(
+          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
     } else {
-      playStopButton = IconButton(
-        icon: Icon(Icons.play_arrow),
-        onPressed: () {
-          play();
-        },
-      );
+      playStopButton = RaisedButton.icon(
+          icon: Icon(Icons.play_arrow),
+          label: Text('Ecouter'),
+          onPressed: () => play());
     }
 
     return playStopButton;
