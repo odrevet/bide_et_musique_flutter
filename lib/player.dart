@@ -295,7 +295,8 @@ class StreamPlayer extends BackgroundAudioTask {
           album: 'Bide et Musique',
           title: title,
           artist: artist,
-          artUri: _song.coverLink);
+          artUri: _song.coverLink,
+          duration: _song.duration.inMilliseconds);
       AudioServiceBackground.setMediaItem(mediaItem);
     }
   }
