@@ -153,7 +153,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         future: _account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            if (snapshot.data.favorites.isEmpty)
+              return Center(
+                  child: Text('Vous n\'avez pas de chanson dans vos favoris'));
+            else
+              return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
