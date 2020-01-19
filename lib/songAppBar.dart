@@ -84,9 +84,7 @@ class SongActionButton extends StatelessWidget {
     var shareSongStream = RaisedButton.icon(
         icon: Icon(Icons.music_note),
         label: Text('Flux musical'),
-        onPressed: () =>
-          Share.share('$baseUri/stream_${_song.id}.php')
-        );
+        onPressed: () => Share.share('$baseUri/stream_${_song.id}.php'));
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);
@@ -266,9 +264,8 @@ class SongShareIconWidget extends StatelessWidget {
     return RaisedButton.icon(
         icon: Icon(Icons.message),
         label: Text('Message'),
-        onPressed: () =>
-          Share.share(
-              '''En ce moment j'écoute '${_song.title}' sur bide et musique !
+        onPressed: () => Share.share(
+            '''En ce moment j'écoute '${_song.title}' sur bide et musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
 ${_song.link}
@@ -276,8 +273,7 @@ ${_song.link}
 --------
 Message envoyé avec l'application 'bide et musique flutter pour android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-''')
-        );
+'''));
   }
 }
 
@@ -310,10 +306,8 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return RaisedButton.icon(
         icon: Icon(Icons.code),
         label: Text('Copier le code HTML du lien'),
-        onPressed: () =>
-          Clipboard.setData(ClipboardData(
-              text: '<a href="${_song.link}">${_song.title}</a>'))
-        );
+        onPressed: () => Clipboard.setData(
+            ClipboardData(text: '<a href="${_song.link}">${_song.title}</a>')));
   }
 }
 
@@ -400,7 +394,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     await AudioService.customAction('song', {
       'id': widget._song.id,
-      'title': widget._song.title,
+      'title': widget._song.title + '*',
       'artist': widget._song.artist,
       'duration': widget._song.duration.inSeconds
     });
