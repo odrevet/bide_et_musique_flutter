@@ -378,7 +378,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     } else {
       playStopButton = RaisedButton.icon(
           icon: Icon(Icons.play_arrow),
-          label: Text('Ecouter'),
+          label: Text('Écouter'),
           onPressed: () => play());
     }
 
