@@ -74,7 +74,7 @@ class StreamPlayer extends BackgroundAudioTask {
   StreamNotificationUpdater streamNotificationUpdater =
   StreamNotificationUpdater();
   BasicPlaybackState _skipState;
-  bool _playing;
+  bool _playing = false;
   //final _queue = <MediaItem>[];
   //int _queueIndex = -1;
   //bool get hasNext => _queueIndex + 1 < _queue.length;

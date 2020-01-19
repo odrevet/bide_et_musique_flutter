@@ -17,7 +17,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: widget._state?.basicState == BasicPlaybackState.playing
+      children: widget._state?.basicState == BasicPlaybackState.playing ||
+              widget._state?.basicState == BasicPlaybackState.buffering
           ? [pauseButton(), stopButton()]
           : widget._state?.basicState == BasicPlaybackState.paused
               ? [playButton(), stopButton()]
