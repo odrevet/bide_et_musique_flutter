@@ -309,7 +309,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     //share song button
     return RaisedButton.icon(
         icon: Icon(Icons.code),
-        label: Text('Code HTML du lien'),
+        label: Text('Copier le code HTML du lien'),
         onPressed: () =>
           Clipboard.setData(ClipboardData(
               text: '<a href="${_song.link}">${_song.title}</a>'))
