@@ -81,15 +81,6 @@ class StreamPlayer extends BackgroundAudioTask {
   //bool get hasPrevious => _queueIndex > 0;
   //MediaItem get mediaItem => _queue[_queueIndex];
 
-
-  void setSong(Song song) {
-    this._song = song;
-  }
-
-  void _resetSong() {
-    _song = null;
-  }
-
   BasicPlaybackState _stateToBasicState(AudioPlaybackState state) {
     switch (state) {
       case AudioPlaybackState.none:
@@ -274,14 +265,14 @@ class StreamPlayer extends BackgroundAudioTask {
     switch (name) {
       case 'song':
         Map songMap = arguments;
-        this.setSong(Song(
+        this._song = Song(
             id: songMap['id'],
             title: songMap['title'],
             artist: songMap['artist'],
-            duration: Duration(seconds: songMap['duration'])));
+            duration: Duration(seconds: songMap['duration']));
         break;
       case 'resetSong':
-        _resetSong();
+        this._song = null;
         break;
       case 'setNotification':
         this.setNotification();
