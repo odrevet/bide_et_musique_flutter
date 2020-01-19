@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/foundation.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,21 +28,161 @@ void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => StreamPlayer());
 }
 
+///As Song data cannot be retrieve from the stream,
+///This Class fetch song from the web site
+class StreamNotificationUpdater {
+  Timer timer;
+
+  StreamNotificationUpdater();
+
+  void setMediaItemFromSongLink(SongLink songLink) {
+    var mediaItem = MediaItem(
+        id: songLink.id,
+        album: songLink.program,
+        title: songLink.title,
+        artist: songLink.artist,
+        artUri: '$baseUri/images/pochettes/${songLink.id}.jpg');
+    AudioServiceBackground.setMediaItem(mediaItem);
+  }
+
+  void start() {
+    fetchNowPlaying().then((song) {
+      setMediaItemFromSongLink(song);
+    });
+
+    timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
+      fetchNowPlaying().then((song) {
+        setMediaItemFromSongLink(song);
+      });
+    });
+  }
+
+  void stop() {
+    if (timer != null) timer.cancel();
+  }
+
+  void dispose() {
+    stop();
+  }
+}
+
+
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
-  bool _playing;
+  AudioPlayer _audioPlayer = new AudioPlayer();
   Completer _completer = Completer();
-  AudioPlayer _audioPlayer = AudioPlayer();
-
   StreamNotificationUpdater streamNotificationUpdater =
-      StreamNotificationUpdater();
+  StreamNotificationUpdater();
+  BasicPlaybackState _skipState;
+  bool _playing;
+  //final _queue = <MediaItem>[];
+  //int _queueIndex = -1;
+  //bool get hasNext => _queueIndex + 1 < _queue.length;
+  //bool get hasPrevious => _queueIndex > 0;
+  //MediaItem get mediaItem => _queue[_queueIndex];
+
+
+  void setSong(Song song) {
+    this._song = song;
+  }
+
+  void _resetSong() {
+    _song = null;
+  }
+
+  BasicPlaybackState _stateToBasicState(AudioPlaybackState state) {
+    switch (state) {
+      case AudioPlaybackState.none:
+        return BasicPlaybackState.none;
+      case AudioPlaybackState.stopped:
+        return BasicPlaybackState.stopped;
+      case AudioPlaybackState.paused:
+        return BasicPlaybackState.paused;
+      case AudioPlaybackState.playing:
+        return BasicPlaybackState.playing;
+      case AudioPlaybackState.buffering:
+        return BasicPlaybackState.buffering;
+      case AudioPlaybackState.connecting:
+        return _skipState ?? BasicPlaybackState.connecting;
+      case AudioPlaybackState.completed:
+        return BasicPlaybackState.stopped;
+      default:
+        throw Exception("Illegal state");
+    }
+  }
 
   @override
   Future<void> onStart() async {
-    audioStart();
+    var playerStateSubscription = _audioPlayer.playbackStateStream
+        .where((state) => state == AudioPlaybackState.completed)
+        .listen((state) {
+      _handlePlaybackCompleted();
+    });
+    var eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
+      final state = _stateToBasicState(event.state);
+      if (state != BasicPlaybackState.stopped) {
+        _setState(
+          state: state,
+          position: event.position.inMilliseconds,
+        );
+      }
+    });
+
+    //AudioServiceBackground.setQueue(_queue);
+    //await onSkipToNext();
     await _completer.future;
+    playerStateSubscription.cancel();
+    eventSubscription.cancel();
   }
 
+  void _handlePlaybackCompleted() {
+    onStop();
+    /*if (hasNext) {
+      onSkipToNext();
+    } else {
+      onStop();
+    }*/
+  }
+
+  void playPause() {
+    if (AudioServiceBackground.state.basicState == BasicPlaybackState.playing)
+      onPause();
+    else
+      onPlay();
+  }
+/*
+  @override
+  Future<void> onSkipToNext() => _skip(1);
+
+  @override
+  Future<void> onSkipToPrevious() => _skip(-1);
+
+  Future<void> _skip(int offset) async {
+    final newPos = _queueIndex + offset;
+    if (!(newPos >= 0 && newPos < _queue.length)) return;
+    if (_playing == null) {
+      // First time, we want to start playing
+      _playing = true;
+    } else if (_playing) {
+      // Stop current item
+      await _audioPlayer.stop();
+    }
+    // Load next item
+    _queueIndex = newPos;
+    AudioServiceBackground.setMediaItem(mediaItem);
+    _skipState = offset > 0
+        ? BasicPlaybackState.skippingToNext
+        : BasicPlaybackState.skippingToPrevious;
+    await _audioPlayer.setUrl(mediaItem.id);
+    _skipState = null;
+    // Resume playback if we were playing
+    if (_playing) {
+      onPlay();
+    } else {
+      _setState(state: BasicPlaybackState.paused);
+    }
+  }
+*/
   @override
   void onPlay() async {
     String url = await _getStreamUrl();
@@ -74,42 +214,43 @@ class StreamPlayer extends BackgroundAudioTask {
         controls: [], basicState: BasicPlaybackState.stopped);
   }
 
-  Future<void> audioStart() async {
-    //await FlutterRadio.audioStart();
+  @override
+  void onSeekTo(int position) {
+    _audioPlayer.seek(Duration(milliseconds: position));
   }
 
-  void setSong(Song song) {
-    this._song = song;
+  @override
+  void onClick(MediaButton button) {
+    playPause();
   }
 
-  void togglePlay() {
-    _playing ? onPause() : onPlay();
+  void _setState({@required BasicPlaybackState state, int position}) {
+    if (position == null) {
+      position = _audioPlayer.playbackEvent.position.inMilliseconds;
+    }
+    AudioServiceBackground.setState(
+      controls: getControls(state),
+      systemActions: [MediaAction.seekTo],
+      basicState: state,
+      position: position,
+    );
   }
 
-  String getSongLinkId() {
-    return _song == null ? null : _song.id;
-  }
-
-  void _resetSong() {
-    _song = null;
-  }
-
-  void setNotification() {
-    if (this._song == null) {
-      streamNotificationUpdater.start();
+  List<MediaControl> getControls(BasicPlaybackState state) {
+    if (_playing) {
+      return [
+        //skipToPreviousControl,
+        pauseControl,
+        stopControl,
+        //skipToNextControl
+      ];
     } else {
-      streamNotificationUpdater.stop();
-      var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
-      var artist =
-          _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
-
-      var mediaItem = MediaItem(
-          id: _song.id,
-          album: 'Bide et Musique',
-          title: title,
-          artist: artist,
-          artUri: _song.coverLink);
-      AudioServiceBackground.setMediaItem(mediaItem);
+      return [
+        //skipToPreviousControl,
+        playControl,
+        stopControl,
+        //skipToNextControl
+      ];
     }
   }
 
@@ -148,42 +289,23 @@ class StreamPlayer extends BackgroundAudioTask {
     }
     super.onCustomAction(name, arguments);
   }
-}
 
-///As Song data cannot be retreive from the stream,
-///This Class fetch song from the web site
-class StreamNotificationUpdater {
-  Timer timer;
+  void setNotification() {
+    if (this._song == null) {
+      streamNotificationUpdater.start();
+    } else {
+      streamNotificationUpdater.stop();
+      var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
+      var artist =
+      _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
-  StreamNotificationUpdater();
-
-  void setMediaItemFromSongLink(SongLink songLink) {
-    var mediaItem = MediaItem(
-        id: songLink.id,
-        album: songLink.program,
-        title: songLink.title,
-        artist: songLink.artist,
-        artUri: '$baseUri/images/pochettes/${songLink.id}.jpg');
-    AudioServiceBackground.setMediaItem(mediaItem);
-  }
-
-  void start() {
-    fetchNowPlaying().then((song) {
-      setMediaItemFromSongLink(song);
-    });
-
-    timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      fetchNowPlaying().then((song) {
-        setMediaItemFromSongLink(song);
-      });
-    });
-  }
-
-  void stop() {
-    if (timer != null) timer.cancel();
-  }
-
-  void dispose() {
-    stop();
+      var mediaItem = MediaItem(
+          id: _song.id,
+          album: 'Bide et Musique',
+          title: title,
+          artist: artist,
+          artUri: _song.coverLink);
+      AudioServiceBackground.setMediaItem(mediaItem);
+    }
   }
 }
