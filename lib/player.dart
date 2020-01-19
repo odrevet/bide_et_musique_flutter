@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter_radio/flutter_radio.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'nowPlaying.dart';
@@ -32,6 +32,8 @@ class StreamPlayer extends BackgroundAudioTask {
   Song _song;
   bool _playing;
   Completer _completer = Completer();
+  AudioPlayer _audioPlayer = AudioPlayer();
+
   StreamNotificationUpdater streamNotificationUpdater =
       StreamNotificationUpdater();
 
@@ -44,7 +46,8 @@ class StreamPlayer extends BackgroundAudioTask {
   @override
   void onPlay() async {
     String url = await _getStreamUrl();
-    FlutterRadio.play(url: url);
+    await _audioPlayer.setUrl(url);
+    _audioPlayer.play();
     _playing = true;
     await AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
@@ -53,8 +56,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onPause() async {
-    String url = await _getStreamUrl();
-    FlutterRadio.playOrPause(url: url);
+    _audioPlayer.pause();
     _playing = false;
 
     await AudioServiceBackground.setState(
@@ -64,7 +66,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onStop() async {
-    FlutterRadio.stop();
+    _audioPlayer.stop();
     this._song = null;
     _playing = false;
     _completer.complete();
@@ -73,7 +75,7 @@ class StreamPlayer extends BackgroundAudioTask {
   }
 
   Future<void> audioStart() async {
-    await FlutterRadio.audioStart();
+    //await FlutterRadio.audioStart();
   }
 
   void setSong(Song song) {
