@@ -23,44 +23,26 @@ class InheritedPlayer extends InheritedWidget {
 }
 
 /////////////////////////////////////////////////////////////////////
-
-class PlayerWidget extends StatefulWidget {
+class SongPositionIndicator extends StatefulWidget {
   final PlaybackState _state;
 
-  PlayerWidget(this._state);
+  SongPositionIndicator(this._state);
 
   @override
-  _PlayerWidgetState createState() => _PlayerWidgetState();
+  _SongPositionIndicatorState createState() => _SongPositionIndicatorState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>
-    with WidgetsBindingObserver {
-  final BehaviorSubject<double> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
+class _SongPositionIndicatorState extends State<SongPositionIndicator> {
+  final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: widget._state?.basicState == BasicPlaybackState.playing ||
-              widget._state?.basicState == BasicPlaybackState.buffering
-          ? [pauseButton(), stopButton(), positionIndicator()]
-          : widget._state?.basicState == BasicPlaybackState.paused
-              ? [playButton(), stopButton()]
-              : [
-                  Padding(
-                      padding: const EdgeInsets.all(8), child: startButton())
-                ],
-    );
-  }
-
-  Widget positionIndicator() {
     double seekPos;
     return StreamBuilder(
       stream: Rx.combineLatest2<double, double, double>(
           _dragPositionSubject.stream,
           Stream.periodic(Duration(milliseconds: 200)),
-          (dragPosition, _) => dragPosition),
+              (dragPosition, _) => dragPosition),
       builder: (context, snapshot) {
         double position =
             snapshot.data ?? widget._state.currentPosition.toDouble();
@@ -93,6 +75,39 @@ class _PlayerWidgetState extends State<PlayerWidget>
           ),
         );
       },
+    );
+  }
+
+
+}
+
+/////////////////////////////////////////////////////////////////////
+
+class PlayerWidget extends StatefulWidget {
+  final PlaybackState _state;
+
+  PlayerWidget(this._state);
+
+  @override
+  _PlayerWidgetState createState() => _PlayerWidgetState();
+}
+
+class _PlayerWidgetState extends State<PlayerWidget>
+    with WidgetsBindingObserver {
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: widget._state?.basicState == BasicPlaybackState.playing ||
+              widget._state?.basicState == BasicPlaybackState.buffering
+          ? [pauseButton(), stopButton(), SongPositionIndicator(widget._state)]
+          : widget._state?.basicState == BasicPlaybackState.paused
+              ? [playButton(), stopButton()]
+              : [
+                  Padding(
+                      padding: const EdgeInsets.all(8), child: startButton())
+                ],
     );
   }
 
