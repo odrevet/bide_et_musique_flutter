@@ -25,8 +25,8 @@ Future<SongLink> fetchNowPlaying() async {
     var titreSong2 = document.getElementsByClassName('titre-song2')[0];
     songLink.artist = stripTags(titreSong2.children[0].innerHtml);
 
-    var requete = document.getElementById('requete');
-    songLink.program = stripTags(requete.innerHtml);
+    var request = document.getElementById('requete');
+    songLink.program = stripTags(request.innerHtml);
     return songLink;
   } else {
     throw Exception('Failed to load top');
