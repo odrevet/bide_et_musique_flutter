@@ -56,7 +56,7 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  PlaybackState _state;
+  PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
 
   Future<SongLink> _songLink;
@@ -239,7 +239,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       _playbackStateSubscription = AudioService.playbackStateStream
           .listen((PlaybackState playbackState) {
         setState(() {
-          _state = playbackState;
+          _playbackState = playbackState;
         });
       });
     }
@@ -255,7 +255,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    Widget playerWidget = PlayerWidget(_state);
+    Widget playerWidget = PlayerWidget(_playbackState);
 
     Widget home;
     Widget body;
@@ -292,7 +292,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: BottomAppBar(child: playerWidget), body: body);
 
 
-    return InheritedPlayer(playbackState: _state, child: MaterialApp(
+    return InheritedPlayer(playbackState: _playbackState, child: MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(
           primarySwatch: Colors.orange,

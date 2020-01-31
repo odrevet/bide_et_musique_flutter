@@ -24,9 +24,9 @@ class InheritedPlayer extends InheritedWidget {
 }
 
 class SongPositionSlider extends StatefulWidget {
-  final PlaybackState _state;
+  final PlaybackState _playerState;
   final double _duration;
-  SongPositionSlider(this._state, this._duration);
+  SongPositionSlider(this._playerState, this._duration);
 
   @override
   _SongPositionSliderState createState() => _SongPositionSliderState();
@@ -58,9 +58,9 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
           (dragPosition, _) => dragPosition),
       builder: (context, snapshot) {
         double position =
-            snapshot.data ?? widget._state.currentPosition.toDouble();
+            snapshot.data ?? widget._playerState.currentPosition.toDouble();
 
-        Widget text =  Text(_formatSongDuration(widget._state.currentPosition));
+        Widget text =  Text(_formatSongDuration(widget._playerState.currentPosition));
 
         Widget slider =  Slider(
             inactiveColor: Colors.grey,
