@@ -34,21 +34,24 @@ Future<SongLink> fetchNowPlaying() async {
 }
 
 class NowPlayingWidget extends StatefulWidget {
-  Future<SongLink> _songLink;
+  final Future<SongLink> _songLink;
+
   NowPlayingWidget(this._songLink, {Key key}) : super(key: key);
 
   @override
-  _NowPlayingWidgetState createState() => _NowPlayingWidgetState();
+  _NowPlayingWidgetState createState() => _NowPlayingWidgetState(this._songLink);
 }
 
 class _NowPlayingWidgetState extends State<NowPlayingWidget> {
-  _NowPlayingWidgetState();
+  Future<SongLink> _songLink;
+
+  _NowPlayingWidgetState(this._songLink);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<SongLink>(
-        future: widget._songLink,
+        future: this._songLink,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SongCardWidget(songLink: snapshot.data);
@@ -61,7 +64,7 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
                   RaisedButton.icon(
                     icon: Icon(Icons.refresh),
                     onPressed: () => setState(() {
-                      widget._songLink = fetchNowPlaying();
+                      this._songLink = fetchNowPlaying();
                     }),
                     label: Text('Ré-essayer maintenant'),
                   )

@@ -286,7 +286,7 @@ Future<Song> fetchSong(String songId) async {
 
 class SongPageWidget extends StatefulWidget {
   final SongLink songLink;
-  Future<Song> song;
+  final Future<Song> song;
 
   SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
 
