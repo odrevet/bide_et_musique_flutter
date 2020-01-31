@@ -22,6 +22,18 @@ class InheritedPlayer extends InheritedWidget {
   bool updateShouldNotify(InheritedPlayer old) => playbackState != old.playbackState;
 }
 
+String formatSongDuration(int ms) {
+  Duration duration = Duration(milliseconds: ms);
+  String twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+  return "$twoDigitMinutes:$twoDigitSeconds";
+}
+
 class SongPositionIndicator extends StatefulWidget {
   final PlaybackState _state;
 
@@ -68,8 +80,7 @@ class _SongPositionIndicatorState extends State<SongPositionIndicator> {
                   },
                 ),
               if (duration != null)
-                Text(
-                    "${(widget._state.currentPosition / 1000).toStringAsFixed(0)}"),
+                Text(formatSongDuration(widget._state.currentPosition)),
             ],
           ),
         );

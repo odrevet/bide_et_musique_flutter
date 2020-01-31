@@ -374,7 +374,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       songPlaybackControls = Column(children: <Widget>[
         Row(children: <Widget>[stopSongButton]),
         SongPositionIndicator(playbackState),
-        Divider(  )
+        Divider()
       ]);
     } else {
       songPlaybackControls = RaisedButton.icon(
