@@ -366,6 +366,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final playbackState = InheritedPlayer.of(context);
+    double duration = AudioService.currentMediaItem?.duration?.toDouble();
+
     Widget songPlaybackControls;
 
     if (_isPlaying) {
@@ -373,7 +375,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
       songPlaybackControls = Column(children: <Widget>[
         Row(children: <Widget>[stopSongButton]),
-        SongPositionIndicator(playbackState),
+        SongPositionSlider(playbackState, duration),
         Divider()
       ]);
     } else {

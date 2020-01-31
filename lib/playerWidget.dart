@@ -6,45 +6,47 @@ import 'package:flutter/material.dart';
 import 'player.dart';
 
 class InheritedPlayer extends InheritedWidget {
-  const InheritedPlayer({
-    Key key,
-    @required this.playbackState,
-    @required Widget child
-  }) : super(key: key, child: child);
+  const InheritedPlayer(
+      {Key key, @required this.playbackState, @required Widget child})
+      : super(key: key, child: child);
 
   final PlaybackState playbackState;
 
   static PlaybackState of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedPlayer>().playbackState;
+    return context
+        .dependOnInheritedWidgetOfExactType<InheritedPlayer>()
+        .playbackState;
   }
 
   @override
-  bool updateShouldNotify(InheritedPlayer old) => playbackState != old.playbackState;
+  bool updateShouldNotify(InheritedPlayer old) =>
+      playbackState != old.playbackState;
 }
 
-String formatSongDuration(int ms) {
-  Duration duration = Duration(milliseconds: ms);
-  String twoDigits(int n) {
-    if (n >= 10) return "$n";
-    return "0$n";
-  }
-
-  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  return "$twoDigitMinutes:$twoDigitSeconds";
-}
-
-class SongPositionIndicator extends StatefulWidget {
+class SongPositionSlider extends StatefulWidget {
   final PlaybackState _state;
-
-  SongPositionIndicator(this._state);
+  final double _duration;
+  SongPositionSlider(this._state, this._duration);
 
   @override
-  _SongPositionIndicatorState createState() => _SongPositionIndicatorState();
+  _SongPositionSliderState createState() => _SongPositionSliderState();
 }
 
-class _SongPositionIndicatorState extends State<SongPositionIndicator> {
-  final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
+class _SongPositionSliderState extends State<SongPositionSlider> {
+  final BehaviorSubject<double> _dragPositionSubject =
+      BehaviorSubject.seeded(null);
+
+  String _formatSongDuration(int ms) {
+    Duration duration = Duration(milliseconds: ms);
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,42 +55,31 @@ class _SongPositionIndicatorState extends State<SongPositionIndicator> {
       stream: Rx.combineLatest2<double, double, double>(
           _dragPositionSubject.stream,
           Stream.periodic(Duration(milliseconds: 200)),
-              (dragPosition, _) => dragPosition),
+          (dragPosition, _) => dragPosition),
       builder: (context, snapshot) {
         double position =
             snapshot.data ?? widget._state.currentPosition.toDouble();
-        double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
-        return Container(
-          height: 20,
-          child: Row(
-            children: [
-              if (duration != null)
-                Slider(
-                  inactiveColor: Colors.grey,
-                  activeColor: Colors.red,
-                  min: 0.0,
-                  max: duration,
-                  value: seekPos ?? max(0.0, min(position, duration)),
-                  onChanged: (value) {
-                    _dragPositionSubject.add(value);
-                  },
-                  onChangeEnd: (value) {
-                    AudioService.seekTo(value.toInt());
-                    seekPos = value;
-                    _dragPositionSubject.add(null);
-                  },
-                ),
-              if (duration != null)
-                Text(formatSongDuration(widget._state.currentPosition)),
-            ],
-          ),
-        );
-      },
+        Widget text =  Text(_formatSongDuration(widget._state.currentPosition));
+
+        Widget slider =  Slider(
+            inactiveColor: Colors.grey,
+            activeColor: Colors.red,
+            min: 0.0,
+            max: widget._duration,
+            value: seekPos ?? max(0.0, min(position, widget._duration)),
+            onChanged: (value) {
+              _dragPositionSubject.add(value);
+            },
+            onChangeEnd: (value) {
+              AudioService.seekTo(value.toInt());
+              seekPos = value;
+              _dragPositionSubject.add(null);
+            });
+        return Row(children: <Widget>[text, slider],);
+      }
     );
   }
-
-
 }
 
 class PlayerWidget extends StatefulWidget {
@@ -102,62 +93,72 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
-
   @override
   Widget build(BuildContext context) {
+    double duration = AudioService.currentMediaItem?.duration?.toDouble();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: widget._playbackState?.basicState == BasicPlaybackState.playing ||
+      children: widget._playbackState?.basicState ==
+                  BasicPlaybackState.playing ||
               widget._playbackState?.basicState == BasicPlaybackState.buffering
-          ? [pauseButton(40), stopButton(40), SongPositionIndicator(widget._playbackState)]
+          ? [
+              pauseButton(40),
+              stopButton(40),
+              if (duration != null)
+                Container(
+                  height: 20,
+                  child: SongPositionSlider(widget._playbackState, duration),
+                )
+            ]
           : widget._playbackState?.basicState == BasicPlaybackState.paused
               ? [playButton(40), stopButton(40)]
               : [
                   Padding(
-                      padding: const EdgeInsets.all(8), child: playRadioStreamButton())
+                      padding: const EdgeInsets.all(8),
+                      child: playRadioStreamButton())
                 ],
     );
   }
 }
 
 RaisedButton playRadioStreamButton() => RaisedButton.icon(
-  icon: Icon(Icons.radio, size: 40),
-  label: Text("Écouter la radio",
-      style: TextStyle(
-        fontSize: 20.0,
-      )),
-  shape:
-  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-  onPressed: () async {
-    bool success = await AudioService.start(
-      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-      resumeOnClick: true,
-      androidNotificationChannelName: 'Bide&Musique',
-      notificationColor: 0xFFFFFFFF,
-      androidNotificationIcon: 'mipmap/ic_launcher',
+      icon: Icon(Icons.radio, size: 40),
+      label: Text("Écouter la radio",
+          style: TextStyle(
+            fontSize: 20.0,
+          )),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      onPressed: () async {
+        bool success = await AudioService.start(
+          backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+          resumeOnClick: true,
+          androidNotificationChannelName: 'Bide&Musique',
+          notificationColor: 0xFFFFFFFF,
+          androidNotificationIcon: 'mipmap/ic_launcher',
+        );
+        if (success) {
+          await AudioService.customAction('resetSong');
+          await AudioService.play();
+          await AudioService.customAction('setNotification');
+        }
+      },
     );
-    if (success) {
-      await AudioService.customAction('resetSong');
-      await AudioService.play();
-      await AudioService.customAction('setNotification');
-    }
-  },
-);
 
 IconButton playButton(double iconSize) => IconButton(
-  icon: Icon(Icons.play_arrow),
-  iconSize: iconSize,
-  onPressed: AudioService.play,
-);
+      icon: Icon(Icons.play_arrow),
+      iconSize: iconSize,
+      onPressed: AudioService.play,
+    );
 
 IconButton pauseButton(double iconSize) => IconButton(
-  icon: Icon(Icons.pause),
-  iconSize: iconSize,
-  onPressed: AudioService.pause,
-);
+      icon: Icon(Icons.pause),
+      iconSize: iconSize,
+      onPressed: AudioService.pause,
+    );
 
 IconButton stopButton(double iconSize) => IconButton(
-  icon: Icon(Icons.stop),
-  iconSize: iconSize,
-  onPressed: AudioService.stop,
-);
+      icon: Icon(Icons.stop),
+      iconSize: iconSize,
+      onPressed: AudioService.stop,
+    );
