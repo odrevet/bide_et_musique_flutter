@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
+import 'playerWidget.dart';
 
 import 'player.dart';
 import 'session.dart';
@@ -364,12 +365,14 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final playerState = InheritedPlayer.of(context);
     var playStopButton;
 
     if (_isPlaying) {
-      playStopButton = RaisedButton.icon(
-          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
-    } else {
+      playStopButton = PlayerWidget(playerState.playbackState);
+      /*playStopButton = RaisedButton.icon(
+          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());*/
+    } else { 
       playStopButton = RaisedButton.icon(
           icon: Icon(Icons.play_arrow),
           label: Text('Écouter'),
@@ -394,7 +397,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     await AudioService.customAction('song', {
       'id': widget._song.id,
-      'title': widget._song.title + '*',
+      'title': widget._song.title,
       'artist': widget._song.artist,
       'duration': widget._song.duration.inSeconds
     });

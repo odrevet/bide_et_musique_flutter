@@ -5,6 +5,25 @@ import 'package:flutter/material.dart';
 
 import 'player.dart';
 
+class InheritedPlayer extends InheritedWidget {
+  const InheritedPlayer({
+    Key key,
+    @required this.playbackState,
+    @required Widget child
+  }) : super(key: key, child: child);
+
+  final PlaybackState playbackState;
+
+  static InheritedPlayer of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<InheritedPlayer>();
+  }
+
+  @override
+  bool updateShouldNotify(InheritedPlayer old) => playbackState != old.playbackState;
+}
+
+/////////////////////////////////////////////////////////////////////
+
 class PlayerWidget extends StatefulWidget {
   final PlaybackState _state;
 

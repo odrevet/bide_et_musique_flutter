@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
+import 'playerWidget.dart';
 
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
-import 'playerWidget.dart';
 import 'song.dart';
 import 'utils.dart' show handleLink;
 
@@ -291,7 +291,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = Scaffold(
           bottomNavigationBar: BottomAppBar(child: playerWidget), body: body);
 
-    return MaterialApp(
+
+    return InheritedPlayer(playbackState: _state, child: MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(
           primarySwatch: Colors.orange,
@@ -300,6 +301,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomAppBarColor: Colors.orange,
           canvasColor: Color(0xFFF5EEE5),
         ),
-        home: home);
+        home: home));
   }
 }

@@ -69,7 +69,7 @@ class StreamNotificationUpdater {
 
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
-  AudioPlayer _audioPlayer = new AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
   StreamNotificationUpdater();
@@ -104,12 +104,12 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   Future<void> onStart() async {
-    var playerStateSubscription = _audioPlayer.playbackStateStream
+    var playerStateSubscription = audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
       _handlePlaybackCompleted();
     });
-    var eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
+    var eventSubscription = audioPlayer.playbackEventStream.listen((event) {
       final state = _stateToBasicState(event.state);
       if (state != BasicPlaybackState.stopped) {
         _setState(
@@ -177,8 +177,8 @@ class StreamPlayer extends BackgroundAudioTask {
   @override
   void onPlay() async {
     String url = await _getStreamUrl();
-    await _audioPlayer.setUrl(url);
-    _audioPlayer.play();
+    await audioPlayer.setUrl(url);
+    audioPlayer.play();
     _playing = true;
     await AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
@@ -187,7 +187,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onPause() async {
-    _audioPlayer.pause();
+    audioPlayer.pause();
     _playing = false;
 
     await AudioServiceBackground.setState(
@@ -197,7 +197,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onStop() async {
-    _audioPlayer.stop();
+    audioPlayer.stop();
     this._song = null;
     _playing = false;
     _completer.complete();
@@ -207,7 +207,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onSeekTo(int position) {
-    _audioPlayer.seek(Duration(milliseconds: position));
+    audioPlayer.seek(Duration(milliseconds: position));
   }
 
   @override
@@ -217,7 +217,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   void _setState({@required BasicPlaybackState state, int position}) {
     if (position == null) {
-      position = _audioPlayer.playbackEvent.position.inMilliseconds;
+      position = audioPlayer.playbackEvent.position.inMilliseconds;
     }
     AudioServiceBackground.setState(
       controls: getControls(state),
