@@ -96,11 +96,11 @@ class SongActionButton extends StatelessWidget {
       popupMenuShare.add(PopupMenuItem<Widget>(child: actionWidget));
     }
 
-    _actions.add(PopupMenuButton<Widget>(
+    Widget popupMenuButtonShare = PopupMenuButton<Widget>(
         icon: Icon(
           Icons.share,
         ),
-        itemBuilder: (BuildContext context) => popupMenuShare));
+        itemBuilder: (BuildContext context) => popupMenuShare);
 
     ///////////////////////////////////
     //// Copy
@@ -110,18 +110,16 @@ class SongActionButton extends StatelessWidget {
     popupMenuCopy
         .add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
 
-    _actions.add(PopupMenuButton<Widget>(
+    Widget popupMenuButtonCopy = PopupMenuButton<Widget>(
         icon: Icon(
           Icons.content_copy,
         ),
-        itemBuilder: (BuildContext context) => popupMenuCopy));
+        itemBuilder: (BuildContext context) => popupMenuCopy);
 
-    ///////////////////////////////////
-    //wrap all actions in a PopupMenuItem to be added in the action menu
-    var popupMenuEntries = <PopupMenuEntry<Widget>>[];
-    for (Widget actionWidget in _actions) {
-      popupMenuEntries.add(PopupMenuItem<Widget>(child: actionWidget));
-    }
+    _actions.add(Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
+    ));
 
     return FlatButton.icon(
         icon: Icon(Icons.menu),
@@ -375,7 +373,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
       songPlaybackControls = Column(children: <Widget>[
         stopSongButton,
-        if(playbackState != null)SongPositionSlider(playbackState, duration),
+        if (playbackState != null) SongPositionSlider(playbackState, duration),
         Divider()
       ]);
     } else {
