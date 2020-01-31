@@ -374,7 +374,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       Widget stopSongButton = RaisedButton.icon(
           icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
       songPlaybackControls = Column(children: <Widget>[
-        Row(children: <Widget>[stopSongButton]),
+        stopSongButton,
         if(playbackState != null)SongPositionSlider(playbackState, duration),
         Divider()
       ]);
