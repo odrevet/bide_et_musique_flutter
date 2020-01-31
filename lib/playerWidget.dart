@@ -22,7 +22,6 @@ class InheritedPlayer extends InheritedWidget {
   bool updateShouldNotify(InheritedPlayer old) => playbackState != old.playbackState;
 }
 
-/////////////////////////////////////////////////////////////////////
 class SongPositionIndicator extends StatefulWidget {
   final PlaybackState _state;
 
@@ -106,14 +105,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
               ? [playButton(), stopButton()]
               : [
                   Padding(
-                      padding: const EdgeInsets.all(8), child: startButton())
+                      padding: const EdgeInsets.all(8), child: playRadioStreamButton())
                 ],
     );
   }
 
   final double _iconSize = 48.0;
 
-  RaisedButton startButton() => RaisedButton.icon(
+  RaisedButton playRadioStreamButton() => RaisedButton.icon(
         icon: Icon(Icons.radio, size: _iconSize),
         label: Text("Écouter la radio",
             style: TextStyle(
