@@ -14,8 +14,8 @@ class InheritedPlayer extends InheritedWidget {
 
   final PlaybackState playbackState;
 
-  static InheritedPlayer of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedPlayer>();
+  static PlaybackState of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<InheritedPlayer>().playbackState;
   }
 
   @override
