@@ -291,18 +291,21 @@ class SongPageWidget extends StatefulWidget {
   SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
 
   @override
-  _SongPageWidgetState createState() => _SongPageWidgetState();
+  _SongPageWidgetState createState() => _SongPageWidgetState(this.song);
 }
 
 class _SongPageWidgetState extends State<SongPageWidget> {
   int _currentPage;
   final _commentController = TextEditingController();
+  Future<Song> song;
+
+  _SongPageWidgetState(this.song);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Song>(
-        future: widget.song,
+        future: this.song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);
@@ -376,7 +379,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                 _sendAddComment(song);
                 Navigator.of(context).pop();
                 setState(() {
-                  widget.song = fetchSong(song.id);
+                  this.song = fetchSong(song.id);
                 });
               },
             )
@@ -407,7 +410,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               onPressed: () async {
                 _sendEditComment(song, comment);
                 setState(() {
-                  widget.song = fetchSong(song.id);
+                  this.song = fetchSong(song.id);
                 });
                 Navigator.of(context).pop();
               },
