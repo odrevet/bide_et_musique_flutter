@@ -366,20 +366,24 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final playbackState = InheritedPlayer.of(context);
-    var playStopButton;
+    Widget songPlaybackControls;
 
     if (_isPlaying) {
-      playStopButton = PlayerWidget(playbackState);
-      /*playStopButton = RaisedButton.icon(
-          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());*/
-    } else { 
-      playStopButton = RaisedButton.icon(
+      Widget stopSongButton = RaisedButton.icon(
+          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
+      songPlaybackControls = Column(children: <Widget>[
+        Row(children: <Widget>[stopSongButton]),
+        SongPositionIndicator(playbackState),
+        Divider(  )
+      ]);
+    } else {
+      songPlaybackControls = RaisedButton.icon(
           icon: Icon(Icons.play_arrow),
           label: Text('Écouter'),
           onPressed: () => play());
     }
 
-    return playStopButton;
+    return songPlaybackControls;
   }
 
   play() async {
