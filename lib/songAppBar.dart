@@ -85,7 +85,7 @@ class SongActionButton extends StatelessWidget {
     var shareSongStream = RaisedButton.icon(
         icon: Icon(Icons.music_note),
         label: Text('Flux musical'),
-        onPressed: () => Share.share('$baseUri/stream_${_song.id}.php'));
+        onPressed: () => Share.share(_song.streamLink));
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);

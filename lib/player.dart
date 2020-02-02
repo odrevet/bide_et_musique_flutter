@@ -66,13 +66,12 @@ class StreamNotificationUpdater {
   }
 }
 
-
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
   AudioPlayer audioPlayer = AudioPlayer();
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
-  StreamNotificationUpdater();
+      StreamNotificationUpdater();
   BasicPlaybackState _skipState;
   bool _playing = false;
   //final _queue = <MediaItem>[];
@@ -141,6 +140,7 @@ class StreamPlayer extends BackgroundAudioTask {
     else
       onPlay();
   }
+
 /*
   @override
   Future<void> onSkipToNext() => _skip(1);
@@ -254,9 +254,9 @@ class StreamPlayer extends BackgroundAudioTask {
       int port = radioHiQuality ? 9100 : 9200;
 
       url = 'http://relay$relay.$site:$port';
-    } else {
-      url = '$baseUri/stream_${this._song.id}.php';
-    }
+    } else
+      url = _song.streamLink;
+
     return url;
   }
 
@@ -288,7 +288,7 @@ class StreamPlayer extends BackgroundAudioTask {
       streamNotificationUpdater.stop();
       var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
       var artist =
-      _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
+          _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
       var mediaItem = MediaItem(
           id: _song.id,

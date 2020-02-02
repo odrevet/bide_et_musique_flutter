@@ -33,6 +33,10 @@ class SongLink {
       this.program = '',
       this.isNew = false});
 
+  String get streamLink {
+    return '$baseUri/stream_${this.id}.php';
+  }
+
   String get link {
     return '$baseUri/song/${this.id}.html';
   }
