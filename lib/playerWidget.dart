@@ -5,8 +5,28 @@ import 'package:flutter/material.dart';
 
 import 'player.dart';
 
+class InheritedPlayer extends InheritedWidget {
+  const InheritedPlayer(
+      {Key key, @required this.playbackState, @required Widget child})
+      : super(key: key, child: child);
+
+  final PlaybackState playbackState;
+
+  static PlaybackState of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<InheritedPlayer>()
+        .playbackState;
+  }
+
+  @override
+  bool updateShouldNotify(InheritedPlayer old) =>
+      playbackState != old.playbackState;
+}
+
 class SongPositionSlider extends StatefulWidget {
-  SongPositionSlider();
+  final PlaybackState _playerState;
+  final double _duration;
+  SongPositionSlider(this._playerState, this._duration);
 
   @override
   _SongPositionSliderState createState() => _SongPositionSliderState();
@@ -38,17 +58,16 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
           (dragPosition, _) => dragPosition),
       builder: (context, snapshot) {
         double position =
-            snapshot.data ?? AudioService.playbackState.currentPosition.toDouble();
-        double duration = AudioService.currentMediaItem?.duration.toDouble();
+            snapshot.data ?? widget._playerState.currentPosition.toDouble();
 
-        Widget text =  Text(_formatSongDuration(AudioService.playbackState.currentPosition));
+        Widget text =  Text(_formatSongDuration(widget._playerState.currentPosition));
 
         Widget slider =  Slider(
             inactiveColor: Colors.grey,
             activeColor: Colors.red,
             min: 0.0,
-            max: duration,
-            value: seekPos ?? max(0.0, min(position,duration)),
+            max: widget._duration,
+            value: seekPos ?? max(0.0, min(position, widget._duration)),
             onChanged: (value) {
               _dragPositionSubject.add(value);
             },
@@ -64,7 +83,9 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 }
 
 class PlayerWidget extends StatefulWidget {
-  PlayerWidget();
+  final PlaybackState _playbackState;
+
+  PlayerWidget(this._playbackState);
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -78,19 +99,19 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: AudioService.playbackState?.basicState ==
+      children: widget._playbackState?.basicState ==
                   BasicPlaybackState.playing ||
-          AudioService.playbackState?.basicState == BasicPlaybackState.buffering
+              widget._playbackState?.basicState == BasicPlaybackState.buffering
           ? [
               pauseButton(40),
               stopButton(40),
               if (duration != null)
                 Container(
                   height: 20,
-                  child: SongPositionSlider(),
+                  child: SongPositionSlider(widget._playbackState, duration),
                 )
             ]
-          : AudioService.playbackState?.basicState == BasicPlaybackState.paused
+          : widget._playbackState?.basicState == BasicPlaybackState.paused
               ? [playButton(40), stopButton(40)]
               : [
                   Padding(

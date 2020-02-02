@@ -255,7 +255,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    Widget playerWidget = PlayerWidget();
+    Widget playerWidget = PlayerWidget(_playbackState);
 
     Widget home;
     Widget body;
@@ -292,7 +292,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: BottomAppBar(child: playerWidget), body: body);
 
 
-    return MaterialApp(
+    return InheritedPlayer(playbackState: _playbackState, child: MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(
           primarySwatch: Colors.orange,
@@ -301,6 +301,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomAppBarColor: Colors.orange,
           canvasColor: Color(0xFFF5EEE5),
         ),
-        home: home);
+        home: home));
   }
 }
