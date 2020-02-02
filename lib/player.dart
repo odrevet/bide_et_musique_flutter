@@ -37,7 +37,7 @@ class StreamNotificationUpdater {
 
   void setMediaItemFromSongLink(SongLink songLink) {
     var mediaItem = MediaItem(
-        id: songLink.id,
+        id: songLink.streamLink,
         album: songLink.program,
         title: songLink.title,
         artist: songLink.artist,
@@ -291,7 +291,7 @@ class StreamPlayer extends BackgroundAudioTask {
       _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
       var mediaItem = MediaItem(
-          id: _song.id,
+          id: _song.streamLink,
           album: 'Bide et Musique',
           title: title,
           artist: artist,
