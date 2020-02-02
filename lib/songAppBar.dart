@@ -340,26 +340,7 @@ class SongPlayerWidget extends StatefulWidget {
 }
 
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  bool _isPlaying;
-
   _SongPlayerWidgetState();
-
-  @override
-  void initState() {
-    super.initState();
-
-    bool isPlaying;
-    if (AudioService.playbackState == null ||
-        AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
-        AudioService.playbackState.basicState == BasicPlaybackState.none) {
-      isPlaying = false;
-    } else
-      isPlaying = widget._song.id == AudioService.currentMediaItem.id;
-
-    this.setState(() {
-      this._isPlaying = isPlaying;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -368,9 +349,15 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     Widget songPlaybackControls;
 
-    if (_isPlaying) {
+    if ((AudioService.playbackState != null &&
+            AudioService.playbackState.basicState !=
+                BasicPlaybackState.stopped &&
+            AudioService.playbackState.basicState != BasicPlaybackState.none) &&
+        widget._song.streamLink == AudioService.currentMediaItem?.id) {
       Widget stopSongButton = RaisedButton.icon(
-          icon: Icon(Icons.stop), label: Text('Stop'), onPressed: () => stop());
+          icon: Icon(Icons.stop),
+          label: Text('Stop'),
+          onPressed: () => AudioService.stop());
       songPlaybackControls = Column(children: <Widget>[
         stopSongButton,
         if (playbackState != null) SongPositionSlider(playbackState, duration),
@@ -408,16 +395,5 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     await AudioService.customAction('setNotification');
     await AudioService.play();
-
-    setState(() {
-      _isPlaying = true;
-    });
-  }
-
-  stop() {
-    AudioService.stop();
-    setState(() {
-      _isPlaying = false;
-    });
   }
 }
