@@ -255,7 +255,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
       url = 'http://relay$relay.$site:$port';
     } else {
-      url = '$baseUri/stream_${this._song.id}.php';
+      url = _song.streamLink;
     }
     return url;
   }
