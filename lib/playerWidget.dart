@@ -41,7 +41,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
             snapshot.data ?? AudioService.playbackState.currentPosition.toDouble();
         double duration = AudioService.currentMediaItem?.duration.toDouble();
 
-        Widget text =  Text(_formatSongDuration(AudioService.playbackState?.currentPosition));
+        Widget text =  Text(_formatSongDuration(AudioService.playbackState.currentPosition));
 
         Widget slider =  Slider(
             inactiveColor: Colors.grey,
