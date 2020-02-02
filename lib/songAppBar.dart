@@ -348,19 +348,42 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
     Widget songPlaybackControls;
-
-    if ((AudioService.playbackState != null &&
+    bool isPlaying = ((AudioService.playbackState != null &&
             AudioService.playbackState.basicState !=
                 BasicPlaybackState.stopped &&
             AudioService.playbackState.basicState != BasicPlaybackState.none) &&
-        widget._song.streamLink == AudioService.currentMediaItem?.id) {
+        widget._song.streamLink == AudioService.currentMediaItem?.id);
+
+    if (isPlaying == true) {
       Widget stopSongButton = RaisedButton.icon(
           icon: Icon(Icons.stop),
           label: Text('Stop'),
           onPressed: () => AudioService.stop());
+
+      Widget pauseSongButton = RaisedButton.icon(
+          icon: Icon(Icons.pause),
+          label: Text('Pause'),
+          onPressed: () => AudioService.pause());
+
+      Widget resumeSongButton = RaisedButton.icon(
+          icon: Icon(Icons.play_arrow),
+          label: Text('Reprendre'),
+          onPressed: () => AudioService.play());
+
       songPlaybackControls = Column(children: <Widget>[
-        stopSongButton,
-        if (playbackState != null) SongPositionSlider(playbackState, duration),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            stopSongButton,
+            if (AudioService.playbackState.basicState ==
+                BasicPlaybackState.paused)
+              resumeSongButton
+            else
+              pauseSongButton
+          ],
+        ),
+        if (playbackState != null && duration != null)
+          SongPositionSlider(playbackState, duration),
         Divider()
       ]);
     } else {

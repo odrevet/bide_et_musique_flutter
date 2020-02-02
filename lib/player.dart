@@ -66,15 +66,16 @@ class StreamNotificationUpdater {
   }
 }
 
-
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
   AudioPlayer audioPlayer = AudioPlayer();
   Completer _completer = Completer();
   StreamNotificationUpdater streamNotificationUpdater =
-  StreamNotificationUpdater();
+      StreamNotificationUpdater();
   BasicPlaybackState _skipState;
   bool _playing = false;
+  String latestId;
+
   //final _queue = <MediaItem>[];
   //int _queueIndex = -1;
   //bool get hasNext => _queueIndex + 1 < _queue.length;
@@ -141,6 +142,7 @@ class StreamPlayer extends BackgroundAudioTask {
     else
       onPlay();
   }
+
 /*
   @override
   Future<void> onSkipToNext() => _skip(1);
@@ -177,9 +179,15 @@ class StreamPlayer extends BackgroundAudioTask {
   @override
   void onPlay() async {
     String url = await _getStreamUrl();
-    await audioPlayer.setUrl(url);
+
+    if (url != latestId ||
+        AudioServiceBackground.state.basicState != BasicPlaybackState.paused) {
+      await audioPlayer.setUrl(url);
+    }
+
     audioPlayer.play();
     _playing = true;
+    latestId = url;
     await AudioServiceBackground.setState(
         controls: [pauseControl, stopControl],
         basicState: BasicPlaybackState.playing);
@@ -288,7 +296,7 @@ class StreamPlayer extends BackgroundAudioTask {
       streamNotificationUpdater.stop();
       var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
       var artist =
-      _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
+          _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
 
       var mediaItem = MediaItem(
           id: _song.streamLink,
