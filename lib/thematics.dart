@@ -54,29 +54,24 @@ class ThematicPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<List<ProgramLink>>(
-        future: programLinks,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Thématiques'),
+        ),
+        body: Center(
+          child: FutureBuilder<List<ProgramLink>>(
+            future: programLinks,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _buildView(context, snapshot.data);
+              } else if (snapshot.hasError) {
+                return errorDisplay(snapshot.error);
+              }
 
-          var loadingMessage = 'Chargement';
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(loadingMessage),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        },
-      ),
-    );
+              return CircularProgressIndicator();
+            },
+          ),
+        ));
   }
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
