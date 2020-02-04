@@ -52,33 +52,35 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
   Widget build(BuildContext context) {
     double seekPos;
     return StreamBuilder(
-      stream: Rx.combineLatest2<double, double, double>(
-          _dragPositionSubject.stream,
-          Stream.periodic(Duration(milliseconds: 200)),
-          (dragPosition, _) => dragPosition),
-      builder: (context, snapshot) {
-        double position =
-            snapshot.data ?? widget._playerState.currentPosition.toDouble();
+        stream: Rx.combineLatest2<double, double, double>(
+            _dragPositionSubject.stream,
+            Stream.periodic(Duration(milliseconds: 200)),
+            (dragPosition, _) => dragPosition),
+        builder: (context, snapshot) {
+          double position =
+              snapshot.data ?? widget._playerState.currentPosition.toDouble();
 
-        Widget text =  Text(_formatSongDuration(widget._playerState.currentPosition));
+          Widget text =
+              Text(_formatSongDuration(widget._playerState.currentPosition));
 
-        Widget slider =  Slider(
-            inactiveColor: Colors.grey,
-            activeColor: Colors.red,
-            min: 0.0,
-            max: widget._duration,
-            value: seekPos ?? max(0.0, min(position, widget._duration)),
-            onChanged: (value) {
-              _dragPositionSubject.add(value);
-            },
-            onChangeEnd: (value) {
-              AudioService.seekTo(value.toInt());
-              seekPos = value;
-              _dragPositionSubject.add(null);
-            });
-        return Row(children: <Widget>[text, slider],);
-      }
-    );
+          Widget slider = Slider(
+              inactiveColor: Colors.grey,
+              activeColor: Colors.red,
+              min: 0.0,
+              max: widget._duration,
+              value: seekPos ?? max(0.0, min(position, widget._duration)),
+              onChanged: (value) {
+                _dragPositionSubject.add(value);
+              },
+              onChangeEnd: (value) {
+                AudioService.seekTo(value.toInt());
+                seekPos = value;
+                _dragPositionSubject.add(null);
+              });
+          return Row(
+            children: <Widget>[text, slider],
+          );
+        });
   }
 }
 
@@ -97,28 +99,42 @@ class _PlayerWidgetState extends State<PlayerWidget>
   Widget build(BuildContext context) {
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: widget._playbackState?.basicState ==
-                  BasicPlaybackState.playing ||
-              widget._playbackState?.basicState == BasicPlaybackState.buffering
-          ? [
-              pauseButton(48),
-              stopButton(48),
-              if (duration != null)
-                Container(
-                  height: 20,
-                  child: SongPositionSlider(widget._playbackState, duration),
-                )
-            ]
-          : widget._playbackState?.basicState == BasicPlaybackState.paused
-              ? [playButton(40), stopButton(40)]
-              : [
-                  Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: playRadioStreamButton())
-                ],
-    );
+    if (widget._playbackState?.basicState == BasicPlaybackState.buffering ||
+        widget._playbackState?.basicState == BasicPlaybackState.connecting) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+          stopButton(48),
+        ],
+      );
+    } else
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: widget._playbackState?.basicState ==
+                    BasicPlaybackState.playing ||
+                widget._playbackState?.basicState ==
+                    BasicPlaybackState.buffering
+            ? [
+                pauseButton(48),
+                stopButton(48),
+                if (duration != null)
+                  Container(
+                    height: 20,
+                    child: SongPositionSlider(widget._playbackState, duration),
+                  )
+              ]
+            : widget._playbackState?.basicState == BasicPlaybackState.paused
+                ? [
+                    playButton(40),
+                    stopButton(40),
+                  ]
+                : [
+                    Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: playRadioStreamButton())
+                  ],
+      );
   }
 }
 
