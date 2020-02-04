@@ -75,7 +75,7 @@ class ThematicPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
-    Widget listView = ListView.builder(
+    return ListView.builder(
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
         return ListTile(
@@ -89,13 +89,6 @@ class ThematicPageWidget extends StatelessWidget {
                           program: fetchProgram(programLinks[index].id))));
             });
       },
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Thématiques'),
-      ),
-      body: listView,
     );
   }
 }
