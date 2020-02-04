@@ -126,8 +126,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
               ]
             : widget._playbackState?.basicState == BasicPlaybackState.paused
                 ? [
-                    playButton(40),
-                    stopButton(40),
+                    playButton(48),
+                    stopButton(48),
                   ]
                 : [
                     Padding(
