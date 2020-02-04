@@ -103,8 +103,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   BasicPlaybackState.playing ||
               widget._playbackState?.basicState == BasicPlaybackState.buffering
           ? [
-              pauseButton(40),
-              stopButton(40),
+              pauseButton(48),
+              stopButton(48),
               if (duration != null)
                 Container(
                   height: 20,
