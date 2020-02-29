@@ -2,9 +2,9 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
-import 'playerWidget.dart';
 
 import 'player.dart';
+import 'playerWidget.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -264,15 +264,17 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         label: Text('Message'),
         onPressed: () => Share.share(
-            '''En ce moment j'écoute '${_song.title}' sur bide et musique !
+            '''En ce moment j'écoute '${_song.title}' sur Bide et Musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
 ${_song.link}
           
 --------
-Message envoyé avec l'application 'bide et musique flutter pour android'
+Message envoyé avec l'application 'Bide et Musique flutter pour Android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-'''));
+''',
+            subject:
+                "'${_song.title}' sur Bide et Musique"));
   }
 }
 
