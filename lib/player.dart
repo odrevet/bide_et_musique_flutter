@@ -92,8 +92,8 @@ class StreamPlayer extends BackgroundAudioTask {
         return BasicPlaybackState.paused;
       case AudioPlaybackState.playing:
         return BasicPlaybackState.playing;
-      case AudioPlaybackState.buffering:
-        return BasicPlaybackState.buffering;
+      /*case AudioPlaybackState.buffering:
+        return BasicPlaybackState.buffering;*/
       case AudioPlaybackState.connecting:
         return _skipState ?? BasicPlaybackState.connecting;
       case AudioPlaybackState.completed:
