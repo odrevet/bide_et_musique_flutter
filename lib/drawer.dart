@@ -13,6 +13,7 @@ import 'settings.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
+import 'forums.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -155,6 +156,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
+          title: Text('Forums'),
+          leading: Icon(Icons.forum),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ForumWidget()));
+          },
+        ),
+        ListTile(
           title: Text('Options'),
           leading: Icon(Icons.settings),
           onTap: () {
@@ -174,3 +183,4 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     ));
   }
 }
+
