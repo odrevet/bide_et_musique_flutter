@@ -46,7 +46,7 @@ class SongLink {
   }
 
   String get thumbLink {
-    return '$baseUri/images/thumb25/${this.id}.jpg';
+    return '$baseUri/images/thumb100/${this.id}.jpg';
   }
 }
 
