@@ -130,7 +130,7 @@ Hero heroThumbCover(SongLink songLink) {
   return Hero(
       tag: tag,
       child: Image(
-          image: NetworkImage('$baseUri/images/thumb25/${songLink.id}.jpg')));
+          image: NetworkImage(songLink.thumbLink)));
 }
 
 class SongCardWidget extends StatelessWidget {

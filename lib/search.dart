@@ -102,9 +102,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
           return ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.black12,
-                child: Image(
-                    image: NetworkImage(
-                        '$baseUri/images/thumb25/${_songLinks[index].id}.jpg')),
+                child: Image(image: NetworkImage(_songLinks[index].thumbLink)),
               ),
               title: Text(
                 _songLinks[index].title,

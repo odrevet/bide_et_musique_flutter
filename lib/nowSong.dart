@@ -87,9 +87,7 @@ class NowSongsWidget extends StatelessWidget {
           leading: CircleAvatar(
             child: Hero(
                 tag: tag,
-                child: Image(
-                    image: NetworkImage(
-                        '$baseUri/images/thumb25/${nowSong.songLink.id}.jpg'))),
+                child: Image(image: NetworkImage(nowSong.songLink.thumbLink))),
             backgroundColor: Colors.black12,
           ),
           title: Html(
