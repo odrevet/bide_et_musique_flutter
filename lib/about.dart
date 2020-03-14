@@ -25,7 +25,7 @@ class AboutPage extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: 'Application Bide&Musique non-officielle par \n',
+            text: 'Application Bide&Musique par \n',
             style: defaultStyle,
           ),
           TextSpan(
