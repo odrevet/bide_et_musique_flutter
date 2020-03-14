@@ -40,7 +40,7 @@ class SongLink {
   }
 
   String get link {
-    return '$baseUri/song/${this.id}.html';
+    return '$baseUri/song/wapi/${this.id}';
   }
 
   String get coverLink {
