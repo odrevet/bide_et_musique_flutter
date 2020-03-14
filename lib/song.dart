@@ -24,6 +24,7 @@ class SongLink {
   String artist;
   String program;
   bool isNew;
+  String cover;
   int index;
 
   SongLink(
@@ -31,6 +32,7 @@ class SongLink {
       this.title = '',
       this.artist = '',
       this.program = '',
+        this.cover = '',
       this.isNew = false});
 
   String get streamLink {
@@ -42,7 +44,10 @@ class SongLink {
   }
 
   String get coverLink {
-    return '$baseUri/images/pochettes/${this.id}.jpg';
+    String url = '$baseUri/images/pochettes/';
+    if(this.cover != null)url += this.cover;
+    else url += '${this.id}.jpg';
+    return url;
   }
 
   String get thumbLink {
@@ -67,6 +72,7 @@ class Song extends SongLink {
   bool canFavourite;
   bool isFavourite;
   bool hasVote;
+  String cover;
 
   Song(
       {this.id,
@@ -79,6 +85,7 @@ class Song extends SongLink {
       this.durationPretty,
       this.label,
       this.reference,
+        this.cover,
       this.lyrics});
 
   factory Song.fromJson(Map<String, dynamic> json) {
@@ -94,6 +101,7 @@ class Song extends SongLink {
         durationPretty: json['length']['pretty'],
         label: stripTags(json['label']),
         reference: stripTags(json['reference']),
+        cover: json['covers']['main'],
         lyrics: (lyrics == null || lyrics == '')
             ? 'Paroles non renseignées pour cette chanson '
             : lyrics);
