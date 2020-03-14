@@ -40,7 +40,7 @@ class SongLink {
   }
 
   String get link {
-    return '$baseUri/song/wapi/${this.id}';
+    return '$baseUri/song/${this.id}.html';
   }
 
   String get coverLink {
@@ -223,8 +223,7 @@ List<Comment> _parseComments(document) {
 
 Future<Song> fetchSong(String songId) async {
   var song;
-  final url = '$baseUri/song/$songId';
-  final responseJson = await Session.get(url);
+  final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
   if (responseJson.statusCode == 200) {
     try {
@@ -247,7 +246,7 @@ Future<Song> fetchSong(String songId) async {
   }
 
   //fetch comments and, if connected, the favorite status
-  var response = await Session.get(url + '.html');
+  var response = await Session.get('$baseUri/song/$songId.html');
 
   if (response.statusCode == 200) {
     song.canListen = false;
