@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'account.dart';
 import 'session.dart';
@@ -113,8 +114,35 @@ Future<List<ForumThread>> fetchForumThreads(forumId) async {
   return forumThreads;
 }
 
-// forums/[forum_id]/thread/[thread_id]
-class ForumMessage {}
+class ForumMessage {
+  int id;
+  String title;
+  String date;
+  String text;
+  String signature;
+  bool folded;
+  AccountLink user;
+
+  ForumMessage(
+      {this.id,
+      this.title,
+      this.date,
+      this.text,
+      this.signature,
+      this.folded,
+      this.user});
+
+  factory ForumMessage.fromJson(Map<String, dynamic> json) {
+    return ForumMessage(
+        id: json['id'],
+        title: stripTags(json['title']),
+        date: json['date'],
+        text: json['text'],
+        signature: json['signature'],
+        folded: json['folded'],
+        user: AccountLink(id: json['id'].toString(), name: json['name']));
+  }
+}
 
 class ForumWidget extends StatefulWidget {
   @override
@@ -136,27 +164,28 @@ class _ForumPageState extends State<ForumWidget> {
                   itemCount: forum.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      title: Text(
-                        forum[index].name,
-                      ),
-                      subtitle: Text(forum[index].subtitle),
+                        title: Text(
+                          forum[index].name,
+                        ),
+                        subtitle: Text(forum[index].subtitle),
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ForumThreadWidget(fetchForumThreads(forum[index].id))));
-                        }
-                    );
+                                  builder: (context) => ForumThreadWidget(
+                                      forum[index],
+                                      fetchForumThreads(forum[index].id))));
+                        });
                   });
             }));
   }
 }
 
-
 class ForumThreadWidget extends StatefulWidget {
-  Future<List<ForumThread>>  _forumThreads;
+  Future<List<ForumThread>> _forumThreads;
+  final Forum _forum;
 
-  ForumThreadWidget(this._forumThreads);
+  ForumThreadWidget(this._forum, this._forumThreads);
 
   @override
   _ForumThreadWidgetState createState() => _ForumThreadWidgetState();
@@ -167,7 +196,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Liste des discutions'),
+          title: Text(widget._forum.name),
         ),
         body: FutureBuilder<List<ForumThread>>(
             future: this.widget._forumThreads,
@@ -180,14 +209,76 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                         title: Text(
                           forumThread[index].title,
                         ),
-                      trailing: forumThread[index].isNew ? Icon(Icons.fiber_new) : null,
-                        /*onTap: () {
+                        trailing: forumThread[index].isNew
+                            ? Icon(Icons.fiber_new)
+                            : null,
+                        onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ForumThreadWidget(fetchForumThreads(forum[index].id))));
-                        }*/
-                    );
+                                  builder: (context) => ForumMessagesWidget(
+                                      fetchForumMessages(widget._forum.id,
+                                          forumThread[index].id))));
+                        });
+                  });
+            }));
+  }
+}
+
+Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
+  List<ForumMessage> forumMessages = [];
+  final url = '$baseUri/forums/$forumId/thread/$threadId';
+  final responseJson = await Session.get(url);
+
+  if (responseJson.statusCode == 200) {
+    try {
+      String decodedString = utf8.decode(responseJson.bodyBytes);
+      Map<String, dynamic> decodedJson = json.decode(decodedString);
+
+      for (var forumMessage in decodedJson['messages']) {
+        forumMessages.add(ForumMessage.fromJson(forumMessage));
+      }
+    } catch (e) {
+      print('ERROR $e');
+    }
+  } else {
+    print('Response was ${responseJson.statusCode}');
+  }
+
+  return forumMessages;
+}
+
+class ForumMessagesWidget extends StatefulWidget {
+  Future<List<ForumMessage>> _forumMessages;
+
+  ForumMessagesWidget(this._forumMessages);
+
+  @override
+  _ForumMessagesWidgetState createState() => _ForumMessagesWidgetState();
+}
+
+class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Messages"),
+        ),
+        body: FutureBuilder<List<ForumMessage>>(
+            future: this.widget._forumMessages,
+            builder: (context, snapshot) {
+              var forumMessages = snapshot.data;
+              return ListView.separated(
+                  separatorBuilder: (context, index) => Divider(),
+                  itemCount: forumMessages.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    ForumMessage forumMessage = forumMessages[index];
+                    return ListTile(
+                        title: Html(
+                          data: forumMessage.text,
+                        ),
+                        subtitle: Text(
+                            '${forumMessage.date} par ${forumMessage.user.name}'));
                   });
             }));
   }
