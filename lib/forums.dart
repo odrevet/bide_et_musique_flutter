@@ -217,6 +217,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ForumMessagesWidget(
+                                      forumThread[index],
                                       fetchForumMessages(widget._forum.id,
                                           forumThread[index].id))));
                         });
@@ -249,9 +250,10 @@ Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
 }
 
 class ForumMessagesWidget extends StatefulWidget {
+  ForumThread _forumThread;
   Future<List<ForumMessage>> _forumMessages;
 
-  ForumMessagesWidget(this._forumMessages);
+  ForumMessagesWidget(this._forumThread, this._forumMessages);
 
   @override
   _ForumMessagesWidgetState createState() => _ForumMessagesWidgetState();
@@ -262,7 +264,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Messages"),
+          title: Text(widget._forumThread.title),
         ),
         body: FutureBuilder<List<ForumMessage>>(
             future: this.widget._forumMessages,
