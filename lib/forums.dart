@@ -140,7 +140,7 @@ class ForumMessage {
         text: json['text'],
         signature: json['signature'],
         folded: json['folded'],
-        user: AccountLink(id: json['id'].toString(), name: json['name']));
+        user: AccountLink(id: json['user']['id'].toString(), name: json['user']['name']));
   }
 }
 
