@@ -91,7 +91,6 @@ class Song extends SongLink {
       this.lyrics});
 
   factory Song.fromJson(Map<String, dynamic> json) {
-    final String lyrics = json['lyrics'];
     return Song(
         id: json['id'].toString(),
         title: stripTags(json['name']),
@@ -104,9 +103,7 @@ class Song extends SongLink {
         label: stripTags(json['label']),
         reference: stripTags(json['reference']),
         cover: json['covers']['main'],
-        lyrics: (lyrics == null || lyrics == '')
-            ? 'Paroles non renseignées pour cette chanson '
-            : lyrics);
+        lyrics: json['lyrics']);
   }
 }
 
@@ -532,7 +529,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                   child: Padding(
                 padding: EdgeInsets.only(left: 8.0, top: 2.0),
                 child: Html(
-                    data: song.lyrics,
+                    data: song.lyrics == ''
+                        ? '<center><i>Paroles non renseignées</i></center>'
+                        : song.lyrics,
                     defaultTextStyle: _fontLyrics,
                     onLinkTap: (url) {
                       onLinkTap(url, context);
