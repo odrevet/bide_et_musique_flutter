@@ -16,7 +16,7 @@ class DaySchedule {
 }
 
 class ScheduleEntry {
-  String id;
+  int id;
   String title;
   String time;
   String duration;

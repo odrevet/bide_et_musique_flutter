@@ -13,7 +13,7 @@ import 'song.dart';
 import 'utils.dart';
 
 class AccountLink {
-  String id;
+  int id;
   String name;
   String image;
 
@@ -51,13 +51,13 @@ openAccountImageViewerDialog(context, image) {
       fullscreenDialog: true));
 }
 
-String extractAccountId(str) {
+int extractAccountId(str) {
   final idRegex = RegExp(r'/account/(\d+).html');
   var match = idRegex.firstMatch(str);
-  return match[1];
+  return int.parse(match[1]);
 }
 
-Future<Account> fetchAccount(String accountId) async {
+Future<Account> fetchAccount(int accountId) async {
   var account = Account();
   account.id = accountId;
 

@@ -10,7 +10,7 @@ import 'song.dart';
 import 'utils.dart';
 
 class Program {
-  String id;
+  int id;
   String type;
   String name;
   String description;
@@ -21,7 +21,7 @@ class Program {
   Program({this.id, this.name, this.description, this.airedOn, this.type});
 
   Program.fromJson(Map<String, dynamic> json)
-      : id = json['id'].toString(),
+      : id = json['id'],
         type = json['type'],
         name = json['name'],
         description = json['description'] {
@@ -30,7 +30,7 @@ class Program {
       var songs = <SongLink>[];
       for (var songEntry in json['songs']) {
         var song = SongLink();
-        song.id = songEntry['song_id'].toString();
+        song.id = songEntry['song_id'];
         song.title = stripTags(songEntry['name']);
         song.artist = stripTags(songEntry['alias']);
         songs.add(song);
@@ -42,7 +42,7 @@ class Program {
   }
 }
 
-Future<Program> fetchProgram(String programId) async {
+Future<Program> fetchProgram(int programId) async {
   var program;
   final url = '$baseUri/program/$programId';
 
@@ -66,11 +66,11 @@ Future<Program> fetchProgram(String programId) async {
   return program;
 }
 
-String extractProgramId(str) {
+int extractProgramId(str) {
   final idRegex = RegExp(r'/program/(\d+).html');
   var match = idRegex.firstMatch(str);
   if (match != null) {
-    return match[1];
+    return int.parse(match[1]);
   } else {
     return null;
   }

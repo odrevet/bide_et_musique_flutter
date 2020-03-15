@@ -31,7 +31,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Dismissible _createSongTile(SongLink songLink, Account account, int index) {
     int position = ++index;
     return Dismissible(
-        key: Key(songLink.id),
+        key: Key(songLink.id.toString()),
         onDismissed: (direction) {
           _confirmDeletion(songLink, account);
         },

@@ -25,7 +25,7 @@ Widget handleLink(String url, BuildContext context) {
 
   if (regExp.hasMatch(url) == true) {
     var type = regExp.firstMatch(url)[1];
-    var id = regExp.firstMatch(url)[2];
+    int id = int.parse(regExp.firstMatch(url)[2]);
 
     switch (type) {
       case 'song':

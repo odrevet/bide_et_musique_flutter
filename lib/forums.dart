@@ -135,7 +135,7 @@ class ForumMessage {
   text= json['text'],
   signature= json['signature'],
   folded= json['folded'],
-  user= AccountLink(id:json['user']['id'].toString(), name:json['user']['name']);
+  user= AccountLink(id:json['user']['id'], name:json['user']['name']);
 }
 
 class ForumWidget extends StatefulWidget {

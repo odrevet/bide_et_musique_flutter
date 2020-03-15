@@ -56,7 +56,7 @@ class RequestsPageWidget extends StatefulWidget {
 }
 
 class _RequestsPageWidgetState extends State<RequestsPageWidget> {
-  String _selectedRequestId;
+  int _selectedRequestId;
   final _dedicateController = TextEditingController();
   Future<List<Request>> _requests;
 

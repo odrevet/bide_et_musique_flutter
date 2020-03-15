@@ -9,7 +9,7 @@ import 'session.dart';
 import 'utils.dart';
 
 class ProgramLink {
-  String id;
+  int id;
   String name;
   String songCount;
 
@@ -33,7 +33,7 @@ Future<List<ProgramLink>> fetchThematics() async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
-      String id = extractProgramId(a.attributes['href']);
+      int id = extractProgramId(a.attributes['href']);
       String name = stripTags(a.innerHtml);
       String songCount = tds[1].innerHtml;
 

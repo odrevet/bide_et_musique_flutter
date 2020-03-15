@@ -50,7 +50,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
         var match = idRegex.firstMatch(src);
         var songLink = SongLink();
-        songLink.id = match[1];
+        songLink.id = int.parse(match[1]);
 
         var title = vignette.children[0].children[0].attributes['title'];
         songLink.title = title;

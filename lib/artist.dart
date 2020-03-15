@@ -8,7 +8,7 @@ import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
-Future<Artist> fetchArtist(String artistId) async {
+Future<Artist> fetchArtist(int artistId) async {
   var artist;
   final url = '$baseUri/artist/$artistId';
 
@@ -35,7 +35,7 @@ String extractArtistId(str) {
 }
 
 class Artist {
-  String id;
+  int id;
   String alias;
   String firstName;
   String lastName;
@@ -45,13 +45,13 @@ class Artist {
   Artist({this.id, this.alias, this.site, this.disco});
 
   Artist.fromJson(Map<String, dynamic> json)
-      : id = json['id'].toString(),
+      : id = json['id'],
         alias = json['alias'],
         site = json['site'] {
     this.disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
       var song = SongLink();
-      song.id = discoEntry['id'].toString();
+      song.id = discoEntry['id'];
       song.title = stripTags(discoEntry['name']);
       this.disco.add(song);
     }

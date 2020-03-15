@@ -36,7 +36,7 @@ class AboutPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          AccountPageWidget(account: fetchAccount('84482')))),
+                          AccountPageWidget(account: fetchAccount(84482)))),
           ),
           TextSpan(
             text: '\n\nDistribuée sous la ',

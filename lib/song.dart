@@ -19,7 +19,7 @@ import 'songAppBar.dart';
 import 'utils.dart';
 
 class SongLink {
-  String id;
+  int id;
   String title;
   String artist;
   String program;
@@ -28,7 +28,7 @@ class SongLink {
   int index;
 
   SongLink(
-      {this.id = '',
+      {this.id,
       this.title = '',
       this.artist = '',
       this.program = '',
@@ -58,11 +58,11 @@ class SongLink {
 }
 
 class Song extends SongLink {
-  String id;
+  int id;
   String title;
   String artist;
   int year;
-  String artistId;
+  int artistId;
   String author;
   Duration duration;
   String durationPretty;
@@ -91,11 +91,11 @@ class Song extends SongLink {
       this.lyrics});
 
   Song.fromJson(Map<String, dynamic> json):
-        id = json['id'].toString(),
+        id = json['id'],
         title = stripTags(json['name']),
         year = json['year'],
         artist = stripTags(json['artists']['main']['alias']),
-        artistId = json['artists']['main']['id'].toString(),
+        artistId = json['artists']['main']['id'],
         author = json['author'],
         duration = Duration(seconds:json['length']['raw']),
         durationPretty = json['length']['pretty'],
@@ -106,7 +106,7 @@ class Song extends SongLink {
 }
 
 class Comment {
-  String id;
+  int id;
   AccountLink author;
   String body;
   String time;
@@ -114,11 +114,11 @@ class Comment {
   Comment();
 }
 
-String extractSongId(str) {
+int extractSongId(str) {
   final idRegex = RegExp(r'/song/(\d+).html');
   var match = idRegex.firstMatch(str);
   if (match != null) {
-    return match[1];
+    return int.parse(match[1]);
   } else {
     return null;
   }
@@ -198,9 +198,9 @@ List<Comment> _parseComments(document) {
     try {
       var tdCommentChildren = divNormal.children;
       //get comment id (remove 'comment' string)
-      comment.id = tdCommentChildren[0].attributes['id'].substring(8);
+      comment.id = int.parse(tdCommentChildren[0].attributes['id'].substring(8));
       dom.Element aAccount = tdCommentChildren[1].children[0];
-      String accountId = extractAccountId(aAccount.attributes['href']);
+      int accountId = extractAccountId(aAccount.attributes['href']);
       String accountName = aAccount.innerHtml;
       comment.author = AccountLink(id: accountId, name: accountName);
       var commentLines = divNormal.innerHtml.split('<br>');
@@ -215,7 +215,7 @@ List<Comment> _parseComments(document) {
   return comments;
 }
 
-Future<Song> fetchSong(String songId) async {
+Future<Song> fetchSong(int songId) async {
   var song;
   final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
