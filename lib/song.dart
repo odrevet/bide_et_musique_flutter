@@ -90,21 +90,19 @@ class Song extends SongLink {
       this.cover,
       this.lyrics});
 
-  factory Song.fromJson(Map<String, dynamic> json) {
-    return Song(
-        id: json['id'].toString(),
-        title: stripTags(json['name']),
-        year: json['year'],
-        artist: stripTags(json['artists']['main']['alias']),
-        artistId: json['artists']['main']['id'].toString(),
-        author: json['author'],
-        duration: Duration(seconds: json['length']['raw']),
-        durationPretty: json['length']['pretty'],
-        label: stripTags(json['label']),
-        reference: stripTags(json['reference']),
-        cover: json['covers']['main'],
-        lyrics: json['lyrics']);
-  }
+  Song.fromJson(Map<String, dynamic> json):
+        id = json['id'].toString(),
+        title = stripTags(json['name']),
+        year = json['year'],
+        artist = stripTags(json['artists']['main']['alias']),
+        artistId = json['artists']['main']['id'].toString(),
+        author = json['author'],
+        duration = Duration(seconds:json['length']['raw']),
+        durationPretty = json['length']['pretty'],
+        label = stripTags(json['label']),
+        reference = stripTags(json['reference']),
+        cover = json['covers']['main'],
+        lyrics = json['lyrics'];
 }
 
 class Comment {

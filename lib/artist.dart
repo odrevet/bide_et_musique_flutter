@@ -44,20 +44,17 @@ class Artist {
 
   Artist({this.id, this.alias, this.site, this.disco});
 
-  factory Artist.fromJson(Map<String, dynamic> json) {
-    var disco = <SongLink>[];
+  Artist.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        alias = json['alias'],
+        site = json['site'] {
+    this.disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
       var song = SongLink();
       song.id = discoEntry['id'].toString();
       song.title = stripTags(discoEntry['name']);
-      disco.add(song);
+      this.disco.add(song);
     }
-
-    return Artist(
-        id: json['id'].toString(),
-        alias: json['alias'],
-        site: json['site'],
-        disco: disco);
   }
 }
 

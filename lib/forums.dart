@@ -18,14 +18,12 @@ class Forum {
 
   Forum({this.id, this.name, this.subtitle, this.nmsg, this.hasNew});
 
-  factory Forum.fromJson(Map<String, dynamic> json) {
-    return Forum(
-        id: json['id'],
-        name: stripTags(json['name']),
-        subtitle: stripTags(json['subtitle']),
-        nmsg: json['nmsg'],
-        hasNew: json['has_new']);
-  }
+  Forum.fromJson(Map<String, dynamic> json) :
+        id = json['id'],
+        name = stripTags(json['name']),
+        subtitle = stripTags(json['subtitle']),
+        nmsg = json['nmsg'],
+        hasNew = json['has_new'];
 }
 
 Future<List<Forum>> fetchForums() async {
@@ -76,19 +74,17 @@ class ForumThread {
       this.ownerId,
       this.ownerName});
 
-  factory ForumThread.fromJson(Map<String, dynamic> json) {
-    return ForumThread(
-        id: json['id'],
-        title: stripTags(json['title']),
-        nbMsgs: json['nbMsgs'],
-        pinned: json['pinned'],
-        resolved: json['resolved'],
-        hasPost: json['has_post'],
-        isNew: json['new'],
-        read: json['read'],
-        ownerId: json['owner_id'],
-        ownerName: json['owner_name']);
-  }
+  ForumThread.fromJson(Map<String, dynamic> json):
+        id = json['id'],
+        title = stripTags(json['title']),
+        nbMsgs = json['nbMsgs'],
+        pinned = json['pinned'],
+        resolved = json['resolved'],
+        hasPost = json['has_post'],
+        isNew = json['new'],
+        read = json['read'],
+        ownerId = json['owner_id'],
+        ownerName = json['owner_name'];
 }
 
 Future<List<ForumThread>> fetchForumThreads(forumId) async {
@@ -132,16 +128,14 @@ class ForumMessage {
       this.folded,
       this.user});
 
-  factory ForumMessage.fromJson(Map<String, dynamic> json) {
-    return ForumMessage(
-        id: json['id'],
-        title: stripTags(json['title']),
-        date: json['date'],
-        text: json['text'],
-        signature: json['signature'],
-        folded: json['folded'],
-        user: AccountLink(id: json['user']['id'].toString(), name: json['user']['name']));
-  }
+  ForumMessage.fromJson(Map<String, dynamic> json):
+  id= json['id'],
+  title= stripTags(json['title']),
+  date= json['date'],
+  text= json['text'],
+  signature= json['signature'],
+  folded= json['folded'],
+  user= AccountLink(id:json['user']['id'].toString(), name:json['user']['name']);
 }
 
 class ForumWidget extends StatefulWidget {

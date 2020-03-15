@@ -20,14 +20,13 @@ class Program {
 
   Program({this.id, this.name, this.description, this.airedOn, this.type});
 
-  factory Program.fromJson(Map<String, dynamic> json) {
-    var program = Program(
-        id: json['id'].toString(),
-        type: json['type'],
-        name: json['name'],
-        description: json['description']);
+  Program.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        type = json['type'],
+        name = json['name'],
+        description = json['description'] {
 
-    if (program.type == 'program-liste') {
+    if (this.type == 'program-liste') {
       var songs = <SongLink>[];
       for (var songEntry in json['songs']) {
         var song = SongLink();
@@ -36,10 +35,10 @@ class Program {
         song.artist = stripTags(songEntry['alias']);
         songs.add(song);
       }
-      program.songs = songs;
+      this.songs = songs;
     }
 
-    return program;
+
   }
 }
 
