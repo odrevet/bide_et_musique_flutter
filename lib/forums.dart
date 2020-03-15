@@ -18,8 +18,8 @@ class Forum {
 
   Forum({this.id, this.name, this.subtitle, this.nmsg, this.hasNew});
 
-  Forum.fromJson(Map<String, dynamic> json) :
-        id = json['id'],
+  Forum.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
         name = stripTags(json['name']),
         subtitle = stripTags(json['subtitle']),
         nmsg = json['nmsg'],
@@ -74,8 +74,8 @@ class ForumThread {
       this.ownerId,
       this.ownerName});
 
-  ForumThread.fromJson(Map<String, dynamic> json):
-        id = json['id'],
+  ForumThread.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
         title = stripTags(json['title']),
         nbMsgs = json['nbMsgs'],
         pinned = json['pinned'],
@@ -128,14 +128,14 @@ class ForumMessage {
       this.folded,
       this.user});
 
-  ForumMessage.fromJson(Map<String, dynamic> json):
-  id= json['id'],
-  title= stripTags(json['title']),
-  date= json['date'],
-  text= json['text'],
-  signature= json['signature'],
-  folded= json['folded'],
-  user= AccountLink(id:json['user']['id'], name:json['user']['name']);
+  ForumMessage.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        title = stripTags(json['title']),
+        date = json['date'],
+        text = json['text'],
+        signature = json['signature'],
+        folded = json['folded'],
+        user = AccountLink(id: json['user']['id'], name: json['user']['name']);
 }
 
 class ForumWidget extends StatefulWidget {
@@ -154,23 +154,29 @@ class _ForumPageState extends State<ForumWidget> {
             future: fetchForums(),
             builder: (context, snapshot) {
               var forum = snapshot.data;
-              return ListView.builder(
-                  itemCount: forum.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                        title: Text(
-                          forum[index].name,
-                        ),
-                        subtitle: Text(forum[index].subtitle),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForumThreadWidget(
-                                      forum[index],
-                                      fetchForumThreads(forum[index].id))));
-                        });
-                  });
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    itemCount: forum.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                          title: Text(
+                            forum[index].name,
+                          ),
+                          subtitle: Text(forum[index].subtitle),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForumThreadWidget(
+                                        forum[index],
+                                        fetchForumThreads(forum[index].id))));
+                          });
+                    });
+              } else if (snapshot.hasError) {
+                return errorDisplay(snapshot.error);
+              }
+
+              return Center(child: CircularProgressIndicator());
             }));
   }
 }
@@ -195,27 +201,33 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
         body: FutureBuilder<List<ForumThread>>(
             future: this.widget._forumThreads,
             builder: (context, snapshot) {
-              var forumThread = snapshot.data;
-              return ListView.builder(
-                  itemCount: forumThread.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                        title: Text(
-                          forumThread[index].title,
-                        ),
-                        trailing: forumThread[index].isNew
-                            ? Icon(Icons.fiber_new)
-                            : null,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForumMessagesWidget(
-                                      forumThread[index],
-                                      fetchForumMessages(widget._forum.id,
-                                          forumThread[index].id))));
-                        });
-                  });
+              if (snapshot.hasData) {
+                var forumThread = snapshot.data;
+                return ListView.builder(
+                    itemCount: forumThread.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                          title: Text(
+                            forumThread[index].title,
+                          ),
+                          trailing: forumThread[index].isNew
+                              ? Icon(Icons.fiber_new)
+                              : null,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForumMessagesWidget(
+                                        forumThread[index],
+                                        fetchForumMessages(widget._forum.id,
+                                            forumThread[index].id))));
+                          });
+                    });
+              } else if (snapshot.hasError) {
+                return errorDisplay(snapshot.error);
+              }
+
+              return Center(child: CircularProgressIndicator());
             }));
   }
 }
@@ -263,19 +275,25 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
         body: FutureBuilder<List<ForumMessage>>(
             future: this.widget._forumMessages,
             builder: (context, snapshot) {
-              var forumMessages = snapshot.data;
-              return ListView.separated(
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: forumMessages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    ForumMessage forumMessage = forumMessages[index];
-                    return ListTile(
-                        title: Html(
-                          data: forumMessage.text,
-                        ),
-                        subtitle: Text(
-                            '${forumMessage.date} par ${forumMessage.user.name}'));
-                  });
+              if (snapshot.hasData) {
+                var forumMessages = snapshot.data;
+                return ListView.separated(
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: forumMessages.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      ForumMessage forumMessage = forumMessages[index];
+                      return ListTile(
+                          title: Html(
+                            data: forumMessage.text,
+                          ),
+                          subtitle: Text(
+                              '${forumMessage.date} par ${forumMessage.user.name}'));
+                    });
+              } else if (snapshot.hasError) {
+                return errorDisplay(snapshot.error);
+              }
+
+              return Center(child: CircularProgressIndicator());
             }));
   }
 }
