@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:diacritic/diacritic.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'account.dart';
 import 'artist.dart';
@@ -32,7 +32,7 @@ class SongLink {
       this.title = '',
       this.artist = '',
       this.program = '',
-        this.cover = '',
+      this.cover = '',
       this.isNew = false});
 
   String get streamLink {
@@ -45,8 +45,10 @@ class SongLink {
 
   String get coverLink {
     String url = '$baseUri/images/pochettes/';
-    if(this.cover != null)url += this.cover;
-    else url += '${this.id}.jpg';
+    if (this.cover == null || this.cover == '')
+      url += '${this.id}.jpg';
+    else
+      url += this.cover;
     return url;
   }
 
@@ -85,7 +87,7 @@ class Song extends SongLink {
       this.durationPretty,
       this.label,
       this.reference,
-        this.cover,
+      this.cover,
       this.lyrics});
 
   factory Song.fromJson(Map<String, dynamic> json) {
@@ -135,10 +137,7 @@ String createTag(SongLink songLink) {
 
 Hero heroThumbCover(SongLink songLink) {
   final tag = createTag(songLink);
-  return Hero(
-      tag: tag,
-      child: Image(
-          image: NetworkImage(songLink.thumbLink)));
+  return Hero(tag: tag, child: Image(image: NetworkImage(songLink.thumbLink)));
 }
 
 class SongCardWidget extends StatelessWidget {
