@@ -32,7 +32,7 @@ class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _SongLinkAppBarState extends State<SongLinkAppBar> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SongLink>(
+    return FutureBuilder<SongNowPlaying>(
       future: widget._songLink,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -59,7 +59,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
 
-  Future<SongLink> _songLink;
+  Future<SongNowPlaying> _songNowPLaying;
   Timer _timer;
 
   @override
@@ -68,10 +68,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     connect();
     autoLogin();
     initPlatformState();
-    _songLink = fetchNowPlaying();
+    _songNowPLaying = fetchNowPlaying();
     _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
       setState(() {
-        _songLink = fetchNowPlaying();
+        _songNowPLaying = fetchNowPlaying();
       });
     });
     super.initState();
@@ -271,17 +271,17 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongLinkAppBar(this._songLink),
+              appBar: SongLinkAppBar(this._songNowPLaying),
               bottomNavigationBar: BottomAppBar(child: playerWidget),
               drawer: DrawerWidget(),
-              body: NowPlayingWidget(_songLink));
+              body: NowPlayingWidget(_songNowPLaying));
         } else {
           return Scaffold(
-              appBar: SongLinkAppBar(this._songLink),
+              appBar: SongLinkAppBar(this._songNowPLaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: NowPlayingWidget(_songLink)),
+                  Expanded(child: NowPlayingWidget(_songNowPLaying)),
                   Expanded(child: playerWidget)
                 ],
               ));
