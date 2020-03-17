@@ -14,6 +14,7 @@ class Forum {
   String subtitle;
   int nmsg;
   bool hasNew;
+  String lastDate;
   AccountLink last;
 
   Forum({this.id, this.name, this.subtitle, this.nmsg, this.hasNew});
@@ -23,7 +24,9 @@ class Forum {
         name = stripTags(json['name']),
         subtitle = stripTags(json['subtitle']),
         nmsg = json['nmsg'],
-        hasNew = json['has_new'];
+        hasNew = json['has_new'],
+        lastDate = json['last']['date'],
+        last = AccountLink(id: json['last']['id'], name: json['last']['name']);
 }
 
 Future<List<Forum>> fetchForums() async {
@@ -60,6 +63,7 @@ class ForumThread {
   bool read;
   int ownerId;
   String ownerName;
+  String lastDate;
   AccountLink last;
 
   ForumThread(
@@ -72,7 +76,9 @@ class ForumThread {
       this.hasNew,
       this.read,
       this.ownerId,
-      this.ownerName});
+      this.ownerName,
+      this.lastDate,
+      this.last});
 
   ForumThread.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -84,7 +90,10 @@ class ForumThread {
         hasNew = json['new'],
         read = json['read'],
         ownerId = json['owner_id'],
-        ownerName = json['owner_name'];
+        ownerName = json['owner_name'],
+        lastDate = json['last']['date'],
+        last = AccountLink(
+            id: json['last']['user_id'], name: json['last']['user_name']);
 }
 
 Future<List<ForumThread>> fetchForumThreads(forumId) async {
@@ -164,16 +173,13 @@ class _ForumPageState extends State<ForumWidget> {
                             forum.name,
                           ),
                           subtitle: Text(forum.subtitle),
-                          trailing: forum.hasNew
-                              ? Icon(Icons.fiber_new)
-                              : null,
+                          trailing: forum.hasNew ? Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ForumThreadWidget(
-                                        forum,
-                                        fetchForumThreads(forum.id))));
+                                        forum, fetchForumThreads(forum.id))));
                           });
                     });
               } else if (snapshot.hasError) {
@@ -211,14 +217,16 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                     itemCount: forumThreads.length,
                     itemBuilder: (BuildContext context, int index) {
                       ForumThread forumThread = forumThreads[index];
+                      String messageCountText =
+                          forumThread.nbMsgs > 1 ? 'messages' : 'message';
                       return ListTile(
                           title: Text(
                             forumThread.title,
                           ),
-                          subtitle: Text('${forumThread.nbMsgs}  message(s).'),
-                          trailing: forumThread.hasNew
-                              ? Icon(Icons.fiber_new)
-                              : null,
+                          subtitle: Text(
+                              '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last.name} ${forumThread.lastDate}'),
+                          trailing:
+                              forumThread.hasNew ? Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -255,7 +263,8 @@ Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
       forumMessages.add(ForumMessage(title: 'Erreur JSON', text: e.toString()));
     }
   } else {
-    forumMessages.add(ForumMessage(title: 'Erreur HTTP', text: 'Code ${responseJson.statusCode}'));
+    forumMessages.add(ForumMessage(
+        title: 'Erreur HTTP', text: 'Code ${responseJson.statusCode}'));
   }
 
   return forumMessages;
@@ -290,12 +299,11 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       ForumMessage forumMessage = forumMessages[index];
                       return ListTile(
                           title: Html(
-                            data: forumMessage.text,
+                              data: forumMessage.text,
                               useRichText: false,
                               onLinkTap: (url) {
                                 onLinkTap(url, context);
-                              }
-                          ),
+                              }),
                           subtitle: Text(
                               '${forumMessage.date} par ${forumMessage.user?.name}'));
                     });
