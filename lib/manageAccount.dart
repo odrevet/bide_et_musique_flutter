@@ -13,6 +13,21 @@ import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
+class DisconnectButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.close),
+      onPressed: () {
+        Session.accountLink.id = null;
+        Session.headers = {};
+        Navigator.pop(context);
+      },
+    );
+  }
+}
+
+
 class LoggedInPage extends StatelessWidget {
   LoggedInPage({Key key}) : super(key: key);
 
@@ -20,14 +35,7 @@ class LoggedInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //disconnect button
     var actions = <Widget>[];
-    actions.add(IconButton(
-      icon: Icon(Icons.close),
-      onPressed: () {
-        Session.accountLink.id = null;
-        Session.headers = {};
-        Navigator.pop(context);
-      },
-    ));
+    actions.add(DisconnectButton());
 
     return DefaultTabController(
       length: 5,

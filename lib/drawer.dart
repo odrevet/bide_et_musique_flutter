@@ -14,6 +14,7 @@ import 'titles.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
 import 'forums.dart';
+import 'manageAccount.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -64,6 +65,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ListTile(
           title: Text(_accountTitle),
           leading: Icon(Icons.account_circle),
+          trailing: Session.accountLink.id == null ? null : DisconnectButton(),
           onTap: () {
             Navigator.push(
                     context,
@@ -72,6 +74,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 .then((_) => _setAccountTitle());
           },
         ),
+        Divider(),
         ListTile(
           title: Text('Titres'),
           leading: Icon(Icons.queue_music),
@@ -121,6 +124,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(builder: (context) => SearchWidget()));
           },
         ),
+        Divider(),
         ListTile(
           title: Text('Mur des messages'),
           leading: Icon(Icons.comment),
@@ -129,6 +133,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context, MaterialPageRoute(builder: (context) => WallWidget()));
           },
         ),
+        ListTile(
+          title: Text('Forums'),
+          leading: Icon(Icons.forum),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ForumWidget()));
+          },
+        ),
+        Divider(),
         ListTile(
           title: Text('Pochettoscope'),
           leading: Icon(Icons.image),
@@ -145,6 +158,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(builder: (context) => TrombidoscopeWidget()));
           },
         ),
+        Divider(),
         ListTile(
           title: Text('Nouvelles entrées'),
           leading: Icon(Icons.fiber_new),
@@ -153,14 +167,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongsWidget(songs: fetchNewSongs())));
-          },
-        ),
-        ListTile(
-          title: Text('Forums'),
-          leading: Icon(Icons.forum),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ForumWidget()));
           },
         ),
         ListTile(
