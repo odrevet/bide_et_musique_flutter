@@ -56,7 +56,7 @@ class ForumThread {
   bool pinned;
   bool resolved;
   bool hasPost;
-  bool isNew;
+  bool hasNew;
   bool read;
   int ownerId;
   String ownerName;
@@ -69,7 +69,7 @@ class ForumThread {
       this.pinned,
       this.resolved,
       this.hasPost,
-      this.isNew,
+      this.hasNew,
       this.read,
       this.ownerId,
       this.ownerName});
@@ -77,11 +77,11 @@ class ForumThread {
   ForumThread.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = stripTags(json['title']),
-        nbMsgs = json['nbMsgs'],
+        nbMsgs = json['nb_msgs'],
         pinned = json['pinned'],
         resolved = json['resolved'],
         hasPost = json['has_post'],
-        isNew = json['new'],
+        hasNew = json['new'],
         read = json['read'],
         ownerId = json['owner_id'],
         ownerName = json['owner_name'];
@@ -106,7 +106,7 @@ Future<List<ForumThread>> fetchForumThreads(forumId) async {
   } else {
     print('Response was ${responseJson.statusCode}');
   }
-
+  
   return forumThreads;
 }
 
@@ -153,23 +153,27 @@ class _ForumPageState extends State<ForumWidget> {
         body: FutureBuilder<List<Forum>>(
             future: fetchForums(),
             builder: (context, snapshot) {
-              var forum = snapshot.data;
+              var forums = snapshot.data;
               if (snapshot.hasData) {
                 return ListView.builder(
-                    itemCount: forum.length,
+                    itemCount: forums.length,
                     itemBuilder: (BuildContext context, int index) {
+                      Forum forum = forums[index];
                       return ListTile(
                           title: Text(
-                            forum[index].name,
+                            forum.name,
                           ),
-                          subtitle: Text(forum[index].subtitle),
+                          subtitle: Text(forum.subtitle),
+                          trailing: forum.hasNew
+                              ? Icon(Icons.fiber_new)
+                              : null,
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ForumThreadWidget(
-                                        forum[index],
-                                        fetchForumThreads(forum[index].id))));
+                                        forum,
+                                        fetchForumThreads(forum.id))));
                           });
                     });
               } else if (snapshot.hasError) {
@@ -202,15 +206,17 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
             future: this.widget._forumThreads,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var forumThread = snapshot.data;
+                List<ForumThread> forumThreads = snapshot.data;
                 return ListView.builder(
-                    itemCount: forumThread.length,
+                    itemCount: forumThreads.length,
                     itemBuilder: (BuildContext context, int index) {
+                      ForumThread forumThread = forumThreads[index];
                       return ListTile(
                           title: Text(
-                            forumThread[index].title,
+                            forumThread.title,
                           ),
-                          trailing: forumThread[index].isNew
+                          subtitle: Text('${forumThread.nbMsgs}  message(s).'),
+                          trailing: forumThread.hasNew
                               ? Icon(Icons.fiber_new)
                               : null,
                           onTap: () {
@@ -218,9 +224,9 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ForumMessagesWidget(
-                                        forumThread[index],
+                                        forumThread,
                                         fetchForumMessages(widget._forum.id,
-                                            forumThread[index].id))));
+                                            forumThread.id))));
                           });
                     });
               } else if (snapshot.hasError) {
@@ -285,6 +291,10 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       return ListTile(
                           title: Html(
                             data: forumMessage.text,
+                              useRichText: false,
+                              onLinkTap: (url) {
+                                onLinkTap(url, context);
+                              }
                           ),
                           subtitle: Text(
                               '${forumMessage.date} par ${forumMessage.user.name}'));
