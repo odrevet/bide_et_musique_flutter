@@ -75,6 +75,7 @@ class ThematicPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
+    programLinks.sort((a, b) => a.name.compareTo(b.name));
     return ListView.builder(
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
