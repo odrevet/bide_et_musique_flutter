@@ -262,8 +262,8 @@ Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
 }
 
 class ForumMessagesWidget extends StatefulWidget {
-  ForumThread _forumThread;
-  Future<List<ForumMessage>> _forumMessages;
+  final ForumThread _forumThread;
+  final Future<List<ForumMessage>> _forumMessages;
 
   ForumMessagesWidget(this._forumThread, this._forumMessages);
 

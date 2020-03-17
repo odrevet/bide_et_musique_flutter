@@ -123,7 +123,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         ListTile(
           title: Text('Mur des messages'),
-          leading: Icon(Icons.question_answer),
+          leading: Icon(Icons.comment),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => WallWidget()));
