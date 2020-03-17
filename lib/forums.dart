@@ -106,7 +106,7 @@ Future<List<ForumThread>> fetchForumThreads(forumId) async {
   } else {
     print('Response was ${responseJson.statusCode}');
   }
-  
+
   return forumThreads;
 }
 
@@ -252,10 +252,10 @@ Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
         forumMessages.add(ForumMessage.fromJson(forumMessage));
       }
     } catch (e) {
-      print('ERROR $e');
+      forumMessages.add(ForumMessage(title: 'Erreur JSON', text: e.toString()));
     }
   } else {
-    print('Response was ${responseJson.statusCode}');
+    forumMessages.add(ForumMessage(title: 'Erreur HTTP', text: 'Code ${responseJson.statusCode}'));
   }
 
   return forumMessages;
@@ -297,7 +297,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                               }
                           ),
                           subtitle: Text(
-                              '${forumMessage.date} par ${forumMessage.user.name}'));
+                              '${forumMessage.date} par ${forumMessage.user?.name}'));
                     });
               } else if (snapshot.hasError) {
                 return errorDisplay(snapshot.error);
