@@ -56,9 +56,9 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
+  PlayerWidget _playerWidget;
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
-
   Future<SongNowPlaying> _songNowPLaying;
   Timer _timer;
 
@@ -69,6 +69,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     autoLogin();
     initPlatformState();
     _songNowPLaying = fetchNowPlaying();
+    _playerWidget = PlayerWidget();
     _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
       setState(() {
         _songNowPLaying = fetchNowPlaying();
@@ -255,8 +256,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    Widget playerWidget = PlayerWidget(_playbackState);
-
     Widget home;
     Widget body;
 
@@ -272,7 +271,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongLinkAppBar(this._songNowPLaying),
-              bottomNavigationBar: BottomAppBar(child: playerWidget),
+              bottomNavigationBar: BottomAppBar(child: _playerWidget),
               drawer: DrawerWidget(),
               body: NowPlayingWidget(_songNowPLaying));
         } else {
@@ -282,14 +281,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               body: Row(
                 children: <Widget>[
                   Expanded(child: NowPlayingWidget(_songNowPLaying)),
-                  Expanded(child: playerWidget)
+                  Expanded(child: _playerWidget)
                 ],
               ));
         }
       });
     else
       home = Scaffold(
-          bottomNavigationBar: BottomAppBar(child: playerWidget), body: body);
+          bottomNavigationBar: BottomAppBar(child: _playerWidget), body: body);
 
 
     return InheritedPlayer(playbackState: _playbackState, child: MaterialApp(

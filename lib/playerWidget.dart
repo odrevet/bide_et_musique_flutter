@@ -85,9 +85,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 }
 
 class PlayerWidget extends StatefulWidget {
-  final PlaybackState _playbackState;
-
-  PlayerWidget(this._playbackState);
+  PlayerWidget();
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -97,10 +95,11 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
+    final playbackState = InheritedPlayer.of(context);
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
-    if (widget._playbackState?.basicState == BasicPlaybackState.buffering ||
-        widget._playbackState?.basicState == BasicPlaybackState.connecting) {
+    if (playbackState?.basicState == BasicPlaybackState.buffering ||
+        playbackState?.basicState == BasicPlaybackState.connecting) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -111,9 +110,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
     } else
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: widget._playbackState?.basicState ==
+        children: playbackState?.basicState ==
                     BasicPlaybackState.playing ||
-                widget._playbackState?.basicState ==
+                playbackState?.basicState ==
                     BasicPlaybackState.buffering
             ? [
                 pauseButton(48),
@@ -121,10 +120,10 @@ class _PlayerWidgetState extends State<PlayerWidget>
                 if (duration != null)
                   Container(
                     height: 20,
-                    child: SongPositionSlider(widget._playbackState, duration),
+                    child: SongPositionSlider(playbackState, duration),
                   )
               ]
-            : widget._playbackState?.basicState == BasicPlaybackState.paused
+            : playbackState?.basicState == BasicPlaybackState.paused
                 ? [
                     playButton(48),
                     stopButton(48),
