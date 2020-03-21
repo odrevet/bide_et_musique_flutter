@@ -31,7 +31,6 @@ class SongLink {
       {this.id,
       this.title = '',
       this.artist = '',
-      // this.program = '',
       this.cover = '',
       this.isNew = false});
 

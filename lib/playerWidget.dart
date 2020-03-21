@@ -85,6 +85,48 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
   }
 }
 
+class NowPlayingPositionSlider extends StatefulWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
+  NowPlayingPositionSlider(this._songNowPlaying);
+
+  @override
+  _NowPlayingPositionSliderState createState() => _NowPlayingPositionSliderState();
+}
+
+class _NowPlayingPositionSliderState extends State<NowPlayingPositionSlider> {
+  final BehaviorSubject<double> _dragPositionSubject =
+  BehaviorSubject.seeded(null);
+
+  String _formatSongDuration(int ms) {
+    Duration duration = Duration(milliseconds: ms);
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SongNowPlaying>(
+      future: widget._songNowPlaying,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          SongNowPlaying songNowPlaying = snapshot.data;
+          return Text('${songNowPlaying.elapsedPcent} % de ${songNowPlaying.durationPretty} \n '
+              '${songNowPlaying.duration.inSeconds - (songNowPlaying.duration.inSeconds * songNowPlaying.elapsedPcent / 100).ceil()} sec restante');
+        } else if (snapshot.hasError) {
+          return Text('Error');
+        }
+        return Text('Loading');
+      },
+    );
+  }
+}
+
 class PlayerWidget extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
   PlayerWidget(this._songNowPlaying);
