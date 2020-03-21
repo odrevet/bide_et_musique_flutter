@@ -22,7 +22,7 @@ class SongLink {
   int id;
   String title;
   String artist;
-  String program;
+  // String program;
   bool isNew;
   String cover;
   int index;
@@ -31,7 +31,7 @@ class SongLink {
       {this.id,
       this.title = '',
       this.artist = '',
-      this.program = '',
+      // this.program = '',
       this.cover = '',
       this.isNew = false});
 

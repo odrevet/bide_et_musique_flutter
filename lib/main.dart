@@ -10,13 +10,13 @@ import 'playerWidget.dart';
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
-import 'song.dart';
 import 'utils.dart' show handleLink;
 
 enum UniLinksType { string, uri }
 
-class SongNowPlayingAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final Future<SongLink> _songNowPlaying;
+class SongNowPlayingAppBar extends StatefulWidget
+    implements PreferredSizeWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
 
   SongNowPlayingAppBar(this._songNowPlaying, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
@@ -37,10 +37,14 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          return AppBar(title: Text(songNowPlaying.title),
-            bottom: PreferredSize(
-                child: Text('${songNowPlaying.artist} • ${songNowPlaying.year}'),
-                preferredSize: null));
+          return AppBar(
+              title: Text(songNowPlaying.title),
+              bottom: PreferredSize(
+                  child: Align(
+                      alignment: FractionalOffset.bottomCenter,
+                      child: Text(
+                          '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
+                  preferredSize: null));
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
         }
@@ -73,7 +77,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     autoLogin();
     initPlatformState();
     _songNowPLaying = fetchNowPlaying();
-    _playerWidget = PlayerWidget();
+    _playerWidget = PlayerWidget(_songNowPLaying);
     _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
       setState(() {
         _songNowPLaying = fetchNowPlaying();
@@ -274,13 +278,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(this._songNowPLaying),
+              appBar: SongNowPlayingAppBar(_songNowPLaying),
               bottomNavigationBar: BottomAppBar(child: _playerWidget),
               drawer: DrawerWidget(),
               body: NowPlayingWidget(_songNowPLaying));
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(this._songNowPLaying),
+              appBar: SongNowPlayingAppBar(_songNowPLaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
@@ -294,16 +298,17 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = Scaffold(
           bottomNavigationBar: BottomAppBar(child: _playerWidget), body: body);
 
-
-    return InheritedPlayer(playbackState: _playbackState, child: MaterialApp(
-        title: 'Bide&Musique',
-        theme: ThemeData(
-          primarySwatch: Colors.orange,
-          buttonColor: Colors.orangeAccent,
-          secondaryHeaderColor: Colors.deepOrange,
-          bottomAppBarColor: Colors.orange,
-          canvasColor: Color(0xFFF5EEE5),
-        ),
-        home: home));
+    return InheritedPlaybackState(
+        playbackState: _playbackState,
+        child: MaterialApp(
+            title: 'Bide&Musique',
+            theme: ThemeData(
+              primarySwatch: Colors.orange,
+              buttonColor: Colors.orangeAccent,
+              secondaryHeaderColor: Colors.deepOrange,
+              bottomAppBarColor: Colors.orange,
+              canvasColor: Color(0xFFF5EEE5),
+            ),
+            home: home));
   }
 }

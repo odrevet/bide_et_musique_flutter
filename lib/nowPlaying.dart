@@ -3,17 +3,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'program.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
 class SongNowPlaying extends Song {
-  final int elapsed_pcent;
-  final int nb_listeners;
+  final int elapsedPcent;
+  final int nbListeners;
+  final Program program;
 
   SongNowPlaying.fromJson(Map<String, dynamic> json)
-      : elapsed_pcent = json['now']['elapsed_pcent'],
-        nb_listeners = json['now']['nb_listeners'],
+      : elapsedPcent = json['now']['elapsed_pcent'],
+        nbListeners = json['now']['nb_listeners'],
+        program = Program(
+            id: json['now']['program']['id'],
+            name: json['now']['program']['name']),
         super.fromJson(json);
 }
 

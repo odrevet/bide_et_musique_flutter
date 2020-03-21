@@ -346,7 +346,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final playbackState = InheritedPlayer.of(context);
+    final playbackState = InheritedPlaybackState.of(context);
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
     Widget songPlaybackControls;

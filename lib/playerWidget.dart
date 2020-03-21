@@ -3,10 +3,11 @@ import 'package:rxdart/rxdart.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 
+import 'nowPlaying.dart';
 import 'player.dart';
 
-class InheritedPlayer extends InheritedWidget {
-  const InheritedPlayer(
+class InheritedPlaybackState extends InheritedWidget {
+  const InheritedPlaybackState(
       {Key key, @required this.playbackState, @required Widget child})
       : super(key: key, child: child);
 
@@ -14,12 +15,12 @@ class InheritedPlayer extends InheritedWidget {
 
   static PlaybackState of(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<InheritedPlayer>()
+        .dependOnInheritedWidgetOfExactType<InheritedPlaybackState>()
         .playbackState;
   }
 
   @override
-  bool updateShouldNotify(InheritedPlayer old) =>
+  bool updateShouldNotify(InheritedPlaybackState old) =>
       playbackState != old.playbackState;
 }
 
@@ -85,7 +86,8 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 }
 
 class PlayerWidget extends StatefulWidget {
-  PlayerWidget();
+  final Future<SongNowPlaying> _songNowPlaying;
+  PlayerWidget(this._songNowPlaying);
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -95,26 +97,31 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    final playbackState = InheritedPlayer.of(context);
+    final playbackState = InheritedPlaybackState.of(context);
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
-    if (playbackState?.basicState == BasicPlaybackState.buffering ||
-        playbackState?.basicState == BasicPlaybackState.connecting) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-          stopButton(48),
-        ],
-      );
-    } else
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: playbackState?.basicState ==
-                    BasicPlaybackState.playing ||
-                playbackState?.basicState ==
-                    BasicPlaybackState.buffering
-            ? [
+    return FutureBuilder<SongNowPlaying>(
+      future: widget._songNowPlaying,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          SongNowPlaying songNowPlaying = snapshot.data;
+          if (playbackState?.basicState == BasicPlaybackState.buffering ||
+              playbackState?.basicState == BasicPlaybackState.connecting) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+                stopButton(48),
+              ],
+            );
+          } else
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: playbackState?.basicState ==
+                  BasicPlaybackState.playing ||
+                  playbackState?.basicState ==
+                      BasicPlaybackState.buffering
+                  ? [
                 pauseButton(48),
                 stopButton(48),
                 if (duration != null)
@@ -123,23 +130,31 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     child: SongPositionSlider(playbackState, duration),
                   )
               ]
-            : playbackState?.basicState == BasicPlaybackState.paused
-                ? [
-                    playButton(48),
-                    stopButton(48),
-                  ]
-                : [
-                    Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: playRadioStreamButton())
-                  ],
-      );
+                  : playbackState?.basicState == BasicPlaybackState.paused
+                  ? [
+                playButton(48),
+                stopButton(48),
+              ]
+                  : [
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: playRadioStreamButton(songNowPlaying.nbListeners))
+              ],
+            );
+        } else if (snapshot.hasError) {
+          return AppBar(title: Text("Erreur"));
+        }
+
+        return Row(children: []);
+      },
+    );
+
   }
 }
 
-RaisedButton playRadioStreamButton() => RaisedButton.icon(
+RaisedButton playRadioStreamButton(int nbListeners) => RaisedButton.icon(
       icon: Icon(Icons.radio, size: 40),
-      label: Text("Écouter la radio",
+      label: Text("Écouter la radio\n$nbListeners auditeurs",
           style: TextStyle(
             fontSize: 20.0,
           )),

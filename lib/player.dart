@@ -38,7 +38,7 @@ class StreamNotificationUpdater {
   void setMediaItemFromSongLink(SongLink songLink) {
     var mediaItem = MediaItem(
         id: songLink.streamLink,
-        album: songLink.program,
+        album: '', //songLink.program,
         title: songLink.title,
         artist: songLink.artist,
         artUri: '$baseUri/images/pochettes/${songLink.id}.jpg');
