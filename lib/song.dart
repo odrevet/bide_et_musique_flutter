@@ -96,7 +96,7 @@ class Song extends SongLink {
         year = json['year'],
         artist = stripTags(json['artists']['main']['alias']),
         artistId = json['artists']['main']['id'],
-        author = json['author'],
+        author = json['authors'],
         duration = Duration(seconds:json['length']['raw']),
         durationPretty = json['length']['pretty'],
         label = stripTags(json['label']),

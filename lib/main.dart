@@ -15,10 +15,10 @@ import 'utils.dart' show handleLink;
 
 enum UniLinksType { string, uri }
 
-class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final Future<SongLink> _songLink;
+class SongNowPlayingAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final Future<SongLink> _songNowPlaying;
 
-  SongLinkAppBar(this._songLink, {Key key})
+  SongNowPlayingAppBar(this._songNowPlaying, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -26,17 +26,21 @@ class SongLinkAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   @override
-  _SongLinkAppBarState createState() => _SongLinkAppBarState();
+  _SongNowPlayingAppBarState createState() => _SongNowPlayingAppBarState();
 }
 
-class _SongLinkAppBarState extends State<SongLinkAppBar> {
+class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SongNowPlaying>(
-      future: widget._songLink,
+      future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return AppBar(title: Text(snapshot.data.title));
+          SongNowPlaying songNowPlaying = snapshot.data;
+          return AppBar(title: Text(songNowPlaying.title),
+            bottom: PreferredSize(
+                child: Text('${songNowPlaying.artist} • ${songNowPlaying.year}'),
+                preferredSize: null));
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
         }
@@ -270,13 +274,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongLinkAppBar(this._songNowPLaying),
+              appBar: SongNowPlayingAppBar(this._songNowPLaying),
               bottomNavigationBar: BottomAppBar(child: _playerWidget),
               drawer: DrawerWidget(),
               body: NowPlayingWidget(_songNowPLaying));
         } else {
           return Scaffold(
-              appBar: SongLinkAppBar(this._songNowPLaying),
+              appBar: SongNowPlayingAppBar(this._songNowPLaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
