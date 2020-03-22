@@ -30,17 +30,15 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    periodicFetchSongNowPLaying();
     WidgetsBinding.instance.addObserver(this);
     connect();
     autoLogin();
     initPlatformState();
-    _songNowPLaying = fetchNowPlaying();
+    //_songNowPLaying = fetchNowPlaying();
     _playerWidget = PlayerWidget(_songNowPLaying);
-    _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      setState(() {
-        _songNowPLaying = fetchNowPlaying();
-      });
-    });
+
+
     super.initState();
   }
 
@@ -210,6 +208,22 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       _playbackStateSubscription = null;
     }
     AudioService.disconnect();
+  }
+
+  void periodicFetchSongNowPLaying() {
+    setState(() {
+      _songNowPLaying = fetchNowPlaying();
+    });
+    _songNowPLaying.then((songNowPlaying) {
+      int delay = (songNowPlaying.duration.inSeconds -
+          (songNowPlaying.duration.inSeconds *
+              songNowPlaying.elapsedPcent /
+              100))
+          .ceil();
+      Timer(Duration(seconds: delay), () {
+        periodicFetchSongNowPLaying();
+      });
+    });
   }
 
   @override
