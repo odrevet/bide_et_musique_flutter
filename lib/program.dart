@@ -23,7 +23,7 @@ class Program {
   Program.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         type = json['type'],
-        name = json['name'],
+        name = stripTags(json['name']),
         description = json['description'] {
 
     if (this.type == 'program-liste') {

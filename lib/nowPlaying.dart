@@ -18,7 +18,7 @@ class SongNowPlaying extends Song {
         nbListeners = json['now']['nb_listeners'],
         program = Program(
             id: json['now']['program']['id'],
-            name: json['now']['program']['name']),
+            name: stripTags(json['now']['program']['name'])),
         super.fromJson(json);
 }
 
