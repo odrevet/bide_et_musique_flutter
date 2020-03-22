@@ -101,7 +101,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     } on FormatException {
       initialLink = 'Failed to parse the initial link as Uri.';
     }
-    
+
     if (!mounted) return;
 
     setState(() {

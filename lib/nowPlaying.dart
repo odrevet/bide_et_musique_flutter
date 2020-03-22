@@ -109,10 +109,13 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
           return AppBar(
               title: Text(songNowPlaying.title),
               bottom: PreferredSize(
-                  child: Align(
-                      alignment: FractionalOffset.bottomCenter,
-                      child: Text(
-                          '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 75.0),
+                    child: Align(
+                        alignment: FractionalOffset.centerLeft,
+                        child: Text(
+                            '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
+                  ),
                   preferredSize: null));
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
