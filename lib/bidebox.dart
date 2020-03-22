@@ -33,8 +33,8 @@ Future<List<Exchange>> fetchMessages() async {
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    List<dom.Element> tables =  document.getElementsByClassName('bmtable');
-    if(tables.isEmpty){
+    List<dom.Element> tables = document.getElementsByClassName('bmtable');
+    if (tables.isEmpty) {
       return messages;
     }
 
@@ -129,8 +129,12 @@ class _MessageEditorState extends State<MessageEditor> {
     final url = '$baseUri/bidebox_send.html';
 
     if (message.isNotEmpty) {
-      await Session.post(url,
-          body: {'Message': message, 'T': widget._accountLink.id, 'R': '', 'M': 'S'});
+      await Session.post(url, body: {
+        'Message': message,
+        'T': widget._accountLink.id,
+        'R': '',
+        'M': 'S'
+      });
     }
   }
 

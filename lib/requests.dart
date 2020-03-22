@@ -1,12 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'song.dart';
 import 'session.dart';
-import 'utils.dart';
+import 'song.dart';
 import 'titles.dart';
+import 'utils.dart';
 
 class Request {
   SongLink songLink;

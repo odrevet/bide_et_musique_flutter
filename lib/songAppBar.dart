@@ -273,8 +273,7 @@ ${_song.link}
 Message envoyé avec l'application 'Bide et Musique flutter pour Android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ''',
-            subject:
-                "'${_song.title}' sur Bide et Musique"));
+            subject: "'${_song.title}' sur Bide et Musique"));
   }
 }
 

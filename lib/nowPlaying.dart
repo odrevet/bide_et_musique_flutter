@@ -39,17 +39,17 @@ Future<SongNowPlaying> fetchNowPlaying() async {
   }
 }
 
-class NowPlayingWidget extends StatefulWidget {
+class NowPlayingCard extends StatefulWidget {
   Future<Song> _song;
 
-  NowPlayingWidget(this._song, {Key key}) : super(key: key);
+  NowPlayingCard(this._song, {Key key}) : super(key: key);
 
   @override
-  _NowPlayingWidgetState createState() => _NowPlayingWidgetState();
+  _NowPlayingCardState createState() => _NowPlayingCardState();
 }
 
-class _NowPlayingWidgetState extends State<NowPlayingWidget> {
-  _NowPlayingWidgetState();
+class _NowPlayingCardState extends State<NowPlayingCard> {
+  _NowPlayingCardState();
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +79,48 @@ class _NowPlayingWidgetState extends State<NowPlayingWidget> {
           return CircularProgressIndicator();
         },
       ),
+    );
+  }
+}
+
+class SongNowPlayingAppBar extends StatefulWidget
+    implements PreferredSizeWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
+
+  SongNowPlayingAppBar(this._songNowPlaying, {Key key})
+      : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
+
+  @override
+  final Size preferredSize;
+
+  @override
+  _SongNowPlayingAppBarState createState() => _SongNowPlayingAppBarState();
+}
+
+class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SongNowPlaying>(
+      future: widget._songNowPlaying,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          SongNowPlaying songNowPlaying = snapshot.data;
+          return AppBar(
+              title: Text(songNowPlaying.title),
+              bottom: PreferredSize(
+                  child: Align(
+                      alignment: FractionalOffset.bottomCenter,
+                      child: Text(
+                          '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
+                  preferredSize: null));
+        } else if (snapshot.hasError) {
+          return AppBar(title: Text("Erreur"));
+        }
+
+        // By default, show a loading spinner
+        return AppBar(title: Text("Chargement"));
+      },
     );
   }
 }

@@ -27,7 +27,6 @@ class DisconnectButton extends StatelessWidget {
   }
 }
 
-
 class LoggedInPage extends StatelessWidget {
   LoggedInPage({Key key}) : super(key: key);
 

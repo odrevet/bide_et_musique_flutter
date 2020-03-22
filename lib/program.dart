@@ -25,7 +25,6 @@ class Program {
         type = json['type'],
         name = stripTags(json['name']),
         description = json['description'] {
-
     if (this.type == 'program-liste') {
       var songs = <SongLink>[];
       for (var songEntry in json['songs']) {
@@ -37,8 +36,6 @@ class Program {
       }
       this.songs = songs;
     }
-
-
   }
 }
 

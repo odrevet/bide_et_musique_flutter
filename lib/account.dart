@@ -350,7 +350,6 @@ Future<Account> fetchAccountSession() async {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-
     //parse bm tables
     //bm table may list favourite songs or messages.
     //either are optional

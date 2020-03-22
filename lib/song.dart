@@ -89,14 +89,14 @@ class Song extends SongLink {
       this.cover,
       this.lyrics});
 
-  Song.fromJson(Map<String, dynamic> json):
-        id = json['id'],
+  Song.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
         title = stripTags(json['name']),
         year = json['year'],
         artist = stripTags(json['artists']['main']['alias']),
         artistId = json['artists']['main']['id'],
         author = json['authors'],
-        duration = Duration(seconds:json['length']['raw']),
+        duration = Duration(seconds: json['length']['raw']),
         durationPretty = json['length']['pretty'],
         label = stripTags(json['label']),
         reference = stripTags(json['reference']),
@@ -197,7 +197,8 @@ List<Comment> _parseComments(document) {
     try {
       var tdCommentChildren = divNormal.children;
       //get comment id (remove 'comment' string)
-      comment.id = int.parse(tdCommentChildren[0].attributes['id'].substring(8));
+      comment.id =
+          int.parse(tdCommentChildren[0].attributes['id'].substring(8));
       dom.Element aAccount = tdCommentChildren[1].children[0];
       int accountId = extractAccountId(aAccount.attributes['href']);
       String accountName = aAccount.innerHtml;

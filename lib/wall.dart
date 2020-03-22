@@ -229,5 +229,3 @@ class _WallWidgetState extends State<WallWidget> {
     return ListView(children: rows);
   }
 }
-
-

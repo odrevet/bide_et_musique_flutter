@@ -5,56 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
-import 'playerWidget.dart';
 
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
+import 'playerWidget.dart';
 import 'utils.dart' show handleLink;
 
 enum UniLinksType { string, uri }
-
-class SongNowPlayingAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
-  final Future<SongNowPlaying> _songNowPlaying;
-
-  SongNowPlayingAppBar(this._songNowPlaying, {Key key})
-      : preferredSize = Size.fromHeight(kToolbarHeight),
-        super(key: key);
-
-  @override
-  final Size preferredSize;
-
-  @override
-  _SongNowPlayingAppBarState createState() => _SongNowPlayingAppBarState();
-}
-
-class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<SongNowPlaying>(
-      future: widget._songNowPlaying,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          SongNowPlaying songNowPlaying = snapshot.data;
-          return AppBar(
-              title: Text(songNowPlaying.title),
-              bottom: PreferredSize(
-                  child: Align(
-                      alignment: FractionalOffset.bottomCenter,
-                      child: Text(
-                          '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
-                  preferredSize: null));
-        } else if (snapshot.hasError) {
-          return AppBar(title: Text("Erreur"));
-        }
-
-        // By default, show a loading spinner
-        return AppBar(title: Text("Chargement"));
-      },
-    );
-  }
-}
 
 void main() => runApp(BideApp());
 
@@ -143,10 +101,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     } on FormatException {
       initialLink = 'Failed to parse the initial link as Uri.';
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+    
     if (!mounted) return;
 
     setState(() {
@@ -194,17 +149,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       initialLink = 'Bad parse the initial link as Uri.';
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
       _deepLink = initialLink;
     });
   }
-
-  /////////////////////////////////////////////////////////////////////////
 
   void autoLogin() async {
     final prefs = await SharedPreferences.getInstance();
@@ -279,21 +229,22 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPLaying),
-              bottomNavigationBar: BottomAppBar(child: Row(
+              bottomNavigationBar: BottomAppBar(
+                  child: Row(
                 children: <Widget>[
                   _playerWidget,
-                  NowPlayingPositionSlider(_songNowPLaying),
+                  NowPlayingPositionSlider(_songNowPLaying)
                 ],
               )),
               drawer: DrawerWidget(),
-              body: NowPlayingWidget(_songNowPLaying));
+              body: NowPlayingCard(_songNowPLaying));
         } else {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPLaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: NowPlayingWidget(_songNowPLaying)),
+                  Expanded(child: NowPlayingCard(_songNowPLaying)),
                   Expanded(child: _playerWidget)
                 ],
               ));

@@ -1,7 +1,8 @@
 import 'dart:math';
-import 'package:rxdart/rxdart.dart';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'nowPlaying.dart';
 import 'player.dart';
@@ -90,24 +91,13 @@ class NowPlayingPositionSlider extends StatefulWidget {
   NowPlayingPositionSlider(this._songNowPlaying);
 
   @override
-  _NowPlayingPositionSliderState createState() => _NowPlayingPositionSliderState();
+  _NowPlayingPositionSliderState createState() =>
+      _NowPlayingPositionSliderState();
 }
 
 class _NowPlayingPositionSliderState extends State<NowPlayingPositionSlider> {
   final BehaviorSubject<double> _dragPositionSubject =
-  BehaviorSubject.seeded(null);
-
-  String _formatSongDuration(int ms) {
-    Duration duration = Duration(milliseconds: ms);
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$twoDigitMinutes:$twoDigitSeconds";
-  }
+      BehaviorSubject.seeded(null);
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +106,8 @@ class _NowPlayingPositionSliderState extends State<NowPlayingPositionSlider> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          return Text('${songNowPlaying.elapsedPcent} % de ${songNowPlaying.durationPretty} \n '
+          return Text(
+              '${songNowPlaying.elapsedPcent} % de ${songNowPlaying.durationPretty} \n '
               '${songNowPlaying.duration.inSeconds - (songNowPlaying.duration.inSeconds * songNowPlaying.elapsedPcent / 100).ceil()} sec restante');
         } else if (snapshot.hasError) {
           return Text('Error');
@@ -152,7 +143,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+                CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
                 stopButton(48),
               ],
             );
@@ -160,28 +152,28 @@ class _PlayerWidgetState extends State<PlayerWidget>
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: playbackState?.basicState ==
-                  BasicPlaybackState.playing ||
-                  playbackState?.basicState ==
-                      BasicPlaybackState.buffering
+                          BasicPlaybackState.playing ||
+                      playbackState?.basicState == BasicPlaybackState.buffering
                   ? [
-                pauseButton(48),
-                stopButton(48),
-                if (duration != null)
-                  Container(
-                    height: 20,
-                    child: SongPositionSlider(playbackState, duration),
-                  )
-              ]
+                      pauseButton(48),
+                      stopButton(48),
+                      if (duration != null)
+                        Container(
+                          height: 20,
+                          child: SongPositionSlider(playbackState, duration),
+                        )
+                    ]
                   : playbackState?.basicState == BasicPlaybackState.paused
-                  ? [
-                playButton(48),
-                stopButton(48),
-              ]
-                  : [
-                Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: playRadioStreamButton(songNowPlaying.nbListeners))
-              ],
+                      ? [
+                          playButton(48),
+                          stopButton(48),
+                        ]
+                      : [
+                          Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: playRadioStreamButton(
+                                  songNowPlaying.nbListeners))
+                        ],
             );
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
@@ -190,7 +182,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
         return Row(children: []);
       },
     );
-
   }
 }
 

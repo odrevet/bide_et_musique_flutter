@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'about.dart';
+import 'forums.dart';
 import 'identification.dart';
+import 'manageAccount.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
 import 'pochettoscope.dart';
 import 'schedule.dart';
-import 'thematics.dart';
 import 'search.dart';
 import 'session.dart';
 import 'settings.dart';
+import 'thematics.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
-import 'forums.dart';
-import 'manageAccount.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -189,4 +189,3 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     ));
   }
 }
-
