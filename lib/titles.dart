@@ -124,7 +124,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
           bottom: TabBar(
             tabs: [
               Tab(text: 'A venir sur la platine'),
-              Tab(text: 'De retrour dans leur bac'),
+              Tab(text: 'De retour dans leur bac'),
             ],
           ),
         ),
