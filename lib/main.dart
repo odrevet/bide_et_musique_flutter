@@ -244,12 +244,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPLaying),
               bottomNavigationBar: BottomAppBar(
-                  child: Row(
+                  child: _playerWidget /*Row(
                 children: <Widget>[
                   _playerWidget,
                   NowPlayingPositionSlider(_songNowPLaying)
                 ],
-              )),
+              )*/),
               drawer: DrawerWidget(),
               body: NowPlayingCard(_songNowPLaying));
         } else {

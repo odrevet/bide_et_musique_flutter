@@ -86,7 +86,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
   }
 }
 
-class NowPlayingPositionSlider extends StatefulWidget {
+/*class NowPlayingPositionSlider extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
   NowPlayingPositionSlider(this._songNowPlaying);
 
@@ -116,7 +116,7 @@ class _NowPlayingPositionSliderState extends State<NowPlayingPositionSlider> {
       },
     );
   }
-}
+}*/
 
 class PlayerWidget extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
@@ -171,8 +171,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       : [
                           Padding(
                               padding: const EdgeInsets.all(8),
-                              child: playRadioStreamButton(
-                                  songNowPlaying.nbListeners))
+                              child: radioStreamButton(
+                                  widget._songNowPlaying))
                         ],
             );
         } else if (snapshot.hasError) {
@@ -185,28 +185,51 @@ class _PlayerWidgetState extends State<PlayerWidget>
   }
 }
 
-RaisedButton playRadioStreamButton(int nbListeners) => RaisedButton.icon(
-      icon: Icon(Icons.radio, size: 40),
-      label: Text("Écouter la radio\n$nbListeners auditeurs",
-          style: TextStyle(
-            fontSize: 20.0,
-          )),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      onPressed: () async {
-        bool success = await AudioService.start(
-          backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-          resumeOnClick: true,
-          androidNotificationChannelName: 'Bide&Musique',
-          notificationColor: 0xFFFFFFFF,
-          androidNotificationIcon: 'mipmap/ic_launcher',
-        );
-        if (success) {
-          await AudioService.customAction('resetSong');
-          await AudioService.play();
-          await AudioService.customAction('setNotification');
-        }
-      },
-    );
+class radioStreamButton extends StatefulWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
+  radioStreamButton(this._songNowPlaying);
+
+  @override
+  _radioStreamButtonState createState() => _radioStreamButtonState();
+}
+
+class _radioStreamButtonState extends State<radioStreamButton> {
+  @override
+  Widget build(BuildContext context) {
+
+    return FutureBuilder<SongNowPlaying>(
+        future: widget._songNowPlaying,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return RaisedButton.icon(
+              icon: Icon(Icons.radio, size: 40),
+              label: Text("Écouter la radio\n${snapshot.data.nbListeners} auditeurs",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  )),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () async {
+                bool success = await AudioService.start(
+                  backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+                  resumeOnClick: true,
+                  androidNotificationChannelName: 'Bide&Musique',
+                  notificationColor: 0xFFFFFFFF,
+                  androidNotificationIcon: 'mipmap/ic_launcher',
+                );
+                if (success) {
+                  await AudioService.customAction('resetSong');
+                  await AudioService.play();
+                  await AudioService.customAction('setNotification');
+                }
+              },
+            );
+          }
+          return Text("loading");
+        });
+
+
+  }
+}
 
 IconButton playButton(double iconSize) => IconButton(
       icon: Icon(Icons.play_arrow),

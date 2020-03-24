@@ -72,18 +72,17 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   errorDisplay(snapshot.error),
-                  RaisedButton.icon(
+                  /*RaisedButton.icon(
                     icon: Icon(Icons.refresh),
                     onPressed: () => setState(() {
                       widget._song = fetchNowPlaying();
                     }),
                     label: Text('Ré-essayer maintenant'),
-                  )
+                  )*/
                 ]);
           }
 
-          // By default, show a loading spinner
-          return CircularProgressIndicator();
+          return Container();
         },
       ),
     );
