@@ -59,8 +59,8 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(
-                decoration: new BoxDecoration(boxShadow: [
-                  new BoxShadow(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
                     color: Colors.black,
                     blurRadius: 20.0,
                   ),
