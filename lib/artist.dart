@@ -28,12 +28,6 @@ Future<Artist> fetchArtist(int artistId) async {
   return artist;
 }
 
-String extractArtistId(str) {
-  final idRegex = RegExp(r'/artist/(\d+).html');
-  var match = idRegex.firstMatch(str);
-  return match[1];
-}
-
 class Artist {
   int id;
   String alias;

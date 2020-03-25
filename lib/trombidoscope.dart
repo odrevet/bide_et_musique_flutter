@@ -52,7 +52,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
       for (dom.Element td in table.getElementsByTagName('td')) {
         var a = td.children[0];
         var href = a.attributes['href'];
-        var id = extractAccountId(href);
+        var id = getIdFromUrl(href);
         var account = AccountLink();
         account.id = id;
         account.name = stripTags(a.innerHtml);

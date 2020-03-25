@@ -23,7 +23,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
     var location = response.headers['location'];
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
-    var account = AccountLink(id: extractAccountId(location), name: search);
+    var account = AccountLink(id: getIdFromUrl(location), name: search);
     accounts.add(account);
   } else if (response.statusCode == 200) {
     var body = response.body;
@@ -35,7 +35,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
       var account = AccountLink(
-          id: extractAccountId(a.attributes['href']),
+          id: getIdFromUrl(a.attributes['href']),
           name: stripTags(a.innerHtml));
       accounts.add(account);
     }

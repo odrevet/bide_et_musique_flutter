@@ -38,7 +38,7 @@ Future<List<Post>> fetchPosts() async {
       var accountA = basmsg.children[0].children[0];
       var accountHref = accountA.attributes['href'];
 
-      var idAccount = extractAccountId(accountHref);
+      var idAccount = getIdFromUrl(accountHref);
       var accountLink =
           AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
 

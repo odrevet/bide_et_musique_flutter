@@ -51,12 +51,6 @@ openAccountImageViewerDialog(context, image) {
       fullscreenDialog: true));
 }
 
-int extractAccountId(str) {
-  final idRegex = RegExp(r'/account/(\d+).html');
-  var match = idRegex.firstMatch(str);
-  return int.parse(match[1]);
-}
-
 Future<Account> fetchAccount(int accountId) async {
   var account = Account();
   account.id = accountId;

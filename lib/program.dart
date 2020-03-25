@@ -63,16 +63,6 @@ Future<Program> fetchProgram(int programId) async {
   return program;
 }
 
-int extractProgramId(str) {
-  final idRegex = RegExp(r'/program/(\d+).html');
-  var match = idRegex.firstMatch(str);
-  if (match != null) {
-    return int.parse(match[1]);
-  } else {
-    return null;
-  }
-}
-
 class ProgramPageWidget extends StatelessWidget {
   final Future<Program> program;
 

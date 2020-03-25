@@ -49,7 +49,7 @@ Future<List<DaySchedule>> fetchSchedule() async {
         var scheduleEntry = ScheduleEntry();
         var tds = tr.getElementsByTagName('td');
         String href = tds[1].children[0].attributes['href'];
-        scheduleEntry.id = extractProgramId(href);
+        scheduleEntry.id = getIdFromUrl(href);
         scheduleEntry.title = stripTags(tds[1].children[0].innerHtml);
         scheduleEntry.time = stripTags(tds[0].innerHtml);
         scheduleEntry.duration = tds[2].innerHtml;

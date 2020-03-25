@@ -14,10 +14,10 @@ SongLink songLinkFromTr(dom.Element tr) {
   //td 2 artist
   //td 3 song
   var songLink = SongLink();
-  var href = tr.children[3].innerHtml;
-  songLink.id = getIdFromUrl(href);
+  var a = tr.children[3].children[0];
+  songLink.id = getIdFromUrl(a.attributes['href']);
   songLink.artist = stripTags(tr.children[2].innerHtml).trim();
-  var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
+  var title = stripTags(a.innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
   if (title.contains(newFlag)) {
     songLink.isNew = true;

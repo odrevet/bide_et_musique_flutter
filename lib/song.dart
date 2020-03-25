@@ -190,7 +190,7 @@ List<Comment> _parseComments(document) {
       comment.id =
           int.parse(tdCommentChildren[0].attributes['id'].substring(8));
       dom.Element aAccount = tdCommentChildren[1].children[0];
-      int accountId = extractAccountId(aAccount.attributes['href']);
+      int accountId = getIdFromUrl(aAccount.attributes['href']);
       String accountName = aAccount.innerHtml;
       comment.author = AccountLink(id: accountId, name: accountName);
       var commentLines = divNormal.innerHtml.split('<br>');
