@@ -113,16 +113,6 @@ class Comment {
   Comment();
 }
 
-int extractSongId(str) {
-  final idRegex = RegExp(r'/song/(\d+).html');
-  var match = idRegex.firstMatch(str);
-  if (match != null) {
-    return int.parse(match[1]);
-  } else {
-    return null;
-  }
-}
-
 String createTag(SongLink songLink) {
   return songLink.index == null
       ? 'cover_${songLink.id}'

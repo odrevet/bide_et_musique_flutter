@@ -107,7 +107,7 @@ Future<Account> fetchAccount(int accountId) async {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
-        songLink.id = extractSongId(aTitle.attributes['href']);
+        songLink.id = getIdFromUrl(aTitle.attributes['href']);
         songLink.title = stripTags(aTitle.innerHtml);
         songLink.artist = stripTags(tr.children[3].innerHtml);
         favorites.add(songLink);
@@ -157,7 +157,7 @@ Future<List<SongLink>> fetchVotes() async {
     trs.removeAt(0); //remove header
     for (var tr in trs) {
       var song = SongLink();
-      song.id = extractSongId(tr.children[3].children[0].attributes['href']);
+      song.id = getIdFromUrl(tr.children[3].children[0].attributes['href']);
       song.title = stripTags(tr.children[3].innerHtml);
       song.artist = stripTags(tr.children[2].innerHtml);
       songLinks.add(song);
@@ -365,7 +365,7 @@ Future<Account> fetchAccountSession() async {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
         var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
-        songLink.id = extractSongId(aTitle.attributes['href']);
+        songLink.id = getIdFromUrl(aTitle.attributes['href']);
         songLink.title = stripTags(aTitle.innerHtml);
         songLink.artist = stripTags(tr.children[3].innerHtml);
         favorites.add(songLink);

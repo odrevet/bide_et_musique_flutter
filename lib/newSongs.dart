@@ -17,7 +17,7 @@ Future<List<SongLink>> fetchNewSongs() async {
     for (var item in document.findAllElements('item')) {
       var link = item.children[2].text;
       var song = SongLink();
-      song.id = extractSongId(link);
+      song.id = getIdFromUrl(link);
       var artistTitle = stripTags(item.firstChild.text).split(' - ');
       song.title = artistTitle[1];
       song.artist = artistTitle[0];

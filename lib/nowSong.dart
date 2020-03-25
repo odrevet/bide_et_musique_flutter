@@ -33,7 +33,7 @@ Future<List<NowSong>> fetchNowSongs() async {
       var tds = tr.getElementsByTagName('td');
       var songLink = SongLink();
       songLink.title = tds[3].children[0].innerHtml;
-      songLink.id = extractSongId(tds[3].children[0].attributes['href']);
+      songLink.id = getIdFromUrl(tds[3].children[0].attributes['href']);
       songLink.index = index;
       var nowSong = NowSong();
       nowSong.date = tds[0].innerHtml.trim();

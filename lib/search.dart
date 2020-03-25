@@ -127,7 +127,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
       //when the result is a single song, the host redirect to the song page
       //in our case parse the page and return a list with one song
       var songLink = SongLink();
-      songLink.id = extractSongId(location);
+      songLink.id = getIdFromUrl(location);
       songLink.title = search;
       setState(() {
         _pages = 1;
@@ -160,7 +160,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
           var a = tds[3].children[0];
 
           var songLink = SongLink();
-          songLink.id = extractSongId(a.attributes['href']);
+          songLink.id = getIdFromUrl(a.attributes['href']);
           songLink.title = stripTags(a.innerHtml);
           songLink.artist = stripTags(tds[2].children[0].innerHtml);
 

@@ -11,10 +11,11 @@ const site = 'bide-et-musique.com';
 const host = 'www.$site';
 const baseUri = 'https://$host';
 
-int getIdFromUrl(String type, String url) {
-  final idRegex = RegExp(r'/$type/(\d+).html');
-  var match = idRegex.firstMatch(url);
-  return match == null ? null : int.parse(match[1]);
+int getIdFromUrl(String url) {
+  final idRegex = RegExp(r'(\d+).html$');
+  if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)[1]);
+
+  return null;
 }
 
 String stripTags(String htmlString) {

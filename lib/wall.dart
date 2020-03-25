@@ -50,7 +50,7 @@ Future<List<Post>> fetchPosts() async {
 
       var title = basmsg.children[0].children[2];
       songLink.title = stripTags(title.innerHtml);
-      songLink.id = extractSongId(title.attributes['href']);
+      songLink.id = getIdFromUrl(title.attributes['href']);
       post.during = songLink;
 
       final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');

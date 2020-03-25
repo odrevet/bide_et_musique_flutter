@@ -15,7 +15,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   //td 3 song
   var songLink = SongLink();
   var href = tr.children[3].innerHtml;
-  songLink.id = extractSongId(href);
+  songLink.id = getIdFromUrl(href);
   songLink.artist = stripTags(tr.children[2].innerHtml).trim();
   var title = stripTags(tr.children[3].innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
