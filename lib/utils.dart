@@ -12,10 +12,8 @@ const host = 'www.$site';
 const baseUri = 'https://$host';
 
 int getIdFromUrl(String url) {
-  print(url);
   final idRegex = RegExp(r'(\d+).html$');
   if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)[1]);
-
   return null;
 }
 
