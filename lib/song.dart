@@ -22,7 +22,7 @@ class SongLink {
   int id;
   String title;
   String artist;
-  // String program;
+  String info;
   bool isNew;
   String cover;
   int index;
@@ -32,6 +32,7 @@ class SongLink {
       this.title = '',
       this.artist = '',
       this.cover = '',
+      this.info = '',
       this.isNew = false});
 
   String get streamLink {
@@ -164,7 +165,6 @@ class Cover extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: _url,
-      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
       errorWidget: (context, url, error) => DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -601,6 +601,13 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
 
     for (SongLink songLink in widget._songLinks) {
+      String subtitle = songLink.artist == null ? '' : songLink.artist;
+
+      if (songLink.info != ''){
+        if (subtitle != '') subtitle += ' • ';
+        subtitle += songLink.info;
+      }
+
       rows.add(ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.black12,
@@ -610,7 +617,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
             songLink.title,
           ),
           trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
-          subtitle: Text(songLink.artist == null ? '' : songLink.artist),
+          subtitle: Text(subtitle),
           onTap: () => launchSongPage(songLink, context)));
     }
 

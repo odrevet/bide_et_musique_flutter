@@ -9,21 +9,26 @@ import 'song.dart';
 import 'utils.dart';
 
 SongLink songLinkFromTr(dom.Element tr) {
-  //td 0 program / date
-  //td 1 cover
-  //td 2 artist
-  //td 3 song
-  var songLink = SongLink();
-  var a = tr.children[3].children[0];
-  songLink.id = getIdFromUrl(a.attributes['href']);
-  songLink.artist = stripTags(tr.children[2].innerHtml).trim();
-  var title = stripTags(a.innerHtml.replaceAll('\n', ''));
+  var tdInfo = tr.children[0]; //program for next, HH:MM for past
+  var tdArtist = tr.children[2];
+  var tdSong = tr.children[3];
+  String title = stripTags(tdSong.innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
+  dom.Element a;
+  bool isNew = false;
   if (title.contains(newFlag)) {
-    songLink.isNew = true;
-  }
-  songLink.title = title.replaceFirst(newFlag, '').trim();
-  return songLink;
+    isNew = true;
+    title = title.replaceFirst(newFlag, '');
+    a = tdSong.children[1];
+  } else
+    a = tdSong.children[0];
+
+  return SongLink(
+      id: getIdFromUrl(a.attributes['href']),
+      artist: stripTags(tdArtist.innerHtml).trim(),
+      title: title.trim(),
+      info: stripTags(tdInfo.innerHtml).trim(),
+      isNew: isNew);
 }
 
 Future<Map<String, List<SongLink>>> fetchTitles() async {
