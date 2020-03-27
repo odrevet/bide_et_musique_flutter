@@ -431,7 +431,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           body: {
             'mode': 'Edit',
             'REF': song.link,
-            'Comment__': comment.id,
+            'Comment__': comment.id.toString(),
             'Text': text,
           });
     }
@@ -446,7 +446,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     if (comment.isNotEmpty) {
       await Session.post(url, body: {
         'T': 'Song',
-        'N': song.id,
+        'N': song.id.toString(),
         'Mode': 'AddComment',
         'Thread_': '',
         'Text': comment,
@@ -603,22 +603,43 @@ class SongListingWidgetState extends State<SongListingWidget> {
     for (SongLink songLink in widget._songLinks) {
       String subtitle = songLink.artist == null ? '' : songLink.artist;
 
-      if (songLink.info != ''){
+      if (songLink.info != '') {
         if (subtitle != '') subtitle += ' • ';
         subtitle += songLink.info;
       }
 
       rows.add(ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.black12,
-            child: heroThumbCover(songLink),
-          ),
-          title: Text(
-            songLink.title,
-          ),
-          trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
-          subtitle: Text(subtitle),
-          onTap: () => launchSongPage(songLink, context)));
+        leading: GestureDetector(
+          child: heroThumbCover(songLink),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute<Null>(
+              builder: (BuildContext context) {
+                return CoverViewer(songLink);
+              },
+              fullscreenDialog: true)),
+        ),
+        title: Text(
+          songLink.title,
+        ),
+        trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
+        subtitle: Text(subtitle),
+        onTap: () => launchSongPage(songLink, context),
+        onLongPress: () {
+          fetchSong(songLink.id).then((song) {
+            showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  contentPadding: EdgeInsets.all(20.0),
+                  children: [SongActionMenu(song)],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                );
+              },
+            );
+          });
+        },
+      ));
     }
 
     return ListView(children: rows);

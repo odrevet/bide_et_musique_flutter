@@ -31,7 +31,22 @@ class _SongAppBarState extends State<SongAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           Song song = snapshot.data;
-          var songActionButton = SongActionButton(song);
+          var songActionButton = FlatButton.icon(
+              icon: Icon(Icons.menu),
+              label: Text(''),
+              onPressed: () => showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                        contentPadding: EdgeInsets.all(20.0),
+                        children: [SongActionMenu(song)],
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                      );
+                    },
+                  ));
 
           return AppBar(
             title: Text(snapshot.data.title),
@@ -51,18 +66,16 @@ class _SongAppBarState extends State<SongAppBar> {
 /////////////////////////////////////////////////////////////////////////////
 // Actions Buttons
 
-class SongActionButton extends StatelessWidget {
+class SongActionMenu extends StatelessWidget {
   final Song _song;
-  final _actions = <Widget>[];
-
-  SongActionButton(this._song);
+  SongActionMenu(this._song);
 
   @override
   Widget build(BuildContext context) {
     //add buttons to the actions menu
     //some action buttons are added when user is logged in
     //some action buttons are not available on some songs
-
+    final _actions = <Widget>[];
     //if the song can be listen, add the song player
     if (_song.canListen) {
       _actions.add(SongPlayerWidget(_song));
@@ -121,21 +134,7 @@ class SongActionButton extends StatelessWidget {
       children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
     ));
 
-    return FlatButton.icon(
-        icon: Icon(Icons.menu),
-        label: Text(''),
-        onPressed: () => showDialog<void>(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  contentPadding: EdgeInsets.all(20.0),
-                  children: _actions,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                );
-              },
-            ));
+    return Column(children: _actions);
   }
 }
 
@@ -163,7 +162,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
             final response = await Session.post(
                 '$baseUri/account/${Session.accountLink.id}.html',
                 body: {
-                  'K': widget._song.id,
+                  'K': widget._song.id.toString(),
                   'Step': '',
                   'DS.x': '1',
                   'DS.y': '1'
