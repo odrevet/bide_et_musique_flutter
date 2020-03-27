@@ -1,3 +1,4 @@
+import 'package:bide_et_musique/song.dart';
 import 'package:flutter/material.dart';
 
 import 'about.dart';
@@ -8,6 +9,7 @@ import 'newSongs.dart';
 import 'nowSong.dart';
 import 'pochettoscope.dart';
 import 'schedule.dart';
+import 'randomSong.dart';
 import 'search.dart';
 import 'session.dart';
 import 'settings.dart';
@@ -106,7 +108,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Chanson du moment'),
+          title: Text('Morceau du moment'),
           leading: Icon(Icons.access_alarms),
           onTap: () {
             Navigator.push(
@@ -114,6 +116,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(
                     builder: (context) =>
                         NowSongsWidget(nowSongs: fetchNowSongs())));
+          },
+        ),
+        ListTile(
+          title: Text('Morceau au pif'),
+          leading: Icon(Icons.shuffle),
+          onTap: () {
+            fetchRandomSongId().then((id) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SongPageWidget(songLink: SongLink(id: id), song: fetchSong(id)))));
           },
         ),
         ListTile(
