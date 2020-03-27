@@ -35,8 +35,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
       var account = AccountLink(
-          id: getIdFromUrl(a.attributes['href']),
-          name: stripTags(a.innerHtml));
+          id: getIdFromUrl(a.attributes['href']), name: stripTags(a.innerHtml));
       accounts.add(account);
     }
   } else {
