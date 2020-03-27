@@ -5,7 +5,6 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'account.dart';
 import 'manageAccount.dart';
 import 'session.dart';
 import 'utils.dart';
@@ -52,8 +51,8 @@ Future<IdentificationResponse> sendIdentifiers(
 
     if (confirm.children[0].innerHtml == 'Vous avez été identifié !') {
       dom.Element divAccount = document.getElementById('compte2');
-      Session.accountLink.id = getIdFromUrl(
-          divAccount.children[1].children[1].attributes['href']);
+      Session.accountLink.id =
+          getIdFromUrl(divAccount.children[1].children[1].attributes['href']);
       Session.accountLink.name = login;
       identificationResponse.isLoggedIn = true;
     } else {
