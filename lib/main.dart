@@ -10,7 +10,7 @@ import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
 import 'playerWidget.dart';
-import 'utils.dart' show handleLink;
+import 'utils.dart' show handleLink, errorDisplay;
 
 enum UniLinksType { string, uri }
 
@@ -25,7 +25,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   PlayerWidget _playerWidget;
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
-  Future<SongNowPlaying> _songNowPLaying;
+  Future<SongNowPlaying> _songNowPlaying;
   Timer _timer;
 
   @override
@@ -35,9 +35,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     connect();
     autoLogin();
     initPlatformState();
-    //_songNowPLaying = fetchNowPlaying();
-    _playerWidget = PlayerWidget(_songNowPLaying);
-
+    _playerWidget = PlayerWidget(_songNowPlaying);
 
     super.initState();
   }
@@ -211,25 +209,58 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   }
 
   void periodicFetchSongNowPLaying() {
-    setState(() {
-      _songNowPLaying = fetchNowPlaying();
-    });
-    _songNowPLaying.then((songNowPlaying) {
-      int delay = (songNowPlaying.duration.inSeconds -
-          (songNowPlaying.duration.inSeconds *
-              songNowPlaying.elapsedPcent /
-              100))
-          .ceil();
-      Timer(Duration(seconds: delay), () {
-        periodicFetchSongNowPLaying();
+    try {
+      setState(() {
+        _songNowPlaying = fetchNowPlaying();
       });
-    });
+
+      _songNowPlaying.then((songNowPlaying) {
+        int delay = (songNowPlaying.duration.inSeconds -
+                (songNowPlaying.duration.inSeconds *
+                    songNowPlaying.elapsedPcent /
+                    100))
+            .ceil();
+        Timer(Duration(seconds: delay), () {
+          periodicFetchSongNowPLaying();
+        });
+      }, onError: (e) {
+        _e = e;
+        setState(() {
+          _songNowPlaying = null;
+        });
+      });
+    } catch (e) {
+      _e = e;
+      setState(() {
+        _songNowPlaying = null;
+      });
+    }
+  }
+
+  var _e;
+
+  Widget refreshNowPlayingSongButton() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          errorDisplay(_e),
+          RaisedButton.icon(
+            icon: Icon(Icons.refresh),
+            onPressed: () => periodicFetchSongNowPLaying(),
+            label: Text('Ré-essayer maintenant'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     Widget home;
     Widget body;
+    Widget nowPlayingWidget = _songNowPlaying == null
+        ? refreshNowPlayingSongButton()
+        : NowPlayingCard(_songNowPlaying);
 
     //if the app is launched from deep linking, try to fetch the widget that
     //match the url
@@ -242,23 +273,25 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(_songNowPLaying),
+              appBar: SongNowPlayingAppBar(_songNowPlaying),
               bottomNavigationBar: BottomAppBar(
-                  child: _playerWidget /*Row(
+                  child:
+                      Row(
                 children: <Widget>[
-                  _playerWidget,
-                  NowPlayingPositionSlider(_songNowPLaying)
+                  _playerWidget, NowPlayingSongPosition(_songNowPlaying)
+                  //NowPlayingPosition(_songNowPlaying)
                 ],
-              )*/),
+              )
+                  ),
               drawer: DrawerWidget(),
-              body: NowPlayingCard(_songNowPLaying));
+              body: nowPlayingWidget);
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(_songNowPLaying),
+              appBar: SongNowPlayingAppBar(_songNowPlaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: NowPlayingCard(_songNowPLaying)),
+                  Expanded(child: nowPlayingWidget),
                   Expanded(child: _playerWidget)
                 ],
               ));

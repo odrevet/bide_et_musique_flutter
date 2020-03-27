@@ -24,18 +24,18 @@ class SongNowPlaying extends Song {
 
 Future<SongNowPlaying> fetchNowPlaying() async {
   final url = '$baseUri/wapi/song/now';
-  final responseJson = await Session.get(url);
-
-  if (responseJson.statusCode == 200) {
-    try {
+  try {
+    final responseJson = await Session.get(url);
+    if (responseJson.statusCode == 200) {
       String decodedString = utf8.decode(responseJson.bodyBytes);
       Map<String, dynamic> decodedJson = json.decode(decodedString);
       return SongNowPlaying.fromJson(decodedJson);
-    } catch (e) {
-      print('ERROR $e');
+    } else {
+      throw ('Response was ${responseJson.statusCode}');
     }
-  } else {
-    print('Response was ${responseJson.statusCode}');
+  } catch (e) {
+    print('ERROR $e');
+    rethrow;
   }
 }
 
@@ -70,16 +70,7 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  errorDisplay(snapshot.error),
-                  /*RaisedButton.icon(
-                    icon: Icon(Icons.refresh),
-                    onPressed: () => setState(() {
-                      widget._song = fetchNowPlaying();
-                    }),
-                    label: Text('Ré-essayer maintenant'),
-                  )*/
-                ]);
+                children: [errorDisplay(snapshot.error)]);
           }
 
           return Container();
@@ -127,9 +118,70 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
           return AppBar(title: Text("Erreur"));
         }
 
-        // By default, show a loading spinner
-        return AppBar(title: Text("Chargement"));
+        return AppBar(title: Text(""));
       },
     );
+  }
+}
+
+
+
+class NowPlayingSongPosition extends StatefulWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
+
+  NowPlayingSongPosition(this._songNowPlaying);
+  _NowPlayingSongPositionState createState() => _NowPlayingSongPositionState();
+}
+
+class _NowPlayingSongPositionState extends State<NowPlayingSongPosition> {
+  var _currentPosition;
+  Timer _timer;
+
+  @override
+  void initState() {
+    print('INIT STATE ! ');
+    super.initState();
+    widget._songNowPlaying.then((songNowPlaying) {
+      print(songNowPlaying.title);
+      print('${songNowPlaying.duration.inSeconds} - (${songNowPlaying.duration.inSeconds} * ${songNowPlaying.elapsedPcent / 100})');
+      _currentPosition = (songNowPlaying.duration.inSeconds * songNowPlaying.elapsedPcent / 100).ceil();
+      print(_currentPosition.toString());
+      _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+        setState(() {
+          if (_currentPosition >= songNowPlaying.duration.inSeconds){
+            _timer.cancel();
+          }
+          else {
+            _currentPosition += 1;
+            print('UPDATE $_currentPosition');
+          }
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SongNowPlaying>(
+      future: widget._songNowPlaying,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          SongNowPlaying songNowPlaying = snapshot.data;
+          return Text('$_currentPosition /  ${songNowPlaying.duration.inSeconds}');
+        } else if (snapshot.hasError) {
+          return Text('?? m ?? s / ?? m ?? s');
+        }
+        print('RETURN DEFAULT');
+        return Text('-- m -- s/ -- m -- s');
+      },
+    );
+
+
+    return Text('current : ${_currentPosition.toString()}');
   }
 }

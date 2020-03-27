@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -86,38 +87,6 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
   }
 }
 
-/*class NowPlayingPositionSlider extends StatefulWidget {
-  final Future<SongNowPlaying> _songNowPlaying;
-  NowPlayingPositionSlider(this._songNowPlaying);
-
-  @override
-  _NowPlayingPositionSliderState createState() =>
-      _NowPlayingPositionSliderState();
-}
-
-class _NowPlayingPositionSliderState extends State<NowPlayingPositionSlider> {
-  final BehaviorSubject<double> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<SongNowPlaying>(
-      future: widget._songNowPlaying,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          SongNowPlaying songNowPlaying = snapshot.data;
-          return Text(
-              '${songNowPlaying.elapsedPcent} % de ${songNowPlaying.durationPretty} \n '
-              '${songNowPlaying.duration.inSeconds - (songNowPlaying.duration.inSeconds * songNowPlaying.elapsedPcent / 100).ceil()} sec restante');
-        } else if (snapshot.hasError) {
-          return Text('Error');
-        }
-        return Text('Loading');
-      },
-    );
-  }
-}*/
-
 class PlayerWidget extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
   PlayerWidget(this._songNowPlaying);
@@ -137,7 +106,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SongNowPlaying songNowPlaying = snapshot.data;
           if (playbackState?.basicState == BasicPlaybackState.buffering ||
               playbackState?.basicState == BasicPlaybackState.connecting) {
             return Row(
@@ -171,8 +139,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       : [
                           Padding(
                               padding: const EdgeInsets.all(8),
-                              child: radioStreamButton(
-                                  songNowPlaying))
+                              child: RadioStreamButton(widget._songNowPlaying))
                         ],
             );
         } else if (snapshot.hasError) {
@@ -185,39 +152,50 @@ class _PlayerWidgetState extends State<PlayerWidget>
   }
 }
 
-class radioStreamButton extends StatefulWidget {
-  final SongNowPlaying _songNowPlaying;
-  radioStreamButton(this._songNowPlaying);
+class RadioStreamButton extends StatefulWidget {
+  final Future<SongNowPlaying> _songNowPlaying;
+  RadioStreamButton(this._songNowPlaying);
 
   @override
-  _radioStreamButtonState createState() => _radioStreamButtonState();
+  _RadioStreamButtonState createState() => _RadioStreamButtonState();
 }
 
-class _radioStreamButtonState extends State<radioStreamButton> {
+class _RadioStreamButtonState extends State<RadioStreamButton> {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton.icon(
-      icon: Icon(Icons.radio, size: 40),
-      label: Text("Écouter la radio\n${widget._songNowPlaying.nbListeners} auditeurs",
-          style: TextStyle(
-            fontSize: 20.0,
-          )),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      onPressed: () async {
-        bool success = await AudioService.start(
-          backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-          resumeOnClick: true,
-          androidNotificationChannelName: 'Bide&Musique',
-          notificationColor: 0xFFFFFFFF,
-          androidNotificationIcon: 'mipmap/ic_launcher',
-        );
-        if (success) {
-          await AudioService.customAction('resetSong');
-          await AudioService.play();
-          await AudioService.customAction('setNotification');
-        }
-      },
-    );
+
+    String buttonText ="Écouter la radio";
+    return FutureBuilder<SongNowPlaying>(
+        future: widget._songNowPlaying,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            buttonText += "\n${snapshot.data.nbListeners} auditeurs";
+          }
+
+          return RaisedButton.icon(
+            icon: Icon(Icons.radio, size: 40),
+            label: Text(
+                buttonText,
+                style: TextStyle(
+                  fontSize: 20.0,
+                )),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            onPressed: () async {
+              bool success = await AudioService.start(
+                backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+                resumeOnClick: true,
+                androidNotificationChannelName: 'Bide&Musique',
+                notificationColor: 0xFFFFFFFF,
+                androidNotificationIcon: 'mipmap/ic_launcher',
+              );
+              if (success) {
+                await AudioService.customAction('resetSong');
+                await AudioService.play();
+                await AudioService.customAction('setNotification');
+              }
+            },
+          );
+        });
   }
 }
 
