@@ -10,9 +10,9 @@ Future<int> fetchRandomSongId() async {
   if (response.statusCode == 302) {
     String location = response.headers['location'];
     return getIdFromUrl(location);
-  }
-  else {
+  } else {
     print(response.body);
-    throw Exception('Failed to fetch random song id : HTTP status code was ${response.statusCode}');
+    throw Exception(
+        'Failed to fetch random song id : HTTP status code was ${response.statusCode}');
   }
 }

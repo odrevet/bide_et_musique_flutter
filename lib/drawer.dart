@@ -125,8 +125,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             fetchRandomSongId().then((id) => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        SongPageWidget(songLink: SongLink(id: id), song: fetchSong(id)))));
+                    builder: (context) => SongPageWidget(
+                        songLink: SongLink(id: id), song: fetchSong(id)))));
           },
         ),
         ListTile(

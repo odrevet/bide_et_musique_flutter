@@ -732,3 +732,34 @@ class SongWidget extends StatelessWidget {
             text: TextSpan(style: textStyle, children: textSpans)));
   }
 }
+
+class SongDetails extends StatefulWidget {
+  Future<Song> _song;
+
+  SongDetails(this._song);
+
+  @override
+  _SongDetailsState createState() => _SongDetailsState();
+}
+
+class _SongDetailsState extends State<SongDetails> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Song>(
+        future: widget._song,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Song song = snapshot.data;
+            return Column(children: <Widget>[
+              Text('Label ${song.label}'),
+              Text('Reference ${song.reference}'),
+              Text('Durée ${song.durationPretty}')
+            ]);
+          }
+
+          return Container();
+        });
+
+
+  }
+}

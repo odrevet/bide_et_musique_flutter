@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:bide_et_musique/song.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,6 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  PlayerWidget _playerWidget;
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
@@ -35,7 +35,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     connect();
     autoLogin();
     initPlatformState();
-    _playerWidget = PlayerWidget(_songNowPlaying);
 
     super.initState();
   }
@@ -274,14 +273,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPlaying),
-              bottomNavigationBar: BottomAppBar(child: _playerWidget
-                  /* Row(
-                children: <Widget>[
-                  _playerWidget, NowPlayingSongPosition(_songNowPlaying)
-                  //NowPlayingPosition(_songNowPlaying)
-                ],
-              )*/
-                  ),
+              bottomNavigationBar: BottomAppBar(child: PlayerWidget()),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);
         } else {
@@ -291,14 +283,23 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               body: Row(
                 children: <Widget>[
                   Expanded(child: nowPlayingWidget),
-                  Expanded(child: _playerWidget)
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        SongDetails(_songNowPlaying),
+                        PlayerWidget(),
+                      ],
+                    ),
+                  )
                 ],
               ));
         }
       });
     else
       home = Scaffold(
-          bottomNavigationBar: BottomAppBar(child: _playerWidget), body: body);
+          bottomNavigationBar: BottomAppBar(child: PlayerWidget()), body: body);
 
     return InheritedPlaybackState(
         playbackState: _playbackState,
