@@ -142,6 +142,7 @@ class _NowPlayingSongPositionState extends State<NowPlayingSongPosition> {
   @override
   void dispose() {
     _timer.cancel();
+    super.dispose();
   }
 
   @override

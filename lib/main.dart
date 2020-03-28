@@ -274,14 +274,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPlaying),
-              bottomNavigationBar: BottomAppBar(
-                  child:
-                      Row(
+              bottomNavigationBar: BottomAppBar(child: _playerWidget
+                  /* Row(
                 children: <Widget>[
                   _playerWidget, NowPlayingSongPosition(_songNowPlaying)
                   //NowPlayingPosition(_songNowPlaying)
                 ],
-              )
+              )*/
                   ),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);

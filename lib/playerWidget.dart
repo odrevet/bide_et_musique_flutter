@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'dart:async';
+import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +29,7 @@ class InheritedPlaybackState extends InheritedWidget {
 class SongPositionSlider extends StatefulWidget {
   final PlaybackState _playerState;
   final double _duration;
+
   SongPositionSlider(this._playerState, this._duration);
 
   @override
@@ -81,6 +82,8 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
                 _dragPositionSubject.add(null);
               });
           return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[text, slider],
           );
         });
@@ -89,6 +92,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 
 class PlayerWidget extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
+
   PlayerWidget(this._songNowPlaying);
 
   @override
@@ -105,56 +109,119 @@ class _PlayerWidgetState extends State<PlayerWidget>
     return FutureBuilder<SongNowPlaying>(
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (playbackState?.basicState == BasicPlaybackState.buffering ||
-              playbackState?.basicState == BasicPlaybackState.connecting) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-                stopButton(48),
-              ],
-            );
-          } else
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: playbackState?.basicState ==
-                          BasicPlaybackState.playing ||
-                      playbackState?.basicState == BasicPlaybackState.buffering
-                  ? [
-                      pauseButton(48),
-                      stopButton(48),
-                      if (duration != null)
-                        Container(
-                          height: 20,
-                          child: SongPositionSlider(playbackState, duration),
-                        )
-                    ]
-                  : playbackState?.basicState == BasicPlaybackState.paused
+        return OrientationBuilder(builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            if (snapshot.hasData) {
+              if (playbackState?.basicState == BasicPlaybackState.buffering ||
+                  playbackState?.basicState == BasicPlaybackState.connecting) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.black)),
+                    stopButton(48),
+                  ],
+                );
+              } else
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: playbackState?.basicState ==
+                              BasicPlaybackState.playing ||
+                          playbackState?.basicState ==
+                              BasicPlaybackState.buffering
                       ? [
-                          playButton(48),
-                          stopButton(48),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                pauseButton(48),
+                                stopButton(48)
+                              ]),
+                          if (duration != null)
+                            Container(
+                              height: 20,
+                              child:
+                                  SongPositionSlider(playbackState, duration),
+                            )
                         ]
-                      : [
-                          Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: RadioStreamButton(widget._songNowPlaying))
-                        ],
-            );
-        } else if (snapshot.hasError) {
-          return AppBar(title: Text("Erreur"));
-        }
+                      : playbackState?.basicState == BasicPlaybackState.paused
+                          ? [
+                              playButton(48),
+                              stopButton(48),
+                            ]
+                          : [
+                              Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: RadioStreamButton(
+                                      snapshot.data.nbListeners))
+                            ],
+                );
+            } else if (snapshot.hasError) {
+              return AppBar(title: Text("Erreur"));
+            }
 
-        return Row(children: []);
+            return Row(children: []);
+          } else {
+            if (snapshot.hasData) {
+              if (playbackState?.basicState == BasicPlaybackState.buffering ||
+                  playbackState?.basicState == BasicPlaybackState.connecting) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.black)),
+                    stopButton(48),
+                  ],
+                );
+              } else
+                return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: playbackState?.basicState ==
+                              BasicPlaybackState.playing ||
+                          playbackState?.basicState ==
+                              BasicPlaybackState.buffering
+                      ? [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                pauseButton(48),
+                                stopButton(48)
+                              ]),
+                          if (duration != null)
+                            SongPositionSlider(playbackState, duration)
+                        ]
+                      : playbackState?.basicState == BasicPlaybackState.paused
+                          ? [
+                              playButton(48),
+                              stopButton(48),
+                            ]
+                          : [
+                              Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: RadioStreamButton(
+                                      snapshot.data.nbListeners))
+                            ],
+                );
+            } else if (snapshot.hasError) {
+              return AppBar(title: Text("Erreur"));
+            }
+
+            return Row(children: []);
+          }
+        });
       },
     );
   }
 }
 
 class RadioStreamButton extends StatefulWidget {
-  final Future<SongNowPlaying> _songNowPlaying;
-  RadioStreamButton(this._songNowPlaying);
+  int nbListeners;
+
+  RadioStreamButton(this.nbListeners);
 
   @override
   _RadioStreamButtonState createState() => _RadioStreamButtonState();
@@ -163,39 +230,31 @@ class RadioStreamButton extends StatefulWidget {
 class _RadioStreamButtonState extends State<RadioStreamButton> {
   @override
   Widget build(BuildContext context) {
+    String buttonText = "Écouter la radio";
+    buttonText += "\n${widget.nbListeners} auditeurs";
 
-    String buttonText ="Écouter la radio";
-    return FutureBuilder<SongNowPlaying>(
-        future: widget._songNowPlaying,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            buttonText += "\n${snapshot.data.nbListeners} auditeurs";
-          }
-
-          return RaisedButton.icon(
-            icon: Icon(Icons.radio, size: 40),
-            label: Text(
-                buttonText,
-                style: TextStyle(
-                  fontSize: 20.0,
-                )),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-            onPressed: () async {
-              bool success = await AudioService.start(
-                backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-                resumeOnClick: true,
-                androidNotificationChannelName: 'Bide&Musique',
-                notificationColor: 0xFFFFFFFF,
-                androidNotificationIcon: 'mipmap/ic_launcher',
-              );
-              if (success) {
-                await AudioService.customAction('resetSong');
-                await AudioService.play();
-                await AudioService.customAction('setNotification');
-              }
-            },
-          );
-        });
+    return RaisedButton.icon(
+      icon: Icon(Icons.radio, size: 40),
+      label: Text(buttonText,
+          style: TextStyle(
+            fontSize: 20.0,
+          )),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      onPressed: () async {
+        bool success = await AudioService.start(
+          backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+          resumeOnClick: true,
+          androidNotificationChannelName: 'Bide&Musique',
+          notificationColor: 0xFFFFFFFF,
+          androidNotificationIcon: 'mipmap/ic_launcher',
+        );
+        if (success) {
+          await AudioService.customAction('resetSong');
+          await AudioService.play();
+          await AudioService.customAction('setNotification');
+        }
+      },
+    );
   }
 }
 
