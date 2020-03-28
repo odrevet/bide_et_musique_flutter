@@ -103,6 +103,9 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
+          String subtitle = songNowPlaying.artist;
+          if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
+          subtitle += ' • ${songNowPlaying.program.name}';
           return AppBar(
               title: Text(songNowPlaying.title),
               bottom: PreferredSize(
@@ -110,8 +113,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
                     padding: const EdgeInsets.only(left: 75.0),
                     child: Align(
                         alignment: FractionalOffset.centerLeft,
-                        child: Text(
-                            '${songNowPlaying.artist} • ${songNowPlaying.year}  • ${songNowPlaying.program.name}')),
+                        child: Text(subtitle)),
                   ),
                   preferredSize: null));
         } else if (snapshot.hasError) {
@@ -124,41 +126,18 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
   }
 }
 
-
-
 class NowPlayingSongPosition extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
 
   NowPlayingSongPosition(this._songNowPlaying);
+
   _NowPlayingSongPositionState createState() => _NowPlayingSongPositionState();
 }
 
 class _NowPlayingSongPositionState extends State<NowPlayingSongPosition> {
   var _currentPosition;
   Timer _timer;
-
-  @override
-  void initState() {
-    print('INIT STATE ! ');
-    super.initState();
-    widget._songNowPlaying.then((songNowPlaying) {
-      print(songNowPlaying.title);
-      print('${songNowPlaying.duration.inSeconds} - (${songNowPlaying.duration.inSeconds} * ${songNowPlaying.elapsedPcent / 100})');
-      _currentPosition = (songNowPlaying.duration.inSeconds * songNowPlaying.elapsedPcent / 100).ceil();
-      print(_currentPosition.toString());
-      _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-        setState(() {
-          if (_currentPosition >= songNowPlaying.duration.inSeconds){
-            _timer.cancel();
-          }
-          else {
-            _currentPosition += 1;
-            print('UPDATE $_currentPosition');
-          }
-        });
-      });
-    });
-  }
+  int _currentSongId;
 
   @override
   void dispose() {
@@ -172,16 +151,31 @@ class _NowPlayingSongPositionState extends State<NowPlayingSongPosition> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          return Text('$_currentPosition /  ${songNowPlaying.duration.inSeconds}');
+          if (_currentSongId != songNowPlaying.id) {
+            _currentPosition = (songNowPlaying.duration.inSeconds *
+                    songNowPlaying.elapsedPcent /
+                    100)
+                .ceil();
+            if (_timer != null && _timer.isActive) _timer.cancel();
+            _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+              setState(() {
+                if (_currentPosition >= songNowPlaying.duration.inSeconds) {
+                  _timer.cancel();
+                } else {
+                  _currentPosition += 1;
+                }
+              });
+            });
+          }
+
+          _currentSongId = songNowPlaying.id;
+          return Text(
+              '$_currentPosition /  ${songNowPlaying.duration.inSeconds}');
         } else if (snapshot.hasError) {
           return Text('?? m ?? s / ?? m ?? s');
         }
-        print('RETURN DEFAULT');
         return Text('-- m -- s/ -- m -- s');
       },
     );
-
-
-    return Text('current : ${_currentPosition.toString()}');
   }
 }
