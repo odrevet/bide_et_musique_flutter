@@ -103,17 +103,7 @@ class ScheduleWidget extends StatelessWidget {
         rows.add(ListTile(
             title: Text(scheduleEntry.time + ' : ' + scheduleEntry.title),
             subtitle: Text(scheduleEntry.duration),
-            onTap: () {
-              if (scheduleEntry.id != null) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProgramPageWidget(
-                            program: fetchProgram(scheduleEntry.id))));
-              } else {
-                onLinkTap(baseUri + scheduleEntry.href, context);
-              }
-            }));
+            onTap: () => onLinkTap(baseUri + scheduleEntry.href, context)));
       }
     }
 
