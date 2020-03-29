@@ -5,7 +5,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'nowPlaying.dart';
 import 'player.dart';
 
 class InheritedPlaybackState extends InheritedWidget {
@@ -91,6 +90,10 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 }
 
 class PlayerWidget extends StatefulWidget {
+  Orientation orientation;
+
+  PlayerWidget(this.orientation);
+
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
 }
@@ -101,83 +104,69 @@ class _PlayerWidgetState extends State<PlayerWidget>
   Widget build(BuildContext context) {
     final playbackState = InheritedPlaybackState.of(context);
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
-    return OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        if (playbackState?.basicState == BasicPlaybackState.buffering ||
-            playbackState?.basicState == BasicPlaybackState.connecting) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-              stopButton(48),
-            ],
-          );
-        } else
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: playbackState?.basicState == BasicPlaybackState.playing ||
-                    playbackState?.basicState == BasicPlaybackState.buffering
-                ? [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[pauseButton(48), stopButton(48)]),
-                    if (duration != null)
-                      Container(
-                        height: 20,
-                        child: SongPositionSlider(playbackState, duration),
+    if (playbackState?.basicState == BasicPlaybackState.buffering ||
+        playbackState?.basicState == BasicPlaybackState.connecting) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+          stopButton(48),
+        ],
+      );
+    } else
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: playbackState?.basicState == BasicPlaybackState.playing ||
+                playbackState?.basicState == BasicPlaybackState.buffering
+            ? [
+                widget.orientation == Orientation.portrait
+                    ? Row(
+                        children: <Widget>[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                pauseButton(48),
+                                stopButton(48)
+                              ]),
+                          if (duration != null)
+                            Container(
+                              height: 20,
+                              child:
+                                  SongPositionSlider(playbackState, duration),
+                            )
+                        ],
                       )
-                  ]
-                : playbackState?.basicState == BasicPlaybackState.paused
-                    ? [
-                        playButton(48),
-                        stopButton(48),
-                      ]
-                    : [
-                        Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: RadioStreamButton())
-                      ],
-          );
-      } else {
-        if (playbackState?.basicState == BasicPlaybackState.buffering ||
-            playbackState?.basicState == BasicPlaybackState.connecting) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-              stopButton(48),
-            ],
-          );
-        } else
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: playbackState?.basicState == BasicPlaybackState.playing ||
-                    playbackState?.basicState == BasicPlaybackState.buffering
+                    : Column(
+                        children: <Widget>[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                pauseButton(48),
+                                stopButton(48)
+                              ]),
+                          if (duration != null)
+                            Container(
+                              height: 20,
+                              child:
+                                  SongPositionSlider(playbackState, duration),
+                            )
+                        ],
+                      )
+              ]
+            : playbackState?.basicState == BasicPlaybackState.paused
                 ? [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[pauseButton(48), stopButton(48)]),
-                    if (duration != null)
-                      SongPositionSlider(playbackState, duration)
+                    playButton(48),
+                    stopButton(48),
                   ]
-                : playbackState?.basicState == BasicPlaybackState.paused
-                    ? [
-                        playButton(48),
-                        stopButton(48),
-                      ]
-                    : [
-                        Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: RadioStreamButton())
-                      ],
-          );
-      }
-    });
+                : [
+                    Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: RadioStreamButton())
+                  ],
+      );
   }
 }
 
