@@ -6,6 +6,7 @@ import 'package:html/parser.dart' as parser;
 
 import 'session.dart';
 import 'song.dart';
+import 'nowPlaying.dart';
 import 'utils.dart';
 
 SongLink songLinkFromTr(dom.Element tr) {
@@ -68,38 +69,23 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
 }
 
 class TitlesWidget extends StatefulWidget {
-  TitlesWidget({Key key}) : super(key: key);
+  final Future<Map<String, List<SongLink>>> _songLinks;
+
+  TitlesWidget(this._songLinks, {Key key}) : super(key: key);
 
   @override
   _TitlesWidgetState createState() => _TitlesWidgetState();
 }
 
 class _TitlesWidgetState extends State<TitlesWidget> {
-  Timer _timer;
-  Future<Map<String, List<SongLink>>> _songLinks;
-
-  @override
-  void initState() {
-    _songLinks = fetchTitles();
-    _timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      setState(() {
-        _songLinks = fetchTitles();
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    // will refresh the widget on change
+    var _ = InheritedSongNowPlaying.of(context);
+
     return Center(
       child: FutureBuilder<Map<String, List<SongLink>>>(
-        future: _songLinks,
+        future: widget._songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(snapshot.data);

@@ -26,7 +26,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
-  Timer _timer;
 
   @override
   void initState() {
@@ -169,7 +168,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     disconnect();
     WidgetsBinding.instance.removeObserver(this);
     if (_sub != null) _sub.cancel();
-    _timer.cancel();
     super.dispose();
   }
 
@@ -206,14 +204,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
     AudioService.disconnect();
   }
-
+  
   void periodicFetchSongNowPLaying() {
     try {
       setState(() {
         _songNowPlaying = fetchNowPlaying();
       });
 
-      _songNowPlaying.then((songNowPlaying) {
+      _songNowPlaying.then((songNowPlaying) async {
         int delay = (songNowPlaying.duration.inSeconds -
                 (songNowPlaying.duration.inSeconds *
                     songNowPlaying.elapsedPcent /
@@ -301,17 +299,20 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = Scaffold(
           bottomNavigationBar: BottomAppBar(child: PlayerWidget(Orientation.portrait, _songNowPlaying)), body: body);
 
-    return InheritedPlaybackState(
-        playbackState: _playbackState,
-        child: MaterialApp(
-            title: 'Bide&Musique',
-            theme: ThemeData(
-              primarySwatch: Colors.orange,
-              buttonColor: Colors.orangeAccent,
-              secondaryHeaderColor: Colors.deepOrange,
-              bottomAppBarColor: Colors.orange,
-              canvasColor: Color(0xFFF5EEE5),
-            ),
-            home: home));
+    return InheritedSongNowPlaying(
+      songNowPlaying: _songNowPlaying,
+      child: InheritedPlaybackState(
+          playbackState: _playbackState,
+          child: MaterialApp(
+              title: 'Bide&Musique',
+              theme: ThemeData(
+                primarySwatch: Colors.orange,
+                buttonColor: Colors.orangeAccent,
+                secondaryHeaderColor: Colors.deepOrange,
+                bottomAppBarColor: Colors.orange,
+                canvasColor: Color(0xFFF5EEE5),
+              ),
+              home: home)),
+    );
   }
 }
