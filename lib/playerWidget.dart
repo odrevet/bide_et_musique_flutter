@@ -90,7 +90,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 }
 
 class PlayerWidget extends StatefulWidget {
-  Orientation orientation;
+  final Orientation orientation;
 
   PlayerWidget(this.orientation);
 
@@ -114,59 +114,45 @@ class _PlayerWidgetState extends State<PlayerWidget>
           stopButton(48),
         ],
       );
-    } else
+    } else {
+      List<Widget> controls = <Widget>[
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              playbackState?.basicState == BasicPlaybackState.paused
+                  ? playButton(48)
+                  : pauseButton(48),
+              stopButton(48)
+            ]),
+        if (duration != null)
+          Container(
+            height: 20,
+            child: SongPositionSlider(playbackState, duration),
+          )
+      ];
+
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: playbackState?.basicState == BasicPlaybackState.playing ||
+                playbackState?.basicState == BasicPlaybackState.paused ||
                 playbackState?.basicState == BasicPlaybackState.buffering
             ? [
                 widget.orientation == Orientation.portrait
                     ? Row(
-                        children: <Widget>[
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                pauseButton(48),
-                                stopButton(48)
-                              ]),
-                          if (duration != null)
-                            Container(
-                              height: 20,
-                              child:
-                                  SongPositionSlider(playbackState, duration),
-                            )
-                        ],
+                        children: controls,
                       )
                     : Column(
-                        children: <Widget>[
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                pauseButton(48),
-                                stopButton(48)
-                              ]),
-                          if (duration != null)
-                            Container(
-                              height: 20,
-                              child:
-                                  SongPositionSlider(playbackState, duration),
-                            )
-                        ],
+                        children: controls,
                       )
               ]
-            : playbackState?.basicState == BasicPlaybackState.paused
-                ? [
-                    playButton(48),
-                    stopButton(48),
-                  ]
-                : [
-                    Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: RadioStreamButton())
-                  ],
+            : [
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: RadioStreamButton())
+              ],
       );
+    }
   }
 }
 
