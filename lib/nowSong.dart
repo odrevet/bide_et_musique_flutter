@@ -57,7 +57,7 @@ class NowSongsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chanson du moment'),
+        title: Text('Morceau du moment'),
       ),
       body: Center(
         child: FutureBuilder<List<NowSong>>(
