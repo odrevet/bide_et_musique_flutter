@@ -273,7 +273,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongNowPlayingAppBar(_songNowPlaying),
-              bottomNavigationBar: BottomAppBar(child: PlayerWidget(orientation)),
+              bottomNavigationBar: BottomAppBar(child: PlayerWidget(orientation, _songNowPlaying)),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);
         } else {
@@ -289,7 +289,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         SongDetails(_songNowPlaying),
-                        PlayerWidget(orientation),
+                        PlayerWidget(orientation, _songNowPlaying),
                       ],
                     ),
                   )
@@ -299,7 +299,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       });
     else
       home = Scaffold(
-          bottomNavigationBar: BottomAppBar(child: PlayerWidget(Orientation.portrait)), body: body);
+          bottomNavigationBar: BottomAppBar(child: PlayerWidget(Orientation.portrait, _songNowPlaying)), body: body);
 
     return InheritedPlaybackState(
         playbackState: _playbackState,
