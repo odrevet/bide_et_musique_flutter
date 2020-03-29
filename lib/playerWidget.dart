@@ -169,20 +169,24 @@ class RadioStreamButton extends StatefulWidget {
 
 class _RadioStreamButtonState extends State<RadioStreamButton> {
   Widget build(BuildContext context) {
-    String buttonText = "Écouter la radio";
+    Widget label = Text("Écouter la radio",
+        style: TextStyle(
+          fontSize: 20.0,
+        ));
 
     return FutureBuilder<SongNowPlaying>(
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          buttonText += '\n${snapshot.data.nbListeners} auditeurs';
+          label =
+              Text("Écouter la radio\n${snapshot.data.nbListeners} auditeurs",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ));
         }
         return RaisedButton.icon(
           icon: Icon(Icons.radio, size: 40),
-          label: Text(buttonText,
-              style: TextStyle(
-                fontSize: 20.0,
-              )),
+          label: label,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           onPressed: () async {
