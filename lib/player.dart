@@ -42,7 +42,7 @@ class StreamNotificationUpdater {
         album: '', //songLink.program,
         title: songLink.title,
         artist: songLink.artist,
-        artUri: '$baseUri/images/pochettes/${songLink.id}.jpg');
+        artUri: songLink.coverLink);
     AudioServiceBackground.setMediaItem(mediaItem);
   }
 
