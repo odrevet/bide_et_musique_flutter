@@ -55,7 +55,7 @@ Widget handleLink(String url, BuildContext context) {
 }
 
 void onLinkTap(String url, BuildContext context) {
-  //if (!handleLink(url, context)) launchURL(url);
+  if(url.startsWith('/'))url = baseUri+url;
   Widget widget = handleLink(url, context);
   if (widget == null)
     launchURL(url);
