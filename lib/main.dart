@@ -270,13 +270,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(_songNowPlaying),
+              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
               bottomNavigationBar: BottomAppBar(child: PlayerWidget(orientation, _songNowPlaying)),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(_songNowPlaying),
+              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
@@ -310,7 +310,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                 buttonColor: Colors.orangeAccent,
                 secondaryHeaderColor: Colors.deepOrange,
                 bottomAppBarColor: Colors.orange,
-                canvasColor: Color(0xFFF5EEE5),
+                canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+                dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
               ),
               home: home)),
     );

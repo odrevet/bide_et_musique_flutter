@@ -7,8 +7,8 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
-import 'session.dart';
 import 'bidebox.dart';
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 

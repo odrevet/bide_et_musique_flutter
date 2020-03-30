@@ -57,7 +57,7 @@ class InheritedSongNowPlaying extends InheritedWidget {
 }
 
 class NowPlayingCard extends StatefulWidget {
-  Future<Song> _song;
+  final Future<Song> _song;
 
   NowPlayingCard(this._song, {Key key}) : super(key: key);
 
@@ -100,8 +100,9 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
 class SongNowPlayingAppBar extends StatefulWidget
     implements PreferredSizeWidget {
   final Future<SongNowPlaying> _songNowPlaying;
+  Orientation _orientation;
 
-  SongNowPlayingAppBar(this._songNowPlaying, {Key key})
+  SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -120,19 +121,27 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
+          String title = songNowPlaying.title;
           String subtitle = songNowPlaying.artist;
+          Widget bottom;
+
           if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
           subtitle += ' • ${songNowPlaying.program.name}';
-          return AppBar(
-              title: Text(songNowPlaying.title),
-              bottom: PreferredSize(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 75.0),
-                    child: Align(
-                        alignment: FractionalOffset.centerLeft,
-                        child: Text(subtitle)),
-                  ),
-                  preferredSize: null));
+
+          if (widget._orientation == Orientation.portrait) {
+            bottom = PreferredSize(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 75.0),
+                  child: Align(
+                      alignment: FractionalOffset.centerLeft,
+                      child: Text(subtitle)),
+                ),
+                preferredSize: null);
+          } else {
+            title += ' • $subtitle';
+          }
+
+          return AppBar(title: Text(title), bottom: bottom);
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
         }

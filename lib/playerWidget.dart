@@ -178,11 +178,17 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          label =
-              Text("Écouter la radio\n${snapshot.data.nbListeners} auditeurs",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ));
+          label = RichText(
+            text: TextSpan(
+              text: 'Écouter la radio ',
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                    text: '\n${snapshot.data.nbListeners} auditeurs',
+                    style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+              ],
+            ),
+          );
         }
         return RaisedButton.icon(
           icon: Icon(Icons.radio, size: 40),

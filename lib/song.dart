@@ -501,10 +501,10 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     image: DecorationImage(
                         image: imageProvider, fit: BoxFit.cover)),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
+                        color: Colors.grey.shade200.withOpacity(0.65)),
                   ),
                 )),
           ),
@@ -734,7 +734,7 @@ class SongWidget extends StatelessWidget {
 }
 
 class SongDetails extends StatefulWidget {
-  Future<Song> _song;
+  final Future<Song> _song;
 
   SongDetails(this._song);
 

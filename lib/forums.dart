@@ -192,7 +192,7 @@ class _ForumPageState extends State<ForumWidget> {
 }
 
 class ForumThreadWidget extends StatefulWidget {
-  Future<List<ForumThread>> _forumThreads;
+  final Future<List<ForumThread>> _forumThreads;
   final Forum _forum;
 
   ForumThreadWidget(this._forum, this._forumThreads);

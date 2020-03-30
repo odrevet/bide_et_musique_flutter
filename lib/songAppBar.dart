@@ -134,7 +134,8 @@ class SongActionMenu extends StatelessWidget {
       children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
     ));
 
-    return Column(children: _actions);
+    return Column(        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _actions);
   }
 }
 
