@@ -504,7 +504,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                   filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.65)),
+                        color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 )),
           ),

@@ -92,7 +92,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
-  Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying> _songNowPlaying;
 
   PlayerWidget(this.orientation, this._songNowPlaying);
 
@@ -159,7 +159,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
 }
 
 class RadioStreamButton extends StatefulWidget {
-  Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying> _songNowPlaying;
 
   RadioStreamButton(this._songNowPlaying);
 

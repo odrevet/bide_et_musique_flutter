@@ -100,7 +100,7 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
 class SongNowPlayingAppBar extends StatefulWidget
     implements PreferredSizeWidget {
   final Future<SongNowPlaying> _songNowPlaying;
-  Orientation _orientation;
+  final Orientation _orientation;
 
   SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
