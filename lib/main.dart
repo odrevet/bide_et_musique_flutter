@@ -29,7 +29,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    periodicFetchSongNowPLaying();
+    periodicFetchSongNowPlaying();
     WidgetsBinding.instance.addObserver(this);
     connect();
     autoLogin();
@@ -205,7 +205,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     AudioService.disconnect();
   }
   
-  void periodicFetchSongNowPLaying() {
+  void periodicFetchSongNowPlaying() {
     try {
       setState(() {
         _songNowPlaying = fetchNowPlaying();
@@ -218,7 +218,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                     100))
             .ceil();
         Timer(Duration(seconds: delay), () {
-          periodicFetchSongNowPLaying();
+          periodicFetchSongNowPlaying();
         });
       }, onError: (e) {
         _e = e;
@@ -243,7 +243,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           errorDisplay(_e),
           RaisedButton.icon(
             icon: Icon(Icons.refresh),
-            onPressed: () => periodicFetchSongNowPLaying(),
+            onPressed: () => periodicFetchSongNowPlaying(),
             label: Text('Ré-essayer maintenant'),
           ),
         ],
