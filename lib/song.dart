@@ -759,7 +759,5 @@ class _SongDetailsState extends State<SongDetails> {
 
           return Container();
         });
-
-
   }
 }

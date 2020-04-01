@@ -360,7 +360,7 @@ Future<Account> fetchAccountSession() async {
         SongLink songLink = SongLink();
         dom.Element aTitle = tr.children[4].children[0];
 
-        if(aTitle.toString() == '<html div>')
+        if (aTitle.toString() == '<html div>')
           aTitle = tr.children[4].children[1];
 
         songLink.id = getIdFromUrl(aTitle.attributes['href']);

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
+import 'nowPlaying.dart';
 import 'session.dart';
 import 'song.dart';
-import 'nowPlaying.dart';
 import 'utils.dart';
 
 SongLink songLinkFromTr(dom.Element tr) {

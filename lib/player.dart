@@ -9,7 +9,7 @@ import 'nowPlaying.dart';
 import 'song.dart';
 import 'utils.dart';
 
-enum PlayerMode{radio, song, off}
+enum PlayerMode { radio, song, off }
 
 abstract class PlayerState {
   static PlayerMode playerStateStatus = PlayerMode.off;
@@ -53,9 +53,7 @@ class SongAiring extends ChangeNotifier {
       songNowPlaying.then((s) async {
         notifyListeners();
         int delay = (s.duration.inSeconds -
-                (s.duration.inSeconds *
-                    s.elapsedPcent /
-                    100))
+                (s.duration.inSeconds * s.elapsedPcent / 100))
             .ceil();
         Timer(Duration(seconds: delay), () {
           periodicFetchSongNowPlaying();
@@ -282,7 +280,9 @@ class StreamPlayer extends BackgroundAudioTask {
             id: songMap['id'],
             title: songMap['title'],
             artist: songMap['artist'],
-            duration: songMap['duration'] == null ? null : Duration(seconds: songMap['duration']));
+            duration: songMap['duration'] == null
+                ? null
+                : Duration(seconds: songMap['duration']));
         break;
       case 'mode':
         _mode = arguments;
@@ -301,7 +301,7 @@ class StreamPlayer extends BackgroundAudioTask {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
         album: 'Bide et Musique',
-        title:  _song.title.isEmpty ? 'Titre non disponible' : _song.title,
+        title: _song.title.isEmpty ? 'Titre non disponible' : _song.title,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,
         duration: _song.duration?.inMilliseconds));

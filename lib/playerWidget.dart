@@ -114,7 +114,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
           stopButton(40),
           CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-
         ],
       );
     } else {
@@ -124,16 +123,19 @@ class _PlayerWidgetState extends State<PlayerWidget>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(
-                PlayerState.playerStateStatus == PlayerMode.song ? Icons.music_note : Icons.radio,
+                PlayerState.playerStateStatus == PlayerMode.song
+                    ? Icons.music_note
+                    : Icons.radio,
                 size: 18.0,
               ),
               stopButton(40),
               playbackState?.basicState == BasicPlaybackState.paused
                   ? playButton(40)
                   : pauseButton(40)
-
             ]),
-        if (PlayerState.playerStateStatus == PlayerMode.song && duration != null && duration > 0)
+        if (PlayerState.playerStateStatus == PlayerMode.song &&
+            duration != null &&
+            duration > 0)
           Container(
             height: 20,
             child: SongPositionSlider(playbackState, duration),
@@ -191,7 +193,8 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               children: <TextSpan>[
                 TextSpan(
                     text: '\n${snapshot.data.nbListeners} auditeurs',
-                    style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+                    style:
+                        TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
               ],
             ),
           );

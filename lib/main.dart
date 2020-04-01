@@ -10,8 +10,8 @@ import 'package:uni_links/uni_links.dart';
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
-import 'playerWidget.dart';
 import 'player.dart';
+import 'playerWidget.dart';
 import 'utils.dart' show handleLink, errorDisplay;
 
 enum UniLinksType { string, uri }
