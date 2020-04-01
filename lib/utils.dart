@@ -71,7 +71,7 @@ launchURL(String url) async {
   }
 }
 
-Widget errorDisplay(final Object error) {
+Widget errorDisplay(final Exception exception) {
   var title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
   var defaultStyle = TextStyle(color: Colors.black);
   var reportedError = TextStyle(fontStyle: FontStyle.italic);
@@ -83,7 +83,7 @@ Widget errorDisplay(final Object error) {
         TextSpan(text: 'Ouille ouille ouille !', style: title),
         TextSpan(text: ' \n Une erreur est survenue !'),
         TextSpan(text: ' \n Le message reporté est : \n'),
-        TextSpan(text: ' \n ${error.toString()}\n', style: reportedError),
+        TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
         TextSpan(
             text:
                 ' \n • Verifiez que votre appareil est connecté à Internet\n'),

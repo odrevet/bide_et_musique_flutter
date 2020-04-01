@@ -27,6 +27,30 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   PlaybackState _playbackState;
   StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
+  Exception _e;
+  SongAiring _songAiring;
+
+  void initSongFetch() {
+    _songAiring = SongAiring();
+    _songAiring.periodicFetchSongNowPlaying();
+    _songAiring.addListener(() {
+      setState(() {
+        _songNowPlaying = _songAiring.songNowPlaying;
+        if (_songNowPlaying == null)
+          _e = _songAiring.e;
+        else if (PlayerState.playerStateStatus == PlayerMode.radio)
+          _songAiring.songNowPlaying.then((song) async {
+            await AudioService.customAction('song', {
+              'id': song.id,
+              'title': song.title,
+              'artist': song.artist,
+              'duration': -1 //song.duration.inSeconds
+            });
+            await AudioService.customAction('setNotification');
+          });
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -34,14 +58,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     connect();
     autoLogin();
     initPlatformState();
-    _songNowPlaying = fetchNowPlaying();
-    SongAiring songAiring = SongAiring();
-    songAiring.periodicFetchSongNowPlaying();
-    songAiring.addListener((){
-      setState(() {
-        _songNowPlaying = songAiring.songNowPlaying;
-      });
-    });
+    initSongFetch();
 
     super.initState();
   }
@@ -213,9 +230,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     AudioService.disconnect();
   }
 
-
-  var _e;
-
   Widget refreshNowPlayingSongButton() {
     return Center(
       child: Column(
@@ -223,7 +237,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           errorDisplay(_e),
           RaisedButton.icon(
             icon: Icon(Icons.refresh),
-            onPressed: () => null, //periodicFetchSongNowPlaying(),
+            onPressed: () {
+              _songAiring.periodicFetchSongNowPlaying();
+            },
             label: Text('Ré-essayer maintenant'),
           ),
         ],
@@ -251,7 +267,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (orientation == Orientation.portrait) {
           return Scaffold(
               appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
-              bottomNavigationBar: BottomAppBar(child: PlayerWidget(orientation, _songNowPlaying)),
+              bottomNavigationBar: SizedBox(
+                  height: 60,
+                  child: BottomAppBar(
+                      child: PlayerWidget(orientation, _songNowPlaying))),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);
         } else {
@@ -275,9 +294,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               ));
         }
       });
-    else
+    else {
       home = Scaffold(
-          bottomNavigationBar: BottomAppBar(child: PlayerWidget(Orientation.portrait, _songNowPlaying)), body: body);
+          bottomNavigationBar: SizedBox(
+              height: 60,
+              child: BottomAppBar(
+                  child: PlayerWidget(Orientation.portrait, _songNowPlaying))),
+          body: body);
+    }
 
     return InheritedSongNowPlaying(
       songNowPlaying: _songNowPlaying,

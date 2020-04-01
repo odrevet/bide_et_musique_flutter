@@ -68,6 +68,7 @@ class _SongAppBarState extends State<SongAppBar> {
 
 class SongActionMenu extends StatelessWidget {
   final Song _song;
+
   SongActionMenu(this._song);
 
   @override
@@ -134,8 +135,10 @@ class SongActionMenu extends StatelessWidget {
       children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
     ));
 
-    return Column(        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _actions);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _actions);
   }
 }
 
@@ -349,7 +352,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
     Widget songPlaybackControls;
-    bool isPlaying = ((AudioService.playbackState != null &&
+    bool isPlaying = (PlayerState.playerStateStatus == PlayerMode.song &&
+        (AudioService.playbackState != null &&
             AudioService.playbackState.basicState !=
                 BasicPlaybackState.stopped &&
             AudioService.playbackState.basicState != BasicPlaybackState.none) &&
@@ -410,6 +414,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       );
     }
 
+    PlayerState.playerStateStatus = PlayerMode.song;
     await AudioService.customAction('mode', 'song');
     await AudioService.customAction('song', {
       'id': widget._song.id,

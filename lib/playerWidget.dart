@@ -111,23 +111,29 @@ class _PlayerWidgetState extends State<PlayerWidget>
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          stopButton(40),
           CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-          stopButton(48),
+
         ],
       );
     } else {
       List<Widget> controls = <Widget>[
         Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Icon(
+                PlayerState.playerStateStatus == PlayerMode.song ? Icons.music_note : Icons.radio,
+                size: 18.0,
+              ),
+              stopButton(40),
               playbackState?.basicState == BasicPlaybackState.paused
-                  ? playButton(48)
-                  : pauseButton(48),
-              stopButton(48)
+                  ? playButton(40)
+                  : pauseButton(40)
+
             ]),
-        if (duration != null && duration > 0)
+        if (PlayerState.playerStateStatus == PlayerMode.song && duration != null && duration > 0)
           Container(
             height: 20,
             child: SongPositionSlider(playbackState, duration),
@@ -205,6 +211,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             );
             if (success) {
               SongAiring().songNowPlaying.then((song) async {
+                PlayerState.playerStateStatus = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', {
                   'id': song.id,

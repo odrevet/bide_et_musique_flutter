@@ -125,7 +125,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           var draggedSong = account.favorites[initialPosition];
           //update server
           var accountId = Session.accountLink.id;
-          var K = draggedSong.id;
+          var K = draggedSong.id.toString();
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 

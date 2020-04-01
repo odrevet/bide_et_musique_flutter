@@ -9,6 +9,12 @@ import 'nowPlaying.dart';
 import 'song.dart';
 import 'utils.dart';
 
+enum PlayerMode{radio, song, off}
+
+abstract class PlayerState {
+  static PlayerMode playerStateStatus = PlayerMode.off;
+}
+
 MediaControl playControl = MediaControl(
   androidIcon: 'drawable/ic_stat_play_arrow',
   label: 'Play',
@@ -39,12 +45,13 @@ class SongAiring extends ChangeNotifier {
   SongAiring._internal();
 
   Future<SongNowPlaying> songNowPlaying;
+  Exception e;
 
   void periodicFetchSongNowPlaying() {
     try {
       songNowPlaying = fetchNowPlaying();
-      notifyListeners();
       songNowPlaying.then((s) async {
+        notifyListeners();
         int delay = (s.duration.inSeconds -
                 (s.duration.inSeconds *
                     s.elapsedPcent /
@@ -54,14 +61,12 @@ class SongAiring extends ChangeNotifier {
           periodicFetchSongNowPlaying();
         });
       }, onError: (e) {
-        //_e = e;
-
+        this.e = e;
         songNowPlaying = null;
         notifyListeners();
       });
     } catch (e) {
-      //_e = e;
-
+      this.e = e;
       songNowPlaying = null;
       notifyListeners();
     }
@@ -76,23 +81,6 @@ class StreamPlayer extends BackgroundAudioTask {
   BasicPlaybackState _skipState;
   bool _playing = false;
   String latestId;
-  SongAiring _songAiring = SongAiring();
-
-  StreamPlayer(){
-    _songAiring.addListener((){
-      if(_mode == 'radio'){
-        _songAiring.songNowPlaying.then((song) async{
-          await AudioService.customAction('song', {
-            'id': song.id,
-            'title': song.title,
-            'artist': song.artist,
-            'duration': -1 //song.duration.inSeconds
-          });
-          await AudioService.customAction('setNotification');
-        });
-      }
-    });
-  }
 
   //final _queue = <MediaItem>[];
   //int _queueIndex = -1;
@@ -286,7 +274,7 @@ class StreamPlayer extends BackgroundAudioTask {
   }
 
   @override
-  void onCustomAction(String name, arguments) {
+  void onCustomAction(String name, dynamic arguments) {
     switch (name) {
       case 'song':
         Map songMap = arguments;
@@ -310,14 +298,11 @@ class StreamPlayer extends BackgroundAudioTask {
   }
 
   void setNotification() {
-    var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
-    var artist =
-    _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
         album: 'Bide et Musique',
-        title: title,
-        artist: artist,
+        title:  _song.title.isEmpty ? 'Titre non disponible' : _song.title,
+        artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,
         duration: _song.duration?.inMilliseconds));
   }
