@@ -29,53 +29,70 @@ void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => StreamPlayer());
 }
 
-///As Song data cannot be retrieve from the stream,
-///This Class fetch song from the web site
-class StreamNotificationUpdater {
-  Timer timer;
+class SongAiring extends ChangeNotifier {
+  static final SongAiring _singleton = SongAiring._internal();
 
-  StreamNotificationUpdater();
-
-  void setMediaItemFromSongLink(SongLink songLink) {
-    var mediaItem = MediaItem(
-        id: songLink.streamLink,
-        album: '', //songLink.program,
-        title: songLink.title,
-        artist: songLink.artist,
-        artUri: songLink.coverLink);
-    AudioServiceBackground.setMediaItem(mediaItem);
+  factory SongAiring() {
+    return _singleton;
   }
 
-  void start() {
-    fetchNowPlaying().then((song) {
-      setMediaItemFromSongLink(song);
-    });
+  SongAiring._internal();
 
-    timer = Timer.periodic(Duration(seconds: 45), (Timer timer) async {
-      fetchNowPlaying().then((song) {
-        setMediaItemFromSongLink(song);
+  Future<SongNowPlaying> songNowPlaying;
+
+  void periodicFetchSongNowPlaying() {
+    try {
+      songNowPlaying = fetchNowPlaying();
+      notifyListeners();
+      songNowPlaying.then((s) async {
+        int delay = (s.duration.inSeconds -
+                (s.duration.inSeconds *
+                    s.elapsedPcent /
+                    100))
+            .ceil();
+        Timer(Duration(seconds: delay), () {
+          periodicFetchSongNowPlaying();
+        });
+      }, onError: (e) {
+        //_e = e;
+
+        songNowPlaying = null;
+        notifyListeners();
       });
-    });
-  }
+    } catch (e) {
+      //_e = e;
 
-  void stop() {
-    if (timer != null) timer.cancel();
-  }
-
-  void dispose() {
-    stop();
+      songNowPlaying = null;
+      notifyListeners();
+    }
   }
 }
 
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
+  String _mode;
   AudioPlayer audioPlayer = AudioPlayer();
   Completer _completer = Completer();
-  StreamNotificationUpdater streamNotificationUpdater =
-      StreamNotificationUpdater();
   BasicPlaybackState _skipState;
   bool _playing = false;
   String latestId;
+  SongAiring _songAiring = SongAiring();
+
+  StreamPlayer(){
+    _songAiring.addListener((){
+      if(_mode == 'radio'){
+        _songAiring.songNowPlaying.then((song) async{
+          await AudioService.customAction('song', {
+            'id': song.id,
+            'title': song.title,
+            'artist': song.artist,
+            'duration': -1 //song.duration.inSeconds
+          });
+          await AudioService.customAction('setNotification');
+        });
+      }
+    });
+  }
 
   //final _queue = <MediaItem>[];
   //int _queueIndex = -1;
@@ -256,12 +273,11 @@ class StreamPlayer extends BackgroundAudioTask {
 
   Future<String> _getStreamUrl() async {
     String url;
-    if (this._song == null) {
+    if (this._mode == 'radio') {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       int relay = prefs.getInt('relay') ?? 1;
       int port = radioHiQuality ? 9100 : 9200;
-
       url = 'http://relay$relay.$site:$port';
     } else {
       url = _song.streamLink;
@@ -278,7 +294,10 @@ class StreamPlayer extends BackgroundAudioTask {
             id: songMap['id'],
             title: songMap['title'],
             artist: songMap['artist'],
-            duration: Duration(seconds: songMap['duration']));
+            duration: songMap['duration'] == null ? null : Duration(seconds: songMap['duration']));
+        break;
+      case 'mode':
+        _mode = arguments;
         break;
       case 'resetSong':
         this._song = null;
@@ -291,22 +310,15 @@ class StreamPlayer extends BackgroundAudioTask {
   }
 
   void setNotification() {
-    if (this._song == null) {
-      streamNotificationUpdater.start();
-    } else {
-      streamNotificationUpdater.stop();
-      var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
-      var artist =
-          _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
-
-      var mediaItem = MediaItem(
-          id: _song.streamLink,
-          album: 'Bide et Musique',
-          title: title,
-          artist: artist,
-          artUri: _song.coverLink,
-          duration: _song.duration.inMilliseconds);
-      AudioServiceBackground.setMediaItem(mediaItem);
-    }
+    var title = _song.title.isEmpty ? 'Titre non disponible' : _song.title;
+    var artist =
+    _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist;
+    AudioServiceBackground.setMediaItem(MediaItem(
+        id: _song.streamLink,
+        album: 'Bide et Musique',
+        title: title,
+        artist: artist,
+        artUri: _song.coverLink,
+        duration: _song.duration?.inMilliseconds));
   }
 }

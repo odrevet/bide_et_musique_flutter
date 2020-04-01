@@ -11,6 +11,7 @@ import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
 import 'playerWidget.dart';
+import 'player.dart';
 import 'utils.dart' show handleLink, errorDisplay;
 
 enum UniLinksType { string, uri }
@@ -29,11 +30,18 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    periodicFetchSongNowPlaying();
     WidgetsBinding.instance.addObserver(this);
     connect();
     autoLogin();
     initPlatformState();
+    _songNowPlaying = fetchNowPlaying();
+    SongAiring songAiring = SongAiring();
+    songAiring.periodicFetchSongNowPlaying();
+    songAiring.addListener((){
+      setState(() {
+        _songNowPlaying = songAiring.songNowPlaying;
+      });
+    });
 
     super.initState();
   }
@@ -204,35 +212,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
     AudioService.disconnect();
   }
-  
-  void periodicFetchSongNowPlaying() {
-    try {
-      setState(() {
-        _songNowPlaying = fetchNowPlaying();
-      });
 
-      _songNowPlaying.then((songNowPlaying) async {
-        int delay = (songNowPlaying.duration.inSeconds -
-                (songNowPlaying.duration.inSeconds *
-                    songNowPlaying.elapsedPcent /
-                    100))
-            .ceil();
-        Timer(Duration(seconds: delay), () {
-          periodicFetchSongNowPlaying();
-        });
-      }, onError: (e) {
-        _e = e;
-        setState(() {
-          _songNowPlaying = null;
-        });
-      });
-    } catch (e) {
-      _e = e;
-      setState(() {
-        _songNowPlaying = null;
-      });
-    }
-  }
 
   var _e;
 
@@ -243,7 +223,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           errorDisplay(_e),
           RaisedButton.icon(
             icon: Icon(Icons.refresh),
-            onPressed: () => periodicFetchSongNowPlaying(),
+            onPressed: () => null, //periodicFetchSongNowPlaying(),
             label: Text('Ré-essayer maintenant'),
           ),
         ],

@@ -357,8 +357,12 @@ Future<Account> fetchAccountSession() async {
     var favorites = <SongLink>[];
     if (hasFavorite) {
       for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var songLink = SongLink();
-        var aTitle = tr.children[4].children[0];
+        SongLink songLink = SongLink();
+        dom.Element aTitle = tr.children[4].children[0];
+
+        if(aTitle.toString() == '<html div>')
+          aTitle = tr.children[4].children[1];
+
         songLink.id = getIdFromUrl(aTitle.attributes['href']);
         songLink.title = stripTags(aTitle.innerHtml);
         songLink.artist = stripTags(tr.children[3].innerHtml);

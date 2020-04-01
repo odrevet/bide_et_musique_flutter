@@ -127,7 +127,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   : pauseButton(48),
               stopButton(48)
             ]),
-        if (duration != null)
+        if (duration != null && duration > 0)
           Container(
             height: 20,
             child: SongPositionSlider(playbackState, duration),
@@ -204,9 +204,17 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               androidNotificationIcon: 'mipmap/ic_launcher',
             );
             if (success) {
-              await AudioService.customAction('resetSong');
-              await AudioService.play();
-              await AudioService.customAction('setNotification');
+              SongAiring().songNowPlaying.then((song) async {
+                await AudioService.customAction('mode', 'radio');
+                await AudioService.customAction('song', {
+                  'id': song.id,
+                  'title': song.title,
+                  'artist': song.artist,
+                  'duration': -1 //song.duration.inSeconds
+                });
+                await AudioService.play();
+                await AudioService.customAction('setNotification');
+              });
             }
           },
         );
