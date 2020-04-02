@@ -29,10 +29,10 @@ class SongLink {
 
   SongLink(
       {this.id,
-      this.title = '',
-      this.artist = '',
-      this.cover = '',
-      this.info = '',
+      this.title,
+      this.artist,
+      this.cover,
+      this.info,
       this.isNew = false});
 
   String get streamLink {
@@ -58,9 +58,6 @@ class SongLink {
 }
 
 class Song extends SongLink {
-  int id;
-  String title;
-  String artist;
   int year;
   int artistId;
   String author;
@@ -74,35 +71,37 @@ class Song extends SongLink {
   bool canFavourite;
   bool isFavourite;
   bool hasVote;
-  String cover;
 
   Song(
-      {this.id,
-      this.title,
+      {id,
+      title,
+      artist,
+      cover,
+      info,
       this.year,
-      this.artist,
       this.artistId,
       this.author,
       this.duration,
       this.durationPretty,
       this.label,
       this.reference,
-      this.cover,
-      this.lyrics});
+      this.lyrics})
+      : super(id: id, title: title, artist: artist, cover: cover, info: info);
 
   Song.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = stripTags(json['name']),
-        year = json['year'],
-        artist = stripTags(json['artists']['main']['alias']),
+      : year = json['year'],
         artistId = json['artists']['main']['id'],
         author = json['authors'],
         duration = Duration(seconds: json['length']['raw']),
         durationPretty = json['length']['pretty'],
         label = stripTags(json['label']),
         reference = stripTags(json['reference']),
-        cover = json['covers']['main'],
-        lyrics = json['lyrics'];
+        lyrics = json['lyrics'],
+        super(
+            id: json['id'],
+            title: json['name'],
+            artist: json['artists']['main']['alias'],
+            cover: json['covers']['main']);
 }
 
 class Comment {
@@ -206,7 +205,7 @@ List<Comment> _parseComments(document) {
 }
 
 Future<Song> fetchSong(int songId) async {
-  var song;
+  Song song;
   final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
   if (responseJson.statusCode == 200) {
