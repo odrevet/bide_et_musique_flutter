@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'nowPlaying.dart';
+import 'player.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -69,23 +69,48 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
 }
 
 class TitlesWidget extends StatefulWidget {
-  final Future<Map<String, List<SongLink>>> _songLinks;
-
-  TitlesWidget(this._songLinks, {Key key}) : super(key: key);
+  final SongAiring _songAiring = SongAiring();
+  TitlesWidget({Key key}) : super(key: key);
 
   @override
   _TitlesWidgetState createState() => _TitlesWidgetState();
 }
 
 class _TitlesWidgetState extends State<TitlesWidget> {
+
+
+  Future<Map<String, List<SongLink>>> _songLinks;
+
+  void updateTitles() {
+    setState(() {
+      _songLinks = fetchTitles();
+    });
+  }
+
+  VoidCallback listener;
+
+  @override
+  initState() {
+    listener = () { if(mounted)updateTitles(); };
+
+    _songLinks = fetchTitles();
+    widget._songAiring.addListener(listener);
+    super.initState();
+  }
+
+
+
+  @override
+  void dispose() {
+    widget._songAiring.removeListener(listener);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // will refresh the widget on change
-    var _ = InheritedSongNowPlaying.of(context);
-
     return Center(
       child: FutureBuilder<Map<String, List<SongLink>>>(
-        future: widget._songLinks,
+        future: _songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(snapshot.data);

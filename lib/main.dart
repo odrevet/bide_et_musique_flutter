@@ -32,7 +32,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   void initSongFetch() {
     _songAiring = SongAiring();
-    _songAiring.periodicFetchSongNowPlaying();
     _songAiring.addListener(() {
       setState(() {
         _songNowPlaying = _songAiring.songNowPlaying;
@@ -44,12 +43,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               'id': song.id,
               'title': song.title,
               'artist': song.artist,
+              //'info': song.program.name,
               'duration': -1 //song.duration.inSeconds
             });
             await AudioService.customAction('setNotification');
           });
       });
     });
+    _songAiring.periodicFetchSongNowPlaying();
   }
 
   @override
@@ -251,9 +252,15 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     Widget home;
     Widget body;
-    Widget nowPlayingWidget = _songNowPlaying == null
-        ? refreshNowPlayingSongButton()
-        : NowPlayingCard(_songNowPlaying);
+    Widget nowPlayingWidget;
+
+    if(_e != null && _songNowPlaying == null)
+      nowPlayingWidget = refreshNowPlayingSongButton();
+    else if(_songNowPlaying == null)
+      nowPlayingWidget = Center(child: CircularProgressIndicator());
+    else
+      nowPlayingWidget = NowPlayingCard(_songNowPlaying);
+
 
     //if the app is launched from deep linking, try to fetch the widget that
     //match the url
@@ -303,21 +310,18 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           body: body);
     }
 
-    return InheritedSongNowPlaying(
-      songNowPlaying: _songNowPlaying,
-      child: InheritedPlaybackState(
-          playbackState: _playbackState,
-          child: MaterialApp(
-              title: 'Bide&Musique',
-              theme: ThemeData(
-                primarySwatch: Colors.orange,
-                buttonColor: Colors.orangeAccent,
-                secondaryHeaderColor: Colors.deepOrange,
-                bottomAppBarColor: Colors.orange,
-                canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-                dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-              ),
-              home: home)),
-    );
+    return InheritedPlaybackState(
+        playbackState: _playbackState,
+        child: MaterialApp(
+            title: 'Bide&Musique',
+            theme: ThemeData(
+              primarySwatch: Colors.orange,
+              buttonColor: Colors.orangeAccent,
+              secondaryHeaderColor: Colors.deepOrange,
+              bottomAppBarColor: Colors.orange,
+              canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+              dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+            ),
+            home: home));
   }
 }

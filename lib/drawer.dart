@@ -84,7 +84,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TitlesWidget(fetchTitles())));
+                    builder: (context) => TitlesWidget()));
           },
         ),
         ListTile(
