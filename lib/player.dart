@@ -280,6 +280,7 @@ class StreamPlayer extends BackgroundAudioTask {
             id: songMap['id'],
             title: songMap['title'],
             artist: songMap['artist'],
+            info: songMap['info'],
             duration: songMap['duration'] == null
                 ? null
                 : Duration(seconds: songMap['duration']));
@@ -301,6 +302,7 @@ class StreamPlayer extends BackgroundAudioTask {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
         album: 'Bide et Musique',
+        genre: _song.info,
         title: _song.title.isEmpty ? 'Titre non disponible' : _song.title,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,

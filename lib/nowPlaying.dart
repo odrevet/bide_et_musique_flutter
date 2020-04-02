@@ -39,7 +39,7 @@ Future<SongNowPlaying> fetchNowPlaying() async {
   }
 }
 
-class InheritedSongNowPlaying extends InheritedWidget {
+/*class InheritedSongNowPlaying extends InheritedWidget {
   const InheritedSongNowPlaying(
       {Key key, @required this.songNowPlaying, @required Widget child})
       : super(key: key, child: child);
@@ -54,7 +54,7 @@ class InheritedSongNowPlaying extends InheritedWidget {
   @override
   bool updateShouldNotify(InheritedSongNowPlaying old) =>
       songNowPlaying != old.songNowPlaying;
-}
+}*/
 
 class NowPlayingCard extends StatefulWidget {
   final Future<Song> _song;
@@ -152,7 +152,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
   }
 }
 
-class NowPlayingSongPosition extends StatefulWidget {
+/*class NowPlayingSongPosition extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
 
   NowPlayingSongPosition(this._songNowPlaying);
@@ -205,4 +205,4 @@ class _NowPlayingSongPositionState extends State<NowPlayingSongPosition> {
       },
     );
   }
-}
+}*/
