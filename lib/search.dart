@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:http/http.dart' as http;
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
@@ -120,7 +121,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     //server uses latin-1
     url = removeDiacritics(url);
 
-    final response = await Session.post(url);
+    final response = await http.post(url);
     if (response.statusCode == 302) {
       var location = response.headers['location'];
       //when the result is a single song, the host redirect to the song page
