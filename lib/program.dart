@@ -30,7 +30,7 @@ class Program {
       for (var songEntry in json['songs']) {
         var song = SongLink();
         song.id = songEntry['song_id'];
-        song.title = stripTags(songEntry['name']);
+        song.name = stripTags(songEntry['name']);
         song.artist = stripTags(songEntry['alias']);
         songs.add(song);
       }

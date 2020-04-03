@@ -53,7 +53,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         songLink.id = int.parse(match[1]);
 
         var title = vignette.children[0].children[0].attributes['title'];
-        songLink.title = title;
+        songLink.name = title;
 
         setState(() {
           _songLinks.add(songLink);

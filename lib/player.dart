@@ -303,7 +303,7 @@ class StreamPlayer extends BackgroundAudioTask {
         id: _song.streamLink,
         album: 'Bide et Musique',
         genre: _song.info,
-        title: _song.title.isEmpty ? 'Titre non disponible' : _song.title,
+        title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,
         duration: _song.duration?.inMilliseconds));

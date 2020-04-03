@@ -44,10 +44,8 @@ class Artist {
         site = json['site'] {
     this.disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
-      var song = SongLink();
-      song.id = discoEntry['id'];
-      song.title = stripTags(discoEntry['name']);
-      this.disco.add(song);
+      this.disco.add(
+          SongLink(id: discoEntry['id'], name: stripTags(discoEntry['name'])));
     }
   }
 }

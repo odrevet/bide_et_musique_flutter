@@ -102,7 +102,7 @@ Future<Account> fetchAccount(int accountId) async {
         var songLink = SongLink();
         var aTitle = tr.children[4].children[0];
         songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.title = stripTags(aTitle.innerHtml);
+        songLink.name = stripTags(aTitle.innerHtml);
         songLink.artist = stripTags(tr.children[3].innerHtml);
         favorites.add(songLink);
       }
@@ -152,7 +152,7 @@ Future<List<SongLink>> fetchVotes() async {
     for (var tr in trs) {
       var song = SongLink();
       song.id = getIdFromUrl(tr.children[3].children[0].attributes['href']);
-      song.title = stripTags(tr.children[3].innerHtml);
+      song.name = stripTags(tr.children[3].innerHtml);
       song.artist = stripTags(tr.children[2].innerHtml);
       songLinks.add(song);
     }
@@ -364,7 +364,7 @@ Future<Account> fetchAccountSession() async {
           aTitle = tr.children[4].children[1];
 
         songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.title = stripTags(aTitle.innerHtml);
+        songLink.name = stripTags(aTitle.innerHtml);
         songLink.artist = stripTags(tr.children[3].innerHtml);
         favorites.add(songLink);
       }

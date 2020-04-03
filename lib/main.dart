@@ -41,7 +41,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           _songAiring.songNowPlaying.then((song) async {
             await AudioService.customAction('song', {
               'id': song.id,
-              'title': song.title,
+              'title': song.name,
               'artist': song.artist,
               //'info': song.program.name,
               'duration': -1 //song.duration.inSeconds

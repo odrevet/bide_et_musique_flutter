@@ -27,7 +27,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   return SongLink(
       id: getIdFromUrl(a.attributes['href']),
       artist: stripTags(tdArtist.innerHtml).trim(),
-      title: title.trim(),
+      name: title.trim(),
       info: stripTags(tdInfo.innerHtml).trim(),
       isNew: isNew);
 }

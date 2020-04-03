@@ -49,7 +49,7 @@ Future<List<Post>> fetchPosts() async {
       songLink.artist = artistLink.innerHtml;
 
       var title = basmsg.children[0].children[2];
-      songLink.title = stripTags(title.innerHtml);
+      songLink.name = stripTags(title.innerHtml);
       songLink.id = getIdFromUrl(title.attributes['href']);
       post.during = songLink;
 
@@ -197,7 +197,7 @@ class _WallWidgetState extends State<WallWidget> {
                       text: ' ${post.time} pendant ',
                     ),
                     TextSpan(
-                      text: post.during.title,
+                      text: post.during.name,
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => Navigator.push(
@@ -206,7 +206,7 @@ class _WallWidgetState extends State<WallWidget> {
                                 builder: (context) => SongPageWidget(
                                     songLink: SongLink(
                                         id: post.during.id,
-                                        title: post.during.title),
+                                        name: post.during.name),
                                     song: fetchSong(post.during.id)))),
                     ),
                   ]),

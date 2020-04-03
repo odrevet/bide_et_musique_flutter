@@ -105,7 +105,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                 child: Image(image: NetworkImage(_songLinks[index].thumbLink)),
               ),
               title: Text(
-                _songLinks[index].title,
+                _songLinks[index].name,
               ),
               subtitle: Text(_songLinks[index].artist == null
                   ? ''
@@ -128,7 +128,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
       //in our case parse the page and return a list with one song
       var songLink = SongLink();
       songLink.id = getIdFromUrl(location);
-      songLink.title = search;
+      songLink.name = search;
       setState(() {
         _pages = 1;
         _songLinks.add(songLink);
@@ -161,7 +161,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
 
           var songLink = SongLink();
           songLink.id = getIdFromUrl(a.attributes['href']);
-          songLink.title = stripTags(a.innerHtml);
+          songLink.name = stripTags(a.innerHtml);
           songLink.artist = stripTags(tds[2].children[0].innerHtml);
 
           setState(() {

@@ -32,7 +32,7 @@ Future<List<NowSong>> fetchNowSongs() async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var songLink = SongLink();
-      songLink.title = tds[3].children[0].innerHtml;
+      songLink.name = tds[3].children[0].innerHtml;
       songLink.id = getIdFromUrl(tds[3].children[0].attributes['href']);
       songLink.index = index;
       var nowSong = NowSong();
@@ -91,7 +91,7 @@ class NowSongsWidget extends StatelessWidget {
             backgroundColor: Colors.black12,
           ),
           title: Html(
-              data: nowSong.songLink.title + '<br/>' + nowSong.desc,
+              data: nowSong.songLink.name + '<br/>' + nowSong.desc,
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

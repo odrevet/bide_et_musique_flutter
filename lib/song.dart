@@ -20,7 +20,7 @@ import 'utils.dart';
 
 class SongLink {
   int id;
-  String title;
+  String name;
   String artist;
   String info;
   bool isNew;
@@ -29,7 +29,7 @@ class SongLink {
 
   SongLink(
       {this.id,
-      this.title,
+      this.name,
       this.artist,
       this.cover,
       this.info,
@@ -86,7 +86,7 @@ class Song extends SongLink {
       this.label,
       this.reference,
       this.lyrics})
-      : super(id: id, title: title, artist: artist, cover: cover, info: info);
+      : super(id: id, name: title, artist: artist, cover: cover, info: info);
 
   Song.fromJson(Map<String, dynamic> json)
       : year = json['year'],
@@ -99,7 +99,7 @@ class Song extends SongLink {
         lyrics = json['lyrics'],
         super(
             id: json['id'],
-            title: stripTags(json['name']),
+            name: stripTags(json['name']),
             artist: stripTags(json['artists']['main']['alias']),
             cover: json['covers']['main']);
 }
@@ -328,8 +328,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     var coverLink = songLink.coverLink;
 
     var loadingMessage = '';
-    if (songLink.title.isNotEmpty) {
-      loadingMessage += songLink.title;
+    if (songLink.name.isNotEmpty) {
+      loadingMessage += songLink.name;
     } else {
       loadingMessage = 'Chargement';
     }
@@ -617,7 +617,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
               fullscreenDialog: true)),
         ),
         title: Text(
-          songLink.title,
+          songLink.name,
         ),
         trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
         subtitle: Text(subtitle),

@@ -218,7 +218,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', {
                   'id': song.id,
-                  'title': song.title,
+                  'title': song.name,
                   'artist': song.artist,
                   'duration': -1 //song.duration.inSeconds
                 });

@@ -49,7 +49,7 @@ class _SongAppBarState extends State<SongAppBar> {
                   ));
 
           return AppBar(
-            title: Text(snapshot.data.title),
+            title: Text(snapshot.data.name),
             actions: <Widget>[songActionButton],
           );
         } else if (snapshot.hasError) {
@@ -267,7 +267,7 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         label: Text('Message'),
         onPressed: () => Share.share(
-            '''En ce moment j'écoute '${_song.title}' sur Bide et Musique !
+            '''En ce moment j'écoute '${_song.name}' sur Bide et Musique !
           
 Tu peux consulter la fiche de cette chanson à l'adresse : 
 ${_song.link}
@@ -276,7 +276,7 @@ ${_song.link}
 Message envoyé avec l'application 'Bide et Musique flutter pour Android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ''',
-            subject: "'${_song.title}' sur Bide et Musique"));
+            subject: "'${_song.name}' sur Bide et Musique"));
   }
 }
 
@@ -310,7 +310,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
         icon: Icon(Icons.code),
         label: Text('Copier le code HTML du lien'),
         onPressed: () => Clipboard.setData(
-            ClipboardData(text: '<a href="${_song.link}">${_song.title}</a>')));
+            ClipboardData(text: '<a href="${_song.link}">${_song.name}</a>')));
   }
 }
 
@@ -418,7 +418,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     await AudioService.customAction('mode', 'song');
     await AudioService.customAction('song', {
       'id': widget._song.id,
-      'title': widget._song.title,
+      'title': widget._song.name,
       'artist': widget._song.artist,
       'duration': widget._song.duration.inSeconds
     });

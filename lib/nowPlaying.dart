@@ -121,7 +121,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          String title = songNowPlaying.title;
+          String name = songNowPlaying.name;
           String subtitle = songNowPlaying.artist;
           Widget bottom;
 
@@ -138,10 +138,10 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
                 ),
                 preferredSize: null);
           } else {
-            title += ' • $subtitle';
+            name += ' • $subtitle';
           }
 
-          return AppBar(title: Text(title), bottom: bottom);
+          return AppBar(title: Text(name), bottom: bottom);
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
         }

@@ -40,7 +40,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             backgroundColor: Colors.black12,
             child: heroThumbCover(songLink),
           ),
-          title: Text('#$position - ${songLink.title}'),
+          title: Text('#$position - ${songLink.name}'),
           subtitle: Text(songLink.artist),
           onTap: () {
             Navigator.push(
@@ -63,7 +63,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Vraiment retirer "${songLink.title}" de vos favoris ? '),
+                Text('Vraiment retirer "${songLink.name}" de vos favoris ? '),
               ],
             ),
           ),

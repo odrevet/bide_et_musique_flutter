@@ -113,7 +113,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 child: heroThumbCover(songLink),
               ),
             ),
-            title: Text(songLink.title),
+            title: Text(songLink.name),
             subtitle: Text(songLink.artist),
             trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
             onTap: () => setState(() {
