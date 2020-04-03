@@ -99,8 +99,8 @@ class Song extends SongLink {
         lyrics = json['lyrics'],
         super(
             id: json['id'],
-            title: json['name'],
-            artist: json['artists']['main']['alias'],
+            title: stripTags(json['name']),
+            artist: stripTags(json['artists']['main']['alias']),
             cover: json['covers']['main']);
 }
 
@@ -602,7 +602,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
     for (SongLink songLink in widget._songLinks) {
       String subtitle = songLink.artist == null ? '' : songLink.artist;
 
-      if (songLink.info != '') {
+      if (songLink.info != null && songLink.info.isEmpty) {
         if (subtitle != '') subtitle += ' • ';
         subtitle += songLink.info;
       }
