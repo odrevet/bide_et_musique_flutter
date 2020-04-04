@@ -123,7 +123,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(
-                PlayerState.playerStateStatus == PlayerMode.song
+                PlayerState.playerMode == PlayerMode.song
                     ? Icons.music_note
                     : Icons.radio,
                 size: 18.0,
@@ -133,7 +133,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   ? playButton(40)
                   : pauseButton(40)
             ]),
-        if (PlayerState.playerStateStatus == PlayerMode.song &&
+        if (PlayerState.playerMode == PlayerMode.song &&
             duration != null &&
             duration > 0)
           Container(
@@ -214,7 +214,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             );
             if (success) {
               SongAiringNotifier().songNowPlaying.then((song) async {
-                PlayerState.playerStateStatus = PlayerMode.radio;
+                PlayerState.playerMode = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', {
                   'id': song.id,

@@ -352,7 +352,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
     Widget songPlaybackControls;
-    bool isPlaying = (PlayerState.playerStateStatus == PlayerMode.song &&
+    bool isPlaying = (PlayerState.playerMode == PlayerMode.song &&
         (AudioService.playbackState != null &&
             AudioService.playbackState.basicState !=
                 BasicPlaybackState.stopped &&
@@ -414,7 +414,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       );
     }
 
-    PlayerState.playerStateStatus = PlayerMode.song;
+    PlayerState.playerMode = PlayerMode.song;
     await AudioService.customAction('mode', 'song');
     await AudioService.customAction('song', {
       'id': widget._song.id,

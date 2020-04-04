@@ -12,7 +12,7 @@ import 'utils.dart';
 enum PlayerMode { radio, song, off }
 
 abstract class PlayerState {
-  static PlayerMode playerStateStatus = PlayerMode.off;
+  static PlayerMode playerMode = PlayerMode.off;
 }
 
 MediaControl playControl = MediaControl(

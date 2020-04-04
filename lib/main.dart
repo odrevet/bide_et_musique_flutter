@@ -37,7 +37,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         _songNowPlaying = _songAiring.songNowPlaying;
         if (_songNowPlaying == null)
           _e = _songAiring.e;
-        else if (PlayerState.playerStateStatus == PlayerMode.radio)
+        else if (PlayerState.playerMode == PlayerMode.radio)
           _songAiring.songNowPlaying.then((song) async {
             await AudioService.customAction('song', {
               'id': song.id,
