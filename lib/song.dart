@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:page_indicator/page_indicator.dart';
 
 import 'account.dart';
 import 'artist.dart';
@@ -507,25 +508,34 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                   ),
                 )),
           ),
-          PageView(
-            onPageChanged: (int page) => setState(() {
-              _currentPage = page;
-            }),
-            children: <Widget>[
-              SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                child: Html(
-                    data: song.lyrics == ''
-                        ? '<center><i>Paroles non renseignées</i></center>'
-                        : song.lyrics,
-                    defaultTextStyle: _fontLyrics,
-                    onLinkTap: (url) {
-                      onLinkTap(url, context);
-                    }),
-              )),
-              _buildViewComments(context, song),
-            ],
+          PageIndicatorContainer(
+            align: IndicatorAlign.bottom,
+            length: 2,
+            indicatorSpace: 20.0,
+            padding: const EdgeInsets.all(10),
+            indicatorColor: Theme.of(context).canvasColor,
+            indicatorSelectorColor: Theme.of(context).accentColor,
+            shape: IndicatorShape.circle(size: 8),
+            child: PageView(
+              onPageChanged: (int page) => setState(() {
+                _currentPage = page;
+              }),
+              children: <Widget>[
+                SingleChildScrollView(
+                    child: Padding(
+                  padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                  child: Html(
+                      data: song.lyrics == ''
+                          ? '<center><i>Paroles non renseignées</i></center>'
+                          : song.lyrics,
+                      defaultTextStyle: _fontLyrics,
+                      onLinkTap: (url) {
+                        onLinkTap(url, context);
+                      }),
+                )),
+                _buildViewComments(context, song),
+              ],
+            ),
           )
         ]));
 
