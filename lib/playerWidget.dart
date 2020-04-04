@@ -213,7 +213,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               androidNotificationIcon: 'mipmap/ic_launcher',
             );
             if (success) {
-              SongAiring().songNowPlaying.then((song) async {
+              SongAiringNotifier().songNowPlaying.then((song) async {
                 PlayerState.playerStateStatus = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', {

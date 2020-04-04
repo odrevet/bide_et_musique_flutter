@@ -35,14 +35,14 @@ void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => StreamPlayer());
 }
 
-class SongAiring extends ChangeNotifier {
-  static final SongAiring _singleton = SongAiring._internal();
+class SongAiringNotifier extends ChangeNotifier {
+  static final SongAiringNotifier _singleton = SongAiringNotifier._internal();
 
-  factory SongAiring() {
+  factory SongAiringNotifier() {
     return _singleton;
   }
 
-  SongAiring._internal();
+  SongAiringNotifier._internal();
 
   Future<SongNowPlaying> songNowPlaying;
   Exception e;

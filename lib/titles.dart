@@ -69,7 +69,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
 }
 
 class TitlesWidget extends StatefulWidget {
-  final SongAiring _songAiring = SongAiring();
+  final SongAiringNotifier _songAiring = SongAiringNotifier();
   TitlesWidget({Key key}) : super(key: key);
 
   @override

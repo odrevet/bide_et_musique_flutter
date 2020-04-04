@@ -28,10 +28,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
   Exception _e;
-  SongAiring _songAiring;
+  SongAiringNotifier _songAiring;
 
   void initSongFetch() {
-    _songAiring = SongAiring();
+    _songAiring = SongAiringNotifier();
     _songAiring.addListener(() {
       setState(() {
         _songNowPlaying = _songAiring.songNowPlaying;
