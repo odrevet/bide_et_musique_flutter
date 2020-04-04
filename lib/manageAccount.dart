@@ -158,7 +158,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                 PageView(
                   children: <Widget>[
                     BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                       child: Stack(children: [
                         Container(
                           decoration: BoxDecoration(

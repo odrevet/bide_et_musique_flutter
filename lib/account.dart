@@ -253,7 +253,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
           child: Container(
         child: Stack(children: [
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
             child: Container(
               decoration:
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),

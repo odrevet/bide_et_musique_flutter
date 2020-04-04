@@ -34,19 +34,25 @@ class Artist {
   String firstName;
   String lastName;
   String site;
+  String birth;
   List<SongLink> disco;
 
-  Artist({this.id, this.alias, this.site, this.disco});
+  Artist({this.id, this.alias, this.site, this.birth, this.disco});
 
   Artist.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         alias = json['alias'],
-        site = json['site'] {
+        site = json['site'],
+        birth = json['dates']['pretty'] {
     this.disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
       this.disco.add(
           SongLink(id: discoEntry['id'], name: stripTags(discoEntry['name'])));
     }
+  }
+
+  String get urlImage {
+    return '$baseUri/images/photos/ART${this.id}.jpg';
   }
 }
 
@@ -83,7 +89,7 @@ class ArtistPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Artist artist) {
-    var urlArtistImage = '$baseUri/images/photos/ART${artist.id}.jpg';
+    String urlArtistImage = artist.urlImage;
 
     var nestedScrollView = NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -102,7 +108,19 @@ class ArtistPageWidget extends StatelessWidget {
                     children: [
                       Expanded(
                           child: InkWell(child: Image.network(urlArtistImage))),
-                      Expanded(child: Text(artist.alias)),
+                      Expanded(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          if (artist.site != null)
+                            GestureDetector(
+                              onTap: () => launchURL(artist.site),
+                              child: Text(artist.site),
+                            ),
+                          Text(artist.alias),
+                          if (artist.birth != null) Text(artist.birth)
+                        ],
+                      )),
                     ],
                   ))
             ])),
@@ -113,7 +131,7 @@ class ArtistPageWidget extends StatelessWidget {
           child: Container(
         child: Stack(children: [
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
             child: Container(
               decoration:
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
