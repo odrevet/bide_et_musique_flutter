@@ -612,7 +612,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
     for (SongLink songLink in widget._songLinks) {
       String subtitle = songLink.artist == null ? '' : songLink.artist;
 
-      if (songLink.info != null && songLink.info.isEmpty) {
+      if (songLink.info != null && songLink.info.isNotEmpty) {
         if (subtitle != '') subtitle += ' • ';
         subtitle += songLink.info;
       }
