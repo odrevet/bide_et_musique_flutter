@@ -133,9 +133,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   : pauseButton(40)
               , stopButton(40)
             ]),
-        if (PlayerState.playerMode == PlayerMode.song &&
-            duration != null &&
-            duration > 0)
+        if (PlayerState.playerMode == PlayerMode.song)
           Container(
             height: 20,
             child: SongPositionSlider(playbackState, duration),
