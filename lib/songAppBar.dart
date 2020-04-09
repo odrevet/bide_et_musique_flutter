@@ -422,8 +422,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       'artist': widget._song.artist,
       'duration': widget._song.duration.inSeconds
     });
-
-    await AudioService.customAction('setNotification');
     await AudioService.play();
   }
 }

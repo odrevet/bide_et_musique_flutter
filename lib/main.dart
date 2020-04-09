@@ -43,10 +43,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               'id': song.id,
               'title': song.name,
               'artist': song.artist,
-              //'info': song.program.name,
               'duration': -1 //song.duration.inSeconds
             });
-            await AudioService.customAction('setNotification');
           });
       });
     });
