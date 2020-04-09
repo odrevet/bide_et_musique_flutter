@@ -379,12 +379,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            stopSongButton,
             if (AudioService.playbackState.basicState ==
                 BasicPlaybackState.paused)
               resumeSongButton
             else
               pauseSongButton
+            , stopSongButton
           ],
         ),
         if (playbackState != null && duration != null)

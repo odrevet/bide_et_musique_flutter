@@ -111,9 +111,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          stopButton(40),
           CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+          stopButton(40)
         ],
       );
     } else {
@@ -128,10 +128,10 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     : Icons.radio,
                 size: 18.0,
               ),
-              stopButton(40),
               playbackState?.basicState == BasicPlaybackState.paused
                   ? playButton(40)
                   : pauseButton(40)
+              , stopButton(40)
             ]),
         if (PlayerState.playerMode == PlayerMode.song &&
             duration != null &&
