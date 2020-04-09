@@ -278,21 +278,16 @@ class StreamPlayer extends BackgroundAudioTask {
         Map songMap = arguments;
         this._song = Song(
             id: songMap['id'],
-            title: songMap['title'],
+            name: songMap['title'],
             artist: songMap['artist'],
             info: songMap['info'],
             duration: songMap['duration'] == null
                 ? null
                 : Duration(seconds: songMap['duration']));
+        this.setNotification();
         break;
       case 'mode':
         _mode = arguments;
-        break;
-      case 'resetSong':
-        this._song = null;
-        break;
-      case 'setNotification':
-        this.setNotification();
         break;
     }
     super.onCustomAction(name, arguments);
@@ -301,8 +296,7 @@ class StreamPlayer extends BackgroundAudioTask {
   void setNotification() {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
-        album: 'Bide et Musique',
-        genre: _song.info,
+        album: '',
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,

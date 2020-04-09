@@ -75,7 +75,7 @@ class Song extends SongLink {
 
   Song(
       {id,
-      title,
+      name,
       artist,
       cover,
       info,
@@ -87,7 +87,7 @@ class Song extends SongLink {
       this.label,
       this.reference,
       this.lyrics})
-      : super(id: id, name: title, artist: artist, cover: cover, info: info);
+      : super(id: id, name: name, artist: artist, cover: cover, info: info);
 
   Song.fromJson(Map<String, dynamic> json)
       : year = json['year'],
@@ -216,7 +216,7 @@ Future<Song> fetchSong(int songId) async {
     } catch (e) {
       song = Song(
           id: songId,
-          title: '?',
+          name: '?',
           year: 0,
           artist: '?',
           author: '?',
