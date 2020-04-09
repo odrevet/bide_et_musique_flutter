@@ -418,7 +418,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     await AudioService.customAction('mode', 'song');
     await AudioService.customAction('song', {
       'id': widget._song.id,
-      'title': widget._song.name,
+      'name': widget._song.name,
       'artist': widget._song.artist,
       'duration': widget._song.duration.inSeconds
     });

@@ -278,7 +278,7 @@ class StreamPlayer extends BackgroundAudioTask {
         Map songMap = arguments;
         this._song = Song(
             id: songMap['id'],
-            name: songMap['title'],
+            name: songMap['name'],
             artist: songMap['artist'],
             info: songMap['info'],
             duration: songMap['duration'] == null
