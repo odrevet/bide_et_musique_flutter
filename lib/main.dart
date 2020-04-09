@@ -39,12 +39,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           _e = _songAiring.e;
         else if (PlayerState.playerMode == PlayerMode.radio)
           _songAiring.songNowPlaying.then((song) async {
-            await AudioService.customAction('song', {
-              'id': song.id,
-              'name': song.name,
-              'artist': song.artist,
-              'duration': song.duration.inSeconds
-            });
+            await AudioService.customAction('song', song.toJson());
           });
       });
     });

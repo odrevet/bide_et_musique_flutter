@@ -214,12 +214,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               SongAiringNotifier().songNowPlaying.then((song) async {
                 PlayerState.playerMode = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
-                await AudioService.customAction('song', {
-                  'id': song.id,
-                  'name': song.name,
-                  'artist': song.artist,
-                  'duration': song.duration.inSeconds
-                });
+                await AudioService.customAction('song', song.toJson());
                 await AudioService.play();
               });
             }
