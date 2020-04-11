@@ -24,8 +24,6 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  PlaybackState _playbackState;
-  StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
   Exception _e;
   SongAiringNotifier _songAiring;
@@ -49,7 +47,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    connect();
     autoLogin();
     initPlatformState();
     initSongFetch();
@@ -184,8 +181,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    disconnect();
-    WidgetsBinding.instance.removeObserver(this);
+        WidgetsBinding.instance.removeObserver(this);
     if (_sub != null) _sub.cancel();
     super.dispose();
   }
@@ -194,34 +190,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        connect();
         break;
       case AppLifecycleState.paused:
-        disconnect();
         break;
       default:
         break;
     }
-  }
-
-  void connect() async {
-    await AudioService.connect();
-    if (_playbackStateSubscription == null) {
-      _playbackStateSubscription = AudioService.playbackStateStream
-          .listen((PlaybackState playbackState) {
-        setState(() {
-          _playbackState = playbackState;
-        });
-      });
-    }
-  }
-
-  void disconnect() {
-    if (_playbackStateSubscription != null) {
-      _playbackStateSubscription.cancel();
-      _playbackStateSubscription = null;
-    }
-    AudioService.disconnect();
   }
 
   Widget refreshNowPlayingSongButton() {
