@@ -105,7 +105,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
   @override
   Widget build(BuildContext context) {
     final playbackState = InheritedPlaybackState.of(context);
-    double duration = AudioService.currentMediaItem?.duration?.toDouble();
     if (playbackState?.basicState == BasicPlaybackState.buffering ||
         playbackState?.basicState == BasicPlaybackState.connecting) {
       return Row(
@@ -130,13 +129,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
               ),
               playbackState?.basicState == BasicPlaybackState.paused
                   ? playButton(40)
-                  : pauseButton(40)
-              , stopButton(40)
+                  : pauseButton(40),
+              stopButton(40)
             ]),
         if (PlayerState.playerMode == PlayerMode.song)
           Container(
             height: 20,
-            child: SongPositionSlider(playbackState, duration),
+            child: SongPositionSlider(playbackState,
+                AudioService.currentMediaItem?.duration?.toDouble()),
           )
       ];
 

@@ -280,7 +280,6 @@ class StreamPlayer extends BackgroundAudioTask {
             id: songMap['id'],
             name: songMap['name'],
             artist: songMap['artist'],
-            info: songMap['info'],
             duration: songMap['duration'] == null
                 ? null
                 : Duration(seconds: songMap['duration']));
