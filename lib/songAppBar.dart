@@ -402,9 +402,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }
 
   play() async {
-    if (AudioService.playbackState == null ||
-        AudioService.playbackState.basicState == BasicPlaybackState.stopped ||
-        AudioService.playbackState.basicState == BasicPlaybackState.none) {
+    if (!AudioService.running) {
       await AudioService.start(
         backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
         resumeOnClick: true,
