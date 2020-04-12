@@ -39,23 +39,6 @@ Future<SongNowPlaying> fetchNowPlaying() async {
   }
 }
 
-/*class InheritedSongNowPlaying extends InheritedWidget {
-  const InheritedSongNowPlaying(
-      {Key key, @required this.songNowPlaying, @required Widget child})
-      : super(key: key, child: child);
-
-  final Future<SongNowPlaying> songNowPlaying;
-
-  static InheritedSongNowPlaying of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<InheritedSongNowPlaying>();
-  }
-
-  @override
-  bool updateShouldNotify(InheritedSongNowPlaying old) =>
-      songNowPlaying != old.songNowPlaying;
-}*/
-
 class NowPlayingCard extends StatefulWidget {
   final Future<Song> _song;
 
