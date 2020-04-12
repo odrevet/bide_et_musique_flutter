@@ -29,6 +29,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   SongAiringNotifier _songAiring;
 
   void initSongFetch() {
+    _e = null;
     _songAiring = SongAiringNotifier();
     _songAiring.addListener(() {
       setState(() {
@@ -190,8 +191,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        break;
-      case AppLifecycleState.paused:
+        if(_e != null)initSongFetch();
         break;
       default:
         break;
