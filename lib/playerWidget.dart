@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'player.dart';
 
-/*class InheritedPlaybackState extends InheritedWidget {
+class InheritedPlaybackState extends InheritedWidget {
   const InheritedPlaybackState(
       {Key key, @required this.playbackState, @required Widget child})
       : super(key: key, child: child);
@@ -24,7 +24,7 @@ import 'player.dart';
   @override
   bool updateShouldNotify(InheritedPlaybackState old) =>
       playbackState != old.playbackState;
-}*/
+}
 
 class SongPositionSlider extends StatefulWidget {
   final PlaybackState _playerState;
@@ -104,68 +104,63 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlaybackState>(
-        stream: AudioService.playbackStateStream,
-        builder: (context, snapshot) {
-          PlaybackState playbackState = snapshot.data;
-          if (playbackState?.basicState == BasicPlaybackState.buffering ||
-              playbackState?.basicState == BasicPlaybackState.connecting) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-                stopButton(40)
-              ],
-            );
-          } else {
-            List<Widget> controls = <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      PlayerState.playerMode == PlayerMode.song
-                          ? Icons.music_note
-                          : Icons.radio,
-                      size: 18.0,
-                    ),
-                    playbackState?.basicState == BasicPlaybackState.paused
-                        ? playButton(40)
-                        : pauseButton(40),
-                    stopButton(40)
-                  ]),
-              if (PlayerState.playerMode == PlayerMode.song)
-                Container(
-                  height: 20,
-                  child: SongPositionSlider(playbackState,
-                      AudioService.currentMediaItem?.duration?.toDouble()),
-                )
-            ];
+    final playbackState = InheritedPlaybackState.of(context);
+    if (playbackState?.basicState == BasicPlaybackState.buffering ||
+        playbackState?.basicState == BasicPlaybackState.connecting) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+          stopButton(40)
+        ],
+      );
+    } else {
+      List<Widget> controls = <Widget>[
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                PlayerState.playerMode == PlayerMode.song
+                    ? Icons.music_note
+                    : Icons.radio,
+                size: 18.0,
+              ),
+              playbackState?.basicState == BasicPlaybackState.paused
+                  ? playButton(40)
+                  : pauseButton(40),
+              stopButton(40)
+            ]),
+        if (PlayerState.playerMode == PlayerMode.song)
+          Container(
+            height: 20,
+            child: SongPositionSlider(playbackState,
+                AudioService.currentMediaItem?.duration?.toDouble()),
+          )
+      ];
 
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: playbackState?.basicState ==
-                          BasicPlaybackState.playing ||
-                      playbackState?.basicState == BasicPlaybackState.paused ||
-                      playbackState?.basicState == BasicPlaybackState.buffering
-                  ? [
-                      widget.orientation == Orientation.portrait
-                          ? Row(
-                              children: controls,
-                            )
-                          : Column(
-                              children: controls,
-                            )
-                    ]
-                  : [
-                      Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: RadioStreamButton(widget._songNowPlaying))
-                    ],
-            );
-          }
-        });
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: playbackState?.basicState == BasicPlaybackState.playing ||
+                playbackState?.basicState == BasicPlaybackState.paused ||
+                playbackState?.basicState == BasicPlaybackState.buffering
+            ? [
+                widget.orientation == Orientation.portrait
+                    ? Row(
+                        children: controls,
+                      )
+                    : Column(
+                        children: controls,
+                      )
+              ]
+            : [
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: RadioStreamButton(widget._songNowPlaying))
+              ],
+      );
+    }
   }
 }
 
