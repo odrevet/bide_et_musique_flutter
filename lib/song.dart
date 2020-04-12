@@ -56,6 +56,9 @@ class SongLink {
   String get thumbLink {
     return '$baseUri/images/thumb100/${this.id}.jpg';
   }
+
+  // 20 25 30 50 75 100 150 200
+  String getThumbLink(int size) => '$baseUri/images/thumb$size/${this.id}.jpg';
 }
 
 class Song extends SongLink {
@@ -105,11 +108,11 @@ class Song extends SongLink {
             cover: json['covers']['main']);
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'artist': artist,
-    'duration': duration.inSeconds
-  };
+        'id': id,
+        'name': name,
+        'artist': artist,
+        'duration': duration.inSeconds
+      };
 }
 
 class Comment {
@@ -129,7 +132,10 @@ String createTag(SongLink songLink) {
 
 Hero heroThumbCover(SongLink songLink) {
   final tag = createTag(songLink);
-  return Hero(tag: tag, child: Image(image: NetworkImage(songLink.thumbLink)));
+  return Hero(
+      tag: tag,
+      child: CachedNetworkImage(
+          imageUrl: songLink.thumbLink));
 }
 
 class SongCardWidget extends StatelessWidget {
