@@ -46,8 +46,11 @@ class SongAiringNotifier extends ChangeNotifier {
 
   Future<SongNowPlaying> songNowPlaying;
   Exception e;
+  Timer _t;
 
   void periodicFetchSongNowPlaying() {
+    e = null;
+    _reset();
     try {
       songNowPlaying = fetchNowPlaying();
       songNowPlaying.then((s) async {
@@ -55,20 +58,26 @@ class SongAiringNotifier extends ChangeNotifier {
         int delay = (s.duration.inSeconds -
                 (s.duration.inSeconds * s.elapsedPcent / 100))
             .ceil();
-        Timer(Duration(seconds: delay), () {
+        _t = Timer(Duration(seconds: delay), () {
           periodicFetchSongNowPlaying();
         });
       }, onError: (e) {
         this.e = e;
-        songNowPlaying = null;
+        _reset();
         notifyListeners();
       });
     } catch (e) {
       this.e = e;
-      songNowPlaying = null;
+      _reset();
       notifyListeners();
     }
   }
+
+  _reset(){
+      _t?.cancel();
+      songNowPlaying = null;
+  }
+
 }
 
 class StreamPlayer extends BackgroundAudioTask {

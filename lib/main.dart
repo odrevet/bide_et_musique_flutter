@@ -195,8 +195,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        if(_e != null)initSongFetch();
         connect();
+        _songAiring.periodicFetchSongNowPlaying();
         break;
       case AppLifecycleState.paused:
         disconnect();
