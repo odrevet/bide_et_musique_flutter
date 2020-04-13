@@ -268,10 +268,10 @@ class SongShareIconWidget extends StatelessWidget {
         label: Text('Message'),
         onPressed: () => Share.share(
             '''En ce moment j'écoute '${_song.name}' sur Bide et Musique !
-          
-Tu peux consulter la fiche de cette chanson à l'adresse : 
+
+Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song.link}
-          
+
 --------
 Message envoyé avec l'application 'Bide et Musique flutter pour Android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
@@ -353,10 +353,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     Widget songPlaybackControls;
     bool isPlaying = (PlayerState.playerMode == PlayerMode.song &&
-        (AudioService.playbackState != null &&
-            AudioService.playbackState.basicState !=
-                BasicPlaybackState.stopped &&
-            AudioService.playbackState.basicState != BasicPlaybackState.none) &&
+        AudioService.running &&
         widget._song.streamLink == AudioService.currentMediaItem?.id);
 
     if (isPlaying == true) {
