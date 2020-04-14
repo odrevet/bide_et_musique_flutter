@@ -54,7 +54,7 @@ class SongLink {
   }
 
   String get thumbLink {
-    return '$baseUri/images/thumb100/${this.id}.jpg';
+    return '$baseUri/images/thumb75/${this.id}.jpg';
   }
 
   // 20 25 30 50 75 100 150 200
@@ -135,7 +135,9 @@ Hero heroThumbCover(SongLink songLink) {
   return Hero(
       tag: tag,
       child: CachedNetworkImage(
-          imageUrl: songLink.thumbLink));
+          imageUrl: songLink.thumbLink,
+          placeholder: (context, url) => Icon(Icons.album, size: 55.0),
+          errorWidget: (context, url, error) => Icon(Icons.album, size: 55.0)));
 }
 
 class SongCardWidget extends StatelessWidget {
@@ -363,7 +365,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             ),
           ),
         ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Icon(Icons.album, size: 55.0),
       ),
       Align(alignment: Alignment.center, child: CircularProgressIndicator())
     ]);
