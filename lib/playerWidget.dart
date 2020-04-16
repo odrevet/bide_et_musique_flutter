@@ -27,10 +27,9 @@ class InheritedPlaybackState extends InheritedWidget {
 }
 
 class SongPositionSlider extends StatefulWidget {
-  final PlaybackState _playerState;
   final double _duration;
 
-  SongPositionSlider(this._playerState, this._duration);
+  SongPositionSlider(this._duration);
 
   @override
   _SongPositionSliderState createState() => _SongPositionSliderState();
@@ -38,7 +37,7 @@ class SongPositionSlider extends StatefulWidget {
 
 class _SongPositionSliderState extends State<SongPositionSlider> {
   final BehaviorSubject<double> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
+  BehaviorSubject.seeded(null);
 
   String _formatSongDuration(int ms) {
     Duration duration = Duration(milliseconds: ms);
@@ -54,18 +53,19 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 
   @override
   Widget build(BuildContext context) {
-    double seekPos;
     return StreamBuilder(
         stream: Rx.combineLatest2<double, double, double>(
             _dragPositionSubject.stream,
             Stream.periodic(Duration(milliseconds: 200)),
-            (dragPosition, _) => dragPosition),
+                (dragPosition, _) => dragPosition),
         builder: (context, snapshot) {
+          final playerState = InheritedPlaybackState.of(context);
+          double seekPos;
           double position =
-              snapshot.data ?? widget._playerState.currentPosition.toDouble();
+              snapshot.data ?? playerState.currentPosition.toDouble();
 
           Widget text =
-              Text(_formatSongDuration(widget._playerState.currentPosition));
+          Text(_formatSongDuration(playerState.currentPosition));
 
           Widget slider = Slider(
               inactiveColor: Colors.grey,
@@ -104,63 +104,59 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    final playbackState = InheritedPlaybackState.of(context);
-    if (playbackState?.basicState == BasicPlaybackState.buffering ||
-        playbackState?.basicState == BasicPlaybackState.connecting) {
+    final basicState = InheritedPlaybackState.of(context)?.basicState;
+
+    if (basicState == null || basicState == BasicPlaybackState.none)
+      return RadioStreamButton(widget._songNowPlaying);
+
+    if (basicState == BasicPlaybackState.buffering ||
+        basicState == BasicPlaybackState.connecting) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-          stopButton(40)
+          stopButton()
         ],
       );
-    } else {
-      List<Widget> controls = <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                PlayerState.playerMode == PlayerMode.song
-                    ? Icons.music_note
-                    : Icons.radio,
-                size: 18.0,
-              ),
-              playbackState?.basicState == BasicPlaybackState.paused
-                  ? playButton(40)
-                  : pauseButton(40),
-              stopButton(40)
-            ]),
-        if (PlayerState.playerMode == PlayerMode.song)
-          Container(
-            height: 20,
-            child: SongPositionSlider(playbackState,
-                AudioService.currentMediaItem?.duration?.toDouble()),
-          )
-      ];
-
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: playbackState?.basicState == BasicPlaybackState.playing ||
-                playbackState?.basicState == BasicPlaybackState.paused ||
-                playbackState?.basicState == BasicPlaybackState.buffering
-            ? [
-                widget.orientation == Orientation.portrait
-                    ? Row(
-                        children: controls,
-                      )
-                    : Column(
-                        children: controls,
-                      )
-              ]
-            : [
-                Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: RadioStreamButton(widget._songNowPlaying))
-              ],
-      );
     }
+
+    List<Widget> controls = <Widget>[
+      Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              PlayerState.playerMode == PlayerMode.song
+                  ? Icons.music_note
+                  : Icons.radio,
+              size: 18.0,
+            ),
+            basicState == BasicPlaybackState.paused
+                ? playButton()
+                : pauseButton(),
+            stopButton()
+          ]),
+      if (PlayerState.playerMode == PlayerMode.song)
+        Container(
+          height: 20,
+          child: SongPositionSlider(
+              AudioService.currentMediaItem?.duration?.toDouble()),
+        )
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        widget.orientation == Orientation.portrait
+            ? Row(
+          children: controls,
+        )
+            : Column(
+          children: controls,
+        )
+      ],
+    );
   }
 }
 
@@ -187,12 +183,14 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           label = RichText(
             text: TextSpan(
               text: 'Écouter la radio ',
-              style: DefaultTextStyle.of(context).style,
+              style: DefaultTextStyle
+                  .of(context)
+                  .style,
               children: <TextSpan>[
                 TextSpan(
                     text: '\n${snapshot.data.nbListeners} auditeurs',
                     style:
-                        TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+                    TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
               ],
             ),
           );
@@ -200,8 +198,6 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
         return RaisedButton.icon(
           icon: Icon(Icons.radio, size: 40),
           label: label,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           onPressed: () async {
             bool success = await AudioService.start(
               backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
@@ -225,19 +221,22 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
   }
 }
 
-IconButton playButton(double iconSize) => IconButton(
+IconButton playButton([double iconSize = 40]) =>
+    IconButton(
       icon: Icon(Icons.play_arrow),
       iconSize: iconSize,
       onPressed: AudioService.play,
     );
 
-IconButton pauseButton(double iconSize) => IconButton(
+IconButton pauseButton([double iconSize = 40]) =>
+    IconButton(
       icon: Icon(Icons.pause),
       iconSize: iconSize,
       onPressed: AudioService.pause,
     );
 
-IconButton stopButton(double iconSize) => IconButton(
+IconButton stopButton([double iconSize = 40]) =>
+    IconButton(
       icon: Icon(Icons.stop),
       iconSize: iconSize,
       onPressed: AudioService.stop,

@@ -348,7 +348,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final playbackState = InheritedPlaybackState.of(context);
     double duration = AudioService.currentMediaItem?.duration?.toDouble();
 
     Widget songPlaybackControls;
@@ -357,21 +356,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         widget._song.streamLink == AudioService.currentMediaItem?.id);
 
     if (isPlaying == true) {
-      Widget stopSongButton = RaisedButton.icon(
-          icon: Icon(Icons.stop),
-          label: Text('Stop'),
-          onPressed: () => AudioService.stop());
-
-      Widget pauseSongButton = RaisedButton.icon(
-          icon: Icon(Icons.pause),
-          label: Text('Pause'),
-          onPressed: () => AudioService.pause());
-
-      Widget resumeSongButton = RaisedButton.icon(
-          icon: Icon(Icons.play_arrow),
-          label: Text('Reprendre'),
-          onPressed: () => AudioService.play());
-
       songPlaybackControls = Column(children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -384,8 +368,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
             , stopSongButton
           ],
         ),
-        if (playbackState != null && duration != null)
-          SongPositionSlider(playbackState, duration),
+        if (duration != null)
+          SongPositionSlider(duration),
         Divider()
       ]);
     } else {
@@ -397,6 +381,21 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
     return songPlaybackControls;
   }
+
+  Widget stopSongButton = RaisedButton.icon(
+      icon: Icon(Icons.stop),
+      label: Text('Stop'),
+      onPressed: () => AudioService.stop());
+
+  Widget pauseSongButton = RaisedButton.icon(
+      icon: Icon(Icons.pause),
+      label: Text('Pause'),
+      onPressed: () => AudioService.pause());
+
+  Widget resumeSongButton = RaisedButton.icon(
+      icon: Icon(Icons.play_arrow),
+      label: Text('Reprendre'),
+      onPressed: () => AudioService.play());
 
   play() async {
     if (!AudioService.running) {
