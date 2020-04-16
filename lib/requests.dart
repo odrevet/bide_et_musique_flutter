@@ -108,10 +108,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                         builder: (context) => SongPageWidget(
                             songLink: songLink, song: fetchSong(songLink.id))));
               },
-              child: CircleAvatar(
-                backgroundColor: Colors.black12,
-                child: heroThumbCover(songLink),
-              ),
+              child: CoverThumb(songLink),
             ),
             title: Text(songLink.name),
             subtitle: Text(songLink.artist),

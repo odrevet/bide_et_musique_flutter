@@ -36,10 +36,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           _confirmDeletion(songLink, account);
         },
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.black12,
-            child: heroThumbCover(songLink),
-          ),
+          leading: CoverThumb(songLink),
           title: Text('#$position - ${songLink.name}'),
           subtitle: Text(songLink.artist),
           onTap: () {

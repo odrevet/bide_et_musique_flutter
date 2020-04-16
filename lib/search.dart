@@ -100,10 +100,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
         itemCount: _songLinks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.black12,
-                child: Image(image: NetworkImage(_songLinks[index].thumbLink)),
-              ),
+              leading: CoverThumb(_songLinks[index]),
               title: Text(
                 _songLinks[index].name,
               ),
@@ -284,8 +281,6 @@ class _SearchWidgetState extends State<SearchWidget> {
                     controller: _controller),
                 Container(
                   child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24.0)),
                       child: Text(
                         'Lancer la recherche',
                       ),

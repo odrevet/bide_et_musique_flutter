@@ -54,7 +54,7 @@ class SongLink {
   }
 
   String get thumbLink {
-    return '$baseUri/images/thumb75/${this.id}.jpg';
+    return '$baseUri/images/thumb100/${this.id}.jpg';
   }
 
   // 20 25 30 50 75 100 150 200
@@ -130,14 +130,21 @@ String createTag(SongLink songLink) {
       : 'cover_${songLink.id}_${songLink.index}';
 }
 
-Hero heroThumbCover(SongLink songLink) {
-  final tag = createTag(songLink);
-  return Hero(
-      tag: tag,
-      child: CachedNetworkImage(
-          imageUrl: songLink.thumbLink,
-          placeholder: (context, url) => Icon(Icons.album, size: 55.0),
-          errorWidget: (context, url, error) => Icon(Icons.album, size: 55.0)));
+class CoverThumb extends StatelessWidget {
+  final SongLink _songLink;
+
+  CoverThumb(this._songLink);
+
+  @override
+  Widget build(BuildContext context) {
+    final tag = createTag(_songLink);
+    return Hero(
+        tag: tag,
+        child: CachedNetworkImage(
+            imageUrl: _songLink.thumbLink,
+            placeholder: (context, url) => Icon(Icons.album, size: 56.0),
+            errorWidget: (context, url, error) => Icon(Icons.album, size: 56.0)));
+  }
 }
 
 class SongCardWidget extends StatelessWidget {
@@ -179,6 +186,7 @@ class Cover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
+      fadeInDuration: Duration(seconds: 0),
       imageUrl: _url,
       errorWidget: (context, url, error) => DecoratedBox(
         decoration: BoxDecoration(
@@ -381,6 +389,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0)),
           actions: [
             RaisedButton.icon(
               icon: Icon(Icons.send),
@@ -634,7 +644,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
 
       rows.add(ListTile(
         leading: GestureDetector(
-          child: heroThumbCover(songLink),
+          child: CoverThumb(songLink),
           onTap: () => Navigator.of(context).push(MaterialPageRoute<Null>(
               builder: (BuildContext context) {
                 return CoverViewer(songLink);
