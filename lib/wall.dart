@@ -107,6 +107,8 @@ class _WallWidgetState extends State<WallWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0)),
           actions: <Widget>[
             RaisedButton.icon(
               icon: Icon(Icons.send),

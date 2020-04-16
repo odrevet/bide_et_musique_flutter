@@ -224,8 +224,6 @@ class _IdentificationWidgetState extends State<IdentificationWidget> {
               onChanged: _onRememberToggle),
           Container(
             child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
                 child: Text(
                   'Se connecter',
                 ),

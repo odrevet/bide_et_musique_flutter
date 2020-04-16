@@ -81,15 +81,9 @@ class NowSongsWidget extends StatelessWidget {
     var rows = <ListTile>[];
 
     for (NowSong nowSong in nowSongs) {
-      final tag = createTag(nowSong.songLink);
       rows.add(ListTile(
           onTap: () => launchSongPage(nowSong.songLink, context),
-          leading: CircleAvatar(
-            child: Hero(
-                tag: tag,
-                child: Image(image: NetworkImage(nowSong.songLink.thumbLink))),
-            backgroundColor: Colors.black12,
-          ),
+          leading: CoverThumb(nowSong.songLink),
           title: Html(
               data: nowSong.songLink.name + '<br/>' + nowSong.desc,
               onLinkTap: (url) {

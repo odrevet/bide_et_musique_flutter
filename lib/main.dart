@@ -249,13 +249,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     Widget body;
     Widget nowPlayingWidget;
 
-    if(_e != null && _songNowPlaying == null)
+    if (_e != null && _songNowPlaying == null)
       nowPlayingWidget = refreshNowPlayingSongButton();
-    else if(_songNowPlaying == null)
+    else if (_songNowPlaying == null)
       nowPlayingWidget = Center(child: CircularProgressIndicator());
     else
       nowPlayingWidget = NowPlayingCard(_songNowPlaying);
-
 
     //if the app is launched from deep linking, try to fetch the widget that
     //match the url
@@ -310,13 +309,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         child: MaterialApp(
             title: 'Bide&Musique',
             theme: ThemeData(
-              primarySwatch: Colors.orange,
-              buttonColor: Colors.orangeAccent,
-              secondaryHeaderColor: Colors.deepOrange,
-              bottomAppBarColor: Colors.orange,
-              canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-              dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-            ),
+                primarySwatch: Colors.orange,
+                secondaryHeaderColor: Colors.deepOrange,
+                bottomAppBarColor: Colors.orange,
+                canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+                dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+                buttonTheme: ButtonThemeData(
+                    buttonColor: Colors.orangeAccent,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)))),
             home: home));
   }
 }
