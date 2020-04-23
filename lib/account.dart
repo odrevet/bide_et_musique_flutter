@@ -317,6 +317,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
 
 class MessageListingWidget extends StatelessWidget {
   final List<Message> messages;
+
   MessageListingWidget(this.messages);
 
   @override

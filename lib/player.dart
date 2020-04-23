@@ -11,8 +11,15 @@ import 'utils.dart';
 
 enum PlayerMode { radio, song, off }
 
-abstract class PlayerState {
+abstract class PlayerSongType {
   static PlayerMode playerMode = PlayerMode.off;
+}
+
+class PlayerState {
+  final MediaItem mediaItem;
+  final PlaybackState playbackState;
+
+  PlayerState(this.mediaItem, this.playbackState);
 }
 
 MediaControl playControl = MediaControl(
@@ -73,11 +80,10 @@ class SongAiringNotifier extends ChangeNotifier {
     }
   }
 
-  _reset(){
-      _t?.cancel();
-      songNowPlaying = null;
+  _reset() {
+    _t?.cancel();
+    songNowPlaying = null;
   }
-
 }
 
 class StreamPlayer extends BackgroundAudioTask {

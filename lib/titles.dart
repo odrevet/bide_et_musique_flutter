@@ -70,6 +70,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
 
 class TitlesWidget extends StatefulWidget {
   final SongAiringNotifier _songAiring = SongAiringNotifier();
+
   TitlesWidget({Key key}) : super(key: key);
 
   @override
@@ -77,8 +78,6 @@ class TitlesWidget extends StatefulWidget {
 }
 
 class _TitlesWidgetState extends State<TitlesWidget> {
-
-
   Future<Map<String, List<SongLink>>> _songLinks;
 
   void updateTitles() {
@@ -91,14 +90,14 @@ class _TitlesWidgetState extends State<TitlesWidget> {
 
   @override
   initState() {
-    listener = () { if(mounted)updateTitles(); };
+    listener = () {
+      if (mounted) updateTitles();
+    };
 
     _songLinks = fetchTitles();
     widget._songAiring.addListener(listener);
     super.initState();
   }
-
-
 
   @override
   void dispose() {

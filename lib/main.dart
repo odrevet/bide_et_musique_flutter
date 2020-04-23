@@ -24,8 +24,6 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  PlaybackState _playbackState;
-  StreamSubscription _playbackStateSubscription;
   Future<SongNowPlaying> _songNowPlaying;
   Exception _e;
   SongAiringNotifier _songAiring;
@@ -38,7 +36,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         _songNowPlaying = _songAiring.songNowPlaying;
         if (_songNowPlaying == null)
           _e = _songAiring.e;
-        else if (PlayerState.playerMode == PlayerMode.radio)
+        else if (PlayerSongType.playerMode == PlayerMode.radio)
           _songAiring.songNowPlaying.then((song) async {
             await AudioService.customAction('song', song.toJson());
           });
@@ -50,7 +48,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    connect();
+    //connect();
     autoLogin();
     initPlatformState();
     initSongFetch();
@@ -185,7 +183,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    disconnect();
+    //disconnect();
     WidgetsBinding.instance.removeObserver(this);
     if (_sub != null) _sub.cancel();
     super.dispose();
@@ -195,18 +193,18 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        connect();
+        //connect();
         _songAiring.periodicFetchSongNowPlaying();
         break;
       case AppLifecycleState.paused:
-        disconnect();
+        //disconnect();
         break;
       default:
         break;
     }
   }
 
-  void connect() async {
+  /*void connect() async {
     await AudioService.connect();
     if (_playbackStateSubscription == null) {
       _playbackStateSubscription = AudioService.playbackStateStream
@@ -224,7 +222,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       _playbackStateSubscription = null;
     }
     AudioService.disconnect();
-  }
+  }*/
 
   Widget refreshNowPlayingSongButton() {
     return Center(
@@ -304,19 +302,20 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           body: body);
     }
 
-    return InheritedPlaybackState(
-        playbackState: _playbackState,
-        child: MaterialApp(
-            title: 'Bide&Musique',
-            theme: ThemeData(
-                primarySwatch: Colors.orange,
-                secondaryHeaderColor: Colors.deepOrange,
-                bottomAppBarColor: Colors.orange,
-                canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-                dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-                buttonTheme: ButtonThemeData(
-                    buttonColor: Colors.orangeAccent,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)))),
-            home: home));
+    return AudioServiceWidget(
+      child: MaterialApp(
+          title: 'Bide&Musique',
+          theme: ThemeData(
+              primarySwatch: Colors.orange,
+              secondaryHeaderColor: Colors.deepOrange,
+              bottomAppBarColor: Colors.orange,
+              canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+              dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+              buttonTheme: ButtonThemeData(
+                  buttonColor: Colors.orangeAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)))),
+          home: home),
+    );
   }
 }

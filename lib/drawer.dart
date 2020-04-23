@@ -81,10 +81,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text('Titres'),
           leading: Icon(Icons.queue_music),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TitlesWidget()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TitlesWidget()));
           },
         ),
         ListTile(

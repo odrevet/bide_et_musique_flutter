@@ -1,10 +1,11 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 
 import 'player.dart';
-import 'playerWidget.dart';
+import 'songPositionSlider.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -348,38 +349,50 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double duration = AudioService.currentMediaItem?.duration?.toDouble();
+    return StreamBuilder(
+        stream: Rx.combineLatest2<MediaItem, PlaybackState, PlayerState>(
+            AudioService.currentMediaItemStream,
+            AudioService.playbackStateStream,
+            (mediaItem, playbackState) =>
+                PlayerState(mediaItem, playbackState)),
+        builder: (context, snapshot) {
+          final screenState = snapshot.data;
+          final mediaItem = screenState?.mediaItem;
+          final state = screenState?.playbackState;
+          final basicState = state?.basicState ?? BasicPlaybackState.none;
 
-    Widget songPlaybackControls;
-    bool isPlaying = (PlayerState.playerMode == PlayerMode.song &&
-        AudioService.running &&
-        widget._song.streamLink == AudioService.currentMediaItem?.id);
+          Widget songPlaybackControls;
+          bool isPlaying = (PlayerSongType.playerMode == PlayerMode.song &&
+              AudioService.running &&
+              basicState != BasicPlaybackState.none &&
+              basicState != BasicPlaybackState.stopped &&
+              widget._song.streamLink == mediaItem.id);
 
-    if (isPlaying == true) {
-      songPlaybackControls = Column(children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            if (AudioService.playbackState.basicState ==
-                BasicPlaybackState.paused)
-              resumeSongButton
-            else
-              pauseSongButton
-            , stopSongButton
-          ],
-        ),
-        if (duration != null)
-          SongPositionSlider(duration),
-        Divider()
-      ]);
-    } else {
-      songPlaybackControls = RaisedButton.icon(
-          icon: Icon(Icons.play_arrow),
-          label: Text('Écouter'),
-          onPressed: () => play());
-    }
+          if (isPlaying == true) {
+            songPlaybackControls = Column(children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  if (AudioService.playbackState.basicState ==
+                      BasicPlaybackState.paused)
+                    resumeSongButton
+                  else
+                    pauseSongButton,
+                  stopSongButton
+                ],
+              ),
+              SongPositionSlider(mediaItem, state),
+              Divider()
+            ]);
+          } else {
+            songPlaybackControls = RaisedButton.icon(
+                icon: Icon(Icons.play_arrow),
+                label: Text('Écouter'),
+                onPressed: () => play());
+          }
 
-    return songPlaybackControls;
+          return songPlaybackControls;
+        });
   }
 
   Widget stopSongButton = RaisedButton.icon(
@@ -408,7 +421,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       );
     }
 
-    PlayerState.playerMode = PlayerMode.song;
+    PlayerSongType.playerMode = PlayerMode.song;
     await AudioService.customAction('mode', 'song');
     await AudioService.customAction('song', widget._song.toJson());
     await AudioService.play();

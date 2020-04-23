@@ -143,7 +143,8 @@ class CoverThumb extends StatelessWidget {
         child: CachedNetworkImage(
             imageUrl: _songLink.thumbLink,
             placeholder: (context, url) => Icon(Icons.album, size: 56.0),
-            errorWidget: (context, url, error) => Icon(Icons.album, size: 56.0)));
+            errorWidget: (context, url, error) =>
+                Icon(Icons.album, size: 56.0)));
   }
 }
 
@@ -389,8 +390,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: [
             RaisedButton.icon(
               icon: Icon(Icons.send),
