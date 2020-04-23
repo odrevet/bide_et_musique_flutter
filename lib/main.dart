@@ -204,26 +204,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
   }
 
-  /*void connect() async {
-    await AudioService.connect();
-    if (_playbackStateSubscription == null) {
-      _playbackStateSubscription = AudioService.playbackStateStream
-          .listen((PlaybackState playbackState) {
-        setState(() {
-          _playbackState = playbackState;
-        });
-      });
-    }
-  }
-
-  void disconnect() {
-    if (_playbackStateSubscription != null) {
-      _playbackStateSubscription.cancel();
-      _playbackStateSubscription = null;
-    }
-    AudioService.disconnect();
-  }*/
-
   Widget refreshNowPlayingSongButton() {
     return Center(
       child: Column(

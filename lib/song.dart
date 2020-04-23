@@ -353,7 +353,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     var coverLink = songLink.coverLink;
 
     var loadingMessage = '';
-    if (songLink.name.isNotEmpty) {
+    if (songLink.name != null && songLink.name.isNotEmpty) {
       loadingMessage += songLink.name;
     } else {
       loadingMessage = 'Chargement';

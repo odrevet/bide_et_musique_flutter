@@ -17,7 +17,7 @@ class SongPositionSlider extends StatefulWidget {
 
 class _SongPositionSliderState extends State<SongPositionSlider> {
   final BehaviorSubject<double> _dragPositionSubject =
-  BehaviorSubject.seeded(null);
+      BehaviorSubject.seeded(null);
 
   String _formatSongDuration(int ms) {
     Duration duration = Duration(milliseconds: ms);
@@ -38,7 +38,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
         stream: Rx.combineLatest2<double, double, double>(
             _dragPositionSubject.stream,
             Stream.periodic(Duration(milliseconds: 200)),
-                (dragPosition, _) => dragPosition),
+            (dragPosition, _) => dragPosition),
         builder: (context, snapshot) {
           double position =
               snapshot.data ?? widget.state.currentPosition.toDouble();

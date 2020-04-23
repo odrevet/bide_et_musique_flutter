@@ -361,20 +361,18 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final state = screenState?.playbackState;
           final basicState = state?.basicState ?? BasicPlaybackState.none;
 
-          Widget songPlaybackControls;
           bool isPlaying = (PlayerSongType.playerMode == PlayerMode.song &&
               AudioService.running &&
               basicState != BasicPlaybackState.none &&
               basicState != BasicPlaybackState.stopped &&
               widget._song.streamLink == mediaItem.id);
 
-          if (isPlaying == true) {
-            songPlaybackControls = Column(children: <Widget>[
+          if (isPlaying == true)
+            return Column(children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  if (AudioService.playbackState.basicState ==
-                      BasicPlaybackState.paused)
+                  if (basicState == BasicPlaybackState.paused)
                     resumeSongButton
                   else
                     pauseSongButton,
@@ -384,14 +382,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
               SongPositionSlider(mediaItem, state),
               Divider()
             ]);
-          } else {
-            songPlaybackControls = RaisedButton.icon(
+          else
+            return RaisedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Écouter'),
                 onPressed: () => play());
-          }
-
-          return songPlaybackControls;
         });
   }
 

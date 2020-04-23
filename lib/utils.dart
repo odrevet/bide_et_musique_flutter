@@ -12,7 +12,7 @@ const host = 'www.$site';
 const baseUri = 'https://$host';
 
 int getIdFromUrl(String url) {
-  final idRegex = RegExp(r'(\d+).html$');
+  final idRegex = RegExp(r'(\d+).(?:html|php)$');
   if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)[1]);
   return null;
 }

@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:bide_et_musique/nowPlaying.dart';
+import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'song.dart';
 import 'player.dart';
 import 'songPositionSlider.dart';
+import 'nowPlaying.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -56,12 +58,23 @@ class _PlayerWidgetState extends State<PlayerWidget>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(
-                    PlayerSongType.playerMode == PlayerMode.song
-                        ? Icons.music_note
-                        : Icons.radio,
-                    size: 18.0,
-                  ),
+                  PlayerSongType.playerMode == PlayerMode.song
+                      ? InkWell(
+                          onTap: () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            int id = getIdFromUrl(mediaItem.id);
+                            return SongPageWidget(
+                                songLink: SongLink(id: id), song: fetchSong(id));
+                          })),
+                          child: Icon(
+                            Icons.music_note,
+                            size: 18.0,
+                          ),
+                        )
+                      : Icon(
+                          Icons.radio,
+                          size: 18.0,
+                        ),
                   basicState == BasicPlaybackState.paused
                       ? playButton()
                       : pauseButton(),
