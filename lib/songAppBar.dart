@@ -1,13 +1,13 @@
-import 'package:rxdart/rxdart.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:share/share.dart';
 
 import 'player.dart';
-import 'songPositionSlider.dart';
 import 'session.dart';
 import 'song.dart';
+import 'songPositionSlider.dart';
 import 'utils.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {

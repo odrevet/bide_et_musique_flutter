@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'song.dart';
 import 'about.dart';
 import 'forums.dart';
 import 'identification.dart';
@@ -13,6 +12,7 @@ import 'schedule.dart';
 import 'search.dart';
 import 'session.dart';
 import 'settings.dart';
+import 'song.dart';
 import 'thematics.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';

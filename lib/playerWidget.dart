@@ -5,10 +5,10 @@ import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'song.dart';
-import 'player.dart';
-import 'songPositionSlider.dart';
 import 'nowPlaying.dart';
+import 'player.dart';
+import 'song.dart';
+import 'songPositionSlider.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -36,53 +36,52 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final state = screenState?.playbackState;
           final basicState = state?.basicState ?? BasicPlaybackState.none;
 
+          List<Widget> controls;
+
           if (!snapshot.hasData ||
               basicState == null ||
               basicState == BasicPlaybackState.none)
-            return RadioStreamButton(widget._songNowPlaying);
-
-          if (basicState == BasicPlaybackState.buffering ||
+            controls = [RadioStreamButton(widget._songNowPlaying)];
+          else if (basicState == BasicPlaybackState.buffering ||
               basicState == BasicPlaybackState.connecting) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-                stopButton()
-              ],
-            );
-          }
-
-          List<Widget> controls = <Widget>[
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  PlayerSongType.playerMode == PlayerMode.song
-                      ? InkWell(
-                          onTap: () => Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            int id = getIdFromUrl(mediaItem.id);
-                            return SongPageWidget(
-                                songLink: SongLink(id: id), song: fetchSong(id));
-                          })),
-                          child: Icon(
-                            Icons.music_note,
+            controls = [
+              CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
+              stopButton()
+            ];
+          } else
+            controls = <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    PlayerSongType.playerMode == PlayerMode.song
+                        ? InkWell(
+                            onTap: () => Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              int id = getIdFromUrl(mediaItem.id);
+                              return SongPageWidget(
+                                  songLink: SongLink(id: id),
+                                  song: fetchSong(id));
+                            })),
+                            child: Icon(
+                              Icons.music_note,
+                              size: 18.0,
+                            ),
+                          )
+                        : Icon(
+                            Icons.radio,
                             size: 18.0,
                           ),
-                        )
-                      : Icon(
-                          Icons.radio,
-                          size: 18.0,
-                        ),
-                  basicState == BasicPlaybackState.paused
-                      ? playButton()
-                      : pauseButton(),
-                  stopButton()
-                ]),
-            if (PlayerSongType.playerMode == PlayerMode.song)
-              Container(height: 20, child: SongPositionSlider(mediaItem, state))
-          ];
+                    basicState == BasicPlaybackState.paused
+                        ? playButton()
+                        : pauseButton(),
+                    stopButton()
+                  ]),
+              if (PlayerSongType.playerMode == PlayerMode.song)
+                Container(
+                    height: 20, child: SongPositionSlider(mediaItem, state))
+            ];
 
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
