@@ -24,7 +24,7 @@ class Program {
       : id = json['id'],
         type = json['type'],
         name = stripTags(json['name']),
-        airedOn = json['aired_on'][0],
+        airedOn = json['aired_on'].isEmpty ? null : json['aired_on'].toString(),
         description = json['description'] {
     if (this.type == 'program-liste') {
       var songs = <SongLink>[];
