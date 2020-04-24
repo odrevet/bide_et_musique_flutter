@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -15,7 +14,7 @@ class Program {
   String type;
   String name;
   String description;
-  List<String> airedOn;
+  String airedOn;
   List<String> inMeta;
   List<SongLink> songs;
 
@@ -25,6 +24,7 @@ class Program {
       : id = json['id'],
         type = json['type'],
         name = stripTags(json['name']),
+        airedOn = json['aired_on'][0],
         description = json['description'] {
     if (this.type == 'program-liste') {
       var songs = <SongLink>[];
@@ -84,17 +84,11 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData)
             return _buildView(context, snapshot.data);
-          else if (snapshot.hasError)
-            return Text("${snapshot.error}");
+          else if (snapshot.hasError) return Text("${snapshot.error}");
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Chargement')
-            ),
-            body: Center(
-              child: CircularProgressIndicator()
-            )
-          );
+              appBar: AppBar(title: Text('Chargement')),
+              body: Center(child: CircularProgressIndicator()));
         },
       ),
     );
@@ -116,16 +110,44 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: _switchViewButton()
-          )
+              child: displayInfoButton(program)),
+          Padding(
+              padding: EdgeInsets.only(right: 20.0), child: _switchViewButton())
         ],
       ),
-      body: Center(
-          child: listing),
+      body: Center(child: listing),
     );
   }
 
-  Widget _switchViewButton(){
+  Widget displayInfoButton(Program program) {
+    return GestureDetector(
+      onTap: () {
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0)),
+              title: Text(program.name),
+              children: [
+                Html(data: program.description),
+                if (program.airedOn != null)
+                  Text('Dernière diffusion le ${program.airedOn}')
+              ],
+            );
+          },
+        );
+      },
+      child: Icon(Icons.info_outline),
+    );
+  }
+
+  Widget _switchViewButton() {
     return GestureDetector(
       onTap: () {
         setState(() {
