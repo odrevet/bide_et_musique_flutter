@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import 'pochettoscopeWidget.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -63,32 +64,36 @@ Future<Program> fetchProgram(int programId) async {
   return program;
 }
 
-class ProgramPageWidget extends StatelessWidget {
+class ProgramPageWidget extends StatefulWidget {
   final Future<Program> program;
 
   ProgramPageWidget({Key key, this.program}) : super(key: key);
 
   @override
+  _ProgramPageWidgetState createState() => _ProgramPageWidgetState();
+}
+
+class _ProgramPageWidgetState extends State<ProgramPageWidget> {
+  bool _viewPochettoscope = false;
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Program>(
-        future: program,
+        future: widget.program,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData)
             return _buildView(context, snapshot.data);
-          } else if (snapshot.hasError) {
+          else if (snapshot.hasError)
             return Text("${snapshot.error}");
-          }
-
-          var loadingMessage = 'Chargement';
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(loadingMessage),
+              title: Text('Chargement')
             ),
             body: Center(
-              child: CircularProgressIndicator(),
-            ),
+              child: CircularProgressIndicator()
+            )
           );
         },
       ),
@@ -98,44 +103,38 @@ class ProgramPageWidget extends StatelessWidget {
   Widget _buildView(BuildContext context, Program program) {
     var listing;
     if (program.type == 'program-liste') {
-      listing = SongListingWidget(program.songs);
-    } else {
+      if (_viewPochettoscope == true)
+        listing = PochettoscopeWidget(songLinks: program.songs);
+      else
+        listing = SongListingWidget(program.songs);
+    } else
       listing = Text('Pas de liste disponible');
-    }
-
-    var nestedScrollView = NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverAppBar(
-            backgroundColor: Theme.of(context).canvasColor,
-            expandedHeight: 200.0,
-            automaticallyImplyLeading: false,
-            floating: true,
-            flexibleSpace:
-                FlexibleSpaceBar(background: Html(data: program.description)),
-          ),
-        ];
-      },
-      body: Center(
-          child: Container(
-        child: Stack(children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: Container(
-              decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
-            ),
-          ),
-          listing
-        ]),
-      )),
-    );
 
     return Scaffold(
       appBar: AppBar(
         title: Text(stripTags(program.name)),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: _switchViewButton()
+          )
+        ],
       ),
-      body: nestedScrollView,
+      body: Center(
+          child: listing),
+    );
+  }
+
+  Widget _switchViewButton(){
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _viewPochettoscope = !_viewPochettoscope;
+        });
+      },
+      child: Icon(
+        _viewPochettoscope == true ? Icons.image : Icons.queue_music,
+      ),
     );
   }
 }

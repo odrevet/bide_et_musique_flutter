@@ -6,7 +6,6 @@ import 'identification.dart';
 import 'manageAccount.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
-import 'pochettoscope.dart';
 import 'randomSong.dart';
 import 'schedule.dart';
 import 'search.dart';
@@ -15,6 +14,7 @@ import 'settings.dart';
 import 'song.dart';
 import 'thematics.dart';
 import 'titles.dart';
+import 'pochettoscopePage.dart';
 import 'trombidoscope.dart';
 import 'wall.dart';
 
@@ -159,8 +159,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text('Pochettoscope'),
           leading: Icon(Icons.image),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PochettoscopeWidget()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PochettoScopePage()));
           },
         ),
         ListTile(
