@@ -116,7 +116,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
           } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: Center(child: errorDisplay(snapshot.error))),
+              body: Center(child: Center(child: Text(snapshot.error.toString()))),
             );
           }
 

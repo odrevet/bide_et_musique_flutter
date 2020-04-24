@@ -183,7 +183,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    //disconnect();
     WidgetsBinding.instance.removeObserver(this);
     if (_sub != null) _sub.cancel();
     super.dispose();
@@ -193,11 +192,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        //connect();
         _songAiring.periodicFetchSongNowPlaying();
-        break;
-      case AppLifecycleState.paused:
-        //disconnect();
         break;
       default:
         break;
