@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:bide_et_musique/pochettoscopeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
+import 'package:page_indicator/page_indicator.dart';
 
 import 'bidebox.dart';
 import 'session.dart';
@@ -177,6 +179,7 @@ class AccountPageWidget extends StatefulWidget {
 class _AccountPageWidgetState extends State<AccountPageWidget> {
   int _currentPage;
   PageController controller;
+  bool _viewPochettoscope = false;
 
   @override
   void initState() {
@@ -259,32 +262,44 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
-          PageView(
-            controller: controller,
-            onPageChanged: (int page) => setState(() {
-              _currentPage = page;
-            }),
-            children: <Widget>[
-              account.presentation == ''
-                  ? Center(
-                      child: Text(
-                          '${account.name} n\'a pas renseigné sa présentation. '))
-                  : SingleChildScrollView(
-                      child: Padding(
-                      padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                      child: Html(
-                          data: account.presentation,
-                          defaultTextStyle: TextStyle(fontSize: 18.0),
-                          useRichText: false,
-                          onLinkTap: (url) {
-                            onLinkTap(url, context);
-                          }),
-                    )),
-              account.favorites.isEmpty
-                  ? Center(child: Text('${account.name} n\'a pas de favoris. '))
-                  : SongListingWidget(account.favorites),
-              MessageListingWidget(account.messages)
-            ],
+          PageIndicatorContainer(
+            align: IndicatorAlign.bottom,
+            length: Session.accountLink.id == null ? 2 : 3,
+            indicatorSpace: 20.0,
+            padding: const EdgeInsets.all(10),
+            indicatorColor: Theme.of(context).canvasColor,
+            indicatorSelectorColor: Theme.of(context).accentColor,
+            shape: IndicatorShape.circle(size: 8),
+            child: PageView(
+              controller: controller,
+              onPageChanged: (int page) => setState(() {
+                _currentPage = page;
+              }),
+              children: <Widget>[
+                account.presentation == ''
+                    ? Center(
+                        child: Text(
+                            '${account.name} n\'a pas renseigné sa présentation. '))
+                    : SingleChildScrollView(
+                        child: Padding(
+                        padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                        child: Html(
+                            data: account.presentation,
+                            defaultTextStyle: TextStyle(fontSize: 18.0),
+                            useRichText: false,
+                            onLinkTap: (url) {
+                              onLinkTap(url, context);
+                            }),
+                      )),
+                account.favorites.isEmpty
+                    ? Center(
+                        child: Text('${account.name} n\'a pas de favoris. '))
+                    : _viewPochettoscope
+                        ? PochettoscopeWidget(songLinks: account.favorites)
+                        : SongListingWidget(account.favorites),
+                MessageListingWidget(account.messages)
+              ],
+            ),
           )
         ]),
         decoration: BoxDecoration(
@@ -308,10 +323,29 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(account.name),
-        ),
+            title: Text(account.name),
+            actions: _currentPage == 1
+                ? <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: _switchViewButton())
+                  ]
+                : []),
         floatingActionButton: mailButton,
         body: nestedScrollView);
+  }
+
+  Widget _switchViewButton() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _viewPochettoscope = !_viewPochettoscope;
+        });
+      },
+      child: Icon(
+        _viewPochettoscope == true ? Icons.image : Icons.queue_music,
+      ),
+    );
   }
 }
 
