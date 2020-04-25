@@ -44,23 +44,66 @@ Future<List<ProgramLink>> fetchThematics() async {
     throw Exception('Failed to load thematics');
   }
 
+  programLinks
+      .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
   return programLinks;
 }
 
-class ThematicPageWidget extends StatelessWidget {
+class ThematicPageWidget extends StatefulWidget {
   final Future<List<ProgramLink>> programLinks;
 
   ThematicPageWidget({Key key, this.programLinks}) : super(key: key);
 
   @override
+  _ThematicPageWidgetState createState() => _ThematicPageWidgetState();
+}
+
+class _ThematicPageWidgetState extends State<ThematicPageWidget> {
+  TextEditingController controller = TextEditingController();
+  bool _searchMode = false;
+  String _searchInput = '';
+
+  onSearchTextChanged(String text) async {
+    setState(() {
+      _searchInput = controller.text;
+    });
+  }
+
+  Widget _switchSearchMode() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _searchMode = !_searchMode;
+          controller.clear();
+        });
+      },
+      child: Icon(
+        Icons.filter_list,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Thématiques'),
+          title: _searchMode == true
+              ? TextField(
+                  controller: controller,
+                  decoration:
+                      InputDecoration(hintText: 'Filtrer les thématiques'),
+                  onChanged: onSearchTextChanged,
+                )
+              : Text('Thématiques'),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: _switchSearchMode())
+          ],
         ),
         body: Center(
           child: FutureBuilder<List<ProgramLink>>(
-            future: programLinks,
+            future: widget.programLinks,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return _buildView(context, snapshot.data);
@@ -75,7 +118,11 @@ class ThematicPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
-    programLinks.sort((a, b) => a.name.compareTo(b.name));
+    programLinks = programLinks
+        .where((programLink) =>
+            programLink.name.toLowerCase().contains(_searchInput.toLowerCase()))
+        .toList();
+
     return ListView.builder(
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
