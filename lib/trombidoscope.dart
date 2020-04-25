@@ -15,7 +15,8 @@ class TrombidoscopeWidget extends StatefulWidget {
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accountLinks = <AccountLink>[];
-  var _controller = ScrollController();
+  ScrollController _controller = ScrollController();
+  bool _isLoading;
 
   final _font = TextStyle(
       fontSize: 18.0,
@@ -25,7 +26,10 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   void initState() {
     super.initState();
     _controller.addListener(_scrollListener);
-    fetchTrombidoscope();
+    _isLoading = true;
+    fetchTrombidoscope().then((_) => setState(() {
+          _isLoading = false;
+        }));
   }
 
   @override
@@ -36,12 +40,18 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
 
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
-      fetchTrombidoscope();
+        !_controller.position.outOfRange &&
+        _isLoading == false) {
+      setState(() {
+        _isLoading = true;
+      });
+      fetchTrombidoscope().then((_) => setState(() {
+            _isLoading = false;
+          }));
     }
   }
 
-  fetchTrombidoscope() async {
+  Future<Null>fetchTrombidoscope() async {
     final url = '$baseUri/trombidoscope.html';
     final response = await Session.get(url);
     if (response.statusCode == 200) {

@@ -46,6 +46,54 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   return accounts;
 }
 
+class SearchResult {
+  int pageCount;
+  List<SongLink> songLinks = <SongLink>[];
+}
+
+Future<SearchResult> fetchSearchSong(
+    String search, String type, int pageCurrent) async {
+  SearchResult searchResult = SearchResult();
+  String url = '$baseUri/recherche.html?kw=$search&st=$type&Page=$pageCurrent';
+  url = removeDiacritics(url); //server uses latin-1
+  final response = await http.post(url);
+
+  if (response.statusCode == 302) {
+    var location = response.headers['location'];
+    //when the result is a single song, the host redirect to the song page
+    //in our case parse the page and return a list with one song
+    searchResult.songLinks
+        .add(SongLink(id: getIdFromUrl(location), name: search));
+    searchResult.pageCount = 1;
+    return searchResult;
+  } else if (response.statusCode == 200) {
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+    var result = document.getElementById('resultat');
+    var trs = result.getElementsByTagName('tr');
+
+    var navbar = document.getElementsByClassName('navbar');
+    if (navbar.isEmpty)
+      searchResult.pageCount = 1;
+    else
+      searchResult.pageCount = navbar[0].getElementsByTagName('td').length - 1;
+
+    for (dom.Element tr in trs) {
+      if (tr.className == 'p1' || tr.className == 'p0') {
+        var tds = tr.getElementsByTagName('td');
+        var a = tds[3].children[0];
+        searchResult.songLinks.add(SongLink(
+            id: getIdFromUrl(a.attributes['href']),
+            name: stripTags(a.innerHtml),
+            artist: stripTags(tds[2].children[0].innerHtml)));
+      }
+    }
+  } else {
+    throw Exception('Erreur lors de la recherche de chanson');
+  }
+  return searchResult;
+}
+
 class SearchResultsWidget extends StatefulWidget {
   final String search;
   final String type;
@@ -58,9 +106,11 @@ class SearchResultsWidget extends StatefulWidget {
 }
 
 class _SearchResultsWidgetState extends State<SearchResultsWidget> {
-  int _pages;
+  int _pageCount;
   int _pageCurrent;
-  var _songLinks = <SongLink>[];
+  List<SongLink> _songLinks;
+  bool _loading;
+  bool _loadingMore;
   final String search;
   final String type;
 
@@ -73,7 +123,17 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     super.initState();
     _controller.addListener(_scrollListener);
     _pageCurrent = 1;
-    fetchSearchSong();
+    _songLinks = [];
+    _loading = true;
+    _loadingMore = false;
+    fetchSearchSong(search, type, _pageCurrent)
+        .then((SearchResult searchResult) {
+      setState(() {
+        _loading = false;
+        _pageCount = searchResult.pageCount;
+        _songLinks = [..._songLinks, ...searchResult.songLinks];
+      });
+    });
   }
 
   @override
@@ -85,16 +145,26 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
-        _pageCurrent < _pages) {
+        _pageCurrent < _pageCount &&
+        _loadingMore == false) {
       setState(() {
+        _loadingMore = true;
         _pageCurrent++;
       });
-      fetchSearchSong();
+      fetchSearchSong(search, type, _pageCurrent)
+          .then((SearchResult searchResult) => setState(() {
+                _loadingMore = false;
+                _songLinks = [..._songLinks, ...searchResult.songLinks];
+              }));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_loading == true) return Center(child: CircularProgressIndicator());
+    if (_songLinks.isEmpty)
+      return Center(child: Text('Pas de résultats pour cette recherche'));
+
     return ListView.builder(
         controller: _controller,
         itemCount: _songLinks.length,
@@ -109,66 +179,6 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                   : _songLinks[index].artist),
               onTap: () => launchSongPage(_songLinks[index], context));
         });
-  }
-
-  fetchSearchSong() async {
-    String url =
-        '$baseUri/recherche.html?kw=$search&st=$type&Page=$_pageCurrent';
-
-    //server uses latin-1
-    url = removeDiacritics(url);
-
-    final response = await http.post(url);
-    if (response.statusCode == 302) {
-      var location = response.headers['location'];
-      //when the result is a single song, the host redirect to the song page
-      //in our case parse the page and return a list with one song
-      var songLink = SongLink();
-      songLink.id = getIdFromUrl(location);
-      songLink.name = search;
-      setState(() {
-        _pages = 1;
-        _songLinks.add(songLink);
-      });
-    } else if (response.statusCode == 200) {
-      var body = response.body;
-      dom.Document document = parser.parse(body);
-      var result = document.getElementById('resultat');
-      var trs = result.getElementsByTagName('tr');
-
-      //if page is null this mean this is the first time the result page has
-      //been fetched, check how many pages this search has
-      if (_pages == null) {
-        var navbar = document.getElementsByClassName('navbar');
-        if (navbar.isEmpty) {
-          setState(() {
-            _pages = 1;
-          });
-        } else {
-          setState(() {
-            _pages = navbar[0].getElementsByTagName('td').length - 1;
-          });
-        }
-      }
-
-      for (dom.Element tr in trs) {
-        if (tr.className == 'p1' || tr.className == 'p0') {
-          var tds = tr.getElementsByTagName('td');
-          var a = tds[3].children[0];
-
-          var songLink = SongLink();
-          songLink.id = getIdFromUrl(a.attributes['href']);
-          songLink.name = stripTags(a.innerHtml);
-          songLink.artist = stripTags(tds[2].children[0].innerHtml);
-
-          setState(() {
-            _songLinks.add(songLink);
-          });
-        }
-      }
-    } else {
-      throw Exception('Failed to load search');
-    }
   }
 }
 
