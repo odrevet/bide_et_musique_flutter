@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'song.dart';
 
 class PochettoscopeWidget extends StatefulWidget {
-  List<SongLink> songLinks = <SongLink>[];
+  final List<SongLink> songLinks;
   final Function onEndReached;
 
   PochettoscopeWidget({this.songLinks, this.onEndReached, Key key})
       : super(key: key);
 
   @override
-  _PochettoscopeWidgetState createState() => _PochettoscopeWidgetState();
+  _PochettoscopeWidgetState createState() => _PochettoscopeWidgetState(this.songLinks);
 }
 
 class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   ScrollController _controller;
+  List<SongLink> _songLinks;
+
+  _PochettoscopeWidgetState(this._songLinks);
 
   @override
   void initState() {
@@ -24,7 +27,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       _controller.addListener(_scrollListener);
       widget
           .onEndReached()
-          .then((songLinks) => {setState(() => widget.songLinks = songLinks)});
+          .then((songLinks) => {setState(() => _songLinks = songLinks)});
     }
   }
 
@@ -39,7 +42,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         !_controller.position.outOfRange) {
       widget.onEndReached().then((songLinks) => {
         setState(() {
-          widget.songLinks = [...widget.songLinks, ...songLinks];
+          _songLinks = [..._songLinks, ...songLinks];
         })
       });
     }
@@ -48,16 +51,16 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
-    if (widget.songLinks == null) {
+    if (_songLinks == null) {
       return Center(child: CircularProgressIndicator());
     }
     return GridView.builder(
-        itemCount: widget.songLinks.length,
+        itemCount: _songLinks.length,
         controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
         itemBuilder: (BuildContext context, int index) {
-          return SongCardWidget(songLink: widget.songLinks[index]);
+          return SongCardWidget(songLink: _songLinks[index]);
         });
   }
 }
