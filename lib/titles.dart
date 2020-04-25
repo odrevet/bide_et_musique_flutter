@@ -21,11 +21,14 @@ SongLink songLinkFromTr(dom.Element tr) {
     isNew = true;
     title = title.replaceFirst(newFlag, '');
     a = tdSong.children[1];
-  } else
-    a = tdSong.children[0];
+  } else {
+    //sometimes the td song element is somehow empty (e.g. Seamus)
+    if(tdSong.children.isNotEmpty)
+      a = tdSong.children[0];
+  }
 
   return SongLink(
-      id: getIdFromUrl(a.attributes['href']),
+      id: a == null ? null : getIdFromUrl(a.attributes['href']),
       artist: stripTags(tdArtist.innerHtml).trim(),
       name: title.trim(),
       info: stripTags(tdInfo.innerHtml).trim(),
@@ -44,7 +47,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     var trsNext = tableNext.getElementsByTagName('tr');
     int indexNext = 0;
     for (dom.Element tr in trsNext) {
-      var songLink = songLinkFromTr(tr);
+      SongLink songLink = songLinkFromTr(tr);
       songLink.index = indexNext;
       indexNext++;
       songLinksNext.add(songLink);
@@ -56,7 +59,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     trsPast.removeLast(); //remove the 'show more' button
     int indexPast = 0;
     for (dom.Element tr in trsPast) {
-      var songLink = songLinkFromTr(tr);
+      SongLink songLink = songLinkFromTr(tr);
       songLink.index = indexPast;
       indexPast++;
       songLinksPast.add(songLink);
