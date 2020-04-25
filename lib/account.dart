@@ -297,7 +297,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                     : _viewPochettoscope
                         ? PochettoscopeWidget(songLinks: account.favorites)
                         : SongListingWidget(account.favorites),
-                MessageListingWidget(account.messages)
+                if(Session.accountLink.id != null)MessageListingWidget(account.messages)
               ],
             ),
           )
