@@ -14,7 +14,7 @@ class Program {
   String type;
   String name;
   String description;
-  String airedOn;
+  List<String> airedOn;
   List<String> inMeta;
   List<SongLink> songs;
 
@@ -24,18 +24,18 @@ class Program {
       : id = json['id'],
         type = json['type'],
         name = stripTags(json['name']),
-        airedOn = json['aired_on'].isEmpty ? null : json['aired_on'].toString(),
         description = json['description'] {
-    if (this.type == 'program-liste') {
-      var songs = <SongLink>[];
-      for (var songEntry in json['songs']) {
-        var song = SongLink();
-        song.id = songEntry['song_id'];
-        song.name = stripTags(songEntry['name']);
-        song.artist = stripTags(songEntry['alias']);
-        songs.add(song);
-      }
-      this.songs = songs;
+    this.songs = <SongLink>[];
+    for (var songEntry in json['songs']) {
+      songs.add(SongLink(
+          id: songEntry['song_id'],
+          name: stripTags(songEntry['name']),
+          artist: stripTags(songEntry['alias'])));
+    }
+
+    airedOn = <String>[];
+    for (var airedOnEntry in json['aired_on']) {
+      airedOn.add(airedOnEntry);
     }
   }
 }
@@ -110,7 +110,9 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: displayInfoButton(program)),
+              child:
+                  program.description != null && program.airedOn.isNotEmpty ?
+                      displayInfoButton(program) : null),
           Padding(
               padding: EdgeInsets.only(right: 20.0), child: _switchViewButton())
         ],
@@ -120,6 +122,11 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
   }
 
   Widget displayInfoButton(Program program) {
+    String airedOn = '';
+    for(var airedOnEntry in program.airedOn){
+      airedOn += '\n$airedOnEntry';
+    }
+
     return GestureDetector(
       onTap: () {
         return showDialog<void>(
@@ -136,8 +143,8 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
               title: Text(program.name),
               children: [
                 Html(data: program.description),
-                if (program.airedOn != null)
-                  Text('Dernière diffusion le ${program.airedOn}')
+                if (program.airedOn.isNotEmpty)
+                  Text('Dernière diffusion $airedOn')
               ],
             );
           },
