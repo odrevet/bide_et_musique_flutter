@@ -60,7 +60,6 @@ class ThematicPageWidget extends StatefulWidget {
 
 class _ThematicPageWidgetState extends State<ThematicPageWidget> {
   TextEditingController controller = TextEditingController();
-  FocusNode _focusNode = FocusNode();
   bool _searchMode = false;
   String _searchInput = '';
 
@@ -75,8 +74,10 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
       onTap: () {
         setState(() {
           _searchMode = !_searchMode;
-          if(_searchMode == true)_focusNode.requestFocus();
           controller.clear();
+          setState(() {
+            _searchInput = '';
+          });
         });
       },
       child: Icon(
