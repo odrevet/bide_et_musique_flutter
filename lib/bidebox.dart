@@ -124,18 +124,21 @@ class MessageEditor extends StatefulWidget {
 class _MessageEditorState extends State<MessageEditor> {
   final _newMessageController = TextEditingController();
 
-  _sendMessage() async {
+  Future<bool>_sendMessage() async {
     String message = removeDiacritics(_newMessageController.text);
     final url = '$baseUri/bidebox_send.html';
 
     if (message.isNotEmpty) {
-      await Session.post(url, body: {
+      var response = await Session.post(url, body: {
         'Message': message,
         'T': widget._accountLink.id.toString(),
         'R': '',
         'M': 'S'
       });
+      return response.statusCode == 200;
     }
+
+    return false;
   }
 
   @override
@@ -147,8 +150,8 @@ class _MessageEditorState extends State<MessageEditor> {
           icon: Icon(Icons.send),
           label: Text("Envoyer"),
           onPressed: () async {
-            await _sendMessage();
-            Navigator.of(context).pop();
+            bool status = await _sendMessage();
+            Navigator.of(context).pop(status);
           },
         )
       ],

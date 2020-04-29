@@ -54,7 +54,7 @@ openAccountImageViewerDialog(context, image) {
 }
 
 Future<Account> fetchAccount(int accountId) async {
-  var account = Account();
+  Account account = Account();
   account.id = accountId;
 
   final url = '$baseUri/account.html?N=$accountId&Page=all';
@@ -317,7 +317,9 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
             onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) => MessageEditor(account),
-            ),
+            ).then((status){
+              print('send: $status ');
+            }),
             child: Icon(Icons.mail),
           );
 
