@@ -131,7 +131,7 @@ class _MessageEditorState extends State<MessageEditor> {
     if (message.isNotEmpty) {
       await Session.post(url, body: {
         'Message': message,
-        'T': widget._accountLink.id,
+        'T': widget._accountLink.id.toString(),
         'R': '',
         'M': 'S'
       });
