@@ -141,6 +141,7 @@ class _MessageEditorState extends State<MessageEditor> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       actions: [
         RaisedButton.icon(
           icon: Icon(Icons.send),
