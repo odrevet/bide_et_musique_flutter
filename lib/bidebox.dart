@@ -25,7 +25,7 @@ int getAccountIdFromUrl(str) {
   }
 }
 
-Future<List<Exchange>> fetchMessages() async {
+Future<List<Exchange>> fetchExchanges() async {
   List<Exchange> messages = [];
 
   String url = '$baseUri/bidebox_list.html';
@@ -60,15 +60,15 @@ Future<List<Exchange>> fetchMessages() async {
 }
 
 class BideBoxWidget extends StatelessWidget {
-  final Future<List<Exchange>> messages;
+  final Future<List<Exchange>> exchanges;
 
-  BideBoxWidget({Key key, this.messages}) : super(key: key);
+  BideBoxWidget({Key key, this.exchanges}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<Exchange>>(
-        future: this.messages,
+        future: this.exchanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data);

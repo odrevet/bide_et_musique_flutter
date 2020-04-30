@@ -173,13 +173,16 @@ class AccountPageWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AccountPageWidgetState createState() => _AccountPageWidgetState();
+  _AccountPageWidgetState createState() => _AccountPageWidgetState(this.account);
 }
 
 class _AccountPageWidgetState extends State<AccountPageWidget> {
   int _currentPage;
   PageController controller;
   bool _viewPochettoscope = false;
+  Future<Account> _account;
+
+_AccountPageWidgetState(this._account);
 
   @override
   void initState() {
@@ -191,7 +194,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Account>(
-      future: widget.account,
+      future: _account,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildView(context, snapshot.data);
@@ -297,7 +300,8 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                     : _viewPochettoscope
                         ? PochettoscopeWidget(songLinks: account.favorites)
                         : SongListingWidget(account.favorites),
-                if(Session.accountLink.id != null)MessageListingWidget(account.messages)
+                if (Session.accountLink.id != null)
+                  MessageListingWidget(account.messages)
               ],
             ),
           )
@@ -317,8 +321,12 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
             onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) => MessageEditor(account),
-            ).then((status){
-              print('send: $status ');
+            ).then((status) async {
+              if(status==true){
+                setState(() {
+                  _account = fetchAccount(account.id);
+                });
+              }
             }),
             child: Icon(Icons.mail),
           );
@@ -363,8 +371,8 @@ class MessageListingWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           Message message = messages[index];
           return ListTile(
-              title: Text('${message.recipient} ${message.date}'),
-              subtitle: Text(message.body));
+              title: Text(message.body),
+              subtitle: Text('${message.recipient} ${message.date}'));
         });
   }
 }

@@ -58,7 +58,7 @@ class LoggedInPage extends StatelessWidget {
                 account: fetchAccount(Session.accountLink.id)),
             ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
-            BideBoxWidget(messages: fetchMessages()),
+            BideBoxWidget(exchanges: fetchExchanges()),
             RequestsPageWidget()
           ],
         ),
