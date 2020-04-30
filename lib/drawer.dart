@@ -73,7 +73,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => IdentificationWidget()))
-                .then((_) => _setAccountTitle());
+                .then((_) {
+                  _setAccountTitle();
+                  final snackBar = SnackBar(content: Text('Déconexion éffectuée'));
+                  Scaffold.of(context).showSnackBar(snackBar);
+                  });
           },
         ),
         Divider(),
