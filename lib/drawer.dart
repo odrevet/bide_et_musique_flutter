@@ -75,8 +75,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         builder: (context) => IdentificationWidget()))
                 .then((_) {
                   _setAccountTitle();
-                  final snackBar = SnackBar(content: Text('Déconexion éffectuée'));
-                  Scaffold.of(context).showSnackBar(snackBar);
                   });
           },
         ),

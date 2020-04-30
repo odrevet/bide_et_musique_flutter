@@ -22,6 +22,8 @@ class DisconnectButton extends StatelessWidget {
         Session.accountLink.id = null;
         Session.headers = {};
         Navigator.pop(context);
+        final snackBar = SnackBar(content: Text('Déconnexion éffectuée'));
+        Scaffold.of(context).showSnackBar(snackBar);
       },
     );
   }
