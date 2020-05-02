@@ -53,6 +53,22 @@ openAccountImageViewerDialog(context, image) {
       fullscreenDialog: true));
 }
 
+List<SongLink> parseFavoriteTable(dom.Element table) {
+  List<SongLink> favorites = [];
+  for (dom.Element tr in table.getElementsByTagName('tr')) {
+    SongLink songLink = SongLink();
+    dom.Element aTitle = tr.children[4].children[0];
+
+    if (aTitle.toString() == '<html div>') aTitle = tr.children[4].children[1];
+
+    songLink.id = getIdFromUrl(aTitle.attributes['href']);
+    songLink.name = stripTags(aTitle.innerHtml);
+    songLink.artist = stripTags(tr.children[3].innerHtml);
+    favorites.add(songLink);
+  }
+  return favorites;
+}
+
 Future<Account> fetchAccount(int accountId) async {
   Account account = Account();
   account.id = accountId;
@@ -98,18 +114,10 @@ Future<Account> fetchAccount(int accountId) async {
         (tables.length == 2 && hasMessage);
 
     //parse favorites
-    var favorites = <SongLink>[];
-    if (hasFavorite) {
-      for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        var songLink = SongLink();
-        var aTitle = tr.children[4].children[0];
-        songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.name = stripTags(aTitle.innerHtml);
-        songLink.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(songLink);
-      }
-    }
-    account.favorites = favorites;
+    if (hasFavorite)
+      account.favorites = parseFavoriteTable(tables[0]);
+    else
+      account.favorites = [];
 
     //parse message
     List<Message> messages = [];
@@ -236,7 +244,8 @@ class AccountPageWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AccountPageWidgetState createState() => _AccountPageWidgetState(this.account);
+  _AccountPageWidgetState createState() =>
+      _AccountPageWidgetState(this.account);
 }
 
 class _AccountPageWidgetState extends State<AccountPageWidget> {
@@ -245,7 +254,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
   bool _viewPochettoscope = false;
   Future<Account> _account;
 
-_AccountPageWidgetState(this._account);
+  _AccountPageWidgetState(this._account);
 
   @override
   void initState() {
@@ -385,7 +394,7 @@ _AccountPageWidgetState(this._account);
               context: context,
               builder: (BuildContext context) => MessageEditor(account),
             ).then((status) async {
-              if(status==true){
+              if (status == true) {
                 setState(() {
                   _account = fetchAccount(account.id);
                 });
@@ -462,23 +471,11 @@ Future<Account> fetchAccountSession() async {
         (tables.length == 2 && hasMessage);
 
     //parse favorites
-    var favorites = <SongLink>[];
-    if (hasFavorite) {
-      for (dom.Element tr in tables[0].getElementsByTagName('tr')) {
-        SongLink songLink = SongLink();
-        dom.Element aTitle = tr.children[4].children[0];
-
-        if (aTitle.toString() == '<html div>')
-          aTitle = tr.children[4].children[1];
-
-        songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.name = stripTags(aTitle.innerHtml);
-        songLink.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(songLink);
-      }
-    }
-
-    account.favorites = favorites;
+    if (hasFavorite)
+      account.favorites = parseFavoriteTable(tables[0]);
+    else
+      account.favorites = [];
+      
     return account;
   } else {
     throw Exception('Failed to load account with id $accountId');
