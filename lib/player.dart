@@ -139,6 +139,13 @@ class StreamPlayer extends BackgroundAudioTask {
           position: event.position.inMilliseconds,
         );
       }
+      print(event.icyMetadata.headers.url);
+      print(event.icyMetadata.headers.genre);
+      print(event.icyMetadata.headers.name);
+      print(event.icyMetadata.info.url);
+      print(event.icyMetadata.info.title);
+
+      //AudioServiceBackground.sendCustomEvent(event.icyMetadata);
     });
 
     //AudioServiceBackground.setQueue(_queue);
@@ -289,7 +296,7 @@ class StreamPlayer extends BackgroundAudioTask {
   }
 
   @override
-  void onCustomAction(String name, dynamic arguments) {
+  Future<dynamic> onCustomAction(String name, dynamic arguments) async {
     switch (name) {
       case 'song':
         Map songMap = arguments;
