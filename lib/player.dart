@@ -89,7 +89,7 @@ class SongAiringNotifier extends ChangeNotifier {
 class StreamPlayer extends BackgroundAudioTask {
   Song _song;
   String _mode;
-  AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer _audioPlayer = AudioPlayer();
   Completer _completer = Completer();
   BasicPlaybackState _skipState;
   bool _playing = false;
@@ -126,12 +126,12 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   Future<void> onStart() async {
-    var playerStateSubscription = audioPlayer.playbackStateStream
+    var playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
       _handlePlaybackCompleted();
     });
-    var eventSubscription = audioPlayer.playbackEventStream.listen((event) {
+    var eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
       final state = _eventToBasicState(event);
       if (state != BasicPlaybackState.stopped) {
         _setState(
@@ -139,12 +139,11 @@ class StreamPlayer extends BackgroundAudioTask {
           position: event.position.inMilliseconds,
         );
       }
-      print(event.icyMetadata.headers.url);
-      print(event.icyMetadata.headers.genre);
-      print(event.icyMetadata.headers.name);
-      print(event.icyMetadata.info.url);
-      print(event.icyMetadata.info.title);
-
+      //print(event.icyMetadata.headers.url);
+      //print(event.icyMetadata.headers.genre);
+      //print(event.icyMetadata.headers.name);
+      //print(event.icyMetadata.info.url);
+      //print(event.icyMetadata.info.title);
       //AudioServiceBackground.sendCustomEvent(event.icyMetadata);
     });
 
@@ -210,10 +209,10 @@ class StreamPlayer extends BackgroundAudioTask {
 
     if (url != latestId ||
         AudioServiceBackground.state.basicState != BasicPlaybackState.paused) {
-      await audioPlayer.setUrl(url);
+      await _audioPlayer.setUrl(url);
     }
 
-    audioPlayer.play();
+    _audioPlayer.play();
     _playing = true;
     latestId = url;
     await AudioServiceBackground.setState(
@@ -223,7 +222,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   @override
   void onPause() async {
-    audioPlayer.pause();
+    _audioPlayer.pause();
     _playing = false;
 
     await AudioServiceBackground.setState(
@@ -231,7 +230,7 @@ class StreamPlayer extends BackgroundAudioTask {
         basicState: BasicPlaybackState.paused);
   }
 
-  @override
+  /*@override
   void onStop() async {
     audioPlayer.stop();
     this._song = null;
@@ -239,11 +238,19 @@ class StreamPlayer extends BackgroundAudioTask {
     _completer.complete();
     await AudioServiceBackground.setState(
         controls: [], basicState: BasicPlaybackState.stopped);
+  }*/
+
+  @override
+  Future<void> onStop() async {
+    await _audioPlayer.stop();
+    await _audioPlayer.dispose();
+    _setState(state: BasicPlaybackState.stopped);
+    _completer.complete();
   }
 
   @override
   void onSeekTo(int position) {
-    audioPlayer.seek(Duration(milliseconds: position));
+    _audioPlayer.seek(Duration(milliseconds: position));
   }
 
   @override
@@ -253,7 +260,7 @@ class StreamPlayer extends BackgroundAudioTask {
 
   void _setState({@required BasicPlaybackState state, int position}) {
     if (position == null) {
-      position = audioPlayer.playbackEvent.position.inMilliseconds;
+      position = _audioPlayer.playbackEvent.position.inMilliseconds;
     }
     AudioServiceBackground.setState(
       controls: getControls(state),
