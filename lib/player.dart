@@ -139,11 +139,6 @@ class StreamPlayer extends BackgroundAudioTask {
           position: event.position.inMilliseconds,
         );
       }
-      //print(event.icyMetadata.headers.url);
-      //print(event.icyMetadata.headers.genre);
-      //print(event.icyMetadata.headers.name);
-      //print(event.icyMetadata.info.url);
-      //print(event.icyMetadata.info.title);
       //AudioServiceBackground.sendCustomEvent(event.icyMetadata);
     });
 

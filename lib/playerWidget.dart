@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'nowPlaying.dart';
@@ -69,9 +70,12 @@ class _PlayerWidgetState extends State<PlayerWidget>
                               size: 18.0,
                             ),
                           )
-                        : Icon(
-                            Icons.radio,
-                            size: 18.0,
+                        : InkWell(
+                            onTap: () => _streamInfoDialog(context),
+                            child: Icon(
+                              Icons.radio,
+                              size: 18.0,
+                            ),
                           ),
                     basicState == BasicPlaybackState.paused
                         ? playButton()
@@ -95,6 +99,37 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     )
             ],
           );
+        });
+  }
+
+  _streamInfoDialog(BuildContext context) {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0)),
+              actions: <Widget>[],
+              title: Text('Informations du flux musical'),
+              content: StreamBuilder<dynamic>(
+                  stream: AudioService.customEventStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data is IcyMetadata) {
+                      var icyMetadata = snapshot.data;
+                      String info =
+                          '''${icyMetadata.headers.name} ${icyMetadata.headers.genre}
+${icyMetadata.info.title}
+bitrate ${icyMetadata.headers.bitrate}
+''';
+                      return Text(info);
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+
+                    // By default, show a loading spinner
+                    return Text('Chargement');
+                  }));
         });
   }
 }
