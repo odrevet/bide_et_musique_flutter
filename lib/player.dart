@@ -139,7 +139,7 @@ class StreamPlayer extends BackgroundAudioTask {
           position: event.position.inMilliseconds,
         );
       }
-      //AudioServiceBackground.sendCustomEvent(event.icyMetadata);
+      AudioServiceBackground.sendCustomEvent(event.icyMetadata);
     });
 
     //AudioServiceBackground.setQueue(_queue);
