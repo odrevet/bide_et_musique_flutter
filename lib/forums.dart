@@ -300,7 +300,6 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       return ListTile(
                           title: Html(
                               data: forumMessage.text,
-                              useRichText: false,
                               onLinkTap: (url) {
                                 onLinkTap(url, context);
                               }),

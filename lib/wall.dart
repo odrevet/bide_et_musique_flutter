@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
@@ -219,9 +220,11 @@ class _WallWidgetState extends State<WallWidget> {
               onLinkTap: (url) {
                 onLinkTap(url, context);
               },
-              linkStyle: const TextStyle(
-                color: Colors.redAccent,
-              ),
+              style: {
+                "a": Style(
+                  color: Color.fromRGBO(0xE3, 0X20, 0X26, 1),
+                ),
+              },
             )
           ],
         ),

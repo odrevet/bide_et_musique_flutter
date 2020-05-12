@@ -7,6 +7,7 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:page_indicator/page_indicator.dart';
@@ -554,7 +555,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics,
-                      defaultTextStyle: _fontLyrics,
+                      style: {
+                        "html": Style.fromTextStyle(_fontLyrics),
+                      },
                       onLinkTap: (url) {
                         onLinkTap(url, context);
                       }),

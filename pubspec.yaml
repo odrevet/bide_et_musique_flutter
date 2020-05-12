@@ -14,7 +14,7 @@ dependencies:
   xml: ^4.1.0
   audio_service: ^0.8.0
   just_audio: ^0.1.8
-  flutter_html: ^0.11.1
+  flutter_html: ^1.0.0
   url_launcher: ^5.4.5
   share: ^0.6.4+1
   shared_preferences: ^0.5.7+1
@@ -22,6 +22,9 @@ dependencies:
   diacritic: ^0.1.1
   cached_network_image: ^2.2.0+1
   page_indicator: ^0.3.0
+
+dependency_overrides:
+  xml: ^4.1.0
 
 flutter:
   uses-material-design: true

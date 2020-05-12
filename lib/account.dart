@@ -360,8 +360,6 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                         padding: EdgeInsets.only(left: 8.0, top: 2.0),
                         child: Html(
                             data: account.presentation,
-                            defaultTextStyle: TextStyle(fontSize: 18.0),
-                            useRichText: false,
                             onLinkTap: (url) {
                               onLinkTap(url, context);
                             }),
