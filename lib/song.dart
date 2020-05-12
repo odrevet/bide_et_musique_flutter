@@ -485,7 +485,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   Widget _buildView(BuildContext context, Song song) {
     final String coverLink = song.coverLink;
-    final _fontLyrics = TextStyle(fontSize: 18.0);
     final tag = createTag(widget.songLink);
 
     var nestedScrollView = NestedScrollView(
@@ -556,7 +555,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics,
                       style: {
-                        "html": Style.fromTextStyle(_fontLyrics),
+                        "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
                       },
                       onLinkTap: (url) {
                         onLinkTap(url, context);
@@ -601,6 +600,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           },
           title: Html(
               data: comment.body,
+              style: {
+                "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
+              },
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:bide_et_musique/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 
 import 'account.dart';
 import 'bidebox.dart';
@@ -169,6 +170,10 @@ class ManageAccountPageWidget extends StatelessWidget {
                         SingleChildScrollView(
                             child: Html(
                                 data: account.presentation,
+                                style: {
+                                  "html": Style.fromTextStyle(
+                                      TextStyle(fontSize: 30.0)),
+                                },
                                 onLinkTap: (url) {
                                   onLinkTap(url, context);
                                 })),
