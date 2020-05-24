@@ -304,6 +304,9 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                               style: {
                                 "html": Style.fromTextStyle(
                                     TextStyle(fontSize: 30.0)),
+                                "a": Style(
+                                  color: Colors.red,
+                                ),
                               },
                               onLinkTap: (url) {
                                 onLinkTap(url, context);

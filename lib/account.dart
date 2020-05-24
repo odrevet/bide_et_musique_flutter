@@ -364,6 +364,9 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                             style: {
                               "html": Style.fromTextStyle(
                                   TextStyle(fontSize: 30.0)),
+                              "a": Style(
+                                color: Colors.red,
+                              ),
                             },
                             onLinkTap: (url) {
                               onLinkTap(url, context);

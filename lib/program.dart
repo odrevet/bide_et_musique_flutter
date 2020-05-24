@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 
 import 'pochettoscopeWidget.dart';
 import 'session.dart';
@@ -110,9 +111,9 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child:
-                  program.description != null && program.airedOn.isNotEmpty ?
-                      displayInfoButton(program) : null),
+              child: program.description != null && program.airedOn.isNotEmpty
+                  ? displayInfoButton(program)
+                  : null),
           Padding(
               padding: EdgeInsets.only(right: 20.0), child: _switchViewButton())
         ],
@@ -123,7 +124,7 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
 
   Widget displayInfoButton(Program program) {
     String airedOn = '';
-    for(var airedOnEntry in program.airedOn){
+    for (var airedOnEntry in program.airedOn) {
       airedOn += '\n$airedOnEntry';
     }
 
@@ -142,7 +143,12 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
                   borderRadius: BorderRadius.circular(24.0)),
               title: Text(program.name),
               children: [
-                Html(data: program.description),
+                Html(data: program.description, style: {
+                  "html": Style.fromTextStyle(TextStyle(fontSize: 22.0)),
+                  "a": Style(
+                    color: Colors.red,
+                  ),
+                }),
                 if (program.airedOn.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],

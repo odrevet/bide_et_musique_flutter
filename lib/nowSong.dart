@@ -90,7 +90,7 @@ class NowSongsWidget extends StatelessWidget {
               style: {
                 "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
                 "a": Style(
-                  color: Color.fromRGBO(0xE3, 0X20, 0X26, 1),
+                  color: Colors.red,
                 ),
               },
               onLinkTap: (url) {

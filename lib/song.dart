@@ -556,6 +556,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                           : song.lyrics,
                       style: {
                         "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
+                        "a": Style(
+                          color: Colors.red,
+                        ),
                       },
                       onLinkTap: (url) {
                         onLinkTap(url, context);
@@ -601,7 +604,10 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           title: Html(
               data: comment.body,
               style: {
-                "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
+                "html": Style.fromTextStyle(TextStyle(fontSize: 28.0)),
+                "a": Style(
+                  color: Colors.red,
+                ),
               },
               onLinkTap: (url) {
                 onLinkTap(url, context);
