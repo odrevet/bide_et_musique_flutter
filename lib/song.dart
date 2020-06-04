@@ -604,7 +604,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           title: Html(
               data: comment.body,
               style: {
-                "html": Style.fromTextStyle(TextStyle(fontSize: 28.0)),
+                "html": Style.fromTextStyle(TextStyle(fontSize: 24.0)),
                 "a": Style(
                   color: Colors.red,
                 ),
