@@ -19,8 +19,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
   final BehaviorSubject<double> _dragPositionSubject =
       BehaviorSubject.seeded(null);
 
-  String _formatSongDuration(int ms) {
-    Duration duration = Duration(milliseconds: ms);
+  String _formatSongDuration(Duration duration) {
     String twoDigits(int n) {
       if (n >= 10) return "$n";
       return "0$n";
@@ -40,9 +39,9 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
             Stream.periodic(Duration(milliseconds: 200)),
             (dragPosition, _) => dragPosition),
         builder: (context, snapshot) {
-          double position =
-              snapshot.data ?? widget.state.currentPosition.toDouble();
-          double duration = widget.mediaItem?.duration?.toDouble();
+        double position =
+            snapshot.data ?? widget.state.currentPosition.inMilliseconds.toDouble();
+        double duration = widget.mediaItem?.duration?.inMilliseconds?.toDouble();
 
           Widget text = Text(_formatSongDuration(widget.state.currentPosition));
 
@@ -56,7 +55,7 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
                 _dragPositionSubject.add(value);
               },
               onChangeEnd: (value) {
-                AudioService.seekTo(value.toInt());
+                AudioService.seekTo(Duration(milliseconds: value.toInt()));
                 seekPos = value;
                 _dragPositionSubject.add(null);
               });

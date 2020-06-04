@@ -39,7 +39,7 @@ MediaControl stopControl = MediaControl(
 );
 
 void audioPlayerTaskEntrypoint() async {
-  AudioServiceBackground.run(() => StreamPlayer());
+  AudioServiceBackground.run(() => AudioPlayerTask());
 }
 
 class SongAiringNotifier extends ChangeNotifier {
@@ -86,86 +86,80 @@ class SongAiringNotifier extends ChangeNotifier {
   }
 }
 
-class StreamPlayer extends BackgroundAudioTask {
-  Song _song;
-  String _mode;
+class AudioPlayerTask extends BackgroundAudioTask {
+  final _queue = <MediaItem>[];
+  int _queueIndex = -1;
   AudioPlayer _audioPlayer = AudioPlayer();
   Completer _completer = Completer();
-  BasicPlaybackState _skipState;
-  bool _playing = false;
-  String latestId;
+  AudioProcessingState _skipState;
+  bool _playing;
+  bool _interrupted = false;
 
-  //final _queue = <MediaItem>[];
-  //int _queueIndex = -1;
-  //bool get hasNext => _queueIndex + 1 < _queue.length;
-  //bool get hasPrevious => _queueIndex > 0;
-  //MediaItem get mediaItem => _queue[_queueIndex];
+  Song _song;
+  String _mode;
 
-  BasicPlaybackState _eventToBasicState(AudioPlaybackEvent event) {
-    if (event.buffering) {
-      return BasicPlaybackState.buffering;
-    } else {
-      switch (event.state) {
-        case AudioPlaybackState.none:
-          return BasicPlaybackState.none;
-        case AudioPlaybackState.stopped:
-          return BasicPlaybackState.stopped;
-        case AudioPlaybackState.paused:
-          return BasicPlaybackState.paused;
-        case AudioPlaybackState.playing:
-          return BasicPlaybackState.playing;
-        case AudioPlaybackState.connecting:
-          return _skipState ?? BasicPlaybackState.connecting;
-        case AudioPlaybackState.completed:
-          return BasicPlaybackState.stopped;
-        default:
-          throw Exception("Illegal state");
-      }
-    }
-  }
+  bool get hasNext => _queueIndex + 1 < _queue.length;
+
+  bool get hasPrevious => _queueIndex > 0;
+
+  MediaItem get mediaItem => _queue[_queueIndex];
 
   @override
-  Future<void> onStart() async {
+  Future<void> onStart(Map<String, dynamic> params) async {
     var playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
       _handlePlaybackCompleted();
     });
     var eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
-      final state = _eventToBasicState(event);
-      if (state != BasicPlaybackState.stopped) {
-        _setState(
-          state: state,
-          position: event.position.inMilliseconds,
-        );
+      final bufferingState =
+          event.buffering ? AudioProcessingState.buffering : null;
+      switch (event.state) {
+        case AudioPlaybackState.paused:
+          _setState(
+            processingState: bufferingState ?? AudioProcessingState.ready,
+            position: event.position,
+          );
+          break;
+        case AudioPlaybackState.playing:
+          _setState(
+            processingState: bufferingState ?? AudioProcessingState.ready,
+            position: event.position,
+          );
+          break;
+        case AudioPlaybackState.connecting:
+          _setState(
+            processingState: _skipState ?? AudioProcessingState.connecting,
+            position: event.position,
+          );
+          break;
+        default:
+          break;
       }
-      AudioServiceBackground.sendCustomEvent(event.icyMetadata);
     });
 
-    //AudioServiceBackground.setQueue(_queue);
-    //await onSkipToNext();
+    AudioServiceBackground.setQueue(_queue);
+    await onSkipToNext();
     await _completer.future;
     playerStateSubscription.cancel();
     eventSubscription.cancel();
   }
 
   void _handlePlaybackCompleted() {
-    onStop();
-    /*if (hasNext) {
+    if (hasNext) {
       onSkipToNext();
     } else {
       onStop();
-    }*/
+    }
   }
 
   void playPause() {
-    if (AudioServiceBackground.state.basicState == BasicPlaybackState.playing)
+    if (AudioServiceBackground.state.playing)
       onPause();
     else
       onPlay();
   }
 
-/*
   @override
   Future<void> onSkipToNext() => _skip(1);
 
@@ -186,66 +180,41 @@ class StreamPlayer extends BackgroundAudioTask {
     _queueIndex = newPos;
     AudioServiceBackground.setMediaItem(mediaItem);
     _skipState = offset > 0
-        ? BasicPlaybackState.skippingToNext
-        : BasicPlaybackState.skippingToPrevious;
+        ? AudioProcessingState.skippingToNext
+        : AudioProcessingState.skippingToPrevious;
     await _audioPlayer.setUrl(mediaItem.id);
     _skipState = null;
     // Resume playback if we were playing
     if (_playing) {
       onPlay();
     } else {
-      _setState(state: BasicPlaybackState.paused);
+      _setState(processingState: AudioProcessingState.ready);
     }
   }
-*/
+
   @override
   void onPlay() async {
-    String url = await _getStreamUrl();
-
-    if (url != latestId ||
-        AudioServiceBackground.state.basicState != BasicPlaybackState.paused) {
+    if (_skipState == null) {
+      String url = await _getStreamUrl();
       await _audioPlayer.setUrl(url);
+      _playing = true;
+      _audioPlayer.play();
+      AudioServiceBackground.sendCustomEvent('just played');
     }
-
-    _audioPlayer.play();
-    _playing = true;
-    latestId = url;
-    await AudioServiceBackground.setState(
-        controls: [pauseControl, stopControl],
-        basicState: BasicPlaybackState.playing);
   }
 
   @override
-  void onPause() async {
-    _audioPlayer.pause();
-    _playing = false;
-
-    await AudioServiceBackground.setState(
-        controls: [playControl, stopControl],
-        basicState: BasicPlaybackState.paused);
-  }
-
-  /*@override
-  void onStop() async {
-    audioPlayer.stop();
-    this._song = null;
-    _playing = false;
-    _completer.complete();
-    await AudioServiceBackground.setState(
-        controls: [], basicState: BasicPlaybackState.stopped);
-  }*/
-
-  @override
-  Future<void> onStop() async {
-    await _audioPlayer.stop();
-    await _audioPlayer.dispose();
-    _setState(state: BasicPlaybackState.stopped);
-    _completer.complete();
+  void onPause() {
+    if (_skipState == null) {
+      _playing = false;
+      _audioPlayer.pause();
+      AudioServiceBackground.sendCustomEvent('just paused');
+    }
   }
 
   @override
-  void onSeekTo(int position) {
-    _audioPlayer.seek(Duration(milliseconds: position));
+  void onSeekTo(Duration position) {
+    _audioPlayer.seek(position);
   }
 
   @override
@@ -253,19 +222,89 @@ class StreamPlayer extends BackgroundAudioTask {
     playPause();
   }
 
-  void _setState({@required BasicPlaybackState state, int position}) {
+  @override
+  Future<void> onFastForward() async {
+    await _seekRelative(fastForwardInterval);
+  }
+
+  @override
+  Future<void> onRewind() async {
+    await _seekRelative(rewindInterval);
+  }
+
+  Future<void> _seekRelative(Duration offset) async {
+    var newPosition = _audioPlayer.playbackEvent.position + offset;
+    if (newPosition < Duration.zero) newPosition = Duration.zero;
+    if (newPosition > mediaItem.duration) newPosition = mediaItem.duration;
+    await _audioPlayer.seek(_audioPlayer.playbackEvent.position + offset);
+  }
+
+  @override
+  Future<void> onStop() async {
+    await _audioPlayer.stop();
+    await _audioPlayer.dispose();
+    _playing = false;
+    _setState(processingState: AudioProcessingState.stopped);
+    _completer.complete();
+  }
+
+  /* Handling Audio Focus */
+  @override
+  void onAudioFocusLost(AudioInterruption interruption) {
+    if (_playing) _interrupted = true;
+    switch (interruption) {
+      case AudioInterruption.pause:
+      case AudioInterruption.temporaryPause:
+      case AudioInterruption.unknownPause:
+        onPause();
+        break;
+      case AudioInterruption.temporaryDuck:
+        _audioPlayer.setVolume(0.5);
+        break;
+    }
+  }
+
+  @override
+  void onAudioFocusGained(AudioInterruption interruption) {
+    switch (interruption) {
+      case AudioInterruption.temporaryPause:
+        if (!_playing && _interrupted) onPlay();
+        break;
+      case AudioInterruption.temporaryDuck:
+        _audioPlayer.setVolume(1.0);
+        break;
+      default:
+        break;
+    }
+    _interrupted = false;
+  }
+
+  @override
+  void onAudioBecomingNoisy() {
+    onPause();
+  }
+
+  void _setState({
+    AudioProcessingState processingState,
+    Duration position,
+    Duration bufferedPosition,
+  }) {
     if (position == null) {
-      position = _audioPlayer.playbackEvent.position.inMilliseconds;
+      position = _audioPlayer.playbackEvent.position;
     }
     AudioServiceBackground.setState(
-      controls: getControls(state),
+      controls: getControls(),
       systemActions: [MediaAction.seekTo],
-      basicState: state,
+      processingState:
+          processingState ?? AudioServiceBackground.state.processingState,
+      playing: _playing,
       position: position,
+      bufferedPosition: bufferedPosition ?? position,
+      speed: _audioPlayer.speed,
     );
   }
 
-  List<MediaControl> getControls(BasicPlaybackState state) {
+  List<MediaControl> getControls() {
     if (_playing) {
       return [
         //skipToPreviousControl,
@@ -283,7 +322,7 @@ class StreamPlayer extends BackgroundAudioTask {
     }
   }
 
-  Future<String> _getStreamUrl() async {
+    Future<String> _getStreamUrl() async {
     String url;
     if (this._mode == 'radio') {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -325,6 +364,7 @@ class StreamPlayer extends BackgroundAudioTask {
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,
-        duration: _song.duration?.inMilliseconds));
+        duration: _song.duration));
   }
 }
+

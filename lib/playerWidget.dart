@@ -35,16 +35,16 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final screenState = snapshot.data;
           final mediaItem = screenState?.mediaItem;
           final state = screenState?.playbackState;
-          final basicState = state?.basicState ?? BasicPlaybackState.none;
+          final processingState =
+                state?.processingState ?? AudioProcessingState.none;
+          final playing = state?.playing ?? false;
 
           List<Widget> controls;
 
-          if (!snapshot.hasData ||
-              basicState == null ||
-              basicState == BasicPlaybackState.none)
+          if (processingState == AudioProcessingState.none)
             controls = [RadioStreamButton(widget._songNowPlaying)];
-          else if (basicState == BasicPlaybackState.buffering ||
-              basicState == BasicPlaybackState.connecting) {
+          else if (processingState == AudioProcessingState.buffering ||
+              processingState == AudioProcessingState.connecting) {
             controls = [
               CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
@@ -77,9 +77,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
                               size: 18.0,
                             ),
                           ),
-                    basicState == BasicPlaybackState.paused
-                        ? playButton()
-                        : pauseButton(),
+                    playing
+                        ? pauseButton()
+                        : playButton(),
                     stopButton()
                   ]),
               if (PlayerSongType.playerMode == PlayerMode.song)
@@ -173,9 +173,8 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           onPressed: () async {
             bool success = await AudioService.start(
               backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-              resumeOnClick: true,
               androidNotificationChannelName: 'Bide&Musique',
-              notificationColor: 0xFFFFFFFF,
+              androidNotificationColor: 0xFFFFFFFF, 
               androidNotificationIcon: 'mipmap/ic_launcher',
             );
             if (success) {
@@ -183,6 +182,8 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
                 PlayerSongType.playerMode = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', song.toJson());
+                print('OKEY !!!!!!!!!!!!');
+                print('${song.name}');
                 await AudioService.play();
               });
             }
