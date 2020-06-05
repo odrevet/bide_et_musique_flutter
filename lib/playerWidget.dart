@@ -10,6 +10,7 @@ import 'nowPlaying.dart';
 import 'player.dart';
 import 'song.dart';
 import 'songPositionSlider.dart';
+import 'songAiringNotifier.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;

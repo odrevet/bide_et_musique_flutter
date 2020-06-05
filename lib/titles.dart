@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'player.dart';
+import 'songAiringNotifier.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
@@ -82,14 +82,13 @@ class TitlesWidget extends StatefulWidget {
 
 class _TitlesWidgetState extends State<TitlesWidget> {
   Future<Map<String, List<SongLink>>> _songLinks;
+  VoidCallback listener;
 
   void updateTitles() {
     setState(() {
       _songLinks = fetchTitles();
     });
   }
-
-  VoidCallback listener;
 
   @override
   initState() {

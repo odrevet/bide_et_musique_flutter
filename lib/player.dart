@@ -42,67 +42,24 @@ void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => AudioPlayerTask());
 }
 
-class SongAiringNotifier extends ChangeNotifier {
-  static final SongAiringNotifier _singleton = SongAiringNotifier._internal();
-
-  factory SongAiringNotifier() {
-    return _singleton;
-  }
-
-  SongAiringNotifier._internal();
-
-  Future<SongNowPlaying> songNowPlaying;
-  Exception e;
-  Timer _t;
-
-  void periodicFetchSongNowPlaying() {
-    e = null;
-    _reset();
-    try {
-      songNowPlaying = fetchNowPlaying();
-      songNowPlaying.then((s) async {
-        notifyListeners();
-        int delay = (s.duration.inSeconds -
-                (s.duration.inSeconds * s.elapsedPcent / 100))
-            .ceil();
-        _t = Timer(Duration(seconds: delay), () {
-          periodicFetchSongNowPlaying();
-        });
-      }, onError: (e) {
-        this.e = e;
-        _reset();
-        notifyListeners();
-      });
-    } catch (e) {
-      this.e = e;
-      _reset();
-      notifyListeners();
-    }
-  }
-
-  _reset() {
-    _t?.cancel();
-    songNowPlaying = null;
-  }
-}
-
 class AudioPlayerTask extends BackgroundAudioTask {
-  final _queue = <MediaItem>[];
-  int _queueIndex = -1;
+  //final _queue = <MediaItem>[];
+  //int _queueIndex = -1;
   AudioPlayer _audioPlayer = AudioPlayer();
   Completer _completer = Completer();
-  AudioProcessingState _skipState;
+  AudioProcessingState _audioProcessingState;
   bool _playing;
   bool _interrupted = false;
 
   Song _song;
   String _mode;
+  String _latestId;
 
-  bool get hasNext => _queueIndex + 1 < _queue.length;
+  /*bool get hasNext => _queueIndex + 1 < _queue.length;
 
   bool get hasPrevious => _queueIndex > 0;
 
-  MediaItem get mediaItem => _queue[_queueIndex];
+  MediaItem get mediaItem => _queue[_queueIndex];*/
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
@@ -130,7 +87,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
           break;
         case AudioPlaybackState.connecting:
           _setState(
-            processingState: _skipState ?? AudioProcessingState.connecting,
+            processingState: _audioProcessingState ?? AudioProcessingState.connecting,
             position: event.position,
           );
           break;
@@ -139,19 +96,20 @@ class AudioPlayerTask extends BackgroundAudioTask {
       }
     });
 
-    AudioServiceBackground.setQueue(_queue);
-    await onSkipToNext();
+    //AudioServiceBackground.setQueue(_queue);
+    onSkipToNext();
     await _completer.future;
     playerStateSubscription.cancel();
     eventSubscription.cancel();
   }
 
   void _handlePlaybackCompleted() {
-    if (hasNext) {
+    onStop();
+    /*if (hasNext) {
       onSkipToNext();
     } else {
       onStop();
-    }
+    }*/
   }
 
   void playPause() {
@@ -161,7 +119,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
       onPlay();
   }
 
-  @override
+  /*@override
   Future<void> onSkipToNext() => _skip(1);
 
   @override
@@ -191,13 +149,17 @@ class AudioPlayerTask extends BackgroundAudioTask {
     } else {
       _setState(processingState: AudioProcessingState.ready);
     }
-  }
+  }*/
 
   @override
   void onPlay() async {
-    if (_skipState == null) {
-      String url = await _getStreamUrl();
+    String url = await _getStreamUrl();
+    if (url != _latestId) {
       await _audioPlayer.setUrl(url);
+      _latestId = url;
+    }
+
+    if (_audioProcessingState == null) {
       _playing = true;
       _audioPlayer.play();
     }
@@ -205,7 +167,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   void onPause() {
-    if (_skipState == null) {
+    if (_audioProcessingState == null) {
       _playing = false;
       _audioPlayer.pause();
     }
@@ -221,7 +183,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     playPause();
   }
 
-  @override
+  /*@override
   Future<void> onFastForward() async {
     await _seekRelative(fastForwardInterval);
   }
@@ -236,7 +198,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     if (newPosition < Duration.zero) newPosition = Duration.zero;
     if (newPosition > mediaItem.duration) newPosition = mediaItem.duration;
     await _audioPlayer.seek(_audioPlayer.playbackEvent.position + offset);
-  }
+  }*/
 
   @override
   Future<void> onStop() async {
