@@ -709,11 +709,28 @@ class SongWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var linkStyle = TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
+    );
+
+    var defaultStyle = TextStyle(
+      fontSize: 14.0,
+      color: Colors.black,
+    );
+
     var textSpans = <TextSpan>[];
 
     if (_song.year != 0) {
       textSpans.add(TextSpan(
-          text: _song.year.toString() + '\n',
+        text: 'Année \t',
+        style: defaultStyle,
+      ));
+
+      textSpans.add(TextSpan(
+          text: _song.year.toString() + '\n\n',
+          style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -731,7 +748,13 @@ class SongWidget extends StatelessWidget {
 
     if (_song.artist != null) {
       textSpans.add(TextSpan(
-          text: _song.artist + '\n',
+        text: 'Artiste \t',
+        style: defaultStyle,
+      ));
+
+      textSpans.add(TextSpan(
+          text: _song.artist + '\n\n',
+          style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -743,12 +766,26 @@ class SongWidget extends StatelessWidget {
     }
 
     if (_song.durationPretty != null) {
-      textSpans.add(TextSpan(text: _song.durationPretty + '\n'));
+      textSpans.add(TextSpan(
+        text: 'Durée \t',
+        style: defaultStyle,
+      ));
+
+      textSpans.add(TextSpan(
+        text: _song.durationPretty + '\n\n',
+        style: defaultStyle,
+      ));
     }
 
     if (_song.label != null) {
       textSpans.add(TextSpan(
-          text: _song.label + '\n',
+        text: 'Label \t',
+        style: defaultStyle,
+      ));
+
+      textSpans.add(TextSpan(
+          text: _song.label + '\n\n',
+          style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
                   Navigator.push(
@@ -764,18 +801,21 @@ class SongWidget extends StatelessWidget {
     }
 
     if (_song.reference != null) {
-      textSpans.add(TextSpan(text: _song.reference.toString() + '\n'));
-    }
+      textSpans.add(TextSpan(
+        text: 'Référence \t',
+        style: defaultStyle,
+      ));
 
-    final textStyle = TextStyle(
-      fontSize: 18.0,
-      color: Colors.black,
-    );
+      textSpans.add(TextSpan(
+        text: _song.reference.toString() + '\n\n',
+        style: defaultStyle,
+      ));
+    }
 
     return Center(
         child: RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan(style: textStyle, children: textSpans)));
+            textAlign: TextAlign.justify,
+            text: TextSpan(style: defaultStyle, children: textSpans)));
   }
 }
 
