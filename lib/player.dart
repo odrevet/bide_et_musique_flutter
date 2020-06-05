@@ -200,7 +200,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
       await _audioPlayer.setUrl(url);
       _playing = true;
       _audioPlayer.play();
-      AudioServiceBackground.sendCustomEvent('just played');
     }
   }
 
@@ -209,7 +208,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
     if (_skipState == null) {
       _playing = false;
       _audioPlayer.pause();
-      AudioServiceBackground.sendCustomEvent('just paused');
     }
   }
 
