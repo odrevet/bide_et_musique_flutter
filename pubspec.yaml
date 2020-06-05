@@ -22,6 +22,7 @@ dependencies:
   diacritic: ^0.1.1
   cached_network_image: ^2.2.0+1
   page_indicator: ^0.3.0
+  package_info: ^0.4.1
 
 flutter:
   uses-material-design: true
@@ -30,3 +31,4 @@ flutter:
     - assets/bm_logo.png
     - assets/bm_logo_white.png
     - assets/vinyl-default.jpg
+    - android/app/src/main/res/mipmap-mdpi/ic_launcher.png

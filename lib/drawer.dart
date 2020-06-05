@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
+import 'dart:ui';
 
-import 'about.dart';
+import 'package:flutter/gestures.dart';
+
+import 'account.dart';
+import 'utils.dart';
+
 import 'forums.dart';
 import 'identification.dart';
 import 'manageAccount.dart';
@@ -25,9 +31,16 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   String _accountTitle;
+  PackageInfo _packageInfo;
 
   @override
   void initState() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        _packageInfo = packageInfo;
+      });
+    });
+
     super.initState();
     _setAccountTitle();
   }
@@ -39,6 +52,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           : '${Session.accountLink.name}';
     });
   }
+
+  var linkStyle = TextStyle(
+    fontSize: 16.0,
+    color: Colors.red,
+  );
+
+  var defaultStyle = TextStyle(
+    fontSize: 14.0,
+    color: Colors.black,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +93,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           trailing: Session.accountLink.id == null ? null : DisconnectButton(),
           onTap: () {
             Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => IdentificationWidget()))
-                .then((_) {
-                  _setAccountTitle();
-                  });
+                context,
+                MaterialPageRoute(
+                    builder: (context) => IdentificationWidget())).then((_) {
+              _setAccountTitle();
+            });
           },
         ),
         Divider(),
@@ -161,10 +183,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text('Pochettoscope'),
           leading: Icon(Icons.image),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PochettoScopePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PochettoScopePage()));
           },
         ),
         ListTile(
@@ -195,13 +215,65 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('À propos'),
-          leading: Icon(Icons.info),
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AboutPage()));
-          },
-        ),
+            title: Text('À propos'),
+            leading: Icon(Icons.info),
+            onTap: () => showAboutDialog(
+                    context: context,
+                    applicationName: _packageInfo.appName,
+                    applicationVersion: _packageInfo.version,
+                    applicationIcon: Image.asset(
+                        'android/app/src/main/res/mipmap-mdpi/ic_launcher.png'),
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Application Bide&Musique par \n',
+                              style: defaultStyle,
+                            ),
+                            TextSpan(
+                              text: 'Olivier Drevet',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AccountPageWidget(
+                                            account: fetchAccount(84482)))),
+                            ),
+                            TextSpan(
+                              text: '\n\nDistribuée sous la ',
+                              style: defaultStyle,
+                            ),
+                            TextSpan(
+                              text: 'license GPLv3',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => launchURL(
+                                    'https://www.gnu.org/licenses/gpl-3.0.fr.html'),
+                            ),
+                            TextSpan(
+                              text: '\n\nCode source disponible sur ',
+                              style: defaultStyle,
+                            ),
+                            TextSpan(
+                              text: 'github.com\n\n',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => launchURL(
+                                    'https://github.com/odrevet/bide-et-musique-flutter'),
+                            ),
+                            TextSpan(
+                              text: 'Manuel Utilisateur en ligne',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => launchURL(
+                                    'https://github.com/odrevet/bide-et-musique-flutter/wiki/Manuel-Utilisateur'),
+                            )
+                          ],
+                        ),
+                      )
+                    ])),
       ],
     ));
   }
