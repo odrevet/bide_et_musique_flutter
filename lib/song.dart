@@ -555,7 +555,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics,
                       style: {
-                        "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
+                        "html": Style.fromTextStyle(TextStyle(fontSize: 26.0)),
                         "a": Style(
                           color: Colors.red,
                         ),
@@ -724,7 +724,7 @@ class SongWidget extends StatelessWidget {
 
     if (_song.year != 0) {
       textSpans.add(TextSpan(
-        text: 'Année \t',
+        text: 'Année\n',
         style: defaultStyle,
       ));
 
@@ -748,7 +748,7 @@ class SongWidget extends StatelessWidget {
 
     if (_song.artist != null) {
       textSpans.add(TextSpan(
-        text: 'Artiste \t',
+        text: 'Artiste\n',
         style: defaultStyle,
       ));
 
@@ -767,7 +767,7 @@ class SongWidget extends StatelessWidget {
 
     if (_song.durationPretty != null) {
       textSpans.add(TextSpan(
-        text: 'Durée \t',
+        text: 'Durée \n',
         style: defaultStyle,
       ));
 
@@ -779,7 +779,7 @@ class SongWidget extends StatelessWidget {
 
     if (_song.label != null) {
       textSpans.add(TextSpan(
-        text: 'Label \t',
+        text: 'Label\n',
         style: defaultStyle,
       ));
 
@@ -802,7 +802,7 @@ class SongWidget extends StatelessWidget {
 
     if (_song.reference != null) {
       textSpans.add(TextSpan(
-        text: 'Référence \t',
+        text: 'Référence\n',
         style: defaultStyle,
       ));
 
@@ -814,7 +814,7 @@ class SongWidget extends StatelessWidget {
 
     return Center(
         child: RichText(
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.center,
             text: TextSpan(style: defaultStyle, children: textSpans)));
   }
 }
