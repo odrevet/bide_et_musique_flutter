@@ -512,7 +512,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     },
                                     child: CachedNetworkImage(
                                         imageUrl: coverLink)))),
-                        Expanded(child: SongInformations(song)),
+                        Expanded(child: SingleChildScrollView(child: SongInformations(song))),
                       ],
                     ))
               ])),
