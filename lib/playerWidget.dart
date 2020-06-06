@@ -183,8 +183,6 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
                 PlayerSongType.playerMode = PlayerMode.radio;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', song.toJson());
-                print('OKEY !!!!!!!!!!!!');
-                print('${song.name}');
                 await AudioService.play();
               });
             }
