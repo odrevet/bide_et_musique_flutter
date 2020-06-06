@@ -264,10 +264,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                             future: _songNowPlaying,
                             builder: (BuildContext context,
                                 AsyncSnapshot<SongNowPlaying> snapshot) {
-                                  if(snapshot.hasData)
-                                    return SongInformations(snapshot.data);
-                                  else return CircularProgressIndicator();
-                                }),
+                              if (snapshot.hasData)
+                                return SongInformations(
+                                    song: snapshot.data, compact: true);
+                              else
+                                return CircularProgressIndicator();
+                            }),
                         PlayerWidget(orientation, _songNowPlaying),
                       ],
                     ),

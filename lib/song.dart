@@ -512,7 +512,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     },
                                     child: CachedNetworkImage(
                                         imageUrl: coverLink)))),
-                        Expanded(child: SingleChildScrollView(child: SongInformations(song))),
+                        Expanded(child: SingleChildScrollView(child: SongInformations(song: song))),
                       ],
                     ))
               ])),
@@ -703,9 +703,10 @@ void launchSongPage(SongLink songLink, BuildContext context) {
 }
 
 class SongInformations extends StatelessWidget {
-  final Song _song;
+  final Song song;
+  final bool compact;
 
-  SongInformations(this._song);
+  SongInformations({this.song, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -722,14 +723,14 @@ class SongInformations extends StatelessWidget {
 
     var textSpans = <TextSpan>[];
 
-    if (_song.year != 0) {
+    if (!compact && song.year != 0) {
       textSpans.add(TextSpan(
         text: 'Année\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: _song.year.toString() + '\n\n',
+          text: song.year.toString() + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -739,21 +740,21 @@ class SongInformations extends StatelessWidget {
                           builder: (context) => Scaffold(
                               appBar: AppBar(
                                 title: Text(
-                                    'Recherche de l\'année "${_song.year.toString()}"'),
+                                    'Recherche de l\'année "${song.year.toString()}"'),
                               ),
                               body: SearchResultsWidget(
-                                  _song.year.toString(), '7')))),
+                                  song.year.toString(), '7')))),
                 }));
     }
 
-    if (_song.artist != null) {
+    if (!compact && song.artist != null) {
       textSpans.add(TextSpan(
         text: 'Artiste\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: _song.artist + '\n\n',
+          text: song.artist + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -761,30 +762,30 @@ class SongInformations extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ArtistPageWidget(
-                              artist: fetchArtist(_song.artistId)))),
+                              artist: fetchArtist(song.artistId)))),
                 }));
     }
 
-    if (_song.durationPretty != null) {
+    if (song.durationPretty != null) {
       textSpans.add(TextSpan(
         text: 'Durée \n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: _song.durationPretty + '\n\n',
+        text: song.durationPretty + '\n\n',
         style: defaultStyle,
       ));
     }
 
-    if (_song.label != null) {
+    if (song.label != null) {
       textSpans.add(TextSpan(
         text: 'Label\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: _song.label + '\n\n',
+          text: song.label + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -794,20 +795,20 @@ class SongInformations extends StatelessWidget {
                           builder: (context) => Scaffold(
                               appBar: AppBar(
                                 title:
-                                    Text('Recherche du label "${_song.label}"'),
+                                    Text('Recherche du label "${song.label}"'),
                               ),
-                              body: SearchResultsWidget(_song.label, '5')))),
+                              body: SearchResultsWidget(song.label, '5')))),
                 }));
     }
 
-    if (_song.reference != null) {
+    if (song.reference != null) {
       textSpans.add(TextSpan(
         text: 'Référence\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: _song.reference.toString() + '\n\n',
+        text: song.reference.toString() + '\n\n',
         style: defaultStyle,
       ));
     }
