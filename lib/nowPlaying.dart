@@ -70,7 +70,7 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [errorDisplay(snapshot.error)]);
+                children: [ErrorDisplay(snapshot.error)]);
           }
 
           return Container();

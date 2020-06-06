@@ -112,7 +112,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
               if (snapshot.hasData) {
                 return _buildView(context, snapshot.data);
               } else if (snapshot.hasError) {
-                return errorDisplay(snapshot.error);
+                return ErrorDisplay(snapshot.error);
               }
 
               return CircularProgressIndicator();

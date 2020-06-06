@@ -323,8 +323,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<Song>(
+    return FutureBuilder<Song>(
         future: this.song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -332,14 +331,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: Center(child: errorDisplay(snapshot.error))),
+              body: Center(child: ErrorDisplay(snapshot.error)),
             );
           }
 
-          return _pageLoading(context, widget.songLink);
+          return Center(child: _pageLoading(context, widget.songLink));
         },
-      ),
-    );
+      );
   }
 
   void _openCoverViewerDialog(SongLink songLink, BuildContext context) {

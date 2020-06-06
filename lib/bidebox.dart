@@ -74,7 +74,7 @@ class BideBoxWidget extends StatelessWidget {
             return _buildView(context, snapshot.data);
           } else if (snapshot.hasError) {
             return Center(
-              child: errorDisplay(snapshot.error),
+              child: ErrorDisplay(snapshot.error),
             );
           }
 

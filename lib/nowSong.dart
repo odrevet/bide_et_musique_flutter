@@ -67,7 +67,7 @@ class NowSongsWidget extends StatelessWidget {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data);
             } else if (snapshot.hasError) {
-              return errorDisplay(snapshot.error);
+              return ErrorDisplay(snapshot.error);
             }
 
             // By default, show a loading spinner

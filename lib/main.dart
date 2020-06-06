@@ -12,7 +12,7 @@ import 'identification.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
 import 'playerWidget.dart';
-import 'utils.dart' show handleLink, errorDisplay;
+import 'utils.dart' show handleLink, ErrorDisplay;
 import 'songAiringNotifier.dart';
 
 enum UniLinksType { string, uri }
@@ -203,8 +203,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Widget refreshNowPlayingSongButton() {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          errorDisplay(_e),
+          ErrorDisplay(_e),
           RaisedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {

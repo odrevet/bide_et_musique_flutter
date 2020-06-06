@@ -71,11 +71,16 @@ launchURL(String url) async {
   }
 }
 
-Widget errorDisplay(final Exception exception) {
-  var title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
-  var defaultStyle = TextStyle(color: Colors.black);
-  var reportedError = TextStyle(fontStyle: FontStyle.italic);
+class ErrorDisplay extends StatelessWidget {
+  final title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
+  final defaultStyle = TextStyle(color: Colors.black);
+  final reportedError = TextStyle(fontStyle: FontStyle.italic);
+  final Exception exception;
 
+  ErrorDisplay(this.exception);
+
+  @override
+  Widget build(BuildContext context) {
   return RichText(
     text: TextSpan(
       style: defaultStyle,
@@ -93,4 +98,5 @@ Widget errorDisplay(final Exception exception) {
       ],
     ),
   );
+  }
 }

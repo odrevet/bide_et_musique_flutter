@@ -184,7 +184,7 @@ class _ForumPageState extends State<ForumWidget> {
                           });
                     });
               } else if (snapshot.hasError) {
-                return errorDisplay(snapshot.error);
+                return Center(child: ErrorDisplay(snapshot.error));
               }
 
               return Center(child: CircularProgressIndicator());
@@ -239,7 +239,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                           });
                     });
               } else if (snapshot.hasError) {
-                return errorDisplay(snapshot.error);
+                return Center(child:ErrorDisplay(snapshot.error));
               }
 
               return Center(child: CircularProgressIndicator());
@@ -315,7 +315,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                               '${forumMessage.date} par ${forumMessage.user?.name}'));
                     });
               } else if (snapshot.hasError) {
-                return errorDisplay(snapshot.error);
+                return Center(child:ErrorDisplay(snapshot.error));
               }
 
               return Center(child: CircularProgressIndicator());
