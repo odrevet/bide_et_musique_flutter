@@ -81,22 +81,22 @@ class ErrorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return RichText(
-    text: TextSpan(
-      style: defaultStyle,
-      children: <TextSpan>[
-        TextSpan(text: 'Ouille ouille ouille !', style: title),
-        TextSpan(text: ' \n Une erreur est survenue !'),
-        TextSpan(text: ' \n Le message reporté est : \n'),
-        TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
-        TextSpan(
-            text:
-                ' \n • Verifiez que votre appareil est connecté à Internet\n'),
-        TextSpan(
-            text:
-                ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
-      ],
-    ),
-  );
+    return RichText(
+      text: TextSpan(
+        style: defaultStyle,
+        children: <TextSpan>[
+          TextSpan(text: 'Ouille ouille ouille !', style: title),
+          TextSpan(text: ' \n Une erreur est survenue !'),
+          TextSpan(text: ' \n Le message reporté est : \n'),
+          TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
+          TextSpan(
+              text:
+                  ' \n • Verifiez que votre appareil est connecté à Internet\n'),
+          TextSpan(
+              text:
+                  ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
+        ],
+      ),
+    );
   }
 }
