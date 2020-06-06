@@ -260,7 +260,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        SongDetails(_songNowPlaying),
+                        FutureBuilder<SongNowPlaying>(
+                            future: _songNowPlaying,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<SongNowPlaying> snapshot) {
+                                  if(snapshot.hasData)
+                                    return SongInformations(snapshot.data);
+                                  else return CircularProgressIndicator();
+                                }),
                         PlayerWidget(orientation, _songNowPlaying),
                       ],
                     ),

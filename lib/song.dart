@@ -512,7 +512,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     },
                                     child: CachedNetworkImage(
                                         imageUrl: coverLink)))),
-                        Expanded(child: SongWidget(song)),
+                        Expanded(child: SongInformations(song)),
                       ],
                     ))
               ])),
@@ -702,10 +702,10 @@ void launchSongPage(SongLink songLink, BuildContext context) {
   }
 }
 
-class SongWidget extends StatelessWidget {
+class SongInformations extends StatelessWidget {
   final Song _song;
 
-  SongWidget(this._song);
+  SongInformations(this._song);
 
   @override
   Widget build(BuildContext context) {
@@ -819,31 +819,3 @@ class SongWidget extends StatelessWidget {
   }
 }
 
-class SongDetails extends StatefulWidget {
-  final Future<Song> _song;
-
-  SongDetails(this._song);
-
-  @override
-  _SongDetailsState createState() => _SongDetailsState();
-}
-
-class _SongDetailsState extends State<SongDetails> {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Song>(
-        future: widget._song,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Song song = snapshot.data;
-            return Column(children: <Widget>[
-              Text('Label ${song.label}'),
-              Text('Reference ${song.reference}'),
-              Text('Durée ${song.durationPretty}')
-            ]);
-          }
-
-          return Container();
-        });
-  }
-}
