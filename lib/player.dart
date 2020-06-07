@@ -152,14 +152,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   void onPlay() async {
-    String url = await _getStreamUrl();
-    if (url != _latestId) {
-      await _audioPlayer.setUrl(url);
-      _latestId = url;
-    }
-
     if (_audioProcessingState == null) {
       _playing = true;
+      String url = await _getStreamUrl();
+      if (url != _latestId) {
+        await _audioPlayer.setUrl(url);
+        _latestId = url;
+      }
       _audioPlayer.play();
     }
   }
