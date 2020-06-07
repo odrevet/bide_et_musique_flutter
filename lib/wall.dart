@@ -216,6 +216,7 @@ class _WallWidgetState extends State<WallWidget> {
             Divider(),
             Html(
               data: post.body,
+              defaultTextStyle: TextStyle(fontSize: 18.0),
               linkStyle: const TextStyle(
                 color: Colors.red,
               ),

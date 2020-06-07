@@ -603,6 +603,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               linkStyle: const TextStyle(
                 color: Colors.red,
               ),
+              defaultTextStyle: TextStyle(fontSize: 18.0),
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),
