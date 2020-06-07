@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
+import 'pochettoscopeWidget.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
-import 'pochettoscopeWidget.dart';
 
 Future<List<SongLink>> fetchPochettoscope() async {
   final url = '$baseUri/le-pochettoscope.html';
@@ -44,9 +44,6 @@ class PochettoScopePage extends StatelessWidget {
         appBar: AppBar(
           title: Text('Le pochettoscope'),
         ),
-        body: PochettoscopeWidget(
-            onEndReached: fetchPochettoscope));
+        body: PochettoscopeWidget(onEndReached: fetchPochettoscope));
   }
 }
-
-

@@ -12,8 +12,8 @@ import 'identification.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
 import 'playerWidget.dart';
-import 'utils.dart' show handleLink, ErrorDisplay;
 import 'songAiringNotifier.dart';
+import 'utils.dart' show handleLink, ErrorDisplay;
 
 enum UniLinksType { string, uri }
 

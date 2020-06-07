@@ -37,7 +37,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final mediaItem = screenState?.mediaItem;
           final state = screenState?.playbackState;
           final processingState =
-                state?.processingState ?? AudioProcessingState.none;
+              state?.processingState ?? AudioProcessingState.none;
           final playing = state?.playing ?? false;
 
           List<Widget> controls;
@@ -78,9 +78,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                               size: 18.0,
                             ),
                           ),
-                    playing
-                        ? pauseButton()
-                        : playButton(),
+                    playing ? pauseButton() : playButton(),
                     stopButton()
                   ]),
               if (PlayerSongType.playerMode == PlayerMode.song)
@@ -175,7 +173,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             bool success = await AudioService.start(
               backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
               androidNotificationChannelName: 'Bide&Musique',
-              androidNotificationColor: 0xFFFFFFFF, 
+              androidNotificationColor: 0xFFFFFFFF,
               androidNotificationIcon: 'mipmap/ic_launcher',
             );
             if (success) {

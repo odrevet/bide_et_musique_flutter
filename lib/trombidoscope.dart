@@ -51,7 +51,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     }
   }
 
-  Future<void>fetchTrombidoscope() async {
+  Future<void> fetchTrombidoscope() async {
     final url = '$baseUri/trombidoscope.html';
     final response = await Session.get(url);
     if (response.statusCode == 200) {

@@ -39,9 +39,10 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
             Stream.periodic(Duration(milliseconds: 200)),
             (dragPosition, _) => dragPosition),
         builder: (context, snapshot) {
-        double position =
-            snapshot.data ?? widget.state.currentPosition.inMilliseconds.toDouble();
-        double duration = widget.mediaItem?.duration?.inMilliseconds?.toDouble();
+          double position = snapshot.data ??
+              widget.state.currentPosition.inMilliseconds.toDouble();
+          double duration =
+              widget.mediaItem?.duration?.inMilliseconds?.toDouble();
 
           Widget text = Text(_formatSongDuration(widget.state.currentPosition));
 

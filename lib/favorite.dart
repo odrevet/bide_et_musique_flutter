@@ -13,6 +13,7 @@ class FavoritesResults {
   List<SongLink> songLinks;
   int pageCount;
   int page;
+
   FavoritesResults({this.songLinks, this.pageCount, this.page});
 }
 
@@ -76,7 +77,8 @@ class FavoriteWidget extends StatefulWidget {
   final int accountId;
   final bool viewPochettoscope;
 
-  FavoriteWidget({this.accountId, this.viewPochettoscope = false, Key key}) : super(key: key);
+  FavoriteWidget({this.accountId, this.viewPochettoscope = false, Key key})
+      : super(key: key);
 
   @override
   _FavoriteWidgetState createState() => _FavoriteWidgetState();
@@ -129,21 +131,21 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: FutureBuilder<List<SongLink>>(
-          future: _songLinks,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return PochettoscopeWidget(songLinks: snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+      child: FutureBuilder<List<SongLink>>(
+        future: _songLinks,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return PochettoscopeWidget(songLinks: snapshot.data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator();
-          },
-        ),
-      );
+          // By default, show a loading spinner
+          return CircularProgressIndicator();
+        },
+      ),
+    );
 
     //return PochettoscopeWidget(songLinks: _songLinks);
-}
+  }
 }

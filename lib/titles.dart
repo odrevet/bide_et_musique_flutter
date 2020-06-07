@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import 'songAiringNotifier.dart';
 import 'session.dart';
 import 'song.dart';
+import 'songAiringNotifier.dart';
 import 'utils.dart';
 
 SongLink songLinkFromTr(dom.Element tr) {
@@ -23,8 +23,7 @@ SongLink songLinkFromTr(dom.Element tr) {
     a = tdSong.children[1];
   } else {
     //sometimes the td song element is somehow empty (e.g. Seamus)
-    if(tdSong.children.isNotEmpty)
-      a = tdSong.children[0];
+    if (tdSong.children.isNotEmpty) a = tdSong.children[0];
   }
 
   return SongLink(
@@ -117,9 +116,9 @@ class _TitlesWidgetState extends State<TitlesWidget> {
             return _buildView(snapshot.data);
           } else if (snapshot.hasError) {
             return Scaffold(
-              appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: ErrorDisplay(Exception(snapshot.error.toString())))
-            );
+                appBar: AppBar(title: Text('Ouille ouille ouille !')),
+                body: Center(
+                    child: ErrorDisplay(Exception(snapshot.error.toString()))));
           }
 
           // By default, show a loading spinner

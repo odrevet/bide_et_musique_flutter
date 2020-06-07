@@ -124,7 +124,7 @@ class MessageEditor extends StatefulWidget {
 class _MessageEditorState extends State<MessageEditor> {
   final _newMessageController = TextEditingController();
 
-  Future<bool>_sendMessage() async {
+  Future<bool> _sendMessage() async {
     String message = removeDiacritics(_newMessageController.text);
     final url = '$baseUri/bidebox_send.html';
 

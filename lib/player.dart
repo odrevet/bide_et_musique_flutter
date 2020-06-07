@@ -85,7 +85,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
           break;
         case AudioPlaybackState.connecting:
           _setState(
-            processingState: _audioProcessingState ?? AudioProcessingState.connecting,
+            processingState:
+                _audioProcessingState ?? AudioProcessingState.connecting,
             position: event.position,
           );
           break;
@@ -281,7 +282,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     }
   }
 
-    Future<String> _getStreamUrl() async {
+  Future<String> _getStreamUrl() async {
     String url;
     if (this._mode == 'radio') {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -326,4 +327,3 @@ class AudioPlayerTask extends BackgroundAudioTask {
         duration: _song.duration));
   }
 }
-

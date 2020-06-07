@@ -324,20 +324,20 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Song>(
-        future: this.song,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
-          } else if (snapshot.hasError) {
-            return Scaffold(
-              appBar: AppBar(title: Text('Ouille ouille ouille !')),
-              body: Center(child: ErrorDisplay(snapshot.error)),
-            );
-          }
+      future: this.song,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildView(context, snapshot.data);
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(title: Text('Ouille ouille ouille !')),
+            body: Center(child: ErrorDisplay(snapshot.error)),
+          );
+        }
 
-          return Center(child: _pageLoading(context, widget.songLink));
-        },
-      );
+        return Center(child: _pageLoading(context, widget.songLink));
+      },
+    );
   }
 
   void _openCoverViewerDialog(SongLink songLink, BuildContext context) {
@@ -510,7 +510,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                     },
                                     child: CachedNetworkImage(
                                         imageUrl: coverLink)))),
-                        Expanded(child: SingleChildScrollView(child: SongInformations(song: song))),
+                        Expanded(
+                            child: SingleChildScrollView(
+                                child: SongInformations(song: song))),
                       ],
                     ))
               ])),
@@ -817,4 +819,3 @@ class SongInformations extends StatelessWidget {
             text: TextSpan(style: defaultStyle, children: textSpans)));
   }
 }
-
