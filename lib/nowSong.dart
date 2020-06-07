@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
@@ -87,12 +86,9 @@ class NowSongsWidget extends StatelessWidget {
           leading: CoverThumb(nowSong.songLink),
           title: Html(
               data: nowSong.songLink.name + '<br/>' + nowSong.desc,
-              style: {
-                "html": Style.fromTextStyle(TextStyle(fontSize: 30.0)),
-                "a": Style(
-                  color: Colors.red,
-                ),
-              },
+              linkStyle: const TextStyle(
+                color: Colors.red,
+              ),
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

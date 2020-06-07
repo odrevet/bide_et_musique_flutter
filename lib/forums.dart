@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 
 import 'account.dart';
 import 'session.dart';
@@ -301,13 +300,9 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       return ListTile(
                           title: Html(
                               data: forumMessage.text,
-                              style: {
-                                "html": Style.fromTextStyle(
-                                    TextStyle(fontSize: 30.0)),
-                                "a": Style(
-                                  color: Colors.red,
-                                ),
-                              },
+                              linkStyle: const TextStyle(
+                                color: Colors.red,
+                              ),
                               onLinkTap: (url) {
                                 onLinkTap(url, context);
                               }),

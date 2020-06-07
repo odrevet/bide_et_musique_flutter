@@ -7,7 +7,6 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:page_indicator/page_indicator.dart';
@@ -554,12 +553,10 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics,
-                      style: {
-                        "html": Style.fromTextStyle(TextStyle(fontSize: 26.0)),
-                        "a": Style(
-                          color: Colors.red,
-                        ),
-                      },
+                      defaultTextStyle: TextStyle(fontSize: 18.0),
+                      linkStyle: const TextStyle(
+                        color: Colors.red,
+                      ),
                       onLinkTap: (url) {
                         onLinkTap(url, context);
                       }),
@@ -603,12 +600,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           },
           title: Html(
               data: comment.body,
-              style: {
-                "html": Style.fromTextStyle(TextStyle(fontSize: 24.0)),
-                "a": Style(
-                  color: Colors.red,
-                ),
-              },
+              linkStyle: const TextStyle(
+                color: Colors.red,
+              ),
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

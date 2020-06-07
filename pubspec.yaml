@@ -14,7 +14,7 @@ dependencies:
   xml: any
   audio_service: ^0.9.0
   just_audio: ^0.1.8
-  flutter_html: ^1.0.0
+  flutter_html: ^0.11.1
   url_launcher: ^5.4.7
   share: ^0.6.4+3
   shared_preferences: ^0.5.7+3

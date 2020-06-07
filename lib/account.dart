@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:bide_et_musique/pochettoscopeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
@@ -362,13 +361,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                         padding: EdgeInsets.only(left: 8.0, top: 2.0),
                         child: Html(
                             data: account.presentation,
-                            style: {
-                              "html": Style.fromTextStyle(
-                                  TextStyle(fontSize: 30.0)),
-                              "a": Style(
-                                color: Colors.red,
-                              ),
-                            },
+                            defaultTextStyle: TextStyle(fontSize: 18.0),
+                            linkStyle: const TextStyle(
+                              color: Colors.red,
+                            ),
                             onLinkTap: (url) {
                               onLinkTap(url, context);
                             }),

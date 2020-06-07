@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
@@ -217,12 +216,9 @@ class _WallWidgetState extends State<WallWidget> {
             Divider(),
             Html(
               data: post.body,
-              style: {
-                "html": Style.fromTextStyle(TextStyle(fontSize: 26.0)),
-                "a": Style(
-                  color: Colors.red,
-                ),
-              },
+              linkStyle: const TextStyle(
+                color: Colors.red,
+              ),
               onLinkTap: (url) {
                 onLinkTap(url, context);
               },
