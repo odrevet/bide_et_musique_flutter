@@ -34,16 +34,16 @@ class Artist {
   String firstName;
   String lastName;
   String site;
-  String birth;
+  String dates;
   List<SongLink> disco;
 
-  Artist({this.id, this.alias, this.site, this.birth, this.disco});
+  Artist({this.id, this.alias, this.site, this.dates, this.disco});
 
   Artist.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         alias = json['alias'],
         site = json['site'],
-        birth = json['dates']['pretty'] {
+        dates = json['dates']['pretty'] {
     this.disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
       this.disco.add(
@@ -115,10 +115,10 @@ class ArtistPageWidget extends StatelessWidget {
                           if (artist.site != null)
                             GestureDetector(
                               onTap: () => launchURL(artist.site),
-                              child: Text(artist.site),
+                              child: Text(artist.site, style: linkStyle),
                             ),
                           Text(artist.alias),
-                          if (artist.birth != null) Text(artist.birth)
+                          if (artist.dates != null) Text(artist.dates)
                         ],
                       )),
                     ],

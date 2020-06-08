@@ -53,16 +53,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     });
   }
 
-  var linkStyle = TextStyle(
-    fontSize: 16.0,
-    color: Colors.red,
-  );
-
-  var defaultStyle = TextStyle(
-    fontSize: 14.0,
-    color: Colors.black,
-  );
-
   @override
   Widget build(BuildContext context) {
     return Drawer(

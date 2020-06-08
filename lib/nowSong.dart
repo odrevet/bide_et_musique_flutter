@@ -86,9 +86,7 @@ class NowSongsWidget extends StatelessWidget {
           leading: CoverThumb(nowSong.songLink),
           title: Html(
               data: nowSong.songLink.name + '<br/>' + nowSong.desc,
-              linkStyle: const TextStyle(
-                color: Colors.red,
-              ),
+              linkStyle: linkStyle,
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

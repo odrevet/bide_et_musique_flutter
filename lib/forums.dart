@@ -300,9 +300,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       return ListTile(
                           title: Html(
                               data: forumMessage.text,
-                              linkStyle: const TextStyle(
-                                color: Colors.red,
-                              ),
+                              linkStyle: linkStyle,
                               onLinkTap: (url) {
                                 onLinkTap(url, context);
                               }),

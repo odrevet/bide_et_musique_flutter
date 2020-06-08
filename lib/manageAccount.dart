@@ -169,9 +169,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                         SingleChildScrollView(
                             child: Html(
                                 data: account.presentation,
-                                linkStyle: const TextStyle(
-                                  color: Colors.red,
-                                ),
+                                linkStyle: linkStyle,
                                 onLinkTap: (url) {
                                   onLinkTap(url, context);
                                 })),

@@ -538,9 +538,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             length: 2,
             indicatorSpace: 20.0,
             padding: const EdgeInsets.all(10),
+            shape: IndicatorShape.circle(size: 8),
             indicatorColor: Theme.of(context).canvasColor,
             indicatorSelectorColor: Theme.of(context).accentColor,
-            shape: IndicatorShape.circle(size: 8),
             child: PageView(
               onPageChanged: (int page) => setState(() {
                 _currentPage = page;
@@ -548,15 +548,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               children: <Widget>[
                 SingleChildScrollView(
                     child: Padding(
-                  padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                  padding: EdgeInsets.only(left: 4.0, top: 2.0),
                   child: Html(
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics,
                       defaultTextStyle: TextStyle(fontSize: 18.0),
-                      linkStyle: const TextStyle(
-                        color: Colors.red,
-                      ),
+                      linkStyle: linkStyle,
                       onLinkTap: (url) {
                         onLinkTap(url, context);
                       }),
@@ -600,9 +598,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           },
           title: Html(
               data: comment.body,
-              linkStyle: const TextStyle(
-                color: Colors.red,
-              ),
+              linkStyle: linkStyle,
               defaultTextStyle: TextStyle(fontSize: 18.0),
               onLinkTap: (url) {
                 onLinkTap(url, context);
@@ -707,13 +703,8 @@ class SongInformations extends StatelessWidget {
   Widget build(BuildContext context) {
     var linkStyle = TextStyle(
       fontSize: 16.0,
-      fontWeight: FontWeight.bold,
       color: Colors.red,
-    );
-
-    var defaultStyle = TextStyle(
-      fontSize: 14.0,
-      color: Colors.black,
+      fontWeight: FontWeight.bold,
     );
 
     var textSpans = <TextSpan>[];
@@ -773,7 +764,7 @@ class SongInformations extends StatelessWidget {
       ));
     }
 
-    if (song.label != null) {
+    if (song.label != null && song.label != '') {
       textSpans.add(TextSpan(
         text: 'Label\n',
         style: defaultStyle,
@@ -796,7 +787,7 @@ class SongInformations extends StatelessWidget {
                 }));
     }
 
-    if (song.reference != null) {
+    if (song.reference != null && song.reference != '') {
       textSpans.add(TextSpan(
         text: 'Référence\n',
         style: defaultStyle,

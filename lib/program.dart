@@ -143,9 +143,7 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
               title: Text(program.name),
               children: [
                 Html(data: program.description,
-                  linkStyle: const TextStyle(
-                    color: Colors.red,
-                  ),
+                  linkStyle: linkStyle
                 ),
                 if (program.airedOn.isNotEmpty)
                   Text('Dernière diffusion $airedOn')

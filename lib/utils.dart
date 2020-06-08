@@ -11,6 +11,14 @@ const site = 'bide-et-musique.com';
 const host = 'www.$site';
 const baseUri = 'https://$host';
 
+var linkStyle = TextStyle(
+  color: Colors.red,
+);
+
+var defaultStyle = TextStyle(
+  color: Colors.black,
+);
+
 int getIdFromUrl(String url) {
   final idRegex = RegExp(r'(\d+).(?:html|php)$');
   if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)[1]);

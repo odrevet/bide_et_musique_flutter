@@ -168,11 +168,6 @@ class _WallWidgetState extends State<WallWidget> {
   }
 
   Widget _buildView(BuildContext context, List<Post> posts) {
-    var linkStyle = TextStyle(
-      fontSize: 14.0,
-      color: Colors.red,
-    );
-
     var rows = <Widget>[];
     for (Post post in posts) {
       rows.add(Card(
@@ -217,9 +212,7 @@ class _WallWidgetState extends State<WallWidget> {
             Html(
               data: post.body,
               defaultTextStyle: TextStyle(fontSize: 18.0),
-              linkStyle: const TextStyle(
-                color: Colors.red,
-              ),
+              linkStyle: linkStyle,
               onLinkTap: (url) {
                 onLinkTap(url, context);
               },

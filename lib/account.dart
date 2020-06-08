@@ -343,9 +343,9 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
             length: Session.accountLink.id == null ? 2 : 3,
             indicatorSpace: 20.0,
             padding: const EdgeInsets.all(10),
+            shape: IndicatorShape.circle(size: 8),
             indicatorColor: Theme.of(context).canvasColor,
             indicatorSelectorColor: Theme.of(context).accentColor,
-            shape: IndicatorShape.circle(size: 8),
             child: PageView(
               controller: controller,
               onPageChanged: (int page) => setState(() {
@@ -362,9 +362,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                         child: Html(
                             data: account.presentation,
                             defaultTextStyle: TextStyle(fontSize: 18.0),
-                            linkStyle: const TextStyle(
-                              color: Colors.red,
-                            ),
+                            linkStyle: linkStyle,
                             onLinkTap: (url) {
                               onLinkTap(url, context);
                             }),
