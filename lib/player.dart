@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
 
@@ -156,7 +157,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
       _playing = true;
       String url = await _getStreamUrl();
       if (url != _latestId) {
-        await _audioPlayer.setUrl(url);
+        await _audioPlayer.setUrl(url, headers: Session.headers);
         _latestId = url;
       }
       _audioPlayer.play();
