@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'drawer.dart';
 import 'identification.dart';
@@ -303,14 +302,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                   buttonColor: Colors.orangeAccent,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)))),
-                                  localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-          supportedLocales: [
-            const Locale('fr')
-          ],
           home: home),
     );
   }
