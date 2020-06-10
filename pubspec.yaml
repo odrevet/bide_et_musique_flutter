@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   http: ^0.12.1
   html: ^0.14.0+3
-  xml: any
+  xml: ^4.2.0
   audio_service: ^0.10.0
   just_audio: ^0.2.1
   flutter_html: ^0.11.1

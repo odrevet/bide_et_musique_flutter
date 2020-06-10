@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:xml/xml.dart' as xml;
+import 'package:xml/xml.dart';
 
 import 'session.dart';
 import 'song.dart';
@@ -13,7 +13,7 @@ Future<List<SongLink>> fetchNewSongs() async {
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
-    var document = xml.parse(body);
+    var document = XmlDocument.parse(body);
     for (var item in document.findAllElements('item')) {
       var link = item.children[2].text;
       var song = SongLink();
