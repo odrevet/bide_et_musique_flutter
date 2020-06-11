@@ -142,9 +142,7 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
                   borderRadius: BorderRadius.circular(24.0)),
               title: Text(program.name),
               children: [
-                Html(data: program.description,
-                  linkStyle: linkStyle
-                ),
+                Html(data: program.description, linkStyle: linkStyle),
                 if (program.airedOn.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],

@@ -9,8 +9,8 @@ import 'package:rxdart/rxdart.dart';
 import 'nowPlaying.dart';
 import 'player.dart';
 import 'song.dart';
-import 'songPositionSlider.dart';
 import 'songAiringNotifier.dart';
+import 'songPositionSlider.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -57,7 +57,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    PlayerSongType.playerMode == PlayerMode.song
+                    radioMode == false
                         ? InkWell(
                             onTap: () => Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -81,7 +81,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     playing ? pauseButton() : playButton(),
                     stopButton()
                   ]),
-              if (PlayerSongType.playerMode == PlayerMode.song)
+              if (radioMode == false)
                 Container(
                     height: 20, child: SongPositionSlider(mediaItem, state))
             ];
@@ -173,12 +173,11 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             bool success = await AudioService.start(
               backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
               androidNotificationChannelName: 'Bide&Musique',
-              androidNotificationColor: 0xFFFFFFFF,
               androidNotificationIcon: 'mipmap/ic_launcher',
             );
             if (success) {
               SongAiringNotifier().songNowPlaying.then((song) async {
-                PlayerSongType.playerMode = PlayerMode.radio;
+                radioMode = true;
                 await AudioService.customAction('mode', 'radio');
                 await AudioService.customAction('song', song.toJson());
                 await AudioService.play();

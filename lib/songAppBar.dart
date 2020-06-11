@@ -364,8 +364,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final playing = state?.playing ?? false;
 
           if (processingState == AudioProcessingState.none ||
-              (widget._song.streamLink != mediaItem.id ||
-                  PlayerSongType.playerMode != PlayerMode.song))
+              (widget._song.streamLink != mediaItem.id || radioMode == true))
             return RaisedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Écouter'),
@@ -401,17 +400,15 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       onPressed: () => AudioService.play());
 
   play() async {
-    if (!AudioService.running) {
-      await AudioService.start(
-        backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-        androidNotificationChannelName: 'Bide&Musique',
-        androidNotificationColor: 0xFFFFFFFF,
-        androidNotificationIcon: 'mipmap/ic_launcher',
-      );
-    }
+    await AudioService.start(
+      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+      androidNotificationChannelName: 'Bide&Musique',
+      androidNotificationIcon: 'mipmap/ic_launcher',
+    );
 
-    PlayerSongType.playerMode = PlayerMode.song;
+    radioMode = false;
     await AudioService.customAction('mode', 'song');
+    await AudioService.customAction('session_id', Session.headers['cookie']);
     await AudioService.customAction('song', widget._song.toJson());
     await AudioService.play();
   }

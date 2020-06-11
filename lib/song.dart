@@ -499,17 +499,21 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Card(
-                            child: Hero(
-                                tag: tag,
-                                child: InkWell(
-                                    onTap: () {
-                                      _openCoverViewerDialog(
-                                          widget.songLink, context);
-                                    },
-                                    child: CachedNetworkImage(
-                                        imageUrl: coverLink)))),
                         Expanded(
+                          flex: 1,
+                          child: Card(
+                              child: Hero(
+                                  tag: tag,
+                                  child: InkWell(
+                                      onTap: () {
+                                        _openCoverViewerDialog(
+                                            widget.songLink, context);
+                                      },
+                                      child: CachedNetworkImage(
+                                          imageUrl: coverLink)))),
+                        ),
+                        Expanded(
+                            flex: 1,
                             child: SingleChildScrollView(
                                 child: SongInformations(song: song))),
                       ],

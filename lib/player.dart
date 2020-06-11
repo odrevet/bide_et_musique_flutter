@@ -4,15 +4,11 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'session.dart';
+import 'nowPlaying.dart';
 import 'song.dart';
 import 'utils.dart';
 
-enum PlayerMode { radio, song, off }
-
-abstract class PlayerSongType {
-  static PlayerMode playerMode = PlayerMode.off;
-}
+bool radioMode;
 
 class PlayerState {
   final MediaItem mediaItem;
@@ -42,8 +38,6 @@ void audioPlayerTaskEntrypoint() async {
 }
 
 class AudioPlayerTask extends BackgroundAudioTask {
-  //final _queue = <MediaItem>[];
-  //int _queueIndex = -1;
   AudioPlayer _audioPlayer = AudioPlayer();
   Completer _completer = Completer();
   AudioProcessingState _audioProcessingState;
@@ -52,16 +46,27 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   Song _song;
   String _mode;
+  String _sessionId;
   String _latestId;
 
-  /*bool get hasNext => _queueIndex + 1 < _queue.length;
+  Timer _t;
 
-  bool get hasPrevious => _queueIndex > 0;
-
-  MediaItem get mediaItem => _queue[_queueIndex];*/
+  void periodicFetchSongNowPlaying() {
+    fetchNowPlaying().then((song) async {
+      if (_mode == 'radio')
+        await AudioService.customAction('song', song.toJson());
+      int delay = (song.duration.inSeconds -
+              (song.duration.inSeconds * song.elapsedPcent / 100))
+          .ceil();
+      _t = Timer(Duration(seconds: delay), () {
+        periodicFetchSongNowPlaying();
+      });
+    });
+  }
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
+    periodicFetchSongNowPlaying();
     var playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
@@ -96,7 +101,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
       }
     });
 
-    //AudioServiceBackground.setQueue(_queue);
     onSkipToNext();
     await _completer.future;
     playerStateSubscription.cancel();
@@ -105,11 +109,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   void _handlePlaybackCompleted() {
     onStop();
-    /*if (hasNext) {
-      onSkipToNext();
-    } else {
-      onStop();
-    }*/
   }
 
   void playPause() {
@@ -119,45 +118,22 @@ class AudioPlayerTask extends BackgroundAudioTask {
       onPlay();
   }
 
-  /*@override
-  Future<void> onSkipToNext() => _skip(1);
-
-  @override
-  Future<void> onSkipToPrevious() => _skip(-1);
-
-  Future<void> _skip(int offset) async {
-    final newPos = _queueIndex + offset;
-    if (!(newPos >= 0 && newPos < _queue.length)) return;
-    if (_playing == null) {
-      // First time, we want to start playing
-      _playing = true;
-    } else if (_playing) {
-      // Stop current item
-      await _audioPlayer.stop();
-    }
-    // Load next item
-    _queueIndex = newPos;
-    AudioServiceBackground.setMediaItem(mediaItem);
-    _skipState = offset > 0
-        ? AudioProcessingState.skippingToNext
-        : AudioProcessingState.skippingToPrevious;
-    await _audioPlayer.setUrl(mediaItem.id);
-    _skipState = null;
-    // Resume playback if we were playing
-    if (_playing) {
-      onPlay();
-    } else {
-      _setState(processingState: AudioProcessingState.ready);
-    }
-  }*/
-
   @override
   void onPlay() async {
     if (_audioProcessingState == null) {
       _playing = true;
       String url = await _getStreamUrl();
       if (url != _latestId) {
-        await _audioPlayer.setUrl(url, headers: Session.headers);
+        if (_mode == 'song') {
+          Map<String, String> headers = {
+            'Host': host,
+            'Referer': _song.link,
+            'Cookie': _sessionId
+          };
+          await _audioPlayer.setUrl(url, headers: headers);
+        } else
+          await _audioPlayer.setUrl(url);
+
         _latestId = url;
       }
       _audioPlayer.play();
@@ -181,23 +157,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
   void onClick(MediaButton button) {
     playPause();
   }
-
-  /*@override
-  Future<void> onFastForward() async {
-    await _seekRelative(fastForwardInterval);
-  }
-
-  @override
-  Future<void> onRewind() async {
-    await _seekRelative(rewindInterval);
-  }
-
-  Future<void> _seekRelative(Duration offset) async {
-    var newPosition = _audioPlayer.playbackEvent.position + offset;
-    if (newPosition < Duration.zero) newPosition = Duration.zero;
-    if (newPosition > mediaItem.duration) newPosition = mediaItem.duration;
-    await _audioPlayer.seek(_audioPlayer.playbackEvent.position + offset);
-  }*/
 
   @override
   Future<void> onStop() async {
@@ -267,17 +226,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
   List<MediaControl> getControls() {
     if (_playing) {
       return [
-        //skipToPreviousControl,
         pauseControl,
         stopControl,
-        //skipToNextControl
       ];
     } else {
       return [
-        //skipToPreviousControl,
         playControl,
         stopControl,
-        //skipToNextControl
       ];
     }
   }
@@ -313,6 +268,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       case 'mode':
         _mode = arguments;
         break;
+      case 'session_id':
+        _sessionId = arguments;
+        break;
     }
     super.onCustomAction(name, arguments);
   }
@@ -324,6 +282,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,
-        duration: _song.duration));
+        duration: _song.duration ?? null));
   }
 }
