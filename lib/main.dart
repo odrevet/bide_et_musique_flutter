@@ -48,8 +48,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    //set radioMode in case the app was previously launched
+    AudioService.customAction('get_mode').then((mode) => radioMode = mode == 'radio)');
+
     WidgetsBinding.instance.addObserver(this);
-    //connect();
+    
     autoLogin();
     initPlatformState();
     initSongFetch();
