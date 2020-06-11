@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 import 'account.dart';
-import 'utils.dart';
-
 import 'forums.dart';
 import 'identification.dart';
 import 'manageAccount.dart';
 import 'newSongs.dart';
 import 'nowSong.dart';
+import 'pochettoscopePage.dart';
 import 'randomSong.dart';
 import 'schedule.dart';
 import 'search.dart';
@@ -20,8 +19,8 @@ import 'settings.dart';
 import 'song.dart';
 import 'thematics.dart';
 import 'titles.dart';
-import 'pochettoscopePage.dart';
 import 'trombidoscope.dart';
+import 'utils.dart';
 import 'wall.dart';
 
 class DrawerWidget extends StatefulWidget {
