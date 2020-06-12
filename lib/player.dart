@@ -39,7 +39,6 @@ void audioPlayerTaskEntrypoint() async {
 
 class AudioPlayerTask extends BackgroundAudioTask {
   AudioPlayer _audioPlayer = AudioPlayer();
-  Completer _completer = Completer();
   AudioProcessingState _audioProcessingState;
   bool _playing;
   bool _interrupted = false;
@@ -64,17 +63,20 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
   }
 
+  StreamSubscription<AudioPlaybackState> _playerStateSubscription;
+  StreamSubscription<AudioPlaybackEvent> _eventSubscription;
+
   @override
-  Future<void> onStart(Map<String, dynamic> params) async {
+  void onStart(Map<String, dynamic> params) {
     periodicFetchSongNowPlaying();
-    var playerStateSubscription = _audioPlayer.playbackStateStream
+    _playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
       _handlePlaybackCompleted();
     });
-    var eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
+    _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
       final bufferingState =
-          event.buffering ? AudioProcessingState.buffering : null;
+      event.buffering ? AudioProcessingState.buffering : null;
       switch (event.state) {
         case AudioPlaybackState.paused:
           _setState(
@@ -87,12 +89,10 @@ class AudioPlayerTask extends BackgroundAudioTask {
             processingState: bufferingState ?? AudioProcessingState.ready,
             position: event.position,
           );
-          AudioServiceBackground.sendCustomEvent(event.icyMetadata);
           break;
         case AudioPlaybackState.connecting:
           _setState(
-            processingState:
-                _audioProcessingState ?? AudioProcessingState.connecting,
+            processingState: AudioProcessingState.connecting,
             position: event.position,
           );
           break;
@@ -102,9 +102,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
 
     onSkipToNext();
-    await _completer.future;
-    playerStateSubscription.cancel();
-    eventSubscription.cancel();
   }
 
   void _handlePlaybackCompleted() {
@@ -160,11 +157,14 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
+    _t?.cancel();
     await _audioPlayer.stop();
     await _audioPlayer.dispose();
     _playing = false;
-    _setState(processingState: AudioProcessingState.stopped);
-    _completer.complete();
+    _playerStateSubscription.cancel();
+    _eventSubscription.cancel();
+    await _setState(processingState: AudioProcessingState.stopped);
+    await super.onStop();
   }
 
   /* Handling Audio Focus */
