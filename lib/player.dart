@@ -271,9 +271,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
       case 'session_id':
         _sessionId = arguments;
         break;
-      case 'get_mode':
-        return _mode;
-        break;
     }
     super.onCustomAction(name, arguments);
   }
