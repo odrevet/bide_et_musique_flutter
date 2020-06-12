@@ -211,7 +211,6 @@ class _WallWidgetState extends State<WallWidget> {
             Divider(),
             Html(
               data: post.body,
-              defaultTextStyle: TextStyle(fontSize: 18.0),
               linkStyle: linkStyle,
               onLinkTap: (url) {
                 onLinkTap(url, context);

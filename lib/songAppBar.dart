@@ -407,7 +407,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     );
 
     radioMode = false;
-    await AudioService.customAction('mode', 'song');
+    await AudioService.customAction('set_mode', 'song');
     await AudioService.customAction('session_id', Session.headers['cookie']);
     await AudioService.customAction('song', widget._song.toJson());
     await AudioService.play();

@@ -203,15 +203,15 @@ class AudioPlayerTask extends BackgroundAudioTask {
     onPause();
   }
 
-  void _setState({
+  Future<void> _setState({
     AudioProcessingState processingState,
     Duration position,
     Duration bufferedPosition,
-  }) {
+  }) async {
     if (position == null) {
       position = _audioPlayer.playbackEvent.position;
     }
-    AudioServiceBackground.setState(
+    await AudioServiceBackground.setState(
       controls: getControls(),
       systemActions: [MediaAction.seekTo],
       processingState:
@@ -253,6 +253,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<dynamic> onCustomAction(String name, dynamic arguments) async {
+    dynamic res;
     switch (name) {
       case 'song':
         Map songMap = arguments;
@@ -265,14 +266,18 @@ class AudioPlayerTask extends BackgroundAudioTask {
                 : Duration(seconds: songMap['duration']));
         this.setNotification();
         break;
-      case 'mode':
+      case 'set_mode':
         _mode = arguments;
+        break;
+      case 'get_mode':
+        return _mode;
         break;
       case 'session_id':
         _sessionId = arguments;
         break;
     }
-    super.onCustomAction(name, arguments);
+    await super.onCustomAction(name, arguments);
+    return res;
   }
 
   void setNotification() {
