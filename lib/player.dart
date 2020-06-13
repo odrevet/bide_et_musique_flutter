@@ -68,7 +68,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   void onStart(Map<String, dynamic> params) {
-    periodicFetchSongNowPlaying();
     _playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {
@@ -76,7 +75,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
     _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
       final bufferingState =
-      event.buffering ? AudioProcessingState.buffering : null;
+          event.buffering ? AudioProcessingState.buffering : null;
       switch (event.state) {
         case AudioPlaybackState.paused:
           _setState(
@@ -123,12 +122,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       String url = await _getStreamUrl();
       if (url != _latestId) {
         if (_radioMode == false) {
-          Map<String, String> headers = {
-            'Host': host,
-            'Referer': _song.link
-          };
+          Map<String, String> headers = {'Host': host, 'Referer': _song.link};
 
-          if(_sessionId != null)headers['Cookie'] = _sessionId;
+          if (_sessionId != null) headers['Cookie'] = _sessionId;
           await _audioPlayer.setUrl(url, headers: headers);
         } else
           await _audioPlayer.setUrl(url);
@@ -159,7 +155,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
-    _t?.cancel();
     await _audioPlayer.stop();
     await _audioPlayer.dispose();
     _playing = false;
@@ -272,10 +267,16 @@ class AudioPlayerTask extends BackgroundAudioTask {
         _radioMode = arguments;
         break;
       case 'get_radio_mode':
-        res =  _radioMode;
+        res = _radioMode;
         break;
       case 'set_session_id':
         _sessionId = arguments;
+        break;
+      case 'start_song_listener':
+        periodicFetchSongNowPlaying();
+        break;
+      case 'stop_song_listener':
+        _t?.cancel();
         break;
     }
     await super.onCustomAction(name, arguments);

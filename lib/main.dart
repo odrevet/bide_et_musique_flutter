@@ -53,7 +53,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     initPlatformState();
     initSongFetch();
 
-    AudioService.customAction('get_radio_mode').then((mode) => radioMode = mode == true);
+    AudioService.customAction('get_radio_mode')
+        .then((mode) => radioMode = mode == true);
 
     super.initState();
   }
@@ -191,10 +192,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
         _songAiring.periodicFetchSongNowPlaying();
+        await AudioService.customAction('stop_song_listener');
+        break;
+      case AppLifecycleState.inactive:
+        await AudioService.customAction('start_song_listener');
         break;
       default:
         break;

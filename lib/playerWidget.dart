@@ -126,8 +126,7 @@ bitrate ${icyMetadata.headers.bitrate}
                       return Text("${snapshot.error}");
                     }
 
-                    // By default, show a loading spinner
-                    return Text('Chargement');
+                    return Text('Veuillez attendre');
                   }));
         });
   }
