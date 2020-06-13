@@ -124,9 +124,10 @@ class AudioPlayerTask extends BackgroundAudioTask {
         if (_mode == 'song') {
           Map<String, String> headers = {
             'Host': host,
-            'Referer': _song.link,
-            'Cookie': _sessionId
+            'Referer': _song.link
           };
+
+          if(_sessionId != null)headers['Cookie'] = _sessionId;
           await _audioPlayer.setUrl(url, headers: headers);
         } else
           await _audioPlayer.setUrl(url);
