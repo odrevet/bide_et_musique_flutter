@@ -44,7 +44,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   bool _interrupted = false;
 
   Song _song;
-  String _mode;
+  bool _radioMode;
   String _sessionId;
   String _latestId;
 
@@ -52,8 +52,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   void periodicFetchSongNowPlaying() {
     fetchNowPlaying().then((song) async {
-      if (_mode == 'radio')
-        await AudioService.customAction('song', song.toJson());
+      if (_radioMode == true)
+        await AudioService.customAction('set_song', song.toJson());
       int delay = (song.duration.inSeconds -
               (song.duration.inSeconds * song.elapsedPcent / 100))
           .ceil();
@@ -121,7 +121,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
       _playing = true;
       String url = await _getStreamUrl();
       if (url != _latestId) {
-        if (_mode == 'song') {
+        if (_radioMode == false) {
           Map<String, String> headers = {
             'Host': host,
             'Referer': _song.link
@@ -240,7 +240,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   Future<String> _getStreamUrl() async {
     String url;
-    if (this._mode == 'radio') {
+    if (_radioMode == true) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       int relay = prefs.getInt('relay') ?? 1;
@@ -256,7 +256,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   Future<dynamic> onCustomAction(String name, dynamic arguments) async {
     dynamic res;
     switch (name) {
-      case 'song':
+      case 'set_song':
         Map songMap = arguments;
         this._song = Song(
             id: songMap['id'],
@@ -267,13 +267,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
                 : Duration(seconds: songMap['duration']));
         this.setNotification();
         break;
-      case 'set_mode':
-        _mode = arguments;
+      case 'set_radio_mode':
+        _radioMode = arguments;
         break;
-      case 'get_mode':
-        return _mode;
+      case 'get_radio_mode':
+        res =  _radioMode;
         break;
-      case 'session_id':
+      case 'set_session_id':
         _sessionId = arguments;
         break;
     }

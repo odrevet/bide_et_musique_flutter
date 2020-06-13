@@ -170,16 +170,18 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           icon: Icon(Icons.radio, size: 40),
           label: label,
           onPressed: () async {
-            bool success = await AudioService.start(
-              backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-              androidNotificationChannelName: 'Bide&Musique',
-              androidNotificationIcon: 'mipmap/ic_launcher',
-            );
+            bool success = false;
+            if (!AudioService.running)
+              success = await AudioService.start(
+                backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+                androidNotificationChannelName: 'Bide&Musique',
+                androidNotificationIcon: 'mipmap/ic_launcher',
+              );
             if (success) {
               SongAiringNotifier().songNowPlaying.then((song) async {
                 radioMode = true;
-                await AudioService.customAction('set_mode', 'radio');
-                await AudioService.customAction('song', song.toJson());
+                await AudioService.customAction('set_radio_mode', true);
+                await AudioService.customAction('set_song', song.toJson());
                 await AudioService.play();
               });
             }

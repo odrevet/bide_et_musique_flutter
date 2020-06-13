@@ -603,7 +603,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           title: Html(
               data: comment.body,
               linkStyle: linkStyle,
-              defaultTextStyle: TextStyle(fontSize: 18.0),
+              defaultTextStyle: TextStyle(fontSize: 16.0),
               onLinkTap: (url) {
                 onLinkTap(url, context);
               }),

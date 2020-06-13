@@ -400,16 +400,17 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       onPressed: () => AudioService.play());
 
   play() async {
-    await AudioService.start(
-      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-      androidNotificationChannelName: 'Bide&Musique',
-      androidNotificationIcon: 'mipmap/ic_launcher',
-    );
+    if(!AudioService.running)
+      await AudioService.start(
+        backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+        androidNotificationChannelName: 'Bide&Musique',
+        androidNotificationIcon: 'mipmap/ic_launcher',
+      );
 
     radioMode = false;
-    await AudioService.customAction('set_mode', 'song');
-    await AudioService.customAction('session_id', Session.headers['cookie']);
-    await AudioService.customAction('song', widget._song.toJson());
+    await AudioService.customAction('set_radio_mode', false);
+    await AudioService.customAction('set_session_id', Session.headers['cookie']);
+    await AudioService.customAction('set_song', widget._song.toJson());
     await AudioService.play();
   }
 }
