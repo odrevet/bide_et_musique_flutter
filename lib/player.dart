@@ -89,6 +89,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
             processingState: bufferingState ?? AudioProcessingState.ready,
             position: event.position,
           );
+          AudioServiceBackground.sendCustomEvent(event.icyMetadata);
           break;
         case AudioPlaybackState.connecting:
           _setState(
