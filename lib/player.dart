@@ -8,7 +8,6 @@ import 'nowPlaying.dart';
 import 'song.dart';
 import 'utils.dart';
 
-bool radioMode;
 
 class PlayerState {
   final MediaItem mediaItem;
@@ -286,7 +285,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   void setNotification() {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
-        album: '',
+        album: _radioMode ? 'radio': 'song',
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,

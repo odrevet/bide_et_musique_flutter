@@ -362,6 +362,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final playing = state?.playing ?? false;
+          final radioMode = mediaItem?.album == 'radio';
 
           if (processingState == AudioProcessingState.none ||
               (widget._song.streamLink != mediaItem.id || radioMode == true))
@@ -407,7 +408,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         androidNotificationIcon: 'mipmap/ic_launcher',
       );
 
-    radioMode = false;
     await AudioService.customAction('set_radio_mode', false);
     await AudioService.customAction('set_session_id', Session.headers['cookie']);
     await AudioService.customAction('set_song', widget._song.toJson());

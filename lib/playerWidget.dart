@@ -39,6 +39,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final playing = state?.playing ?? false;
+          final radioMode = mediaItem?.album == 'radio';
 
           List<Widget> controls;
 
@@ -178,7 +179,6 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               );
             if (success) {
               SongAiringNotifier().songNowPlaying.then((song) async {
-                radioMode = true;
                 await AudioService.customAction('set_radio_mode', true);
                 await AudioService.customAction('set_song', song.toJson());
                 await AudioService.play();

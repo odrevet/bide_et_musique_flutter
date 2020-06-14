@@ -10,7 +10,6 @@ import 'package:uni_links/uni_links.dart';
 import 'drawer.dart';
 import 'identification.dart';
 import 'nowPlaying.dart';
-import 'player.dart';
 import 'playerWidget.dart';
 import 'songAiringNotifier.dart';
 import 'utils.dart' show handleLink, ErrorDisplay;
@@ -37,10 +36,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         _songNowPlaying = _songAiring.songNowPlaying;
         if (_songNowPlaying == null)
           _e = _songAiring.e;
-        else if (radioMode == true)
-          _songAiring.songNowPlaying.then((song) async {
-            await AudioService.customAction('set_song', song.toJson());
+        else {
+          AudioService.customAction('get_radio_mode').then((radioMode) {
+            if (radioMode == true)
+              _songAiring.songNowPlaying.then((song) async {
+                await AudioService.customAction('set_song', song.toJson());
+              });
           });
+        }
       });
     });
     _songAiring.periodicFetchSongNowPlaying();
@@ -52,9 +55,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     autoLogin();
     initPlatformState();
     initSongFetch();
-
-    AudioService.customAction('get_radio_mode')
-        .then((mode) => radioMode = mode == true);
 
     super.initState();
   }
@@ -98,19 +98,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       });
     });
 
-    // Attach a second listener to the stream
-    getLinksStream().listen((String link) {
-      print('got link: $link');
-    }, onError: (err) {
-      print('got err: $err');
-    });
-
     // Get the latest link
     String initialLink;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       initialLink = await getInitialLink();
-      print('initial link: $initialLink');
     } on PlatformException {
       initialLink = 'Failed to get initial link.';
     } on FormatException {
