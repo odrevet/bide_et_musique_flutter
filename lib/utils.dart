@@ -11,6 +11,9 @@ const site = 'bide-et-musique.com';
 const host = 'www.$site';
 const baseUri = 'https://$host';
 
+const radioIcon = '\u{1F4FB}';
+const songIcon = '♪';
+
 var linkStyle = TextStyle(
   color: Colors.red,
 );
