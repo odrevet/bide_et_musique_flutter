@@ -39,7 +39,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final playing = state?.playing ?? false;
-          final radioMode = mediaItem?.album == 'radio';
+          final radioMode = mediaItem?.album == radioIcon;
 
           List<Widget> controls;
 

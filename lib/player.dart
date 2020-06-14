@@ -285,7 +285,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   void setNotification() {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
-        album: _radioMode ? 'radio': 'song',
+        album: _radioMode ? radioIcon: songIcon,
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,

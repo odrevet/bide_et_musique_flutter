@@ -362,7 +362,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final playing = state?.playing ?? false;
-          final radioMode = mediaItem?.album == 'radio';
+          final radioMode = mediaItem?.album == radioIcon;
 
           if (processingState == AudioProcessingState.none ||
               (widget._song.streamLink != mediaItem.id || radioMode == true))
