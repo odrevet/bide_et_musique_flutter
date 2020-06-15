@@ -13,6 +13,7 @@ import 'bidebox.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
+import 'favorite.dart';
 
 class AccountLink {
   int id;
@@ -53,22 +54,6 @@ openAccountImageViewerDialog(context, image) {
       fullscreenDialog: true));
 }
 
-List<SongLink> parseFavoriteTable(dom.Element table) {
-  List<SongLink> favorites = [];
-  for (dom.Element tr in table.getElementsByTagName('tr')) {
-    SongLink songLink = SongLink();
-    dom.Element aTitle = tr.children[4].children[0];
-
-    if (aTitle.toString() == '<html div>') aTitle = tr.children[4].children[1];
-
-    songLink.id = getIdFromUrl(aTitle.attributes['href']);
-    songLink.name = stripTags(aTitle.innerHtml);
-    songLink.artist = stripTags(tr.children[3].innerHtml);
-    favorites.add(songLink);
-  }
-  return favorites;
-}
-
 Future<Account> fetchAccount(int accountId) async {
   Account account = Account();
   account.id = accountId;
@@ -98,15 +83,12 @@ Future<Account> fetchAccount(int accountId) async {
 
     //set avatar path
     var img = divInfo.getElementsByTagName('img');
-    if (img.isEmpty) {
+    if (img.isEmpty)
       account.image = '';
-    } else {
+    else
       account.image = img[0].attributes['src'];
-    }
 
-    //parse bm tables
-    //bm table may list favourite songs or messages.
-    //either are optional
+    //bm tables list favourite songs or messages, either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
     bool hasMessage = Session.accountLink != null &&
         document.getElementsByClassName('titre-message').isNotEmpty;
@@ -171,70 +153,6 @@ Future<List<SongLink>> fetchVotes() async {
   }
 
   return songLinks;
-}
-
-class FavoritesResults {
-  List<SongLink> songLinks;
-  int pageCount;
-  int page;
-
-  FavoritesResults({this.songLinks, this.pageCount, this.page});
-}
-
-Future<FavoritesResults> fetchFavorites(int accountId, int page) async {
-  final url = '$baseUri/account.html?N=$accountId&Page=$page';
-  final response = await Session.get(url);
-
-  if (response.statusCode == 200) {
-    var body = response.body;
-    dom.Document document = parser.parse(body);
-
-    //parse bm tables
-    //bm table may list favourite songs or messages.
-    //either are optional
-    List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage = Session.accountLink != null &&
-        document.getElementsByClassName('titre-message').isNotEmpty;
-    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
-        (tables.length == 2 && hasMessage);
-
-    //parse favorites
-    List<SongLink> favorites = <SongLink>[];
-    int pageCount = 0;
-    if (hasFavorite) {
-      List<dom.Element> navbars = tables[0].getElementsByClassName('navbar');
-      if (navbars.isEmpty)
-        pageCount = 0;
-      else {
-        pageCount = navbars[0].getElementsByTagName('td').length - 1;
-      }
-
-      List<dom.Element> trs = tables[0].children[0].children;
-      print(trs.length);
-      if (pageCount > 0) {
-        trs.removeAt(0);
-        trs.removeLast();
-      }
-
-      for (dom.Element tr in trs) {
-        SongLink songLink = SongLink();
-        dom.Element aTitle = tr.children[4].children[0];
-
-        if (aTitle.toString() == '<html div>')
-          aTitle = tr.children[4].children[1];
-
-        songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.name = stripTags(aTitle.innerHtml);
-        songLink.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(songLink);
-      }
-    }
-
-    return FavoritesResults(
-        songLinks: favorites, page: page, pageCount: pageCount);
-  } else {
-    throw Exception('Failed to load account with id $accountId');
-  }
 }
 
 class AccountPageWidget extends StatefulWidget {
@@ -455,8 +373,8 @@ class MessageListingWidget extends StatelessWidget {
 
 Future<Account> fetchAccountSession() async {
   var account = Account();
-  final accountId = Session.accountLink.id;
-  final url = '$baseUri/account.html?N=$accountId&Page=all';
+  account.id = Session.accountLink.id;
+  final url = '$baseUri/account.html?N=${account.id}&Page=all';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -479,7 +397,7 @@ Future<Account> fetchAccountSession() async {
 
     return account;
   } else {
-    throw Exception('Failed to load account with id $accountId');
+    throw Exception('Failed to load account $account');
   }
 }
 

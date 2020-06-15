@@ -6,6 +6,7 @@ import 'account.dart';
 import 'session.dart';
 import 'song.dart';
 import 'utils.dart';
+import 'favorite.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
@@ -120,14 +121,13 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         children: _rows,
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = account.favorites[initialPosition];
-          //update server
-          var accountId = Session.accountLink.id;
+
           var K = draggedSong.id.toString();
           var step = initialPosition - targetPosition;
           var direction = step < 0 ? 'down' : 'up';
 
           final response =
-              await Session.post('$baseUri/account/$accountId.html', body: {
+              await Session.post('$baseUri/account/${account.id}.html', body: {
             'K': K,
             'Step': step.abs().toString(),
             direction + '.x': '1',
@@ -135,9 +135,9 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           });
 
           if (response.statusCode == 200) {
+            FavoritesResults favoriteResults = await fetchFavorites(account.id, -1);
             setState(() {
-              account.favorites.removeAt(initialPosition);
-              account.favorites.insert(targetPosition, draggedSong);
+              account.favorites = favoriteResults.songLinks;
             });
           }
         });
