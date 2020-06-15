@@ -187,16 +187,14 @@ class Cover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      fadeInDuration: Duration(seconds: 0),
       imageUrl: _url,
-      errorWidget: (context, url, error) => DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/vinyl-default.jpg'),
-          ),
-        ),
-      ),
+      fadeInDuration: Duration(milliseconds: 0),
+      fadeOutDuration: Duration(milliseconds: 0),
+      placeholderFadeInDuration: Duration(seconds: 0),
+      placeholder: (context, url) => FractionallySizedBox(
+          child: Image.asset('assets/vinyl-default.jpg'), widthFactor: 1),
+      errorWidget: (context, url, error) =>
+          Image.asset('assets/vinyl-default.jpg'),
     );
   }
 }
@@ -365,14 +363,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth),
           ),
         ),
-        placeholder: (context, url) => DecoratedBox(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/vinyl-default.jpg'),
-            ),
-          ),
-        ),
-        errorWidget: (context, url, error) => Icon(Icons.album, size: 55.0),
+        placeholder: (context, url) => Image.asset('assets/vinyl-default.jpg'),
+        errorWidget: (context, url, error) =>
+            Image.asset('assets/vinyl-default.jpg'),
       ),
       Align(alignment: Alignment.center, child: CircularProgressIndicator())
     ]);
