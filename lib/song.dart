@@ -187,6 +187,8 @@ class Cover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
+      fadeInDuration: Duration(seconds: 0),
+      fadeOutDuration: Duration(seconds: 0),
       imageUrl: _url,
       errorWidget: (context, url, error) =>
           Image.asset('assets/vinyl-default.jpg'),
