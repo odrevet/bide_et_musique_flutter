@@ -287,20 +287,20 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           body: body);
     }
 
-    return AudioServiceWidget(
-      child: MaterialApp(
-          title: 'Bide&Musique',
-          theme: ThemeData(
-              primarySwatch: Colors.orange,
-              secondaryHeaderColor: Colors.deepOrange,
-              bottomAppBarColor: Colors.orange,
-              canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-              dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-              buttonTheme: ButtonThemeData(
-                  buttonColor: Colors.orangeAccent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)))),
-          home: home),
-    );
+    return MaterialApp(
+        title: 'Bide&Musique',
+        theme: ThemeData(
+            primarySwatch: Colors.orange,
+            secondaryHeaderColor: Colors.deepOrange,
+            bottomAppBarColor: Colors.orange,
+            canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+            dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+            buttonTheme: ButtonThemeData(
+                buttonColor: Colors.orangeAccent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)))),
+        home: AudioServiceWidget(
+          child: home,
+        ));
   }
 }
