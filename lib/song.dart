@@ -358,7 +358,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth),
           ),
         ),
-        placeholder: (context, url) => Image.asset('assets/vinyl-default.jpg'),
         errorWidget: (context, url, error) =>
             Image.asset('assets/vinyl-default.jpg'),
       ),
