@@ -188,11 +188,6 @@ class Cover extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: _url,
-      fadeInDuration: Duration(milliseconds: 0),
-      fadeOutDuration: Duration(milliseconds: 0),
-      placeholderFadeInDuration: Duration(seconds: 0),
-      placeholder: (context, url) => FractionallySizedBox(
-          child: Image.asset('assets/vinyl-default.jpg'), widthFactor: 1),
       errorWidget: (context, url, error) =>
           Image.asset('assets/vinyl-default.jpg'),
     );
