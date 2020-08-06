@@ -1,7 +1,7 @@
 name: bide_et_musique
 description: Écouter et consulter la web radio 'Bide et Musique'
 
-version: 3.3.1+40
+version: 3.3.2+41
 
 environment:
   sdk: '>=2.7.0'
@@ -9,15 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.1
+  http: ^0.12.2
   html: ^0.14.0+3
   xml: ^4.2.0
   audio_service: ^0.11.2
   just_audio: ^0.2.2
   flutter_html: ^0.11.1
-  url_launcher: ^5.4.11
+  url_launcher: ^5.5.0
   share: ^0.6.4+3
-  shared_preferences: ^0.5.7+3
+  shared_preferences: ^0.5.8
   uni_links: ^0.4.0
   diacritic: ^0.1.1
   cached_network_image: ^2.2.0+1
