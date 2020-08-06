@@ -1,13 +1,12 @@
-import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:http/http.dart' as http;
 
 import '../models/account.dart';
 import '../models/song.dart';
-import '../models/favorites.dart';
-
-import '../utils.dart';
 import '../session.dart';
+import '../utils.dart';
+import 'favorite.dart';
 
 Future<Account> fetchAccount(int accountId) async {
   Account account = Account();

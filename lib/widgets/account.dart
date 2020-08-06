@@ -8,15 +8,13 @@ import 'package:html/parser.dart' as parser;
 import 'package:page_indicator/page_indicator.dart';
 
 import '../models/account.dart';
-import '../models/favorites.dart';
-
 import '../services/account.dart';
-
-import '../widgets/pochettoscope.dart';
-import '../widgets/bidebox.dart';
+import '../services/favorite.dart';
 import '../session.dart';
-import '../widgets/song.dart';
 import '../utils.dart';
+import '../widgets/bidebox.dart';
+import '../widgets/pochettoscope.dart';
+import '../widgets/song.dart';
 
 openAccountImageViewerDialog(context, image) {
   Navigator.of(context).push(MaterialPageRoute<Null>(
