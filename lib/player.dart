@@ -4,10 +4,11 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'nowPlaying.dart';
-import 'song.dart';
-import 'utils.dart';
+import 'models/song.dart';
 
+import 'services/song.dart';
+
+import 'utils.dart';
 
 class PlayerState {
   final MediaItem mediaItem;
@@ -285,7 +286,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   void setNotification() {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
-        album: _radioMode ? radioIcon: songIcon,
+        album: _radioMode ? radioIcon : songIcon,
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: _song.coverLink,

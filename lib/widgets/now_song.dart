@@ -1,0 +1,57 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+
+import '../models/nowSong.dart';
+import '../utils.dart';
+import 'song.dart';
+
+class NowSongsWidget extends StatelessWidget {
+  final Future<List<NowSong>> nowSongs;
+
+  NowSongsWidget({Key key, this.nowSongs}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Morceau du moment'),
+      ),
+      body: Center(
+        child: FutureBuilder<List<NowSong>>(
+          future: nowSongs,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildView(context, snapshot.data);
+            } else if (snapshot.hasError) {
+              return ErrorDisplay(snapshot.error);
+            }
+
+            // By default, show a loading spinner
+            return CircularProgressIndicator();
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildView(BuildContext context, List<NowSong> nowSongs) {
+    var rows = <ListTile>[];
+
+    for (NowSong nowSong in nowSongs) {
+      rows.add(ListTile(
+          onTap: () => launchSongPage(nowSong.songLink, context),
+          leading: CoverThumb(nowSong.songLink),
+          title: Html(
+              data: nowSong.songLink.name + '<br/>' + nowSong.desc,
+              linkStyle: linkStyle,
+              onLinkTap: (url) {
+                onLinkTap(url, context);
+              }),
+          subtitle: Text('Le ${nowSong.date}')));
+    }
+
+    return ListView(children: rows);
+  }
+}
