@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-import '../models/account.dart';
 import '../models/forum.dart';
 
 import '../services/forum.dart';
 
-import '../session.dart';
 import '../utils.dart';
 
 class ForumWidget extends StatefulWidget {

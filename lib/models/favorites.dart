@@ -1,5 +1,3 @@
-import 'package:html/dom.dart' as dom;
-
 import 'song.dart';
 
 class FavoritesResults {
