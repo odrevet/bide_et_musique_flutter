@@ -7,14 +7,14 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   audio_service:
     dependency: "direct main"
     description:
       name: audio_service
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.2"
+    version: "0.13.0"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -70,7 +70,7 @@ packages:
       name: csslib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.1"
+    version: "0.16.2"
   diacritic:
     dependency: "direct main"
     description:
@@ -150,7 +150,7 @@ packages:
       name: just_audio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.2"
+    version: "0.3.2"
   meta:
     dependency: transitive
     description:
@@ -344,7 +344,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0+1"
+    version: "2.2.0+2"
   term_glyph:
     dependency: transitive
     description:

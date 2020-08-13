@@ -30,11 +30,11 @@ class _PlayerWidgetState extends State<PlayerWidget>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem, PlaybackState, PlayerState>(
+        stream: Rx.combineLatest2<MediaItem, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
             (mediaItem, playbackState) =>
-                PlayerState(mediaItem, playbackState)),
+                ScreenState(mediaItem, playbackState)),
         builder: (context, snapshot) {
           final screenState = snapshot.data;
           final mediaItem = screenState?.mediaItem;
@@ -48,14 +48,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
           if (processingState == AudioProcessingState.none)
             controls = [RadioStreamButton(widget._songNowPlaying)];
-          else if (processingState == AudioProcessingState.buffering ||
+          /*else if (processingState == AudioProcessingState.buffering ||
               processingState == AudioProcessingState.connecting) {
             controls = [
               CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
               stopButton()
             ];
-          } else
+          } */ else
             controls = <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,

@@ -350,11 +350,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem, PlaybackState, PlayerState>(
+        stream: Rx.combineLatest2<MediaItem, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
             (mediaItem, playbackState) =>
-                PlayerState(mediaItem, playbackState)),
+                ScreenState(mediaItem, playbackState)),
         builder: (context, snapshot) {
           final screenState = snapshot.data;
           final mediaItem = screenState?.mediaItem;
