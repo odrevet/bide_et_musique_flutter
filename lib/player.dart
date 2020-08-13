@@ -17,24 +17,6 @@ class ScreenState {
   ScreenState(this.mediaItem, this.playbackState);
 }
 
-/*
-MediaControl playControl = MediaControl(
-  androidIcon: 'drawable/ic_stat_play_arrow',
-  label: 'Play',
-  action: MediaAction.play,
-);
-MediaControl pauseControl = MediaControl(
-  androidIcon: 'drawable/ic_stat_pause',
-  label: 'Pause',
-  action: MediaAction.pause,
-);
-MediaControl stopControl = MediaControl(
-  androidIcon: 'drawable/ic_stat_stop',
-  label: 'Stop',
-  action: MediaAction.stop,
-);
-*/
-
 void audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => AudioPlayerTask());
 }
@@ -43,11 +25,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   AudioPlayer _audioPlayer = AudioPlayer();
   AudioProcessingState _audioProcessingState;
 
-  //bool get _playing => AudioServiceBackground.state.playing;
-
   bool _interrupted = false;
-  //StreamSubscription<AudioPlaybackState> _playerStateSubscription;
-  //StreamSubscription<AudioPlaybackEvent> _eventSubscription;
   StreamSubscription<PlaybackEvent> _eventSubscription;
 
   Song _song;
@@ -162,48 +140,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
       onStop();
     }
   }
-  /*
-  @override
-  void onStart(Map<String, dynamic> params) {
-    _playerStateSubscription = _audioPlayer.playbackStateStream
-        .where((state) => state == AudioPlaybackState.completed)
-        .listen((state) {
-      _handlePlaybackCompleted();
-    });
-    _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
-      final bufferingState =
-          event.buffering ? AudioProcessingState.buffering : null;
-      switch (event.state) {
-        case AudioPlaybackState.paused:
-          _setState(
-            processingState: bufferingState ?? AudioProcessingState.ready,
-            position: event.position,
-          );
-          break;
-        case AudioPlaybackState.playing:
-          _setState(
-            processingState: bufferingState ?? AudioProcessingState.ready,
-            position: event.position,
-          );
-          AudioServiceBackground.sendCustomEvent(event.icyMetadata);
-          break;
-        case AudioPlaybackState.connecting:
-          _setState(
-            processingState: AudioProcessingState.connecting,
-            position: event.position,
-          );
-          break;
-        default:
-          break;
-      }
-    });
-
-    onSkipToNext();
-  }*/
-
-  /*void _handlePlaybackCompleted() {
-    onStop();
-  }*/
 
   void playPause() {
     if (AudioServiceBackground.state.playing)
@@ -249,23 +185,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
   Future<void> onSeekTo(Duration position) {
     return _audioPlayer.seek(position);
   }
-
-  /*@override
-  Future<void> onClick(MediaButton button) {
-    playPause();
-  }*/
-
-/*
-  @override
-  Future<void> onStop() async {
-    await _audioPlayer.stop();
-    await _audioPlayer.dispose();
-    _playing = false;
-    _playerStateSubscription.cancel();
-    _eventSubscription.cancel();
-    await _setState(processingState: AudioProcessingState.stopped);
-    await super.onStop();
-  }*/
 
   @override
   Future<void> onStop() async {
@@ -314,40 +233,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
     }
     _interrupted = false;
   }
-
-  /*Future<void> _setState({
-    AudioProcessingState processingState,
-    Duration position,
-    Duration bufferedPosition,
-  }) async {
-    if (position == null) {
-      position = _audioPlayer.playbackEvent.position;
-    }
-    await AudioServiceBackground.setState(
-      controls: getControls(),
-      systemActions: [MediaAction.seekTo],
-      processingState:
-          processingState ?? AudioServiceBackground.state.processingState,
-      playing: _playing,
-      position: position,
-      bufferedPosition: bufferedPosition ?? position,
-      speed: _audioPlayer.speed,
-    );
-  }*/
-
-  /*List<MediaControl> getControls() {
-    if (_playing) {
-      return [
-        pauseControl,
-        stopControl,
-      ];
-    } else {
-      return [
-        playControl,
-        stopControl,
-      ];
-    }
-  }*/
 
   Future<String> _getStreamUrl() async {
     String url;
