@@ -76,7 +76,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                             ),
                           )
                         : InkWell(
-                            onTap: () => _streamInfoDialog(context),
+                            onTap: () => null, // _streamInfoDialog(context),
                             child: Icon(
                               Icons.radio,
                               size: 18.0,
