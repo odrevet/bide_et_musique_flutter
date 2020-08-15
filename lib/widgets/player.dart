@@ -48,8 +48,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
           if (processingState == AudioProcessingState.none)
             controls = [RadioStreamButton(widget._songNowPlaying)];
-          else if (processingState == AudioProcessingState.buffering ||
-              processingState == AudioProcessingState.connecting) {
+          else if (processingState == AudioProcessingState.connecting) {
             controls = [
               CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
