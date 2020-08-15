@@ -150,36 +150,28 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onPlay() async {
-    if (_audioProcessingState == null) {
-      String url = await _getStreamUrl();
-      if (url != _latestId) {
-        if (_radioMode == false) {
-          Map<String, String> headers = {'Host': host, 'Referer': _song.link};
-
-          if (_sessionId != null) headers['Cookie'] = _sessionId;
-          await _audioPlayer.setUrl(url, headers: headers);
-        } else {
-          await _audioPlayer.setUrl(url);
-        }
-
-        _latestId = url;
-      }
-
+    String url = await _getStreamUrl();
+    if (_radioMode) {
+      await _audioPlayer.setUrl(url);
       AudioServiceBackground.setState(
         controls: [MediaControl.pause, MediaControl.stop],
         processingState: AudioProcessingState.ready,
         playing: true,
       );
-
-      return _audioPlayer.play();
+    } else if (url != _latestId) {
+      Map<String, String> headers = {'Host': host, 'Referer': _song.link};
+      if (_sessionId != null) headers['Cookie'] = _sessionId;
+      await _audioPlayer.setUrl(url, headers: headers);
     }
+
+    _latestId = url;
+    return _audioPlayer.play();
   }
 
   @override
   Future<void> onPause() {
     return _audioPlayer.pause();
   }
-
 
   @override
   Future<void> onSeekTo(Duration position) {
