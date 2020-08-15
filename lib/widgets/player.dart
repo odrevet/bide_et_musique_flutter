@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+//import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/song.dart';
@@ -48,14 +48,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
           if (processingState == AudioProcessingState.none)
             controls = [RadioStreamButton(widget._songNowPlaying)];
-          /*else if (processingState == AudioProcessingState.buffering ||
+          else if (processingState == AudioProcessingState.buffering ||
               processingState == AudioProcessingState.connecting) {
             controls = [
               CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
               stopButton()
             ];
-          } */ else
+          } else
             controls = <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -105,7 +105,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
         });
   }
 
-  _streamInfoDialog(BuildContext context) {
+  /*_streamInfoDialog(BuildContext context) {
     return showDialog<void>(
         context: context,
         barrierDismissible: true,
@@ -133,7 +133,7 @@ bitrate ${icyMetadata.headers.bitrate}
                     return Text('Veuillez attendre');
                   }));
         });
-  }
+  }*/
 }
 
 class RadioStreamButton extends StatefulWidget {
