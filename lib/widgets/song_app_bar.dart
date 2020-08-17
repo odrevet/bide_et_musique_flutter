@@ -401,12 +401,13 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       onPressed: () => AudioService.play());
 
   play() async {
-    if (!AudioService.running)
-      await AudioService.start(
-        backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-        androidNotificationChannelName: 'Bide&Musique',
-        androidNotificationIcon: 'mipmap/ic_launcher',
-      );
+    if (AudioService.running) await AudioService.stop();
+
+    await AudioService.start(
+      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+      androidNotificationChannelName: 'Bide&Musique',
+      androidNotificationIcon: 'mipmap/ic_launcher',
+    );
 
     await AudioService.customAction('set_radio_mode', false);
     await AudioService.customAction(
