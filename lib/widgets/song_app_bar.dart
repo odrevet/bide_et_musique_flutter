@@ -365,23 +365,34 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final radioMode = mediaItem?.album == radioIcon;
 
           if (processingState == AudioProcessingState.none ||
-              (widget._song.streamLink != mediaItem.id || radioMode == true))
+              radioMode == true ||
+              widget._song.streamLink != mediaItem.id) {
             return RaisedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Écouter'),
                 onPressed: () => play());
-          else
+          } else {
+            Widget playPauseControl;
+            if (playing == null ||
+                processingState == AudioProcessingState.buffering ||
+                processingState == AudioProcessingState.connecting) {
+              playPauseControl = CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black));
+            } else if (playing == true) {
+              playPauseControl = pauseSongButton;
+            } else {
+              playPauseControl = resumeSongButton;
+            }
+
             return Column(children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  playing ? pauseSongButton : resumeSongButton,
-                  stopSongButton
-                ],
+                children: <Widget>[playPauseControl, stopSongButton],
               ),
               SongPositionSlider(mediaItem, state),
               Divider()
             ]);
+          }
         });
   }
 

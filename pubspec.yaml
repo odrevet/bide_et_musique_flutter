@@ -1,7 +1,7 @@
 name: bide_et_musique
 description: Écouter et consulter la web radio 'Bide et Musique'
 
-version: 3.3.2+41
+version: 3.3.3+42
 
 environment:
   sdk: '>=2.7.0'
@@ -13,7 +13,7 @@ dependencies:
   html: ^0.14.0+3
   xml: ^4.2.0
   audio_service: ^0.13.0
-  just_audio: ^0.3.3
+  just_audio: ^0.3.4
   flutter_html: ^0.11.1
   url_launcher: ^5.5.0
   share: ^0.6.4+3
@@ -28,7 +28,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/bandeau.png
-    - assets/bm_logo.png
     - assets/bm_logo_white.png
     - assets/vinyl-default.jpg
     - android/app/src/main/res/mipmap-mdpi/ic_launcher.png

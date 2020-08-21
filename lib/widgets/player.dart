@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
-//import 'package:just_audio/just_audio.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/song.dart';
@@ -41,20 +41,26 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final state = screenState?.playbackState;
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
-          final playing = state?.playing ?? false;
-          final radioMode = mediaItem?.album == radioIcon;
+          final bool playing = state?.playing ?? false;
+          final bool radioMode = mediaItem?.album == radioIcon;
 
           List<Widget> controls;
 
-          if (processingState == AudioProcessingState.none)
+          if (processingState == AudioProcessingState.none) {
             controls = [RadioStreamButton(widget._songNowPlaying)];
-          else if (processingState == AudioProcessingState.connecting) {
-            controls = [
-              CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
-              stopButton()
-            ];
-          } else
+          } else {
+            Widget playPauseControl;
+            if (playing == null ||
+                processingState == AudioProcessingState.buffering ||
+                processingState == AudioProcessingState.connecting) {
+              playPauseControl = CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black));
+            } else if (playing == true) {
+              playPauseControl = pauseButton();
+            } else {
+              playPauseControl = playButton();
+            }
+
             controls = <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -75,19 +81,20 @@ class _PlayerWidgetState extends State<PlayerWidget>
                             ),
                           )
                         : InkWell(
-                            onTap: () => null, // _streamInfoDialog(context),
+                            onTap: () => _streamInfoDialog(context),
                             child: Icon(
                               Icons.radio,
                               size: 18.0,
                             ),
                           ),
-                    playing ? pauseButton() : playButton(),
+                    playPauseControl,
                     stopButton()
                   ]),
               if (radioMode == false)
                 Container(
                     height: 20, child: SongPositionSlider(mediaItem, state))
             ];
+          }
 
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +111,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
         });
   }
 
-  /*_streamInfoDialog(BuildContext context) {
+  _streamInfoDialog(BuildContext context) {
     return showDialog<void>(
         context: context,
         barrierDismissible: true,
@@ -132,7 +139,7 @@ bitrate ${icyMetadata.headers.bitrate}
                     return Text('Veuillez attendre');
                   }));
         });
-  }*/
+  }
 }
 
 class RadioStreamButton extends StatefulWidget {
@@ -173,12 +180,13 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           label: label,
           onPressed: () async {
             bool success = false;
-            if (!AudioService.running)
+            if (!AudioService.running) {
               success = await AudioService.start(
                 backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
                 androidNotificationChannelName: 'Bide&Musique',
                 androidNotificationIcon: 'mipmap/ic_launcher',
               );
+            }
             if (success) {
               SongAiringNotifier().songNowPlaying.then((song) async {
                 await AudioService.customAction('set_radio_mode', true);
