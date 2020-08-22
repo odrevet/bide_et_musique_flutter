@@ -53,8 +53,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
             if (playing == null ||
                 processingState == AudioProcessingState.buffering ||
                 processingState == AudioProcessingState.connecting) {
-              playPauseControl = CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black));
+              playPauseControl = Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: SizedBox(
+                      height: 25.0,
+                      width: 25.0,
+                      child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.black))));
             } else if (playing == true) {
               playPauseControl = pauseButton();
             } else {
