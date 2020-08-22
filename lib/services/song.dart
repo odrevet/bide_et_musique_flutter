@@ -243,3 +243,16 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     throw Exception('Failed to load program');
   }
 }
+
+Future<int> voteForSong(String songLink) async {
+  Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  Session.headers['Host'] = host;
+  Session.headers['Origin'] = baseUri;
+  Session.headers['Referer'] = songLink;
+
+  final response = await Session.post(songLink, body: {'Note': '1', 'M': 'CN'});
+
+  Session.headers.remove('Referer');
+  Session.headers.remove('Content-Type');
+  return response.statusCode;
+}

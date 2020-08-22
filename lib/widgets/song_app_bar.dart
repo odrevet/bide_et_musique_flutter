@@ -9,6 +9,7 @@ import '../player.dart';
 import '../session.dart';
 import '../utils.dart';
 import '../services/favorite.dart';
+import '../services/song.dart';
 import 'song_position_slider.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -189,8 +190,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   }
 }
 
-////////////////////////////////
-//// Vote
+// Vote
 class SongVoteIconWidget extends StatefulWidget {
   final Song _song;
 
@@ -206,24 +206,14 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   @override
   Widget build(BuildContext context) {
     var callbackVote = () async {
-      String url = widget._song.link;
+      int statusCode = await voteForSong(widget._song.link);
 
-      Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-      Session.headers['Host'] = host;
-      Session.headers['Origin'] = baseUri;
-      Session.headers['Referer'] = url;
-
-      final response = await Session.post(url, body: {'Note': '1', 'M': 'CN'});
-
-      Session.headers.remove('Referer');
-      Session.headers.remove('Content-Type');
-      if (response.statusCode == 200) {
+      if (statusCode == 200) {
         setState(() {
           widget._song.hasVote = true;
         });
       } else {
-        print("Vote for song returned status code " +
-            response.statusCode.toString());
+        print('Vote for song returned status code $statusCode');
       }
     };
 
