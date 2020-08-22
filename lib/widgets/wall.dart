@@ -33,15 +33,6 @@ class _WallWidgetState extends State<WallWidget> {
     super.initState();
   }
 
-  _sendMessage() async {
-    String message = _newMessageController.text;
-    final url = '$baseUri/mur-des-messages.html';
-
-    if (message.isNotEmpty) {
-      await Session.post(url, body: {'T': message, 'Type': '2'});
-    }
-  }
-
   _updatePosts() async {
     setState(() {
       posts = fetchPosts();
@@ -61,7 +52,7 @@ class _WallWidgetState extends State<WallWidget> {
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {
-                await _sendMessage();
+                await sendMessage(_newMessageController.text);
                 _updatePosts();
                 _newMessageController.text = '';
                 Navigator.of(context).pop();
