@@ -22,7 +22,6 @@ dependencies:
   diacritic: ^0.1.1
   cached_network_image: ^2.2.0+1
   page_indicator: ^0.3.0
-  package_info: ^0.4.1
 
 flutter:
   uses-material-design: true
