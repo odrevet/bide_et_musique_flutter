@@ -1,5 +1,6 @@
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:diacritic/diacritic.dart';
 
 import '../models/account.dart';
 import '../models/exchange.dart';
@@ -48,4 +49,20 @@ Future<List<Exchange>> fetchExchanges() async {
   }
 
   return messages;
+}
+
+Future<bool> sendMessage(String message, int destId) async {
+  final url = '$baseUri/bidebox_send.html';
+
+  if (message.isNotEmpty) {
+    var response = await Session.post(url, body: {
+      'Message': removeDiacritics(message),
+      'T': destId.toString(),
+      'R': '',
+      'M': 'S'
+    });
+    return response.statusCode == 200;
+  }
+
+  return false;
 }

@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
 import '../models/account.dart';
 import '../models/exchange.dart';
 import '../services/account.dart';
-import '../session.dart';
+import '../services/bidebox.dart';
 import '../utils.dart';
 import 'account.dart';
 
@@ -75,23 +74,6 @@ class MessageEditor extends StatefulWidget {
 class _MessageEditorState extends State<MessageEditor> {
   final _newMessageController = TextEditingController();
 
-  Future<bool> _sendMessage() async {
-    String message = removeDiacritics(_newMessageController.text);
-    final url = '$baseUri/bidebox_send.html';
-
-    if (message.isNotEmpty) {
-      var response = await Session.post(url, body: {
-        'Message': message,
-        'T': widget._accountLink.id.toString(),
-        'R': '',
-        'M': 'S'
-      });
-      return response.statusCode == 200;
-    }
-
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -101,7 +83,7 @@ class _MessageEditorState extends State<MessageEditor> {
           icon: Icon(Icons.send),
           label: Text("Envoyer"),
           onPressed: () async {
-            bool status = await _sendMessage();
+            bool status = await sendMessage(_newMessageController.text, widget._accountLink.id);
             Navigator.of(context).pop(status);
           },
         )
