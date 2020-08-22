@@ -40,3 +40,15 @@ Future<List<Request>> fetchRequests() async {
 
   return requests;
 }
+
+Future<int> sendRequest(int requestId, String dedicate) async {
+  final url = '$baseUri/requetes.html';
+
+  var resp = await Session.post(url, body: {
+    'Nb': requestId.toString(),
+    'Dedicate': dedicate,
+    'Dedicate2': ''
+  });
+
+  return resp.statusCode;
+}

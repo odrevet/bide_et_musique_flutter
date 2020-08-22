@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import '../models/requests.dart';
 import '../services/request.dart';
 import '../services/song.dart';
-import '../session.dart';
-import '../utils.dart';
 import 'song.dart';
 
 class RequestsPageWidget extends StatefulWidget {
@@ -86,7 +84,6 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
       },
     );
 
-    Function onPressed = _selectedRequestId == null ? null : _sendRequest;
     return Column(
       children: <Widget>[
         Expanded(child: listview),
@@ -103,23 +100,11 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             ),
             IconButton(
               icon: Icon(Icons.send),
-              onPressed: onPressed,
+              onPressed: () => _selectedRequestId ?? sendRequest(_selectedRequestId, _dedicateController.text) ,
             )
           ],
         )
       ],
     );
-  }
-
-  void _sendRequest() async {
-    final url = '$baseUri/requetes.html';
-    String dedicate = _dedicateController.text;
-    await Session.post(url, body: {
-      'Nb': _selectedRequestId.toString(),
-      'Dedicate': dedicate,
-      'Dedicate2': ''
-    });
-
-    _updateRequests();
   }
 }
