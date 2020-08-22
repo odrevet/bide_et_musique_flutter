@@ -6,10 +6,10 @@ import '../models/song.dart';
 import '../models/account.dart';
 import '../models/favorites.dart';
 
-import 'account.dart';
 import '../session.dart';
 import 'song.dart';
 import '../utils.dart';
+import '../services/account.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
 

@@ -108,3 +108,33 @@ Future<List<SongLink>> fetchVotes() async {
 
   return songLinks;
 }
+
+Future<Account> fetchAccountSession() async {
+  var account = Account();
+  account.id = Session.accountLink.id;
+  final url = '$baseUri/account.html?N=${account.id}&Page=all';
+  final response = await Session.get(url);
+  if (response.statusCode == 200) {
+    var body = response.body;
+    dom.Document document = parser.parse(body);
+
+    //parse bm tables
+    //bm table may list favourite songs or messages.
+    //either are optional
+    List<dom.Element> tables = document.getElementsByClassName('bmtable');
+    bool hasMessage = Session.accountLink != null &&
+        document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
+        (tables.length == 2 && hasMessage);
+
+    //parse favorites
+    if (hasFavorite)
+      account.favorites = parseFavoriteTable(tables[0]);
+    else
+      account.favorites = [];
+
+    return account;
+  } else {
+    throw Exception('Failed to load account $account');
+  }
+}
