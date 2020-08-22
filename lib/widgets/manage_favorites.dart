@@ -74,22 +74,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             FlatButton(
               child: Text('Oui'),
               onPressed: () async {
-                var accountId = Session.accountLink.id;
-                var K = songLink.id;
-                var direction = 'DS';
+                int statusCode = await removeSongFromFavorites(songLink.id);
 
-                final response = await Session.post(
-                    '$baseUri/account/$accountId.html',
-                    body: {
-                      'K': K,
-                      'Step': '',
-                      direction + '.x': '1',
-                      direction + '.y': '1'
-                    });
-
-                if (response.statusCode == 200) {
+                if (statusCode == 200) {
                   setState(() {
-                    account.favorites.removeWhere((song) => song.id == K);
+                    account.favorites.removeWhere((song) => song.id == songLink.id);
                   });
                 }
                 Navigator.of(context).pop();
