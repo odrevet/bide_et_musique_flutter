@@ -97,3 +97,30 @@ Future<FavoritesResults> fetchFavorites(int accountId, int page) async {
     throw Exception('Failed to load account with id $accountId');
   }
 }
+
+Future<int> addSongToFavorites(String songUrl) async {
+  Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  Session.headers['Host'] = host;
+  Session.headers['Origin'] = baseUri;
+  Session.headers['Referer'] = songUrl;
+
+  final response = await Session.post(songUrl, body: {'M': 'AS'});
+
+  Session.headers.remove('Referer');
+  Session.headers.remove('Content-Type');
+
+  return response.statusCode;
+}
+
+Future<int> removeSongFromFavorites(int songId) async {
+  final response = await Session.post(
+      '$baseUri/account/${Session.accountLink.id}.html',
+      body: {
+        'K': songId.toString(),
+        'Step': '',
+        'DS.x': '1',
+        'DS.y': '1'
+      });
+
+  return response.statusCode;
+}

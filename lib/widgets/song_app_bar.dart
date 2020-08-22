@@ -8,6 +8,7 @@ import '../models/song.dart';
 import '../player.dart';
 import '../session.dart';
 import '../utils.dart';
+import '../services/favorite.dart';
 import 'song_position_slider.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -164,16 +165,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           icon: Icon(Icons.star),
           label: Text('Retirer des favoris'),
           onPressed: () async {
-            final response = await Session.post(
-                '$baseUri/account/${Session.accountLink.id}.html',
-                body: {
-                  'K': widget._song.id.toString(),
-                  'Step': '',
-                  'DS.x': '1',
-                  'DS.y': '1'
-                });
-
-            if (response.statusCode == 200) {
+            int statusCode = await removeSongFromFavorites(widget._song.id);
+            if (statusCode == 200) {
               setState(() {
                 widget._song.isFavourite = false;
               });
@@ -184,24 +177,11 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
         icon: Icon(Icons.star_border),
         label: Text('Ajouter aux favoris'),
         onPressed: () async {
-          String url = widget._song.link;
-
-          Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-          Session.headers['Host'] = host;
-          Session.headers['Origin'] = baseUri;
-          Session.headers['Referer'] = url;
-
-          final response = await Session.post(url, body: {'M': 'AS'});
-
-          Session.headers.remove('Referer');
-          Session.headers.remove('Content-Type');
-          if (response.statusCode == 200) {
-            setState(() {
-              widget._song.isFavourite = true;
-            });
+          int statusCode = await addSongToFavorites(widget._song.link);
+          if (statusCode == 200) {
+            setState(() => widget._song.isFavourite = true);
           } else {
-            print("Add song to favorites returned status code " +
-                response.statusCode.toString());
+            print('Add song to favorites returned status code $statusCode');
           }
         },
       );
