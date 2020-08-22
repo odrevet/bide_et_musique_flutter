@@ -5,12 +5,11 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
+import '../models/account.dart';
+import '../models/search.dart';
+import '../models/song.dart';
 import '../session.dart';
 import '../utils.dart';
-
-import '../models/song.dart';
-import '../models/search.dart';
-import '../models/account.dart';
 
 Future<List<AccountLink>> fetchSearchAccount(String search) async {
   String url = '$baseUri/recherche-bidonaute.html?bw=$search';

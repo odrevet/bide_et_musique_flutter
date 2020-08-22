@@ -1,6 +1,5 @@
-import 'song.dart';
-
 import '../utils.dart';
+import 'song.dart';
 
 class ProgramLink {
   int id;

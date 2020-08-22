@@ -115,12 +115,7 @@ Future<int> addSongToFavorites(String songUrl) async {
 Future<int> removeSongFromFavorites(int songId) async {
   final response = await Session.post(
       '$baseUri/account/${Session.accountLink.id}.html',
-      body: {
-        'K': songId.toString(),
-        'Step': '',
-        'DS.x': '1',
-        'DS.y': '1'
-      });
+      body: {'K': songId.toString(), 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
   return response.statusCode;
 }

@@ -83,7 +83,8 @@ class _MessageEditorState extends State<MessageEditor> {
           icon: Icon(Icons.send),
           label: Text("Envoyer"),
           onPressed: () async {
-            bool status = await sendMessage(_newMessageController.text, widget._accountLink.id);
+            bool status = await sendMessage(
+                _newMessageController.text, widget._accountLink.id);
             Navigator.of(context).pop(status);
           },
         )

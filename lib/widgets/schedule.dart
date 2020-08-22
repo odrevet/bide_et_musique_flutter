@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../utils.dart';
-
 import '../models/schedule.dart';
+import '../utils.dart';
 
 class ScheduleWidget extends StatelessWidget {
   final Future<List<DaySchedule>> schedule;

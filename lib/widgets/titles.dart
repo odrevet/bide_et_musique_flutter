@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'song.dart';
-import 'song_airing_notifier.dart';
-import '../utils.dart';
 import '../models/song.dart';
 import '../services/song.dart';
+import '../utils.dart';
+import 'song.dart';
+import 'song_airing_notifier.dart';
 
 class TitlesWidget extends StatefulWidget {
   final SongAiringNotifier _songAiring = SongAiringNotifier();
