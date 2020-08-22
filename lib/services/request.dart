@@ -6,7 +6,7 @@ import 'package:html/parser.dart' as parser;
 import '../models/requests.dart';
 import '../session.dart';
 import '../utils.dart';
-import '../widgets/titles.dart';
+import 'song.dart';
 
 Future<List<Request>> fetchRequests() async {
   var requests = <Request>[];
