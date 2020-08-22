@@ -6,9 +6,7 @@ import '../models/song.dart';
 import '../models/account.dart';
 import '../models/favorites.dart';
 
-import '../session.dart';
 import 'song.dart';
-import '../utils.dart';
 import '../services/account.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
@@ -116,19 +114,9 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = account.favorites[initialPosition];
 
-          var K = draggedSong.id.toString();
-          var step = initialPosition - targetPosition;
-          var direction = step < 0 ? 'down' : 'up';
+          int statusCode = await changeFavoriteRank(draggedSong.id, initialPosition, targetPosition);
 
-          final response =
-              await Session.post('$baseUri/account/${account.id}.html', body: {
-            'K': K,
-            'Step': step.abs().toString(),
-            direction + '.x': '1',
-            direction + '.y': '1'
-          });
-
-          if (response.statusCode == 200) {
+          if (statusCode == 200) {
             FavoritesResults favoriteResults =
                 await fetchFavorites(account.id, -1);
             setState(() {
