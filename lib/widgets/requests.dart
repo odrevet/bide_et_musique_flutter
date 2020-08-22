@@ -100,7 +100,9 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             ),
             IconButton(
               icon: Icon(Icons.send),
-              onPressed: () => _selectedRequestId ?? sendRequest(_selectedRequestId, _dedicateController.text) ,
+              onPressed: () =>
+                  _selectedRequestId ??
+                  sendRequest(_selectedRequestId, _dedicateController.text),
             )
           ],
         )

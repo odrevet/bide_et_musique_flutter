@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:diacritic/diacritic.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -180,7 +179,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {
-                _sendAddComment(song);
+                sendAddComment(song, _commentController.text);
                 Navigator.of(context).pop();
                 setState(() {
                   this.song = fetchSong(song.id);
@@ -212,7 +211,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {
-                _sendEditComment(song, comment);
+                sendEditComment(song, comment, _commentController.text);
                 setState(() {
                   this.song = fetchSong(song.id);
                 });
@@ -230,39 +229,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         );
       },
     );
-  }
-
-  void _sendEditComment(Song song, Comment comment) async {
-    String text = removeDiacritics(_commentController.text);
-
-    if (text.isNotEmpty) {
-      await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
-          body: {
-            'mode': 'Edit',
-            'REF': song.link,
-            'Comment__': comment.id.toString(),
-            'Text': text,
-          });
-    }
-  }
-
-  void _sendAddComment(Song song) async {
-    String comment = _commentController.text;
-    comment = removeDiacritics(comment);
-
-    final url = song.link;
-
-    if (comment.isNotEmpty) {
-      await Session.post(url, body: {
-        'T': 'Song',
-        'N': song.id.toString(),
-        'Mode': 'AddComment',
-        'Thread_': '',
-        'Text': comment,
-        'x': '42',
-        'y': '42'
-      });
-    }
   }
 
   Widget _buildView(BuildContext context, Song song) {

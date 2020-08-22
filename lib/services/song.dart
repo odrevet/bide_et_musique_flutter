@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:xml/xml.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:diacritic/diacritic.dart';
 
 import '../session.dart';
 import '../models/song.dart';
@@ -181,6 +182,33 @@ Future<Song> fetchSong(int songId) async {
     throw Exception('Failed to load song page');
   }
   return song;
+}
+
+void sendEditComment(Song song, Comment comment, String text) async {
+  if (text.isNotEmpty) {
+    await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
+        body: {
+          'mode': 'Edit',
+          'REF': song.link,
+          'Comment__': comment.id.toString(),
+          'Text': removeDiacritics(text),
+        });
+  }
+}
+
+void sendAddComment(Song song, String text) async {
+  final url = song.link;
+  if (text.isNotEmpty) {
+    await Session.post(url, body: {
+      'T': 'Song',
+      'N': song.id.toString(),
+      'Mode': 'AddComment',
+      'Thread_': '',
+      'Text': removeDiacritics(text),
+      'x': '42',
+      'y': '42'
+    });
+  }
 }
 
 SongLink songLinkFromTr(dom.Element tr) {
