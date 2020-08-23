@@ -57,47 +57,40 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    Widget gridView = GridView.builder(
-        itemCount: _accountLinks.length,
-        controller: _controller,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
-        itemBuilder: (BuildContext context, int index) {
-          var account = _accountLinks[index];
-          final url = baseUri + account.image;
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AccountPageWidget(
-                          account: fetchAccount(account.id))));
-            },
-            onLongPress: () {
-              openAccountImageViewerDialog(context, NetworkImage(url));
-            },
-            child: Container(
-              child: Text(account.name, style: _font),
-              decoration: BoxDecoration(
-                  color: Colors.orangeAccent,
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    alignment: FractionalOffset.topCenter,
-                    image: NetworkImage(url),
-                  )),
-            ),
-          );
-        });
-
     return Scaffold(
         appBar: AppBar(
           title: Text('Le trombidoscope'),
         ),
-        body: _isLoading
-            ? Stack(children: [
-                gridView,
-                Center(child: CircularProgressIndicator())
-              ])
-            : gridView);
+        body: GridView.builder(
+            itemCount: _accountLinks.length,
+            controller: _controller,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
+            itemBuilder: (BuildContext context, int index) {
+              var account = _accountLinks[index];
+              final url = baseUri + account.image;
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountPageWidget(
+                              account: fetchAccount(account.id))));
+                },
+                onLongPress: () {
+                  openAccountImageViewerDialog(context, NetworkImage(url));
+                },
+                child: Container(
+                  child: Text(account.name, style: _font),
+                  decoration: BoxDecoration(
+                      color: Colors.orangeAccent,
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        alignment: FractionalOffset.topCenter,
+                        image: NetworkImage(url),
+                      )),
+                ),
+              );
+            }));
   }
 }

@@ -68,7 +68,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
     if (_songLinks == null) {
       return Center(child: CircularProgressIndicator());
     }
-    Widget gridView = GridView.builder(
+    return GridView.builder(
         itemCount: _songLinks.length,
         controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -76,15 +76,5 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         itemBuilder: (BuildContext context, int index) {
           return SongCardWidget(songLink: _songLinks[index]);
         });
-
-    if(_isLoading == true){
-      return Stack(children: [
-        gridView,
-        Center(child: CircularProgressIndicator())
-      ]);
-    }
-    else{
-      return gridView;
-    }
   }
 }
