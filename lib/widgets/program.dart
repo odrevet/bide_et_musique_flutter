@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-
-import 'pochettoscope.dart';
-import 'song.dart';
-import '../utils.dart';
 
 import '../models/program.dart';
+import '../utils.dart';
+import 'htmlDefault.dart';
+import 'pochettoscope.dart';
+import 'song.dart';
 
 class ProgramPageWidget extends StatefulWidget {
   final Future<Program> program;
@@ -87,7 +86,7 @@ class _ProgramPageWidgetState extends State<ProgramPageWidget> {
                   borderRadius: BorderRadius.circular(24.0)),
               title: Text(program.name),
               children: [
-                Html(data: program.description, linkStyle: linkStyle),
+                HtmlDefault(data: program.description),
                 if (program.airedOn.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],

@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import '../models/account.dart';
 import '../services/account.dart';
 import '../session.dart';
 import '../utils.dart';
-import '../widgets/bidebox.dart';
-import '../widgets/pochettoscope.dart';
 import '../widgets/song.dart';
+import 'bidebox.dart';
+import 'htmlDefault.dart';
+import 'pochettoscope.dart';
 
 openAccountImageViewerDialog(context, image) {
   Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -150,13 +150,9 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                     : SingleChildScrollView(
                         child: Padding(
                         padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                        child: Html(
-                            data: account.presentation,
-                            defaultTextStyle: TextStyle(fontSize: 18.0),
-                            linkStyle: linkStyle,
-                            onLinkTap: (url) {
-                              onLinkTap(url, context);
-                            }),
+                        child: HtmlDefault(
+                          data: account.presentation,
+                        ),
                       )),
                 account.favorites.isEmpty
                     ? Center(

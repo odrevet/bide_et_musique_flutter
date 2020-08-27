@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
 import '../models/song.dart';
-
 import '../services/account.dart';
-import '../services/thematics.dart';
-import '../services/song.dart';
+import '../services/randomSong.dart';
 import '../services/schedule.dart';
-
+import '../services/song.dart';
+import '../services/thematics.dart';
+import '../session.dart';
+import '../utils.dart';
 import 'account.dart';
 import 'forums.dart';
 import 'identification.dart';
@@ -18,16 +19,13 @@ import 'manage_account.dart';
 import 'new_songs.dart';
 import 'now_song.dart';
 import 'pochettoscope_page.dart';
-import '../services/randomSong.dart';
 import 'schedule.dart';
 import 'search.dart';
-import '../session.dart';
 import 'settings.dart';
 import 'song.dart';
 import 'thematics.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';
-import '../utils.dart';
 import 'wall.dart';
 
 class DrawerWidget extends StatefulWidget {

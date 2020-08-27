@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../models/search.dart';
+import '../models/song.dart';
+import '../services/search.dart';
 import 'account.dart';
 import 'song.dart';
-
-import '../models/song.dart';
-import '../models/search.dart';
-
-import '../services/search.dart';
 
 class SearchResultsWidget extends StatefulWidget {
   final String search;

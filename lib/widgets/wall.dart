@@ -2,19 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-
-import 'account.dart';
-import '../session.dart';
-import 'song.dart';
-import '../utils.dart';
 
 import '../models/post.dart';
 import '../models/song.dart';
-
-import '../services/wall.dart';
 import '../services/account.dart';
 import '../services/song.dart';
+import '../services/wall.dart';
+import '../session.dart';
+import '../utils.dart';
+import 'account.dart';
+import 'htmlDefault.dart';
+import 'song.dart';
 
 class WallWidget extends StatefulWidget {
   WallWidget({Key key}) : super(key: key);
@@ -147,12 +145,8 @@ class _WallWidgetState extends State<WallWidget> {
                   ]),
             ),
             Divider(),
-            Html(
+            HtmlDefault(
               data: post.body,
-              linkStyle: linkStyle,
-              onLinkTap: (url) {
-                onLinkTap(url, context);
-              },
             )
           ],
         ),

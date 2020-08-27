@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
-import '../session.dart';
-import '../utils.dart';
-
+import '../models/account.dart';
 import '../models/post.dart';
 import '../models/song.dart';
-import '../models/account.dart';
+import '../session.dart';
+import '../utils.dart';
 
 Future<List<Post>> fetchPosts() async {
   var posts = <Post>[];

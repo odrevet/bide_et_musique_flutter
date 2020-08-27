@@ -6,10 +6,10 @@ import 'package:share/share.dart';
 
 import '../models/song.dart';
 import '../player.dart';
-import '../session.dart';
-import '../utils.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
+import '../session.dart';
+import '../utils.dart';
 import 'song_position_slider.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {

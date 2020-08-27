@@ -1,6 +1,6 @@
+import 'package:diacritic/diacritic.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:diacritic/diacritic.dart';
 
 import '../models/account.dart';
 import '../models/exchange.dart';

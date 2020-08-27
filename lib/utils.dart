@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'models/song.dart';
+import 'services/account.dart';
+import 'services/artist.dart';
+import 'services/program.dart';
+import 'services/song.dart';
 import 'widgets/account.dart';
 import 'widgets/artist.dart';
 import 'widgets/program.dart';
 import 'widgets/song.dart';
-
-import 'models/song.dart';
-
-import 'services/song.dart';
-import 'services/artist.dart';
-import 'services/account.dart';
-import 'services/program.dart';
 
 const site = 'bide-et-musique.com';
 const host = 'www.$site';

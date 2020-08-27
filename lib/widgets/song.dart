@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import '../models/song.dart';
@@ -20,6 +19,7 @@ import 'search.dart';
 import '../session.dart';
 import 'song_app_bar.dart';
 import '../utils.dart';
+import 'htmlDefault.dart';
 
 String createTag(SongLink songLink) {
   return songLink.index == null
@@ -304,15 +304,10 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                 SingleChildScrollView(
                     child: Padding(
                   padding: EdgeInsets.only(left: 4.0, top: 2.0),
-                  child: Html(
+                  child: HtmlDefault(
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
-                          : song.lyrics,
-                      defaultTextStyle: TextStyle(fontSize: 18.0),
-                      linkStyle: linkStyle,
-                      onLinkTap: (url) {
-                        onLinkTap(url, context);
-                      }),
+                          : song.lyrics),
                 )),
                 _buildViewComments(context, song),
               ],
@@ -351,13 +346,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     builder: (context) => AccountPageWidget(
                         account: fetchAccount(comment.author.id))));
           },
-          title: Html(
-              data: comment.body,
-              linkStyle: linkStyle,
-              defaultTextStyle: TextStyle(fontSize: 16.0),
-              onLinkTap: (url) {
-                onLinkTap(url, context);
-              }),
+          title: HtmlDefault(data: comment.body),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName

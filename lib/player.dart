@@ -5,9 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/song.dart';
-
 import 'services/song.dart';
-
 import 'utils.dart';
 
 class ScreenState {

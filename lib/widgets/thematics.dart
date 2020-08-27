@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'program.dart';
-import '../utils.dart';
-
-import '../services/program.dart';
-
 import '../models/program.dart';
+import '../services/program.dart';
+import '../utils.dart';
+import 'program.dart';
 
 class ThematicPageWidget extends StatefulWidget {
   final Future<List<ProgramLink>> programLinks;

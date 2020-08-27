@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/song.dart';
 import '../models/account.dart';
 import '../models/favorites.dart';
-
-import 'song.dart';
+import '../models/song.dart';
 import '../services/account.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
+import 'song.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key key}) : super(key: key);
@@ -76,7 +75,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
 
                 if (statusCode == 200) {
                   setState(() {
-                    account.favorites.removeWhere((song) => song.id == songLink.id);
+                    account.favorites
+                        .removeWhere((song) => song.id == songLink.id);
                   });
                 }
                 Navigator.of(context).pop();
@@ -114,7 +114,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = account.favorites[initialPosition];
 
-          int statusCode = await changeFavoriteRank(draggedSong.id, initialPosition, targetPosition);
+          int statusCode = await changeFavoriteRank(
+              draggedSong.id, initialPosition, targetPosition);
 
           if (statusCode == 200) {
             FavoritesResults favoriteResults =

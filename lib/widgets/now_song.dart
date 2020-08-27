@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import '../models/nowSong.dart';
 import '../utils.dart';
+import 'htmlDefault.dart';
 import 'song.dart';
 
 class NowSongsWidget extends StatelessWidget {
@@ -43,12 +43,8 @@ class NowSongsWidget extends StatelessWidget {
       rows.add(ListTile(
           onTap: () => launchSongPage(nowSong.songLink, context),
           leading: CoverThumb(nowSong.songLink),
-          title: Html(
-              data: nowSong.songLink.name + '<br/>' + nowSong.desc,
-              linkStyle: linkStyle,
-              onLinkTap: (url) {
-                onLinkTap(url, context);
-              }),
+          title:
+              HtmlDefault(data: nowSong.songLink.name + '<br/>' + nowSong.desc),
           subtitle: Text('Le ${nowSong.date}')));
     }
 

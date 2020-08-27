@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import '../models/account.dart';
 import '../models/song.dart';
@@ -12,6 +11,7 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'bidebox.dart';
+import 'htmlDefault.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
 import 'song.dart';
@@ -170,12 +170,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                               color: Colors.grey.shade200.withOpacity(0.7)),
                         ),
                         SingleChildScrollView(
-                            child: Html(
-                                data: account.presentation,
-                                linkStyle: linkStyle,
-                                onLinkTap: (url) {
-                                  onLinkTap(url, context);
-                                })),
+                            child: HtmlDefault(data: account.presentation)),
                       ]),
                     )
                   ],

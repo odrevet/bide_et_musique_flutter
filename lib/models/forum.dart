@@ -1,6 +1,5 @@
-import 'account.dart';
-
 import '../utils.dart';
+import 'account.dart';
 
 class Forum {
   int id;

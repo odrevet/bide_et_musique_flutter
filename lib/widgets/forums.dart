@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import '../models/forum.dart';
-
 import '../services/forum.dart';
-
 import '../utils.dart';
+import 'htmlDefault.dart';
 
 class ForumWidget extends StatefulWidget {
   @override
@@ -136,12 +134,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       ForumMessage forumMessage = forumMessages[index];
                       return ListTile(
-                          title: Html(
-                              data: forumMessage.text,
-                              linkStyle: linkStyle,
-                              onLinkTap: (url) {
-                                onLinkTap(url, context);
-                              }),
+                          title: HtmlDefault(data: forumMessage.text),
                           subtitle: Text(
                               '${forumMessage.date} par ${forumMessage.user?.name}'));
                     });

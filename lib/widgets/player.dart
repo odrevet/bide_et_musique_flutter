@@ -7,10 +7,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/song.dart';
-
-import '../services/song.dart';
-
 import '../player.dart';
+import '../services/song.dart';
 import 'song.dart';
 import 'song_airing_notifier.dart';
 import 'song_position_slider.dart';
