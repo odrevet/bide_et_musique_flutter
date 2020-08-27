@@ -25,7 +25,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
   AudioPlayer _audioPlayer = AudioPlayer();
   AudioProcessingState _audioProcessingState;
 
-  bool _interrupted = false;
   StreamSubscription<PlaybackEvent> _eventSubscription;
 
   Song _song;
@@ -190,41 +189,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
     await _broadcastState();
     // Shut down this task
     await super.onStop();
-  }
-
-  @override
-  Future<void> onAudioFocusLost(AudioInterruption interruption) async {
-    // We override the default behaviour to duck when appropriate.
-    // First, remember if we were playing when the interruption occurred.
-    if (_audioPlayer.playing) _interrupted = true;
-    // If another app wants to take over the audio focus, we either pause (e.g.
-    // during a phonecall) or duck (e.g. if Maps Navigator starts speaking).
-    if (interruption == AudioInterruption.temporaryDuck) {
-      _audioPlayer.setVolume(0.5);
-    } else {
-      onPause();
-    }
-  }
-
-  @override
-  Future<void> onAudioFocusGained(AudioInterruption interruption) async {
-    // Restore normal playback depending on whether we paused or ducked.
-    switch (interruption) {
-      case AudioInterruption.temporaryPause:
-        // Resume playback again. But only if we *were* originally playing at
-        // the time the phone call came through. If we were paused when the
-        // phone call came, we shouldn't suddenly start playing when they hang
-        // up.
-        if (!_audioPlayer.playing && _interrupted) onPlay();
-        break;
-      case AudioInterruption.temporaryDuck:
-        // Resume normal volume after a duck.
-        _audioPlayer.setVolume(1.0);
-        break;
-      default:
-        break;
-    }
-    _interrupted = false;
   }
 
   Future<String> _getStreamUrl() async {

@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audio_service: ^0.13.0
+  audio_service: ^0.14.0
   cached_network_image: ^2.2.0+1
   diacritic: ^0.1.1
   flutter_html: ^0.11.1

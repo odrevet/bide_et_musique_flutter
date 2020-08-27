@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId "fr.odrevet.bide_et_musique"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
