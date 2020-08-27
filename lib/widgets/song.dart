@@ -32,16 +32,25 @@ class CoverThumb extends StatelessWidget {
 
   CoverThumb(this._songLink);
 
+  Widget _sizedContainer({Widget child}) {
+    return SizedBox(
+      width: 50.0,
+      height: 50.0,
+      child: Center(child: child),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final tag = createTag(_songLink);
     return Hero(
         tag: tag,
-        child: CachedNetworkImage(
-            imageUrl: _songLink.thumbLink,
-            placeholder: (context, url) => Icon(Icons.album, size: 56.0),
-            errorWidget: (context, url, error) =>
-                Icon(Icons.album, size: 56.0)));
+        child: _sizedContainer(
+            child: CachedNetworkImage(
+                imageUrl: _songLink.thumbLink,
+                placeholder: (context, url) => Icon(Icons.album, size: 56.0),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.album, size: 56.0))));
   }
 }
 
