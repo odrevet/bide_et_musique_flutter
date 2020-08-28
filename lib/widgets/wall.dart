@@ -123,7 +123,7 @@ class _WallWidgetState extends State<WallWidget> {
                         ..onTap = () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AccountPageWidget(
+                                builder: (context) => AccountPage(
                                     account: fetchAccount(post.author.id)))),
                     ),
                     TextSpan(

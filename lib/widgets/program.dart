@@ -8,16 +8,16 @@ import 'htmlDefault.dart';
 import 'pochettoscope.dart';
 import 'song.dart';
 
-class ProgramPageWidget extends StatefulWidget {
+class ProgramPage extends StatefulWidget {
   final Future<Program> program;
 
-  ProgramPageWidget({Key key, this.program}) : super(key: key);
+  ProgramPage({Key key, this.program}) : super(key: key);
 
   @override
-  _ProgramPageWidgetState createState() => _ProgramPageWidgetState();
+  _ProgramPageState createState() => _ProgramPageState();
 }
 
-class _ProgramPageWidgetState extends State<ProgramPageWidget> {
+class _ProgramPageState extends State<ProgramPage> {
   bool _viewPochettoscope = false;
 
   @override

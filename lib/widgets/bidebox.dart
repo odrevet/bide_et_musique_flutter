@@ -43,7 +43,7 @@ class BideBoxWidget extends StatelessWidget {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AccountPageWidget(
+                      builder: (context) => AccountPage(
                             account: fetchAccount(message.recipient.id),
                             defaultPage: 2,
                           ))),

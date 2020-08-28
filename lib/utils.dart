@@ -54,13 +54,13 @@ Widget handleLink(String url, BuildContext context) {
         return SongPageWidget(songLink: SongLink(id: id), song: fetchSong(id));
         break;
       case 'account':
-        return AccountPageWidget(account: fetchAccount(id));
+        return AccountPage(account: fetchAccount(id));
         break;
       case 'artist':
         return ArtistPageWidget(artist: fetchArtist(id));
         break;
       case 'program':
-        return ProgramPageWidget(program: fetchProgram(id));
+        return ProgramPage(program: fetchProgram(id));
         break;
       default:
         return null;

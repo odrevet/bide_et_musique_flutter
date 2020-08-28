@@ -28,25 +28,23 @@ openAccountImageViewerDialog(context, image) {
       fullscreenDialog: true));
 }
 
-class AccountPageWidget extends StatefulWidget {
+class AccountPage extends StatefulWidget {
   final Future<Account> account;
   final int defaultPage;
 
-  AccountPageWidget({Key key, this.account, this.defaultPage = 0})
-      : super(key: key);
+  AccountPage({Key key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
-  _AccountPageWidgetState createState() =>
-      _AccountPageWidgetState(this.account);
+  _AccountPageState createState() => _AccountPageState(this.account);
 }
 
-class _AccountPageWidgetState extends State<AccountPageWidget> {
+class _AccountPageState extends State<AccountPage> {
   int _currentPage;
   PageController controller;
   bool _viewPochettoscope = false;
   Future<Account> _account;
 
-  _AccountPageWidgetState(this._account);
+  _AccountPageState(this._account);
 
   @override
   void initState() {
@@ -161,7 +159,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
                         ? PochettoscopeWidget(songLinks: account.favorites)
                         : SongListingWidget(account.favorites),
                 if (Session.accountLink.id != null)
-                  MessageListingWidget(account.messages)
+                  MessageListing(account.messages)
               ],
             ),
           )
@@ -219,10 +217,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget> {
   }
 }
 
-class MessageListingWidget extends StatelessWidget {
+class MessageListing extends StatelessWidget {
   final List<Message> messages;
 
-  MessageListingWidget(this.messages);
+  MessageListing(this.messages);
 
   @override
   Widget build(BuildContext context) {
@@ -237,10 +235,10 @@ class MessageListingWidget extends StatelessWidget {
   }
 }
 
-class AccountListingWidget extends StatelessWidget {
+class AccountListing extends StatelessWidget {
   final List<AccountLink> _accountLinks;
 
-  AccountListingWidget(this._accountLinks, {Key key}) : super(key: key);
+  AccountListing(this._accountLinks, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -260,8 +258,8 @@ class AccountListingWidget extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AccountPageWidget(
-                      account: fetchAccount(accountLink.id))));
+                  builder: (context) =>
+                      AccountPage(account: fetchAccount(accountLink.id))));
         },
       ));
     }
@@ -270,10 +268,10 @@ class AccountListingWidget extends StatelessWidget {
   }
 }
 
-class AccountListingFutureWidget extends StatelessWidget {
+class AccountListingFuture extends StatelessWidget {
   final Future<List<AccountLink>> accounts;
 
-  AccountListingFutureWidget(this.accounts, {Key key}) : super(key: key);
+  AccountListingFuture(this.accounts, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +284,7 @@ class AccountListingFutureWidget extends StatelessWidget {
           future: accounts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return AccountListingWidget(snapshot.data);
+              return AccountListing(snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }

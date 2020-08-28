@@ -8,15 +8,15 @@ import '../session.dart';
 import '../utils.dart';
 import 'manage_account.dart';
 
-class IdentificationWidget extends StatefulWidget {
-  IdentificationWidget({Key key}) : super(key: key);
+class Identification extends StatefulWidget {
+  Identification({Key key}) : super(key: key);
 
   @override
-  _IdentificationWidgetState createState() => _IdentificationWidgetState();
+  _IdentificationState createState() => _IdentificationState();
 }
 
-class _IdentificationWidgetState extends State<IdentificationWidget> {
-  _IdentificationWidgetState();
+class _IdentificationState extends State<Identification> {
+  _IdentificationState();
 
   Future<IdentificationResponse> _identificationResponse;
 

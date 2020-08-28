@@ -95,7 +95,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProgramPageWidget(
+                      builder: (context) => ProgramPage(
                           program: fetchProgram(programLinks[index].id))));
             });
       },

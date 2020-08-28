@@ -86,10 +86,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: Icon(Icons.account_circle),
           trailing: Session.accountLink.id == null ? null : DisconnectButton(),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => IdentificationWidget())).then((_) {
+            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Identification()))
+                .then((_) {
               _setAccountTitle();
             });
           },
@@ -110,8 +109,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ScheduleWidget(schedule: fetchSchedule())));
+                    builder: (context) => Schedule(schedule: fetchSchedule())));
           },
         ),
         ListTile(
@@ -151,8 +149,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: Text('Recherche'),
           leading: Icon(Icons.search),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SearchWidget()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Search()));
           },
         ),
         Divider(),
@@ -232,7 +230,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 ..onTap = () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AccountPageWidget(
+                                        builder: (context) => AccountPage(
                                             account: fetchAccount(84482)))),
                             ),
                             TextSpan(

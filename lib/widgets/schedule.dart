@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import '../models/schedule.dart';
 import '../utils.dart';
 
-class ScheduleWidget extends StatelessWidget {
+class Schedule extends StatelessWidget {
   final Future<List<DaySchedule>> schedule;
 
-  ScheduleWidget({Key key, this.schedule}) : super(key: key);
+  Schedule({Key key, this.schedule}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

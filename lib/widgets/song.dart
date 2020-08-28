@@ -48,53 +48,84 @@ class CoverThumb extends StatelessWidget {
         child: _sizedContainer(
             child: CachedNetworkImage(
                 imageUrl: _songLink.thumbLink,
-                placeholder: (context, url) => Icon(Icons.album, size: 56.0),
+                placeholder: (context, url) => Icon(Icons.album, size: 50.0),
                 errorWidget: (context, url, error) =>
-                    Icon(Icons.album, size: 56.0))));
+                    Icon(Icons.album, size: 50.0))));
   }
 }
 
-class SongCardWidget extends StatelessWidget {
+class CoverWithGesture extends StatelessWidget {
   final SongLink songLink;
+  final Duration fadeInDuration;
+  final bool displayPlaceholder;
 
-  SongCardWidget({Key key, this.songLink}) : super(key: key);
+  CoverWithGesture(
+      {Key key,
+      this.songLink,
+      this.fadeInDuration = const Duration(),
+      this.displayPlaceholder = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: GestureDetector(
-        onTap: () {
-          if (songLink.id != null) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongPageWidget(
-                        songLink: songLink, song: fetchSong(songLink.id))));
-          }
-        },
-        onLongPress: () {
-          Navigator.of(context).push(MaterialPageRoute<Null>(
-              builder: (BuildContext context) {
-                return CoverViewer(songLink);
+    return Wrap(
+        direction: MediaQuery.of(context).orientation == Orientation.portrait
+            ? Axis.horizontal
+            : Axis.vertical,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 20,
+                ),
+              ],
+            ),
+            child: GestureDetector(
+              onTap: () {
+                if (songLink.id != null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SongPageWidget(
+                              songLink: songLink,
+                              song: fetchSong(songLink.id))));
+                }
               },
-              fullscreenDialog: true));
-        },
-        child: Cover(songLink.coverLink),
-      ),
-    );
+              onLongPress: () {
+                Navigator.of(context).push(MaterialPageRoute<Null>(
+                    builder: (BuildContext context) {
+                      return CoverViewer(songLink);
+                    },
+                    fullscreenDialog: true));
+              },
+              child: Cover(songLink.coverLink,
+                  displayPlaceholder: displayPlaceholder,
+                  fadeInDuration: fadeInDuration),
+            ),
+          )
+        ]);
   }
 }
 
 class Cover extends StatelessWidget {
   final String _url;
+  final Duration fadeInDuration;
+  final bool displayPlaceholder;
 
-  Cover(this._url);
+  Cover(this._url,
+      {this.fadeInDuration = const Duration(),
+      this.displayPlaceholder = false});
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      fadeInDuration: Duration(seconds: 0),
-      fadeOutDuration: Duration(seconds: 0),
+      fadeInDuration: fadeInDuration,
+      placeholder: displayPlaceholder
+          ? (context, url) => Image.asset('assets/vinyl-default.jpg')
+          : null,
       imageUrl: _url,
       errorWidget: (context, url, error) =>
           Image.asset('assets/vinyl-default.jpg'),
@@ -353,8 +384,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AccountPageWidget(
-                        account: fetchAccount(comment.author.id))));
+                    builder: (context) =>
+                        AccountPage(account: fetchAccount(comment.author.id))));
           },
           title: HtmlDefault(data: comment.body),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
@@ -482,8 +513,7 @@ class SongInformations extends StatelessWidget {
                                 title: Text(
                                     'Recherche de l\'année "${song.year.toString()}"'),
                               ),
-                              body: SearchResultsWidget(
-                                  song.year.toString(), '7')))),
+                              body: SearchResults(song.year.toString(), '7')))),
                 }));
     }
 
@@ -537,7 +567,7 @@ class SongInformations extends StatelessWidget {
                                 title:
                                     Text('Recherche du label "${song.label}"'),
                               ),
-                              body: SearchResultsWidget(song.label, '5')))),
+                              body: SearchResults(song.label, '5')))),
                 }));
     }
 

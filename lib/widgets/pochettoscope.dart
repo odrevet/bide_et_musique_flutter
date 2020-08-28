@@ -74,7 +74,12 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
         itemBuilder: (BuildContext context, int index) {
-          return SongCardWidget(songLink: _songLinks[index]);
+          return Padding(
+              padding: EdgeInsets.all(1),
+              child: CoverWithGesture(
+                  songLink: _songLinks[index],
+                  displayPlaceholder: true,
+                  fadeInDuration: Duration(milliseconds: 250)));
         });
   }
 }

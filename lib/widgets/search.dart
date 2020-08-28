@@ -6,18 +6,18 @@ import '../services/search.dart';
 import 'account.dart';
 import 'song.dart';
 
-class SearchResultsWidget extends StatefulWidget {
+class SearchResults extends StatefulWidget {
   final String search;
   final String type;
 
-  SearchResultsWidget(this.search, this.type, {Key key}) : super(key: key);
+  SearchResults(this.search, this.type, {Key key}) : super(key: key);
 
   @override
-  _SearchResultsWidgetState createState() =>
-      _SearchResultsWidgetState(this.search, this.type);
+  _SearchResultsState createState() =>
+      _SearchResultsState(this.search, this.type);
 }
 
-class _SearchResultsWidgetState extends State<SearchResultsWidget> {
+class _SearchResultsState extends State<SearchResults> {
   int _pageCount;
   int _pageCurrent;
   List<SongLink> _songLinks;
@@ -28,7 +28,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
 
   var _controller = ScrollController();
 
-  _SearchResultsWidgetState(this.search, this.type);
+  _SearchResultsState(this.search, this.type);
 
   @override
   void initState() {
@@ -94,14 +94,14 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   }
 }
 
-class SearchWidget extends StatefulWidget {
-  SearchWidget({Key key}) : super(key: key);
+class Search extends StatefulWidget {
+  Search({Key key}) : super(key: key);
 
   @override
-  _SearchWidgetState createState() => _SearchWidgetState();
+  _SearchState createState() => _SearchState();
 }
 
-class _SearchWidgetState extends State<SearchWidget> {
+class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
 
   List _searchTypes = [
@@ -120,7 +120,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   String _currentItem; //selected index from 1
 
-  _SearchWidgetState();
+  _SearchState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = List();
@@ -144,8 +144,8 @@ class _SearchWidgetState extends State<SearchWidget> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AccountListingFutureWidget(
-                  fetchSearchAccount(_controller.text))));
+              builder: (context) =>
+                  AccountListingFuture(fetchSearchAccount(_controller.text))));
     } else {
       Navigator.push(
           context,
@@ -155,8 +155,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                       title: Text('Recherche de chansons'),
                     ),
                     body: Center(
-                        child: SearchResultsWidget(
-                            _controller.text, this._currentItem)),
+                        child:
+                            SearchResults(_controller.text, this._currentItem)),
                   )));
     }
   }

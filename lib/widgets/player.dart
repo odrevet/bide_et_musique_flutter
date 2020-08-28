@@ -40,7 +40,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final bool playing = state?.playing ?? false;
-          final bool radioMode = mediaItem?.album == radioIcon;
+          final bool radioMode =
+              mediaItem != null ? mediaItem.album == radioIcon : null;
 
           List<Widget> controls;
 
@@ -94,7 +95,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     playPauseControl,
                     stopButton()
                   ]),
-              if (radioMode == false)
+              if (radioMode != null && radioMode != true)
                 Container(
                     height: 20, child: SongPositionSlider(mediaItem, state))
             ];

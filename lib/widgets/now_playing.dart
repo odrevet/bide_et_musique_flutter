@@ -25,16 +25,10 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
         future: widget._song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Wrap(children: [
-              Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 20.0,
-                    ),
-                  ]),
-                  child: SongCardWidget(songLink: snapshot.data))
-            ]);
+            return CoverWithGesture(
+                songLink: snapshot.data,
+                displayPlaceholder: false,
+                fadeInDuration: Duration());
           } else if (snapshot.hasError) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
