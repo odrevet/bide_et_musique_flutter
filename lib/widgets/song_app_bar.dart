@@ -333,9 +333,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           final playing = state?.playing ?? false;
           final radioMode = mediaItem?.album == radioIcon;
 
+          // Display the play song button when no song is being played or player is in player mode
           if (processingState == AudioProcessingState.none ||
               radioMode == true ||
-              widget._song.streamLink != mediaItem.id) {
+              mediaItem == null ||
+              widget._song?.streamLink != mediaItem.id) {
             return RaisedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Écouter'),
