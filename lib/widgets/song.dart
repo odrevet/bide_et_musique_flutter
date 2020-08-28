@@ -261,7 +261,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Card(
+                          child: Padding(
+                              padding: EdgeInsets.all(5.0),
                               child: Hero(
                                   tag: tag,
                                   child: InkWell(

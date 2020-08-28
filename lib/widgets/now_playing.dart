@@ -25,14 +25,16 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
         future: widget._song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 20.0,
-                  ),
-                ]),
-                child: SongCardWidget(songLink: snapshot.data));
+            return Wrap(children: [
+              Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 20.0,
+                    ),
+                  ]),
+                  child: SongCardWidget(songLink: snapshot.data))
+            ]);
           } else if (snapshot.hasError) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
