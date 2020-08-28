@@ -34,9 +34,8 @@ class _SongAppBarState extends State<SongAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           Song song = snapshot.data;
-          var songActionButton = FlatButton.icon(
+          Widget songActionButton = IconButton(
               icon: Icon(Icons.menu),
-              label: Text(''),
               onPressed: () => showDialog<void>(
                     context: context,
                     barrierDismissible: true,
