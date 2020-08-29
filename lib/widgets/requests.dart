@@ -99,11 +99,21 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () =>
-                  _selectedRequestId ??
-                  sendRequest(_selectedRequestId, _dedicateController.text),
-            )
+                icon: Icon(Icons.send),
+                onPressed: () => _selectedRequestId == null
+                    ? null
+                    : sendRequest(_selectedRequestId, _dedicateController.text)
+                        .then((statusCode) {
+                        if (statusCode != 200) {
+                          print(
+                              'Send request error with status code $statusCode');
+                        }
+
+                        setState(() {
+                          _selectedRequestId = null;
+                          _dedicateController.text = '';
+                        });
+                      }))
           ],
         )
       ],
