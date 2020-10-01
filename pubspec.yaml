@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   audio_service: ^0.14.0
-  cached_network_image: ^2.3.1
+  cached_network_image: ^2.3.2+1
   diacritic: ^0.1.1
   flutter_html: ^1.0.2
   html: ^0.14.0+3
@@ -18,11 +18,11 @@ dependencies:
   just_audio: ^0.4.0
   package_info: ^0.4.3
   page_indicator: ^0.3.0
-  share: ^0.6.5
-  shared_preferences: ^0.5.10
+  share: ^0.6.5+2
+  shared_preferences: ^0.5.12
   uni_links: ^0.4.0
-  url_launcher: ^5.5.1
-  xml: ^4.2.0
+  url_launcher: ^5.7.2
+  xml: ^4.5.1
 
 flutter:
   uses-material-design: true
