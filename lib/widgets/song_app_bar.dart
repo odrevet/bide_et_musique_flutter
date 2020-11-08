@@ -84,7 +84,7 @@ class SongActionMenu extends StatelessWidget {
       _actions.add(SongPlayerWidget(_song));
     }
 
-    //if the user if logged in
+    //if the user is logged in
     if (Session.accountLink.id != null) {
       if (_song.canFavourite) {
         _actions.add(SongFavoriteIconWidget(_song));
@@ -243,7 +243,7 @@ Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song.link}
 
 --------
-Message envoyé avec l'application 'Bide et Musique flutter pour Android'
+Message envoyé avec l'application 'Bide et Musique pour Android'
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ''',
             subject: "'${_song.name}' sur Bide et Musique"));
