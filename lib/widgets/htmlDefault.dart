@@ -11,16 +11,14 @@ class HtmlDefault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-        child: Html(
-            data: data,
-            style: {
-              'html': Style(fontSize: FontSize(16.0)),
-              'a': Style(color: Colors.red)
-            },
-            onLinkTap: (url) {
-              onLinkTap(url, context);
-            }));
+    return Html(
+        data: data,
+        style: {
+          'html': Style(fontSize: FontSize(18.0)),
+          'a': Style(color: Colors.red),
+        },
+        onLinkTap: (url) {
+          onLinkTap(url, context);
+        });
   }
 }

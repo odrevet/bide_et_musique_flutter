@@ -12,7 +12,7 @@ dependencies:
   audio_service: ^0.15.3
   cached_network_image: ^2.3.3
   diacritic: ^0.1.1
-  flutter_html: ^1.0.2
+  flutter_html: ^1.1.0
   html: ^0.14.0+4
   http: ^0.12.2
   just_audio: ^0.5.6
