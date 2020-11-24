@@ -52,8 +52,12 @@ ainsi que
 
 * Créer un apk 
 
+```
     flutter build apk
-    
+```
+
 * Créer un appbundle 
- 
+
+```
     flutter build appbundle
+```
