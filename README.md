@@ -27,3 +27,33 @@ Télécharger dans le menu "Release" de github ou sur [Google play store](https:
 |---|---|
 | <img src="/screenshots/Screenshot_titres.jpg" width="240px" />  | <img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />  |
 
+
+# Release
+
+## android
+
+* Editer le ficher `android/app/build.gradle` et dé-commenter
+
+```
+    /*signingConfigs {
+        release {
+            ...
+        }
+    }*/
+```
+
+ainsi que
+
+```
+//signingConfig signingConfigs.release
+```
+
+* Editer le fichier `android/key.properties` et ajouter les clés (secretes, ne pas les commit) ainsi que le chemin vers la clé privé .jks générée au préalable.
+
+* Créer un apk 
+
+    flutter build apk
+    
+ ou un appbundle 
+ 
+    flutter build appbundle
