@@ -48,7 +48,7 @@ ainsi que
 //signingConfig signingConfigs.release
 ```
 
-* Editer le fichier `android/key.properties` et ajouter les clés (secretes, ne pas les commit) ainsi que le chemin vers la clé privé .jks générée au préalable.
+* Editer le fichier `android/key.properties` et ajouter les clés (secretes, ne pas les commit) ainsi que le chemin vers la clé privée .jks générée au préalable.
 
 * Créer un apk 
 
