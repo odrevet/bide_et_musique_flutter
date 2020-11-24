@@ -19,7 +19,7 @@ import 'search.dart';
 import '../session.dart';
 import 'song_app_bar.dart';
 import '../utils.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 
 String createTag(SongLink songLink) {
   return songLink.index == null
@@ -345,7 +345,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                 SingleChildScrollView(
                     child: Padding(
                   padding: EdgeInsets.only(left: 4.0, top: 2.0),
-                  child: HtmlDefault(
+                  child: HtmlWithStyle(
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
                           : song.lyrics),
@@ -387,7 +387,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                     builder: (context) =>
                         AccountPage(account: fetchAccount(comment.author.id))));
           },
-          title: HtmlDefault(data: comment.body),
+          title: HtmlWithStyle(data: comment.body),
           subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName

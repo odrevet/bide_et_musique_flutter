@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/nowSong.dart';
 import '../utils.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 import 'song.dart';
 
 class NowSongsWidget extends StatelessWidget {
@@ -44,7 +44,7 @@ class NowSongsWidget extends StatelessWidget {
           onTap: () => launchSongPage(nowSong.songLink, context),
           leading: CoverThumb(nowSong.songLink),
           title:
-              HtmlDefault(data: nowSong.songLink.name + '<br/>' + nowSong.desc),
+              HtmlWithStyle(data: nowSong.songLink.name + '<br/>' + nowSong.desc),
           subtitle: Text('Le ${nowSong.date}')));
     }
 

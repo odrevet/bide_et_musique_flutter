@@ -4,10 +4,10 @@ import 'package:flutter_html/style.dart';
 
 import '../utils.dart';
 
-class HtmlDefault extends StatelessWidget {
+class HtmlWithStyle extends StatelessWidget {
   final String data;
 
-  HtmlDefault({this.data});
+  HtmlWithStyle({this.data});
 
   @override
   Widget build(BuildContext context) {

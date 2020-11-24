@@ -11,7 +11,7 @@ import '../services/wall.dart';
 import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 import 'song.dart';
 
 class WallWidget extends StatefulWidget {
@@ -145,7 +145,7 @@ class _WallWidgetState extends State<WallWidget> {
                   ]),
             ),
             Divider(),
-            HtmlDefault(
+            HtmlWithStyle(
               data: post.body,
             )
           ],

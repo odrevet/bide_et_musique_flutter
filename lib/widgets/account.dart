@@ -10,7 +10,7 @@ import '../session.dart';
 import '../utils.dart';
 import '../widgets/song.dart';
 import 'bidebox.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 import 'pochettoscope.dart';
 
 openAccountImageViewerDialog(context, image) {
@@ -148,7 +148,7 @@ class _AccountPageState extends State<AccountPage> {
                     : SingleChildScrollView(
                         child: Padding(
                         padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                        child: HtmlDefault(
+                        child: HtmlWithStyle(
                           data: account.presentation,
                         ),
                       )),

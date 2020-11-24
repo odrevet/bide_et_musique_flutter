@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/program.dart';
 import '../utils.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 import 'pochettoscope.dart';
 import 'song.dart';
 
@@ -86,7 +86,7 @@ class _ProgramPageState extends State<ProgramPage> {
                   borderRadius: BorderRadius.circular(24.0)),
               title: Text(program.name),
               children: [
-                HtmlDefault(data: program.description),
+                HtmlWithStyle(data: program.description),
                 if (program.airedOn.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],

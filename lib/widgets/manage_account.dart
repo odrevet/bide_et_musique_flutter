@@ -11,7 +11,7 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'bidebox.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
 import 'song.dart';
@@ -170,7 +170,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                               color: Colors.grey.shade200.withOpacity(0.7)),
                         ),
                         SingleChildScrollView(
-                            child: HtmlDefault(data: account.presentation)),
+                            child: HtmlWithStyle(data: account.presentation)),
                       ]),
                     )
                   ],

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/forum.dart';
 import '../services/forum.dart';
 import '../utils.dart';
-import 'htmlDefault.dart';
+import 'htmlWithStyle.dart';
 
 class ForumWidget extends StatefulWidget {
   @override
@@ -134,7 +134,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       ForumMessage forumMessage = forumMessages[index];
                       return ListTile(
-                          title: HtmlDefault(data: forumMessage.text),
+                          title: HtmlWithStyle(data: forumMessage.text),
                           subtitle: Text(
                               '${forumMessage.date} par ${forumMessage.user?.name}'));
                     });
