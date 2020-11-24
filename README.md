@@ -54,6 +54,6 @@ ainsi que
 
     flutter build apk
     
- ou un appbundle 
+* Créer un appbundle 
  
     flutter build appbundle
