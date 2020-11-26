@@ -32,7 +32,7 @@
 		<true/>
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Cette application n'est pas supposée utiliser votre micro</string>
+	<string>Cette application n'utilise pas votre micro</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
