@@ -22,17 +22,24 @@ class _CoverViewerState extends State<CoverViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Transform(
-        transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.001)
-          ..rotateX(0.01 * _offset.dy)
-          ..rotateY(-0.01 * _offset.dx),
-        alignment: FractionalOffset.center,
-        child: GestureDetector(
-          onPanUpdate: (details) => setState(() => _offset += details.delta),
-          onDoubleTap: () => setState(() => _offset = Offset.zero),
-          child: _buildView(context),
-        ));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(songLink.name),
+      ),
+      body: Center(
+        child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateX(0.01 * _offset.dy)
+              ..rotateY(-0.01 * _offset.dx),
+            alignment: FractionalOffset.center,
+            child: GestureDetector(
+              onPanUpdate: (details) => setState(() => _offset += details.delta),
+              onDoubleTap: () => setState(() => _offset = Offset.zero),
+              child: _buildView(context),
+            )),
+      ),
+    );
   }
 
   _buildView(BuildContext context) {
