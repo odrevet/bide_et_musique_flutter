@@ -13,14 +13,21 @@ import 'bidebox.dart';
 import 'htmlWithStyle.dart';
 import 'pochettoscope.dart';
 
-openAccountImageViewerDialog(context, image) {
+openAccountImageViewerDialog(context, image, title) {
   Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: image,
-              fit: BoxFit.contain,
+        return Scaffold(
+          appBar: AppBar(title: Text(title)),
+          body: Center(
+            child: InteractiveViewer(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: image,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
             ),
           ),
         );
@@ -96,7 +103,7 @@ class _AccountPageState extends State<AccountPage> {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                openAccountImageViewerDialog(context, image);
+                                openAccountImageViewerDialog(context, image, account.name);
                               },
                               child: Image.network(url))),
                       Expanded(

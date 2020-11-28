@@ -78,7 +78,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                               AccountPage(account: fetchAccount(account.id))));
                 },
                 onLongPress: () {
-                  openAccountImageViewerDialog(context, NetworkImage(url));
+                  openAccountImageViewerDialog(context, NetworkImage(url), account.name);
                 },
                 child: Container(
                   child: Text(account.name, style: _font),

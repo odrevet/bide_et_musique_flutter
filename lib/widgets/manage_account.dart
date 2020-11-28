@@ -139,7 +139,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            openAccountImageViewerDialog(context, image);
+                            openAccountImageViewerDialog(context, image, account.name);
                           },
                           child: Image.network(url))),
                   Expanded(
