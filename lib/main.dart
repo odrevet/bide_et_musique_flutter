@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import 'models/song.dart';
 
@@ -224,6 +225,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     Widget home;
     Widget body;
     Widget nowPlayingWidget;
+
+    FlutterStatusbarcolor.setStatusBarColor(Colors.orange);
+    FlutterStatusbarcolor.setNavigationBarColor(Colors.orange);
 
     if (_e != null && _songNowPlaying == null)
       nowPlayingWidget = refreshNowPlayingSongButton();

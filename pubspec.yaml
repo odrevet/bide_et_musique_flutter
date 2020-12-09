@@ -24,6 +24,7 @@ dependencies:
   url_launcher: ^5.7.10
   xml: ^4.5.1
   flutter_launcher_icons: ^0.8.1
+  flutter_statusbarcolor: ^0.2.3
 
 flutter_icons:
   android: false
