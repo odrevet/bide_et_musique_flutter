@@ -243,7 +243,7 @@ Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song.link}
 
 --------
-Message envoyé avec l'application 'Bide et Musique pour Android'
+Message envoyé avec l'application 'Bide et Musique' disponible sur Android 
 https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
 ''',
             subject: "'${_song.name}' sur Bide et Musique"));
