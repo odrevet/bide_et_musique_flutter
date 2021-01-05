@@ -28,21 +28,21 @@ packages:
       name: audio_service
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.15.3"
+    version: "0.16.1"
   audio_session:
     dependency: transitive
     description:
       name: audio_session
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.9"
+    version: "0.0.10"
   cached_network_image:
     dependency: "direct main"
     description:
       name: cached_network_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "2.5.0"
   characters:
     dependency: transitive
     description:
@@ -63,7 +63,7 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0"
+    version: "0.12.1+1"
   chewie_audio:
     dependency: transitive
     description:
@@ -159,7 +159,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.2"
+    version: "2.1.0"
   flutter_html:
     dependency: "direct main"
     description:
@@ -255,21 +255,21 @@ packages:
       name: just_audio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.7"
+    version: "0.6.5"
   just_audio_platform_interface:
     dependency: transitive
     description:
       name: just_audio_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "2.0.0"
   just_audio_web:
     dependency: transitive
     description:
       name: just_audio_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1"
+    version: "0.2.1"
   meta:
     dependency: transitive
     description:
@@ -402,7 +402,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.24.1"
+    version: "0.25.0"
   share:
     dependency: "direct main"
     description:

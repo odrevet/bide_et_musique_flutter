@@ -80,7 +80,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   AudioProcessingState _getProcessingState() {
     if (_audioProcessingState != null) return _audioProcessingState;
     switch (_audioPlayer.processingState) {
-      case ProcessingState.none:
+      case ProcessingState.idle:
         return AudioProcessingState.stopped;
       case ProcessingState.loading:
         return AudioProcessingState.connecting;
@@ -124,14 +124,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
 
     // Load and broadcast the queue
-    //AudioServiceBackground.setQueue(queue);
     try {
-      /*await _audioPlayer.load(ConcatenatingAudioSource(
-        children:
-            queue.map((item) => AudioSource.uri(Uri.parse(item.id))).toList(),
-      ));*/
-
-      // In this example, we automatically start playing on start.
+      // immediately start playing on start.
       onPlay();
     } catch (e) {
       print("Error: $e");
@@ -178,7 +172,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
-    await _audioPlayer.pause();
     await _audioPlayer.dispose();
     _eventSubscription.cancel();
     // It is important to wait for this state to be broadcast before we shut
