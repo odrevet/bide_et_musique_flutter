@@ -23,9 +23,9 @@ Télécharger dans le menu "Release" de github ou sur [Google play store](https:
 
 # Captures d'écran 
 
-|  <img src="/screenshots/Screenshot_Principale.jpg" width="240px" /> |  <img src="/screenshots/Screenshot_menu.jpg" width="240px" /> |
+|  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/main.jpg" width="240px" /> |  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/menu.jpg" width="240px" /> |
 |---|---|
-| <img src="/screenshots/Screenshot_titres.jpg" width="240px" />  | <img src="/screenshots/Screenshot_page_chanson.jpg" width="240px" />  |
+| <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/titres.jpg" width="240px" />  | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/page_chanson.jpg" width="240px" />  |
 
 
 # Release
