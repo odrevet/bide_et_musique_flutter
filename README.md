@@ -15,7 +15,11 @@ avec une interface pensée pour le mobile, vous pouvez :
 * Voir les nouvelles entrées dans la base
 * Organiser les favoris
 
-Télécharger dans le menu "Release" de github ou sur [Google play store](https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique)
+# Installation 
+
+<a href="https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
+
+ou télécharger l'apk depuis [les releases github](releases) 
 
 # Vidéo de présentation 
 
