@@ -19,7 +19,7 @@ avec une interface pensée pour le mobile, vous pouvez :
 
 <a href="https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
 
-ou télécharger l'apk depuis [les releases github](releases) 
+ou télécharger l'apk depuis [les releases github](https://github.com/odrevet/bide_et_musique_flutter/releases/latest) 
 
 # Vidéo de présentation 
 
