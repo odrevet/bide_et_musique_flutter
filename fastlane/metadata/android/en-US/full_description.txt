@@ -1,0 +1,13 @@
+<b>Listen and consult the "Bide et Musique" web radio/b>
+<ul>
+    <li>Listen to the radio</li>
+    <li>Read song lyrics</li>
+    <li>Read comments</li>
+    <li>See user page</li>
+    <li>See covers 3D or zoom on cover</li>
+    <li>See next and previous songs in the playlist</li>
+    <li>Search songs</li>
+    <li>See new song on the site</li>
+    <li>Organize favorited songs</li>
+    <li>and more...</li>
+</ul>
