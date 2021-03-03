@@ -243,9 +243,9 @@ Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song.link}
 
 --------
-Message envoyé avec l'application 'Bide et Musique' disponible sur Android 
-https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique
-''',
+Message envoyé avec l'application 'Bide et Musique'. Disponible pour  
+* Android https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique 
+* IOS https://apps.apple.com/fr/app/bide-et-musique/id1524513644''',
             subject: "'${_song.name}' sur Bide et Musique"));
   }
 }
