@@ -247,7 +247,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: AppBar(title: Text("Bide et Musique")), // SongNowPlayingAppBar(orientation, _songNowPlaying),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
@@ -256,7 +256,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               body: nowPlayingWidget);
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: AppBar(title: Text("Bide et Musique")), //SongNowPlayingAppBar(orientation, _songNowPlaying),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
