@@ -68,7 +68,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Oui'),
               onPressed: () async {
                 int statusCode = await removeSongFromFavorites(songLink.id);
@@ -82,7 +82,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('Non'),
               onPressed: () {
                 int index = account.favorites.indexOf(songLink);

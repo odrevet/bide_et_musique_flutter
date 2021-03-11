@@ -98,7 +98,7 @@ class SongActionMenu extends StatelessWidget {
     // Share buttons (message and song id)
     var actionsShare = <Widget>[];
 
-    var shareSongStream = RaisedButton.icon(
+    var shareSongStream = ElevatedButton.icon(
         icon: Icon(Icons.music_note),
         label: Text('Flux musical'),
         onPressed: () => Share.share(_song.streamLink));
@@ -161,7 +161,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget._song.isFavourite) {
-      return RaisedButton.icon(
+      return ElevatedButton.icon(
           icon: Icon(Icons.star),
           label: Text('Retirer des favoris'),
           onPressed: () async {
@@ -173,7 +173,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
             }
           });
     } else {
-      return RaisedButton.icon(
+      return ElevatedButton.icon(
         icon: Icon(Icons.star_border),
         label: Text('Ajouter aux favoris'),
         onPressed: () async {
@@ -216,7 +216,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
       }
     };
 
-    return RaisedButton.icon(
+    return ElevatedButton.icon(
         icon: Icon(Icons.exposure_plus_1),
         label: Text('Voter'),
         onPressed: (widget._song.hasVote ? null : callbackVote));
@@ -233,7 +233,7 @@ class SongShareIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return RaisedButton.icon(
+    return ElevatedButton.icon(
         icon: Icon(Icons.message),
         label: Text('Message'),
         onPressed: () => Share.share(
@@ -260,7 +260,7 @@ class SongCopyLinkIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return RaisedButton.icon(
+    return ElevatedButton.icon(
         icon: Icon(Icons.link),
         label: Text('Copier l\'url'),
         onPressed: () {
@@ -276,7 +276,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return RaisedButton.icon(
+    return ElevatedButton.icon(
         icon: Icon(Icons.code),
         label: Text('Copier le code HTML du lien'),
         onPressed: () => Clipboard.setData(
@@ -294,7 +294,7 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     //share song button
-    return RaisedButton.icon(
+    return ElevatedButton.icon(
         icon: Icon(Icons.open_in_browser),
         label: Text('Ouvrir l\'url'),
         onPressed: () => launchURL(_song.link));
@@ -338,7 +338,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
               radioMode == true ||
               mediaItem == null ||
               widget._song?.streamLink != mediaItem.id) {
-            return RaisedButton.icon(
+            return ElevatedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Écouter'),
                 onPressed: () => play());
@@ -373,17 +373,17 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
         });
   }
 
-  Widget stopSongButton = RaisedButton.icon(
+  Widget stopSongButton = ElevatedButton.icon(
       icon: Icon(Icons.stop),
       label: Text('Stop'),
       onPressed: () => AudioService.stop());
 
-  Widget pauseSongButton = RaisedButton.icon(
+  Widget pauseSongButton = ElevatedButton.icon(
       icon: Icon(Icons.pause),
       label: Text('Pause'),
       onPressed: () => AudioService.pause());
 
-  Widget resumeSongButton = RaisedButton.icon(
+  Widget resumeSongButton = ElevatedButton.icon(
       icon: Icon(Icons.play_arrow),
       label: Text('Reprendre'),
       onPressed: () => AudioService.play());

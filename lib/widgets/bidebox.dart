@@ -79,7 +79,7 @@ class _MessageEditorState extends State<MessageEditor> {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       actions: [
-        RaisedButton.icon(
+        ElevatedButton.icon(
           icon: Icon(Icons.send),
           label: Text("Envoyer"),
           onPressed: () async {

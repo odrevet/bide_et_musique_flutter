@@ -46,7 +46,7 @@ class _WallWidgetState extends State<WallWidget> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: <Widget>[
-            RaisedButton.icon(
+            ElevatedButton.icon(
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {

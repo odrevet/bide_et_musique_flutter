@@ -17,7 +17,7 @@ class CoverViewer extends StatefulWidget {
 class _CoverViewerState extends State<CoverViewer> {
   SongLink songLink;
   Offset _offset = Offset.zero;
-  var _3dMode = false; // 3D or zoom
+  var _threeDimensionMode = false; // 3D or zoom
 
   _CoverViewerState(this.songLink);
 
@@ -28,12 +28,12 @@ class _CoverViewerState extends State<CoverViewer> {
         Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: () => setState(() => _3dMode = !_3dMode),
-              child: Icon(_3dMode ? Icons.threed_rotation : Icons.zoom_out_map ),
+              onTap: () => setState(() => _threeDimensionMode = !_threeDimensionMode),
+              child: Icon(_threeDimensionMode ? Icons.threed_rotation : Icons.zoom_out_map ),
             )),
       ]),
       body: Center(
-        child: _3dMode
+        child: _threeDimensionMode
             ? Transform(
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)

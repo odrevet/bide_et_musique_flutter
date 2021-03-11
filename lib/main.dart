@@ -208,7 +208,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ErrorDisplay(_e),
-          RaisedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {
               _songAiring.periodicFetchSongNowPlaying();

@@ -123,7 +123,7 @@ class _SearchState extends State<Search> {
   _SearchState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = List();
+    List<DropdownMenuItem<String>> items = [];
     var i = 1;
     for (String searchType in _searchTypes) {
       items.add(DropdownMenuItem(value: i.toString(), child: Text(searchType)));
@@ -200,12 +200,11 @@ class _SearchState extends State<Search> {
                     onSubmitted: (value) => performSearch(),
                     controller: _controller),
                 Container(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                       child: Text(
                         'Lancer la recherche',
                       ),
-                      onPressed: () => performSearch(),
-                      color: Colors.orangeAccent),
+                      onPressed: () => performSearch()),
                   margin: EdgeInsets.only(top: 20.0),
                 )
               ],

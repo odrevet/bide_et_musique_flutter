@@ -6,7 +6,7 @@ import '../session.dart';
 import '../utils.dart';
 
 Future<List<AccountLink>> fetchTrombidoscope() async {
-  List<AccountLink> accounts = List();
+  List<AccountLink> accounts = [];
 
   final url = '$baseUri/trombidoscope.html';
   final response = await Session.get(url);

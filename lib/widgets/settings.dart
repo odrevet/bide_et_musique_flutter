@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _radioHiQuality = true;
   bool _rememberIdents = false;
   bool _autoConnect = false;
-  int _relay = 1;
+  //int _relay = 2;//1;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
       _autoConnect = prefs.getBool('autoConnect') ?? false;
-      _relay = prefs.getInt('relay') ?? 1;
+      //_relay = 2; //prefs.getInt('relay') ?? 1;
     });
   }
 
@@ -53,14 +53,14 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  void _onToggleRelay() async {
+  /*void _onToggleRelay() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
       _relay == 1 ? _relay = 2 : _relay = 1;
     });
     prefs.setInt('relay', _relay);
-  }
+  }*/
 
   _saveOptionBool(String name, bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

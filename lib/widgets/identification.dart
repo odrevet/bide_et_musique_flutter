@@ -158,25 +158,24 @@ class _IdentificationState extends State<Identification> {
               value: _remember,
               onChanged: _onRememberToggle),
           Container(
-            child: RaisedButton(
+            child: ElevatedButton(
                 child: Text(
                   'Se connecter',
                 ),
-                onPressed: _performLogin,
-                color: Colors.orangeAccent),
+                onPressed: _performLogin),
             margin: EdgeInsets.only(top: 2.0),
           ),
           Divider(),
           Column(children: [
             Text("Pas de compte ? "),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => launchURL('$baseUri/create_account.html'),
               child: Text('En créer un sur bide-et-musique.com'),
             ),
           ]),
           Divider(),
           Column(children: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: _clearSettings,
               child: Text('Oublier les identifiants'),
             ),

@@ -180,7 +180,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             ),
           );
         }
-        return RaisedButton.icon(
+        return ElevatedButton.icon(
           icon: Icon(Icons.radio, size: 40),
           label: label,
           onPressed: () async {

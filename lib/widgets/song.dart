@@ -215,7 +215,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: [
-            RaisedButton.icon(
+            ElevatedButton.icon(
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {
@@ -247,7 +247,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       builder: (BuildContext context) {
         return AlertDialog(
           actions: [
-            RaisedButton.icon(
+            ElevatedButton.icon(
               icon: Icon(Icons.send),
               label: Text("Envoyer"),
               onPressed: () async {
