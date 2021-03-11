@@ -93,14 +93,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text('Radio haute qualitée'),
                     value: _radioHiQuality,
                     onChanged: _onToggleRadioQuality),
-                ListTile(
+                /*ListTile(
                   title: Text('Relais'),
                   trailing: SizedBox(
                       width: 42,
                       child: FlatButton(
                           child: Text(_relay.toString()),
                           onPressed: _onToggleRelay)),
-                ),
+                ),*/
                 Divider(),
                 CheckboxListTile(
                     title: Text('Se souvenir des identifiants'),

@@ -187,7 +187,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     if (_radioMode == true) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
-      int relay = prefs.getInt('relay') ?? 1;
+      int relay = 2; //prefs.getInt('relay') ?? 1;
       int port = radioHiQuality ? 9100 : 9200;
       url = 'http://relay$relay.$site:$port';
     } else {
