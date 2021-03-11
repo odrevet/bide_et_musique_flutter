@@ -43,17 +43,15 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
   }
 }
 
-class SongNowPlayingAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
+class SongNowPlayingAppBar extends StatefulWidget with PreferredSizeWidget {
+  @override
+  final Size preferredSize;
   final Future<SongNowPlaying> _songNowPlaying;
   final Orientation _orientation;
 
   SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key key})
-      : preferredSize = Size.fromHeight(kToolbarHeight),
+      : preferredSize = Size.fromHeight(50.0),
         super(key: key);
-
-  @override
-  final Size preferredSize;
 
   @override
   _SongNowPlayingAppBarState createState() => _SongNowPlayingAppBarState();
@@ -67,7 +65,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          String name = songNowPlaying.name;
+          String name = 'songNowPlaying.name';
           String subtitle = songNowPlaying.artist;
           Widget bottom;
 
@@ -76,13 +74,9 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
 
           if (widget._orientation == Orientation.portrait) {
             bottom = PreferredSize(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 75.0),
-                  child: Align(
-                      alignment: FractionalOffset.centerLeft,
-                      child: Text(subtitle)),
-                ),
-                preferredSize: null);
+              preferredSize: Size.fromHeight(12.0),
+              child: Text(subtitle),
+            );
           } else {
             name += ' • $subtitle';
           }
