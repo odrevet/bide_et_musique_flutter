@@ -65,23 +65,33 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          String name = songNowPlaying.name;
-          String subtitle = songNowPlaying.artist;
-          Widget bottom;
 
+          String subtitle = songNowPlaying.artist;
           if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
           subtitle += ' • ${songNowPlaying.program.name}';
 
-          if (widget._orientation == Orientation.portrait) {
-            bottom = PreferredSize(
-              preferredSize: Size.fromHeight(12.0),
-              child: Text(subtitle),
-            );
-          } else {
-            name += ' • $subtitle';
-          }
+          Widget title = RichText(
+            text: TextSpan(
+              text: songNowPlaying.name,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+              children: <TextSpan>[
+                TextSpan(
+                  text: '\n$subtitle',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12),
+                ),
+              ],
+            ),
+          );
 
-          return AppBar(title: Text(name), bottom: bottom);
+          if (widget._orientation == Orientation.portrait) {
+          } else {}
+
+          return AppBar(title: title);
         } else if (snapshot.hasError) {
           return AppBar(title: Text("Erreur"));
         }
