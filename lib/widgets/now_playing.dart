@@ -65,7 +65,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SongNowPlaying songNowPlaying = snapshot.data;
-          String name = 'songNowPlaying.name';
+          String name = songNowPlaying.name;
           String subtitle = songNowPlaying.artist;
           Widget bottom;
 
