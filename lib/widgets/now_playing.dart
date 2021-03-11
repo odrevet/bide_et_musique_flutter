@@ -93,7 +93,7 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
             );
           } else {
             title = Text(
-                '${songNowPlaying.name} • ${subtitle}',
+                '${songNowPlaying.name} • $subtitle',
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
