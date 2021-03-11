@@ -70,26 +70,36 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
           if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
           subtitle += ' • ${songNowPlaying.program.name}';
 
-          Widget title = RichText(
-            text: TextSpan(
-              text: songNowPlaying.name,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-              children: <TextSpan>[
-                TextSpan(
-                  text: '\n$subtitle',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12),
-                ),
-              ],
-            ),
-          );
+          Widget title;
 
           if (widget._orientation == Orientation.portrait) {
-          } else {}
+            title = RichText(
+              text: TextSpan(
+                text: songNowPlaying.name,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '\n$subtitle',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            title = Text(
+                '${songNowPlaying.name} • ${subtitle}',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+            );
+          }
 
           return AppBar(title: title);
         } else if (snapshot.hasError) {
