@@ -10,13 +10,13 @@ abstract class Session {
   static Map<String, String> headers = {};
 
   static Future<http.Response> get(String url) async {
-    http.Response response = await http.get(url, headers: headers);
+    http.Response response = await http.get(Uri.parse(url), headers: headers);
     _updateCookie(response);
     return response;
   }
 
   static Future<http.Response> post(String url, {body}) async {
-    http.Response response = await http.post(url, body: body, headers: headers);
+    http.Response response = await http.post(Uri.parse(url), body: body, headers: headers);
     _updateCookie(response);
     return response;
   }

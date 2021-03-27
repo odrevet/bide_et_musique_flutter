@@ -17,7 +17,7 @@ class HtmlWithStyle extends StatelessWidget {
           'html': Style(fontSize: FontSize(18.0)),
           'a': Style(color: Colors.red),
         },
-        onLinkTap: (url) {
+        onLinkTap: (url, _, __, ___) {
           onLinkTap(url, context);
         });
   }

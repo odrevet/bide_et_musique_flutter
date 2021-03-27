@@ -237,7 +237,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
         album: _radioMode ? radioIcon : songIcon,
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
         artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
-        artUri: _song.coverLink,
+        artUri: Uri.parse(_song.coverLink),
         duration: _song.duration ?? null));
   }
 }

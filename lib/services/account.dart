@@ -17,7 +17,7 @@ Future<Account> fetchAccount(int accountId) async {
   //so we never fetch this special own account page, we fetch it
   //without identification and parse it like any other page
   final bool ownAccount = accountId == Session.accountLink.id;
-  final response = ownAccount ? await http.get(url) : await Session.get(url);
+  final response = ownAccount ? await http.get(Uri.parse(url)) : await Session.get(url);
 
   if (response.statusCode == 200) {
     var body = response.body;

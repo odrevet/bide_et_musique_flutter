@@ -51,7 +51,7 @@ Future<SearchResult> fetchSearchSong(
   SearchResult searchResult = SearchResult();
   String url = '$baseUri/recherche.html?kw=$search&st=$type&Page=$pageCurrent';
   url = removeDiacritics(url); //server uses latin-1
-  final response = await http.post(url);
+  final response = await http.post(Uri.parse(url));
 
   if (response.statusCode == 302) {
     var location = response.headers['location'];
