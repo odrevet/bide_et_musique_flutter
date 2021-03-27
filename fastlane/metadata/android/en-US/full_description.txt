@@ -1,4 +1,4 @@
-<b>Listen and consult the "Bide et Musique" web radio/b>
+<b>Listen and consult the "Bide et Musique" web radio</b>
 <ul>
     <li>Listen to the radio</li>
     <li>Read song lyrics</li>
