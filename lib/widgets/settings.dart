@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text('Relais'),
                   trailing: SizedBox(
                       width: 42,
-                      child: FlatButton(
+                      child: TextButton(
                           child: Text(_relay.toString()),
                           onPressed: _onToggleRelay)),
                 ),
