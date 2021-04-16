@@ -91,7 +91,7 @@ class ErrorDisplay extends StatelessWidget {
   final title = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
   final defaultStyle = TextStyle(color: Colors.black);
   final reportedError = TextStyle(fontStyle: FontStyle.italic);
-  final Exception exception;
+  final dynamic exception;
 
   ErrorDisplay(this.exception);
 
