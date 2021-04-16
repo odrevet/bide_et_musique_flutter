@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -11,7 +11,7 @@ import 'song.dart';
 class NowPlayingCard extends StatefulWidget {
   final Future<Song> _song;
 
-  NowPlayingCard(this._song, {Key key}) : super(key: key);
+  NowPlayingCard(this._song, {Key? key}) : super(key: key);
 
   @override
   _NowPlayingCardState createState() => _NowPlayingCardState();
@@ -51,7 +51,7 @@ class SongNowPlayingAppBar extends StatefulWidget with PreferredSizeWidget {
   final Future<SongNowPlaying> _songNowPlaying;
   final Orientation _orientation;
 
-  SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key key})
+  SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key? key})
       : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
@@ -66,11 +66,11 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SongNowPlaying songNowPlaying = snapshot.data;
+          SongNowPlaying songNowPlaying = snapshot.data!;
 
-          String subtitle = songNowPlaying.artist;
-          if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
-          subtitle += ' • ${songNowPlaying.program.name}';
+          String? subtitle = songNowPlaying.artist!;
+          if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year!}';
+          subtitle += ' • ${songNowPlaying.program.name!}';
 
           Widget title;
 

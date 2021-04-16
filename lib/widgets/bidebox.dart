@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -12,9 +12,9 @@ import '../utils.dart';
 import 'account.dart';
 
 class BideBoxWidget extends StatelessWidget {
-  final Future<List<Exchange>> exchanges;
+  final Future<List<Exchange>>? exchanges;
 
-  BideBoxWidget({Key key, this.exchanges}) : super(key: key);
+  BideBoxWidget({Key? key, this.exchanges}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class BideBoxWidget extends StatelessWidget {
         future: this.exchanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Center(
               child: ErrorDisplay(snapshot.error),
@@ -46,11 +46,11 @@ class BideBoxWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AccountPage(
-                            account: fetchAccount(message.recipient.id),
+                            account: fetchAccount(message.recipient!.id),
                             defaultPage: 2,
                           ))),
               title: Text(
-                message.recipient.name,
+                message.recipient!.name!,
               ),
               subtitle: Text('${message.sentCount} ${message.receivedCount}'),
               leading: GestureDetector(
@@ -65,7 +65,7 @@ class BideBoxWidget extends StatelessWidget {
 }
 
 class MessageEditor extends StatefulWidget {
-  final AccountLink _accountLink;
+  final AccountLink? _accountLink;
 
   MessageEditor(this._accountLink);
 
@@ -86,12 +86,12 @@ class _MessageEditorState extends State<MessageEditor> {
           label: Text("Envoyer"),
           onPressed: () async {
             bool status = await sendMessage(
-                _newMessageController.text, widget._accountLink.id);
+                _newMessageController.text, widget._accountLink!.id);
             Navigator.of(context).pop(status);
           },
         )
       ],
-      title: Text('Message pour ${widget._accountLink.name}'),
+      title: Text('Message pour ${widget._accountLink!.name}'),
       content: TextFormField(
           maxLength: 500,
           maxLines: 5,

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -11,9 +11,9 @@ import 'pochettoscope.dart';
 import 'song.dart';
 
 class ProgramPage extends StatefulWidget {
-  final Future<Program> program;
+  final Future<Program>? program;
 
-  ProgramPage({Key key, this.program}) : super(key: key);
+  ProgramPage({Key? key, this.program}) : super(key: key);
 
   @override
   _ProgramPageState createState() => _ProgramPageState();
@@ -29,7 +29,7 @@ class _ProgramPageState extends State<ProgramPage> {
         future: widget.program,
         builder: (context, snapshot) {
           if (snapshot.hasData)
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           else if (snapshot.hasError) return Text("${snapshot.error}");
 
           return Scaffold(
@@ -56,7 +56,7 @@ class _ProgramPageState extends State<ProgramPage> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: program.description != null && program.airedOn.isNotEmpty
+              child: program.description != null && program.airedOn!.isNotEmpty
                   ? displayInfoButton(program)
                   : null),
           Padding(
@@ -69,11 +69,13 @@ class _ProgramPageState extends State<ProgramPage> {
 
   Widget displayInfoButton(Program program) {
     String airedOn = '';
-    for (var airedOnEntry in program.airedOn) {
+    for (var airedOnEntry in program.airedOn!) {
       airedOn += '\n$airedOnEntry';
     }
 
-    return GestureDetector(
+    return Text('TODO');
+    //TODO
+    /*return GestureDetector(
       onTap: () {
         return showDialog<void>(
           context: context,
@@ -86,10 +88,10 @@ class _ProgramPageState extends State<ProgramPage> {
               ),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.0)),
-              title: Text(program.name),
+              title: Text(program.name!),
               children: [
                 HtmlWithStyle(data: program.description),
-                if (program.airedOn.isNotEmpty)
+                if (program.airedOn!.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],
             );
@@ -97,7 +99,7 @@ class _ProgramPageState extends State<ProgramPage> {
         );
       },
       child: Icon(Icons.info_outline),
-    );
+    );*/
   }
 
   Widget _switchViewButton() {

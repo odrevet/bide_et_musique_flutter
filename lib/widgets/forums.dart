@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -27,15 +27,15 @@ class _ForumPageState extends State<ForumWidget> {
               var forums = snapshot.data;
               if (snapshot.hasData) {
                 return ListView.builder(
-                    itemCount: forums.length,
+                    itemCount: forums!.length,
                     itemBuilder: (BuildContext context, int index) {
                       Forum forum = forums[index];
                       return ListTile(
                           title: Text(
-                            forum.name,
+                            forum.name!,
                           ),
-                          subtitle: Text(forum.subtitle),
-                          trailing: forum.hasNew ? Icon(Icons.fiber_new) : null,
+                          subtitle: Text(forum.subtitle!),
+                          trailing: forum.hasNew! ? Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -68,27 +68,27 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget._forum.name),
+          title: Text(widget._forum.name!),
         ),
         body: FutureBuilder<List<ForumThread>>(
             future: this.widget._forumThreads,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<ForumThread> forumThreads = snapshot.data;
+                List<ForumThread> forumThreads = snapshot.data!;
                 return ListView.builder(
                     itemCount: forumThreads.length,
                     itemBuilder: (BuildContext context, int index) {
                       ForumThread forumThread = forumThreads[index];
                       String messageCountText =
-                          forumThread.nbMsgs > 1 ? 'messages' : 'message';
+                          forumThread.nbMsgs! > 1 ? 'messages' : 'message';
                       return ListTile(
                           title: Text(
-                            forumThread.title,
+                            forumThread.title!,
                           ),
                           subtitle: Text(
-                              '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last.name} ${forumThread.lastDate}'),
+                              '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name} ${forumThread.lastDate}'),
                           trailing:
-                              forumThread.hasNew ? Icon(Icons.fiber_new) : null,
+                              forumThread.hasNew! ? Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -123,13 +123,13 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget._forumThread.title),
+          title: Text(widget._forumThread.title!),
         ),
         body: FutureBuilder<List<ForumMessage>>(
             future: this.widget._forumMessages,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var forumMessages = snapshot.data;
+                var forumMessages = snapshot.data!;
                 return ListView.separated(
                     separatorBuilder: (context, index) => Divider(),
                     itemCount: forumMessages.length,

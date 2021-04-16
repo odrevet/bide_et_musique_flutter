@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -11,7 +11,7 @@ import '../utils.dart';
 import 'manage_account.dart';
 
 class Identification extends StatefulWidget {
-  Identification({Key key}) : super(key: key);
+  Identification({Key? key}) : super(key: key);
 
   @override
   _IdentificationState createState() => _IdentificationState();
@@ -20,11 +20,11 @@ class Identification extends StatefulWidget {
 class _IdentificationState extends State<Identification> {
   _IdentificationState();
 
-  Future<IdentificationResponse> _identificationResponse;
+  Future<IdentificationResponse>? _identificationResponse;
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _remember = false;
+  bool? _remember = false;
 
   @override
   void initState() {
@@ -43,9 +43,9 @@ class _IdentificationState extends State<Identification> {
           future: _identificationResponse,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.isLoggedIn == true)
+              if (snapshot.data!.isLoggedIn == true)
                 return LoggedInPage();
-              else if (snapshot.data.isLoggedIn == false) {
+              else if (snapshot.data!.isLoggedIn == false) {
                 return Scaffold(
                   appBar: AppBar(
                     title: Text("Connexion à votre compte"),
@@ -96,7 +96,7 @@ class _IdentificationState extends State<Identification> {
   _saveRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setBool('rememberIdents', _remember);
+      prefs.setBool('rememberIdents', _remember!);
     });
   }
 
@@ -123,7 +123,7 @@ class _IdentificationState extends State<Identification> {
     }
   }
 
-  void _onRememberToggle(bool value) {
+  void _onRememberToggle(bool? value) {
     setState(() {
       _remember = value;
       _saveRemember();
@@ -131,7 +131,7 @@ class _IdentificationState extends State<Identification> {
   }
 
   Widget _buildViewLoginForm(BuildContext context,
-      [IdentificationResponse identificationResponse]) {
+      [IdentificationResponse? identificationResponse]) {
     var form = Form(
       child: ListView(
         children: <Widget>[

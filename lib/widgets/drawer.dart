@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:ui';
 
@@ -36,8 +36,8 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  String _accountTitle;
-  PackageInfo _packageInfo;
+  late String _accountTitle;
+  late PackageInfo _packageInfo;
 
   @override
   void initState() {
@@ -144,7 +144,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: SongLink(id: id, name: ''), song: fetchSong(id)))));
+                        songLink: SongLink(id: id!, name: ''), song: fetchSong(id)))));
           },
         ),
         ListTile(

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -13,7 +13,7 @@ import '../services/song.dart';
 import 'song.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
-  ManageFavoritesWidget({Key key}) : super(key: key);
+  ManageFavoritesWidget({Key? key}) : super(key: key);
 
   @override
   _ManageFavoritesWidgetState createState() => _ManageFavoritesWidgetState();
@@ -22,9 +22,9 @@ class ManageFavoritesWidget extends StatefulWidget {
 class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   _ManageFavoritesWidgetState();
 
-  Future<Account> _account;
+  Future<Account>? _account;
 
-  List<Dismissible> _rows;
+  late List<Dismissible> _rows;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         child: ListTile(
           leading: CoverThumb(songLink),
           title: Text('#$position - ${songLink.name}'),
-          subtitle: Text(songLink.artist),
+          subtitle: Text(songLink.artist!),
           onTap: () {
             Navigator.push(
                     context,
@@ -77,7 +77,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
 
                 if (statusCode == 200) {
                   setState(() {
-                    account.favorites
+                    account.favorites!
                         .removeWhere((song) => song.id == songLink.id);
                   });
                 }
@@ -87,7 +87,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             TextButton(
               child: Text('Non'),
               onPressed: () {
-                int index = account.favorites.indexOf(songLink);
+                int index = account.favorites!.indexOf(songLink);
 
                 setState(() {
                   _rows.insert(
@@ -106,7 +106,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
   Widget _buildView(BuildContext context, Account account) {
     _rows.clear();
     int index = 0;
-    for (SongLink songLink in account.favorites) {
+    for (SongLink songLink in account.favorites!) {
       _rows.add(_createSongTile(songLink, account, index));
       index++;
     }
@@ -114,7 +114,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     return ReorderableListView(
         children: _rows,
         onReorder: (int initialPosition, int targetPosition) async {
-          var draggedSong = account.favorites[initialPosition];
+          var draggedSong = account.favorites![initialPosition];
 
           int statusCode = await changeFavoriteRank(
               draggedSong.id, initialPosition, targetPosition);
@@ -136,11 +136,11 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         future: _account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data.favorites.isEmpty)
+            if (snapshot.data!.favorites!.isEmpty)
               return Center(
                   child: Text('Vous n\'avez pas de chanson dans vos favoris'));
             else
-              return _buildView(context, snapshot.data);
+              return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }

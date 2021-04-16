@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:ui';
 
@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key}) : super(key: key);
+  SettingsPage({Key? key}) : super(key: key);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _radioHiQuality = true;
-  bool _rememberIdents = false;
-  bool _autoConnect = false;
+  bool? _radioHiQuality = true;
+  bool? _rememberIdents = false;
+  bool? _autoConnect = false;
   int _relay = 1;
 
   @override
@@ -34,21 +34,21 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  void _onToggleRadioQuality(bool value) {
+  void _onToggleRadioQuality(bool? value) {
     setState(() {
       _radioHiQuality = value;
       _saveOptionBool('radioHiQuality', value);
     });
   }
 
-  void _onToggleRememberIdents(bool value) {
+  void _onToggleRememberIdents(bool? value) {
     setState(() {
       _rememberIdents = value;
       _saveOptionBool('rememberIdents', value);
     });
   }
 
-  void _onToggleAutoConnect(bool value) {
+  void _onToggleAutoConnect(bool? value) {
     setState(() {
       _autoConnect = value;
       _saveOptionBool('autoConnect', value);
@@ -64,10 +64,10 @@ class _SettingsPageState extends State<SettingsPage> {
     prefs.setInt('relay', _relay);
   }
 
-  _saveOptionBool(String name, bool value) async {
+  _saveOptionBool(String name, bool? value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setBool(name, value);
+      prefs.setBool(name, value!);
     });
   }
 

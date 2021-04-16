@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:ui';
 
@@ -8,16 +8,16 @@ import '../models/song.dart';
 import 'song.dart';
 
 class CoverViewer extends StatefulWidget {
-  final SongLink songLink;
+  final SongLink? songLink;
 
-  CoverViewer(this.songLink, {Key key}) : super(key: key);
+  CoverViewer(this.songLink, {Key? key}) : super(key: key);
 
   @override
   _CoverViewerState createState() => _CoverViewerState(this.songLink);
 }
 
 class _CoverViewerState extends State<CoverViewer> {
-  SongLink songLink;
+  SongLink? songLink;
   Offset _offset = Offset.zero;
   var _threeDimensionMode = false; // 3D or zoom
 
@@ -26,7 +26,7 @@ class _CoverViewerState extends State<CoverViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(songLink.name), actions: <Widget>[
+      appBar: AppBar(title: Text(songLink!.name), actions: <Widget>[
         Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -56,7 +56,7 @@ class _CoverViewerState extends State<CoverViewer> {
   }
 
   _buildView(BuildContext context) {
-    var tag = createTag(songLink);
-    return Hero(tag: tag, child: Cover(songLink.coverLink));
+    var tag = createTag(songLink!);
+    return Hero(tag: tag, child: Cover(songLink!.coverLink));
   }
 }

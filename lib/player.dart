@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -11,7 +11,7 @@ import 'services/song.dart';
 import 'utils.dart';
 
 class ScreenState {
-  final MediaItem mediaItem;
+  final MediaItem? mediaItem;
   final PlaybackState playbackState;
 
   ScreenState(this.mediaItem, this.playbackState);
@@ -23,23 +23,23 @@ void audioPlayerTaskEntrypoint() async {
 
 class AudioPlayerTask extends BackgroundAudioTask {
   AudioPlayer _audioPlayer = AudioPlayer();
-  AudioProcessingState _audioProcessingState;
+  AudioProcessingState? _audioProcessingState;
 
-  StreamSubscription<PlaybackEvent> _eventSubscription;
+  late StreamSubscription<PlaybackEvent> _eventSubscription;
 
-  Song _song;
-  bool _radioMode;
-  String _sessionId;
-  String _latestId;
+  late Song _song;
+  bool? _radioMode;
+  String? _sessionId;
+  String? _latestId;
 
-  Timer _t;
+  Timer? _t;
 
   void periodicFetchSongNowPlaying() {
     fetchNowPlaying().then((song) async {
       if (_radioMode == true)
         await AudioService.customAction('set_song', song.toJson());
-      int delay = (song.duration.inSeconds -
-              (song.duration.inSeconds * song.elapsedPcent / 100))
+      int delay = (song.duration!.inSeconds -
+              (song.duration!.inSeconds * song.elapsedPcent! / 100))
           .ceil();
       _t = Timer(Duration(seconds: delay), () {
         periodicFetchSongNowPlaying();
@@ -79,7 +79,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   /// Maps just_audio's processing state into into audio_service's playing
   /// state. If we are in the middle of a skip, we use [_audioProcessingState] instead.
-  AudioProcessingState _getProcessingState() {
+  AudioProcessingState? _getProcessingState() {
     if (_audioProcessingState != null) return _audioProcessingState;
     switch (_audioPlayer.processingState) {
       case ProcessingState.idle:
@@ -98,7 +98,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   }
 
   @override
-  Future<void> onStart(Map<String, dynamic> params) async {
+  Future<void> onStart(Map<String, dynamic>? params) async {
     // Broadcast media item changes.
     /*_player.currentIndexStream.listen((index) {
       if (index != null) AudioServiceBackground.setMediaItem(queue[index]);
@@ -145,7 +145,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
   @override
   Future<void> onPlay() async {
     String url = await _getStreamUrl();
-    if (_radioMode) {
+    if (_radioMode!) {
       await _audioPlayer.setUrl(url);
       AudioServiceBackground.setState(
         controls: [MediaControl.pause, MediaControl.stop],
@@ -153,9 +153,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
         playing: true,
       );
     } else if (url != _latestId) {
-      Map<String, String> headers = {'Host': host, 'Referer': _song.link};
+      Map<String, String?> headers = {'Host': host, 'Referer': _song.link};
       if (_sessionId != null) headers['Cookie'] = _sessionId;
-      await _audioPlayer.setUrl(url, headers: headers);
+      await _audioPlayer.setUrl(url, headers: headers as Map<String, String>?);
     }
 
     _latestId = url;
@@ -236,9 +236,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
   void setNotification() {
     AudioServiceBackground.setMediaItem(MediaItem(
         id: _song.streamLink,
-        album: _radioMode ? radioIcon : songIcon,
+        album: _radioMode! ? radioIcon : songIcon,
         title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
-        artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
+        artist: _song.artist!.isEmpty ? 'Artiste non disponible' : _song.artist,
         artUri: Uri.parse(_song.coverLink),
         duration: _song.duration ?? null));
   }

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 import 'dart:math';
@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SongPositionSlider extends StatefulWidget {
-  final MediaItem mediaItem;
-  final PlaybackState state;
+  final MediaItem? mediaItem;
+  final PlaybackState? state;
 
   SongPositionSlider(this.mediaItem, this.state);
 
@@ -18,7 +18,7 @@ class SongPositionSlider extends StatefulWidget {
 }
 
 class _SongPositionSliderState extends State<SongPositionSlider> {
-  final BehaviorSubject<double> _dragPositionSubject =
+  final BehaviorSubject<double?> _dragPositionSubject =
       BehaviorSubject.seeded(null);
 
   String _formatSongDuration(Duration duration) {
@@ -34,19 +34,19 @@ class _SongPositionSliderState extends State<SongPositionSlider> {
 
   @override
   Widget build(BuildContext context) {
-    double seekPos;
+    double? seekPos;
     return StreamBuilder(
-        stream: Rx.combineLatest2<double, double, double>(
+        stream: Rx.combineLatest2<double?, double, double?>(
             _dragPositionSubject.stream,
             Stream.periodic(Duration(milliseconds: 200)),
             (dragPosition, _) => dragPosition),
         builder: (context, snapshot) {
-          double position = snapshot.data ??
-              widget.state.currentPosition.inMilliseconds.toDouble();
-          double duration =
+          dynamic position = snapshot.data ??
+              widget.state!.currentPosition.inMilliseconds.toDouble();
+          dynamic duration =
               widget.mediaItem?.duration?.inMilliseconds?.toDouble();
 
-          Widget text = Text(_formatSongDuration(widget.state.currentPosition));
+          Widget text = Text(_formatSongDuration(widget.state!.currentPosition));
 
           Widget slider = Slider(
               inactiveColor: Colors.grey,

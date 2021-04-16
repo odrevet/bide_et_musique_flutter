@@ -126,23 +126,23 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     else if (_songNowPlaying == null)
       nowPlayingWidget = Center(child: CircularProgressIndicator());
     else
-      nowPlayingWidget = NowPlayingCard(_songNowPlaying);
+      nowPlayingWidget = NowPlayingCard(_songNowPlaying!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying!),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
-                      child: PlayerWidget(orientation, _songNowPlaying))),
+                      child: PlayerWidget(orientation, _songNowPlaying!))),
               drawer: DrawerWidget(),
               body: nowPlayingWidget);
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying!),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
@@ -162,7 +162,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                               else
                                 return CircularProgressIndicator();
                             }),
-                        PlayerWidget(orientation, _songNowPlaying),
+                        PlayerWidget(orientation, _songNowPlaying!),
                       ],
                     ),
                   )
@@ -175,7 +175,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: SizedBox(
               height: 60,
               child: BottomAppBar(
-                  child: PlayerWidget(Orientation.portrait, _songNowPlaying))),
+                  child: PlayerWidget(Orientation.portrait, _songNowPlaying!))),
           body: body);
     }
 

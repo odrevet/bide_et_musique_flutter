@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 import 'dart:ui';
@@ -30,11 +30,11 @@ String createTag(SongLink songLink) {
 }
 
 class CoverThumb extends StatelessWidget {
-  final SongLink _songLink;
+  final SongLink? _songLink;
 
   CoverThumb(this._songLink);
 
-  Widget _sizedContainer({Widget child}) {
+  Widget _sizedContainer({Widget? child}) {
     return SizedBox(
       width: 50.0,
       height: 50.0,
@@ -44,12 +44,12 @@ class CoverThumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tag = createTag(_songLink);
+    final tag = createTag(_songLink!);
     return Hero(
         tag: tag,
         child: _sizedContainer(
             child: CachedNetworkImage(
-                imageUrl: _songLink.thumbLink,
+                imageUrl: _songLink!.thumbLink,
                 placeholder: (context, url) => Icon(Icons.album, size: 50.0),
                 errorWidget: (context, url, error) =>
                     Icon(Icons.album, size: 50.0))));
@@ -57,12 +57,12 @@ class CoverThumb extends StatelessWidget {
 }
 
 class CoverWithGesture extends StatelessWidget {
-  final SongLink songLink;
+  final SongLink? songLink;
   final Duration fadeInDuration;
   final bool displayPlaceholder;
 
   CoverWithGesture(
-      {Key key,
+      {Key? key,
       this.songLink,
       this.fadeInDuration = const Duration(),
       this.displayPlaceholder = false})
@@ -87,13 +87,13 @@ class CoverWithGesture extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {
-                if (songLink.id != null) {
+                if (songLink!.id != null) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => SongPageWidget(
                               songLink: songLink,
-                              song: fetchSong(songLink.id))));
+                              song: fetchSong(songLink!.id))));
                 }
               },
               onLongPress: () {
@@ -103,7 +103,7 @@ class CoverWithGesture extends StatelessWidget {
                     },
                     fullscreenDialog: true));
               },
-              child: Cover(songLink.coverLink,
+              child: Cover(songLink!.coverLink,
                   displayPlaceholder: displayPlaceholder,
                   fadeInDuration: fadeInDuration),
             ),
@@ -136,19 +136,19 @@ class Cover extends StatelessWidget {
 }
 
 class SongPageWidget extends StatefulWidget {
-  final SongLink songLink;
-  final Future<Song> song;
+  final SongLink? songLink;
+  final Future<Song>? song;
 
-  SongPageWidget({Key key, this.songLink, this.song}) : super(key: key);
+  SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
 
   @override
   _SongPageWidgetState createState() => _SongPageWidgetState(this.song);
 }
 
 class _SongPageWidgetState extends State<SongPageWidget> {
-  int _currentPage;
+  int? _currentPage;
   final _commentController = TextEditingController();
-  Future<Song> song;
+  Future<Song>? song;
 
   _SongPageWidgetState(this.song);
 
@@ -158,7 +158,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       future: this.song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildView(context, snapshot.data);
+          return _buildView(context, snapshot.data!);
         } else if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(title: Text('Ouille ouille ouille !')),
@@ -166,12 +166,12 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           );
         }
 
-        return Center(child: _pageLoading(context, widget.songLink));
+        return Center(child: _pageLoading(context, widget.songLink!));
       },
     );
   }
 
-  void _openCoverViewerDialog(SongLink songLink, BuildContext context) {
+  void _openCoverViewerDialog(SongLink? songLink, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return CoverViewer(songLink);
@@ -242,7 +242,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   }
 
   _editMessageDialog(BuildContext context, Song song, Comment comment) {
-    _commentController.text = comment.body;
+    _commentController.text = comment.body!;
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -275,7 +275,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
   Widget _buildView(BuildContext context, Song song) {
     final String coverLink = song.coverLink;
-    final tag = createTag(widget.songLink);
+    final tag = createTag(widget.songLink!);
 
     var nestedScrollView = NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -358,7 +358,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           )
         ]));
 
-    Widget postNewComment = Session.accountLink.id == null || _currentPage != 1
+    Widget? postNewComment = Session.accountLink.id == null || _currentPage != 1
         ? null
         : FloatingActionButton(
             onPressed: () => _newMessageDialog(context, song),
@@ -375,7 +375,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   Widget _buildViewComments(BuildContext context, Song song) {
     List<Comment> comments = song.comments;
     var rows = <Widget>[];
-    String loginName = Session.accountLink.name;
+    String? loginName = Session.accountLink.name;
     var selfComment = TextStyle(
       color: Colors.red,
     );
@@ -390,7 +390,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                         AccountPage(account: fetchAccount(comment.author.id))));
           },
           title: HtmlWithStyle(data: comment.body),
-          subtitle: Text('Par ' + comment.author.name + ' ' + comment.time,
+          subtitle: Text('Par ' + comment.author.name! + ' ' + comment.time,
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName
               ? IconButton(
@@ -409,9 +409,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
-  final List<SongLink> _songLinks;
+  final List<SongLink>? _songLinks;
 
-  SongListingWidget(this._songLinks, {Key key}) : super(key: key);
+  SongListingWidget(this._songLinks, {Key? key}) : super(key: key);
 
   @override
   SongListingWidgetState createState() => SongListingWidgetState();
@@ -424,12 +424,12 @@ class SongListingWidgetState extends State<SongListingWidget> {
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
 
-    for (SongLink songLink in widget._songLinks) {
-      String subtitle = songLink.artist == null ? '' : songLink.artist;
+    for (SongLink songLink in widget._songLinks!) {
+      String subtitle = songLink.artist == null ? '' : songLink.artist!;
 
-      if (songLink.info != null && songLink.info.isNotEmpty) {
+      if (songLink.info != null && songLink.info!.isNotEmpty) {
         if (subtitle != '') subtitle += ' • ';
-        subtitle += songLink.info;
+        subtitle += songLink.info!;
       }
 
       rows.add(ListTile(
@@ -481,7 +481,7 @@ void launchSongPage(SongLink songLink, BuildContext context) {
 }
 
 class SongInformations extends StatelessWidget {
-  final Song song;
+  final Song? song;
   final bool compact;
 
   SongInformations({this.song, this.compact = false});
@@ -496,14 +496,14 @@ class SongInformations extends StatelessWidget {
 
     var textSpans = <TextSpan>[];
 
-    if (!compact && song.year != 0) {
+    if (!compact && song!.year != 0) {
       textSpans.add(TextSpan(
         text: 'Année\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: song.year.toString() + '\n\n',
+          text: song!.year.toString() + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -513,20 +513,20 @@ class SongInformations extends StatelessWidget {
                           builder: (context) => Scaffold(
                               appBar: AppBar(
                                 title: Text(
-                                    'Recherche de l\'année "${song.year.toString()}"'),
+                                    'Recherche de l\'année "${song!.year.toString()}"'),
                               ),
-                              body: SearchResults(song.year.toString(), '7')))),
+                              body: SearchResults(song!.year.toString(), '7')))),
                 }));
     }
 
-    if (!compact && song.artist != null) {
+    if (!compact && song!.artist != null) {
       textSpans.add(TextSpan(
         text: 'Artiste\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: song.artist + '\n\n',
+          text: song!.artist! + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -534,30 +534,30 @@ class SongInformations extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ArtistPageWidget(
-                              artist: fetchArtist(song.artistId)))),
+                              artist: fetchArtist(song!.artistId)))),
                 }));
     }
 
-    if (song.durationPretty != null) {
+    if (song!.durationPretty != null) {
       textSpans.add(TextSpan(
         text: 'Durée \n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: song.durationPretty + '\n\n',
+        text: song!.durationPretty! + '\n\n',
         style: defaultStyle,
       ));
     }
 
-    if (song.label != null && song.label != '') {
+    if (song!.label != null && song!.label != '') {
       textSpans.add(TextSpan(
         text: 'Label\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-          text: song.label + '\n\n',
+          text: song!.label! + '\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -567,20 +567,20 @@ class SongInformations extends StatelessWidget {
                           builder: (context) => Scaffold(
                               appBar: AppBar(
                                 title:
-                                    Text('Recherche du label "${song.label}"'),
+                                    Text('Recherche du label "${song!.label}"'),
                               ),
-                              body: SearchResults(song.label, '5')))),
+                              body: SearchResults(song!.label, '5')))),
                 }));
     }
 
-    if (song.reference != null && song.reference != '') {
+    if (song!.reference != null && song!.reference != '') {
       textSpans.add(TextSpan(
         text: 'Référence\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: song.reference.toString() + '\n\n',
+        text: song!.reference.toString() + '\n\n',
         style: defaultStyle,
       ));
     }

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -30,19 +30,19 @@ class _PlayerWidgetState extends State<PlayerWidget>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem, PlaybackState, ScreenState>(
+        stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
             (mediaItem, playbackState) =>
                 ScreenState(mediaItem, playbackState)),
         builder: (context, snapshot) {
-          final screenState = snapshot.data;
+          final dynamic screenState = snapshot.data;
           final mediaItem = screenState?.mediaItem;
           final state = screenState?.playbackState;
           final processingState =
               state?.processingState ?? AudioProcessingState.none;
           final bool playing = state?.playing ?? false;
-          final bool radioMode =
+          final bool? radioMode =
               mediaItem != null ? mediaItem.album == radioIcon : null;
 
           List<Widget> controls;
@@ -77,7 +77,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         ? InkWell(
                             onTap: () => Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              int id = getIdFromUrl(mediaItem.id);
+                              int id = getIdFromUrl(mediaItem.id)!;
                               return SongPageWidget(
                                   songLink: SongLink(id: id, name: ''),
                                   song: fetchSong(id));
@@ -175,7 +175,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               style: DefaultTextStyle.of(context).style,
               children: <TextSpan>[
                 TextSpan(
-                    text: '\n${snapshot.data.nbListeners} auditeurs',
+                    text: '\n${snapshot.data!.nbListeners} auditeurs',
                     style:
                         TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
               ],
@@ -195,7 +195,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               );
             }
             if (success) {
-              SongAiringNotifier().songNowPlaying.then((song) async {
+              SongAiringNotifier().songNowPlaying!.then((song) async {
                 await AudioService.customAction('set_radio_mode', true);
                 await AudioService.customAction('set_song', song.toJson());
                 await AudioService.play();
