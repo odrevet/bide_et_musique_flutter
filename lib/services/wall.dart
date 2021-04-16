@@ -18,37 +18,42 @@ Future<List<Post>> fetchPosts() async {
     dom.Document document = parser.parse(body);
     dom.Element wall = document.getElementById('mur');
     for (dom.Element msg in wall.getElementsByClassName('murmsg')) {
-      var post = Post();
-      post.body = msg.getElementsByClassName('corpsmsg')[0].innerHtml;
+      String body = msg.getElementsByClassName('corpsmsg')[0].innerHtml;
 
       var basmsg = msg.getElementsByClassName('basmsg')[0];
 
-      var accountA = basmsg.children[0].children[0];
+      var accountA = basmsg.getElementsByTagName('a')[0];
       var accountHref = accountA.attributes['href'];
 
       var idAccount = getIdFromUrl(accountHref);
       var accountLink =
           AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
 
-      post.author = accountLink;
-
       var songLink = SongLink();
-      var artistLink = basmsg.children[0].children[1];
-      songLink.artist = artistLink.innerHtml;
+      var time = '';
 
-      var title = basmsg.children[0].children[2];
-      songLink.name = stripTags(title.innerHtml);
-      songLink.id = getIdFromUrl(title.attributes['href']);
-      post.during = songLink;
+      var links = basmsg.children[0].getElementsByTagName('a');
 
-      final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
-      var match = idRegex.firstMatch(basmsg.innerHtml);
-      if (match != null) {
-        post.time = match[1];
+      if (links.length > 0) {
+        var artistLink = links[0];
+        songLink.artist = artistLink.innerHtml;
+
+        var title = links[1];
+        songLink.name = stripTags(title.innerHtml);
+        songLink.id = getIdFromUrl(title.attributes['href']);
+
+        final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
+        var match = idRegex.firstMatch(basmsg.innerHtml);
+
+        if (match != null) {
+          time = match[1];
+        }
       } else {
-        post.time = '';
+        continue;
       }
 
+      var post =
+          Post(accountLink, songLink, body, '', time);
       posts.add(post);
     }
     return posts;

@@ -2,11 +2,11 @@ import 'account.dart';
 import 'song.dart';
 
 class Post {
-  AccountLink author;
-  SongLink during;
-  String body;
-  String date;
-  String time;
+  final AccountLink author;
+  final SongLink during;
+  final String body;
+  final String date;
+  final String time;
 
-  Post();
+  Post(this.author, this.during, this.body, this.date, this.time);
 }
