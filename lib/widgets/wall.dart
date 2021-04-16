@@ -112,7 +112,7 @@ class _WallWidgetState extends State<WallWidget> {
             RichText(
               text: TextSpan(
                   style: TextStyle(
-                    fontSize: 12.0,
+                    fontSize: 14.0,
                     color: Colors.black,
                   ),
                   children: [
