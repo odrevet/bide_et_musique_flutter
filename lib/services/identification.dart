@@ -7,8 +7,8 @@ import '../session.dart';
 import '../utils.dart';
 
 class IdentificationResponse {
-  bool isLoggedIn;
-  String loginMessage;
+  bool? isLoggedIn;
+  String? loginMessage;
 }
 
 Future<IdentificationResponse> sendIdentifiers(
@@ -42,14 +42,14 @@ Future<IdentificationResponse> sendIdentifiers(
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var confirm = document.getElementById('gd-encartblc').children[1];
+    var confirm = document.getElementById('gd-encartblc')!.children[1];
 
     identificationResponse.loginMessage = confirm.innerHtml;
 
     if (confirm.children[0].innerHtml == 'Vous avez été identifié !') {
-      dom.Element divAccount = document.getElementById('compte2');
+      dom.Element divAccount = document.getElementById('compte2')!;
       Session.accountLink.id =
-          getIdFromUrl(divAccount.children[1].children[1].attributes['href']);
+          getIdFromUrl(divAccount.children[1].children[1].attributes['href']!);
       Session.accountLink.name = login;
       identificationResponse.isLoggedIn = true;
     } else {

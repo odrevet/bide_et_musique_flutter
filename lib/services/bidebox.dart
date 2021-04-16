@@ -7,11 +7,11 @@ import '../models/exchange.dart';
 import '../session.dart';
 import '../utils.dart';
 
-int getAccountIdFromUrl(str) {
+int? getAccountIdFromUrl(str) {
   final idRegex = RegExp(r'/bidebox_send.html\?T=(\d+)');
   var match = idRegex.firstMatch(str);
   if (match != null) {
-    return int.parse(match[1]);
+    return int.parse(match[1]!);
   } else {
     return null;
   }
@@ -36,7 +36,7 @@ Future<List<Exchange>> fetchExchanges() async {
     trs.removeLast();
     for (var tr in trs) {
       var message = Exchange();
-      int id =
+      int? id =
           getAccountIdFromUrl(tr.children[0].children[0].attributes['href']);
       message.recipient = AccountLink(id: id, name: tr.children[0].text.trim());
       List<String> secondTdText = tr.children[1].text.split('\n');
@@ -51,7 +51,7 @@ Future<List<Exchange>> fetchExchanges() async {
   return messages;
 }
 
-Future<bool> sendMessage(String message, int destId) async {
+Future<bool> sendMessage(String message, int? destId) async {
   final url = '$baseUri/bidebox_send.html';
 
   if (message.isNotEmpty) {

@@ -2,21 +2,21 @@ import '../utils.dart';
 import 'song.dart';
 
 class ProgramLink {
-  int id;
-  String name;
-  String songCount;
+  int? id;
+  String? name;
+  String? songCount;
 
   ProgramLink({this.id, this.name, this.songCount});
 }
 
 class Program {
-  int id;
-  String type;
-  String name;
-  String description;
-  List<String> airedOn;
-  List<String> inMeta;
-  List<SongLink> songs;
+  int? id;
+  String? type;
+  String? name;
+  String? description;
+  List<String?>? airedOn;
+  List<String>? inMeta;
+  List<SongLink>? songs;
 
   Program({this.id, this.name, this.description, this.airedOn, this.type});
 
@@ -27,15 +27,15 @@ class Program {
         description = json['description'] {
     this.songs = <SongLink>[];
     for (var songEntry in json['songs']) {
-      songs.add(SongLink(
+      songs!.add(SongLink(
           id: songEntry['song_id'],
           name: stripTags(songEntry['name']),
           artist: stripTags(songEntry['alias'])));
     }
 
-    airedOn = <String>[];
+    airedOn = <String?>[];
     for (var airedOnEntry in json['aired_on']) {
-      airedOn.add(airedOnEntry);
+      airedOn!.add(airedOnEntry);
     }
   }
 }

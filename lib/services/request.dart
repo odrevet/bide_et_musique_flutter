@@ -29,7 +29,7 @@ Future<List<Request>> fetchRequests() async {
       var tds = tr.getElementsByTagName('td');
       tds.removeLast();
       var songLink = songLinkFromTr(tr);
-      String alt = tr.children[4].children[0].attributes['alt'];
+      String? alt = tr.children[4].children[0].attributes['alt'];
       bool isAvailable = alt != 'Pas disponible pour le moment';
       var request = Request(songLink: songLink, isAvailable: isAvailable);
       requests.add(request);
@@ -41,7 +41,7 @@ Future<List<Request>> fetchRequests() async {
   return requests;
 }
 
-Future<int> sendRequest(int requestId, String dedicate) async {
+Future<int> sendRequest(int? requestId, String dedicate) async {
   final url = '$baseUri/requetes.html';
 
   var resp = await Session.post(url, body: {

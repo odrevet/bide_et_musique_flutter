@@ -22,7 +22,7 @@ abstract class Session {
   }
 
   static void _updateCookie(http.Response response) {
-    String rawCookie = response.headers['set-cookie'];
+    String? rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
       headers['cookie'] =

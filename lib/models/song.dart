@@ -5,18 +5,19 @@ import 'program.dart';
 class SongLink {
   int id;
   String name;
-  String artist;
-  String info;
+  String? artist;
+  String? info;
   bool isNew;
-  String cover;
-  int index;
+  String? cover;
+  int? index;
 
   SongLink(
-      {this.id,
-      this.name,
+      {required this.id,
+      required this.name,
       this.artist,
       this.cover,
       this.info,
+      this.index,
       this.isNew = false});
 
   String get streamLink {
@@ -32,7 +33,7 @@ class SongLink {
     if (this.cover == null || this.cover == '')
       url += '${this.id}.jpg';
     else
-      url += this.cover;
+      url += this.cover!;
     return url;
   }
 
@@ -45,23 +46,23 @@ class SongLink {
 }
 
 class Song extends SongLink {
-  int year;
-  int artistId;
-  String author;
-  Duration duration;
-  String durationPretty;
-  String label;
-  String reference;
-  String lyrics;
-  List<Comment> comments;
-  bool canListen;
-  bool canFavourite;
-  bool isFavourite;
-  bool hasVote;
+  int? year;
+  int? artistId;
+  String? author;
+  Duration? duration;
+  String? durationPretty;
+  String? label;
+  String? reference;
+  String? lyrics;
+  late List<Comment> comments;
+  late bool canListen;
+  late bool canFavourite;
+  late bool isFavourite;
+  late bool hasVote;
 
   Song(
-      {id,
-      name,
+      {required id,
+      required name,
       artist,
       cover,
       info,
@@ -94,22 +95,22 @@ class Song extends SongLink {
         'id': id,
         'name': name,
         'artist': artist,
-        'duration': duration.inSeconds
+        'duration': duration!.inSeconds
       };
 }
 
 class Comment {
-  int id;
-  AccountLink author;
-  String body;
-  String time;
+  int? id;
+  late AccountLink author;
+  String? body;
+  late String time;
 
   Comment();
 }
 
 class SongNowPlaying extends Song {
-  final int elapsedPcent;
-  final int nbListeners;
+  final int? elapsedPcent;
+  final int? nbListeners;
   final Program program;
 
   SongNowPlaying.fromJson(Map<String, dynamic> json)

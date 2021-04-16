@@ -6,7 +6,7 @@ class Post {
   final SongLink during;
   final String body;
   final String date;
-  final String time;
+  final String? time;
 
   Post(this.author, this.during, this.body, this.date, this.time);
 }

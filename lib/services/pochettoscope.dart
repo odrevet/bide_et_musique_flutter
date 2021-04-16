@@ -15,14 +15,11 @@ Future<List<SongLink>> fetchPochettoscope() async {
 
     for (dom.Element vignette
         in document.getElementsByClassName('vignette75')) {
-      var src = vignette.children[1].attributes['src'];
+      var src = vignette.children[1].attributes['src']!;
       final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
-      var match = idRegex.firstMatch(src);
-      var songLink = SongLink();
-      songLink.id = int.parse(match[1]);
-
-      var title = vignette.children[0].children[0].attributes['title'];
-      songLink.name = title;
+      var match = idRegex.firstMatch(src)!;
+      var title = vignette.children[0].children[0].attributes['title']!;
+      var songLink = SongLink(id: int.parse(match[1]!), name: title);
       songLinks.add(songLink);
     }
   } else {

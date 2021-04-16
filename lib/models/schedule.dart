@@ -1,16 +1,16 @@
 class DaySchedule {
-  String day;
-  List<ScheduleEntry> entries;
+  late String day;
+  late List<ScheduleEntry> entries;
 
   DaySchedule();
 }
 
 class ScheduleEntry {
-  int id;
-  String title;
-  String time;
-  String duration;
-  String href;
+  int? id;
+  late String title;
+  late String time;
+  late String duration;
+  late String href;
 
   ScheduleEntry();
 }

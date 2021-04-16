@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
@@ -77,7 +79,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                                 MaterialPageRoute(builder: (context) {
                               int id = getIdFromUrl(mediaItem.id);
                               return SongPageWidget(
-                                  songLink: SongLink(id: id),
+                                  songLink: SongLink(id: id, name: ''),
                                   song: fetchSong(id));
                             })),
                             child: Icon(

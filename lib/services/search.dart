@@ -21,7 +21,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   var accounts = <AccountLink>[];
 
   if (response.statusCode == 302) {
-    var location = response.headers['location'];
+    var location = response.headers['location']!;
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
     var account = AccountLink(id: getIdFromUrl(location), name: search);
@@ -36,7 +36,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
       var account = AccountLink(
-          id: getIdFromUrl(a.attributes['href']), name: stripTags(a.innerHtml));
+          id: getIdFromUrl(a.attributes['href']!), name: stripTags(a.innerHtml));
       accounts.add(account);
     }
   } else {
@@ -47,24 +47,24 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
 }
 
 Future<SearchResult> fetchSearchSong(
-    String search, String type, int pageCurrent) async {
+    String? search, String? type, int? pageCurrent) async {
   SearchResult searchResult = SearchResult();
   String url = '$baseUri/recherche.html?kw=$search&st=$type&Page=$pageCurrent';
   url = removeDiacritics(url); //server uses latin-1
   final response = await http.post(Uri.parse(url));
 
   if (response.statusCode == 302) {
-    var location = response.headers['location'];
+    var location = response.headers['location']!;
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
     searchResult.songLinks
-        .add(SongLink(id: getIdFromUrl(location), name: search));
+        .add(SongLink(id: getIdFromUrl(location)!, name: search!));
     searchResult.pageCount = 1;
     return searchResult;
   } else if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var result = document.getElementById('resultat');
+    var result = document.getElementById('resultat')!;
     var trs = result.getElementsByTagName('tr');
 
     var navbar = document.getElementsByClassName('navbar');
@@ -78,7 +78,7 @@ Future<SearchResult> fetchSearchSong(
         var tds = tr.getElementsByTagName('td');
         var a = tds[3].children[0];
         searchResult.songLinks.add(SongLink(
-            id: getIdFromUrl(a.attributes['href']),
+            id: getIdFromUrl(a.attributes['href']!)!,
             name: stripTags(a.innerHtml),
             artist: stripTags(tds[2].children[0].innerHtml)));
       }

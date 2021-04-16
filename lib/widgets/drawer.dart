@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
@@ -142,7 +144,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: SongLink(id: id), song: fetchSong(id)))));
+                        songLink: SongLink(id: id, name: ''), song: fetchSong(id)))));
           },
         ),
         ListTile(

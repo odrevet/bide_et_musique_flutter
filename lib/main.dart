@@ -25,9 +25,9 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  Future<SongNowPlaying> _songNowPlaying;
-  Exception _e;
-  SongAiringNotifier _songAiring;
+  Future<SongNowPlaying>? _songNowPlaying;
+  Exception? _e;
+  late SongAiringNotifier _songAiring;
 
   void initSongFetch() {
     _e = null;
@@ -40,7 +40,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         else {
           AudioService.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true)
-              _songAiring.songNowPlaying.then((song) async {
+              _songAiring.songNowPlaying!.then((song) async {
                 await AudioService.customAction('set_song', song.toJson());
               });
           });
@@ -52,7 +52,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     autoLogin();
     initSongFetch();
 
@@ -74,7 +74,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -115,7 +115,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     Widget home;
-    Widget body;
+    Widget? body;
     Widget nowPlayingWidget;
 
     FlutterStatusbarcolor.setStatusBarColor(Colors.orange);

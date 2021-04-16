@@ -4,7 +4,7 @@ import '../models/artist.dart';
 import '../session.dart';
 import '../utils.dart';
 
-Future<Artist> fetchArtist(int artistId) async {
+Future<Artist?> fetchArtist(int? artistId) async {
   var artist;
   final url = '$baseUri/artist/$artistId';
 

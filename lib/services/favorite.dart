@@ -27,21 +27,19 @@ List<SongLink> parseFavoriteTable(dom.Element table) {
   }
 
   for (dom.Element tr in trs) {
-    SongLink songLink = SongLink();
     dom.Element aTitle = tr.children[4].children[0];
 
     if (aTitle.toString() == '<html div>') aTitle = tr.children[4].children[1];
-
-    songLink.id = getIdFromUrl(aTitle.attributes['href']);
-    songLink.name = stripTags(aTitle.innerHtml);
-    songLink.artist = stripTags(tr.children[3].innerHtml);
-    favorites.add(songLink);
+    favorites.add(SongLink(
+        id: getIdFromUrl(aTitle.attributes['href']!)!,
+        name: stripTags(aTitle.innerHtml),
+        artist: stripTags(tr.children[3].innerHtml)));
   }
 
   return favorites;
 }
 
-Future<FavoritesResults> fetchFavorites(int accountId, int page) async {
+Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
   final String pageUrlParam = page > 0 ? page.toString() : 'all';
   final url = '$baseUri/account.html?N=$accountId&Page=$pageUrlParam';
   final response = await Session.get(url);
@@ -54,8 +52,7 @@ Future<FavoritesResults> fetchFavorites(int accountId, int page) async {
     //bm table may list favourite songs or messages.
     //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage = Session.accountLink != null &&
-        document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasMessage = document.getElementsByClassName('titre-message').isNotEmpty;
     bool hasFavorite = (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 
@@ -78,16 +75,15 @@ Future<FavoritesResults> fetchFavorites(int accountId, int page) async {
       }
 
       for (dom.Element tr in trs) {
-        SongLink songLink = SongLink();
         dom.Element aTitle = tr.children[4].children[0];
 
         if (aTitle.toString() == '<html div>')
           aTitle = tr.children[4].children[1];
 
-        songLink.id = getIdFromUrl(aTitle.attributes['href']);
-        songLink.name = stripTags(aTitle.innerHtml);
-        songLink.artist = stripTags(tr.children[3].innerHtml);
-        favorites.add(songLink);
+        favorites.add(SongLink(
+            id: getIdFromUrl(aTitle.attributes['href']!)!,
+            name: stripTags(aTitle.innerHtml),
+            artist: stripTags(tr.children[3].innerHtml)));
       }
     }
 

@@ -2,13 +2,13 @@ import '../utils.dart';
 import 'account.dart';
 
 class Forum {
-  int id;
-  String name;
-  String subtitle;
-  int nmsg;
-  bool hasNew;
-  String lastDate;
-  AccountLink last;
+  int? id;
+  String? name;
+  String? subtitle;
+  int? nmsg;
+  bool? hasNew;
+  String? lastDate;
+  AccountLink? last;
 
   Forum({this.id, this.name, this.subtitle, this.nmsg, this.hasNew});
 
@@ -23,18 +23,18 @@ class Forum {
 }
 
 class ForumThread {
-  int id;
-  String title;
-  int nbMsgs;
-  bool pinned;
-  bool resolved;
-  bool hasPost;
-  bool hasNew;
-  bool read;
-  int ownerId;
-  String ownerName;
-  String lastDate;
-  AccountLink last;
+  int? id;
+  String? title;
+  int? nbMsgs;
+  bool? pinned;
+  bool? resolved;
+  bool? hasPost;
+  bool? hasNew;
+  bool? read;
+  int? ownerId;
+  String? ownerName;
+  String? lastDate;
+  AccountLink? last;
 
   ForumThread(
       {this.id,
@@ -67,13 +67,13 @@ class ForumThread {
 }
 
 class ForumMessage {
-  int id;
-  String title;
-  String date;
-  String text;
-  String signature;
-  bool folded;
-  AccountLink user;
+  int? id;
+  String? title;
+  String? date;
+  String? text;
+  String? signature;
+  bool? folded;
+  AccountLink? user;
 
   ForumMessage(
       {this.id,
