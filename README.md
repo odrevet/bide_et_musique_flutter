@@ -40,16 +40,6 @@ https://apps.apple.com/fr/app/bide-et-musique/id1524513644
 | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/titres.jpg" width="240px" />  | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/page_chanson.jpg" width="240px" />  |
 
 
-# Null Safety
-
-La migration vers dart 2.12 est en cours 
-
-L'application peut etre lancé / construite avec l'option --no-sound-null-safety
-
-* flutter build apk --no-sound-null-safety
-
-* flutter run --no-sound-null-safety
-
 # Release
 
 ## android
@@ -75,7 +65,7 @@ ainsi que
 * Créer un apk 
 
 ```
-    flutter build apk --no-sound-null-safety
+    flutter build apk
 ```
 
 * Créer un appbundle 
