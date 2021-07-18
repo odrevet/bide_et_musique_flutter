@@ -29,7 +29,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return Text('WIP PLAYER WIDGET UPGRADE'); /*StreamBuilder(
         stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
@@ -97,9 +97,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     playPauseControl,
                     stopButton()
                   ]),
-              if (radioMode != null && radioMode != true)
+              /*if (radioMode != null && radioMode != true)
                 Container(
-                    height: 20, child: SongPositionSlider(mediaItem, state))
+                    height: 20, child: SongPositionSlider(mediaItem, state))*/
             ];
           }
 
@@ -115,7 +115,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     )
             ],
           );
-        });
+        });*/
   }
 
   _streamInfoDialog(BuildContext context) {
@@ -196,7 +196,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
             }
             if (success) {
               SongAiringNotifier().songNowPlaying!.then((song) async {
-                await AudioService.customAction('set_radio_mode', true);
+                //await AudioService.customAction('set_radio_mode', true);
                 await AudioService.customAction('set_song', song.toJson());
                 await AudioService.play();
               });

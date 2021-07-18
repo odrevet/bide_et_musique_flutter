@@ -320,7 +320,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return Text('WIP SONG PLAYER UPGRADE');/*StreamBuilder(
         stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
@@ -372,7 +372,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
               Divider()
             ]);
           }
-        });
+        });*/
   }
 
   Widget stopSongButton = ElevatedButton.icon(
@@ -391,7 +391,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       onPressed: () => AudioService.play());
 
   play() async {
-    if (AudioService.running) await AudioService.stop();
+    /*if (AudioService.running) await AudioService.stop();
 
     await AudioService.start(
       backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
@@ -403,6 +403,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     await AudioService.customAction(
         'set_session_id', Session.headers['cookie']);
     await AudioService.customAction('set_song', widget._song!.toJson());
-    await AudioService.play();
+    await AudioService.play();*/
   }
 }

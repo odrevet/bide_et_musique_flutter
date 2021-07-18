@@ -65,7 +65,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
         //MediaControl.skipToNext,
       ],
       systemActions: [
-        MediaAction.seekTo,
+        //MediaAction.seekTo,
         //MediaAction.seekForward,
         //MediaAction.seekBackward,
       ],
@@ -83,9 +83,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
     if (_audioProcessingState != null) return _audioProcessingState;
     switch (_audioPlayer.processingState) {
       case ProcessingState.idle:
-        return AudioProcessingState.stopped;
+        return AudioProcessingState.idle;
       case ProcessingState.loading:
-        return AudioProcessingState.connecting;
+        return AudioProcessingState.loading;
       case ProcessingState.buffering:
         return AudioProcessingState.buffering;
       case ProcessingState.ready:
