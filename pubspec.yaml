@@ -15,7 +15,7 @@ dependencies:
   flutter_html: ^2.1.0
   html: ^0.15.0
   http: ^0.13.1
-  just_audio: ^0.7.5
+  just_audio: 0.8.0
   package_info: ^2.0.2
   page_indicator: ^0.4.1
   share: ^2.0.4
