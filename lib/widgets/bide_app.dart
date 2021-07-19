@@ -13,6 +13,7 @@ import '../widgets/now_playing.dart';
 import '../widgets/player.dart';
 import '../widgets/song.dart';
 import '../widgets/song_airing_notifier.dart';
+import '../player.dart' show audioHandler;
 
 class BideApp extends StatefulWidget {
   @override
@@ -33,10 +34,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (_songNowPlaying == null)
           _e = _songAiring.e;
         else {
-          AudioService.customAction('get_radio_mode', Map()).then((radioMode) {
+          audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true)
               _songAiring.songNowPlaying!.then((song) async {
-                await AudioService.customAction('set_song', song.toJson());
+                await audioHandler.customAction('set_song', song.toJson());
               });
           });
         }

@@ -46,18 +46,16 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> play() async {
-    String url = await _getStreamUrl();
-    if (_radioMode) {
-      Map<String, String> headers = {'Host': host, 'Referer': _song!.link};
-      if (_sessionId != null) headers['Cookie'] = _sessionId!;
-      _player.setAudioSource(AudioSource.uri(Uri.parse(url), headers: headers));
-    } /*else if (url != _latestId) {
-      Map<String, String> headers = {'Host': host, 'Referer': _song.link};
-      if (_sessionId != null) headers['Cookie'] = _sessionId;
-      await _audioPlayer.setUrl(url, headers: headers);
-    }*/
+    String url = _radioMode ?  await _getStreamUrl() : _song!.streamLink;
 
-    //_latestId = url;
+    Map<String, String> headers = {'Host': host, 'Referer': _song!.link};
+
+    if (_sessionId != null) {
+      headers['Cookie'] = _sessionId!;
+    }
+
+    _player.setAudioSource(AudioSource.uri(Uri.parse(url), headers: headers));
+
     return _player.play();
   }
 
@@ -139,6 +137,5 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     );
 
     mediaItem.add(item);
-    _player.setAudioSource(AudioSource.uri(Uri.parse(item.id)));
   }
 }

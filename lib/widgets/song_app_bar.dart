@@ -317,25 +317,9 @@ class SongPlayerWidget extends StatefulWidget {
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   _SongPlayerWidgetState();
 
-  /*play() async {
-    if (AudioService.running) await AudioService.stop();
-
-    await AudioService.start(
-      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-      androidNotificationChannelName: 'Bide&Musique',
-      androidNotificationIcon: 'mipmap/ic_launcher',
-    );
-
-    await AudioService.customAction('set_radio_mode', false);
-    await AudioService.customAction(
-        'set_session_id', Session.headers['cookie']);
-    await AudioService.customAction('set_song', widget._song!.toJson());
-    await AudioService.play();
-  }*/
-
   Future<void> playSong() async {
     await audioHandler.customAction('set_session_id', <String, dynamic>{'session_id': Session.headers['cookie']});
-    await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': true});
+    await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
     await audioHandler.customAction('set_song', widget._song!.toJson());
     audioHandler.play();
   }
