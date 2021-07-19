@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../models/song.dart';
+import 'radio_stream_button.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -20,7 +21,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    return Text('WIP PLAYER WIDGET UPGRADE'); /*StreamBuilder(
+    return RadioStreamButton(widget._songNowPlaying); /*StreamBuilder(
         stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
@@ -139,21 +140,3 @@ bitrate ${icyMetadata.headers.bitrate}
         });
   }
 }
-
-IconButton playButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.play_arrow),
-      iconSize: iconSize,
-      onPressed: AudioService.play,
-    );
-
-IconButton pauseButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.pause),
-      iconSize: iconSize,
-      onPressed: AudioService.pause,
-    );
-
-IconButton stopButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.stop),
-      iconSize: iconSize,
-      onPressed: AudioService.stop,
-    );
