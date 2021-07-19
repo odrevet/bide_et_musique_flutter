@@ -9,19 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import '../models/song.dart';
-
-import '../services/artist.dart';
 import '../services/account.dart';
+import '../services/artist.dart';
 import '../services/song.dart';
-
+import '../session.dart';
+import '../utils.dart';
 import 'account.dart';
 import 'artist.dart';
 import 'cover_viewer.dart';
-import 'search.dart';
-import '../session.dart';
-import 'song_app_bar.dart';
-import '../utils.dart';
 import 'htmlWithStyle.dart';
+import 'search.dart';
+import 'song_app_bar.dart';
 
 String createTag(SongLink songLink) {
   return songLink.index == null

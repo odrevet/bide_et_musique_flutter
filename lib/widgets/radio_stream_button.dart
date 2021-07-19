@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
-import 'song_airing_notifier.dart';
 
 class RadioStreamButton extends StatefulWidget {
   final Future<SongNowPlaying> _songNowPlaying;
