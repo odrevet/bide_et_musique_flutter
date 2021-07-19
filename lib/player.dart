@@ -28,7 +28,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
   }
 
-
   Future<String> _getStreamUrl() async {
     String url;
     if (_radioMode == true) {
@@ -37,7 +36,8 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       int relay = 2; //prefs.getInt('relay') ?? 1;
       int port = 9300; //radioHiQuality ? 9100 : 9200;
       url = 'https://relay$relay.$site:$port';
-      url = 'https://relay2.bide-et-musique.com:9300/bm.mp3?type=http&nocache=20';
+      url =
+          'https://relay2.bide-et-musique.com:9300/bm.mp3?type=http&nocache=20';
     } else {
       url = _song!.streamLink;
     }
@@ -46,7 +46,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> play() async {
-    String url = _radioMode ?  await _getStreamUrl() : _song!.streamLink;
+    String url = _radioMode ? await _getStreamUrl() : _song!.streamLink;
 
     Map<String, String> headers = {'Host': host, 'Referer': _song!.link};
 
@@ -120,9 +120,13 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       case 'set_radio_mode':
         _radioMode = extras!['radio_mode'];
         break;
+      case 'get_radio_mode':
+        return _radioMode;
       case 'set_session_id':
-        _sessionId = extras!['session_id'];;
+        _sessionId = extras!['session_id'];
         break;
+      default:
+        return super.customAction(name, extras);
     }
   }
 

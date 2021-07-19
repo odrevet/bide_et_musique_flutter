@@ -35,10 +35,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           _e = _songAiring.e;
         else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
-            if (radioMode == true)
+            if (radioMode == true) {
               _songAiring.songNowPlaying!.then((song) async {
                 await audioHandler.customAction('set_song', song.toJson());
               });
+            }
           });
         }
       });
