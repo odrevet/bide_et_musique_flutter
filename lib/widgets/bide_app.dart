@@ -186,8 +186,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                 buttonColor: Colors.orangeAccent,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)))),
-        home: AudioServiceWidget(
-          child: home,
-        ));
+        home: home);
   }
 }
