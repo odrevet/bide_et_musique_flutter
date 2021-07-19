@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../player.dart';
 import '../models/song.dart';
 import 'radio_stream_button.dart';
 
@@ -19,9 +20,33 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
+  IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
+        icon: Icon(iconData),
+        iconSize: 32.0,
+        onPressed: onPressed,
+      );
+
   @override
   Widget build(BuildContext context) {
-    return RadioStreamButton(widget._songNowPlaying); /*StreamBuilder(
+    return StreamBuilder<bool>(
+      stream:
+          audioHandler.playbackState.map((state) => state.playing).distinct(),
+      builder: (context, snapshot) {
+        final playing = snapshot.data ?? false;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (playing)
+              _button(Icons.stop, audioHandler.stop)
+            else
+              RadioStreamButton(widget._songNowPlaying),
+          ],
+        );
+      },
+    );
+
+    return RadioStreamButton(widget._songNowPlaying);
+    /*StreamBuilder(
         stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
             AudioService.playbackStateStream,
