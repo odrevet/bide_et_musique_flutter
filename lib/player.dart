@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'utils.dart' show site;
 import 'models/song.dart';
 
-// You might want to provide this using dependency injection rather than a
-// global variable.
 late AudioHandler audioHandler;
 
 class MediaState {
@@ -21,22 +20,43 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();
 
   Song? _song;
+  bool _radioMode = false;
 
   /// Initialise our audio handler.
   AudioPlayerHandler() {
-    // So that our clients (the Flutter UI and the system notification) know
-    // what state to display, here we set up our audio handler to broadcast all
-    // playback state changes as they happen via playbackState...
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
   }
 
-  // In this simple example, we handle only 4 actions: play, pause, seek and
-  // stop. Any button press from the Flutter UI, notification, lock screen or
-  // headset will be routed through to these 4 methods so that you can handle
-  // your audio playback logic in one place.
+
+  Future<String> _getStreamUrl() async {
+    String url;
+    if (_radioMode == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
+      int relay = 2; //prefs.getInt('relay') ?? 1;
+      int port = 9300; //radioHiQuality ? 9100 : 9200;
+      url = 'https://relay$relay.$site:$port';
+      url = 'https://relay2.bide-et-musique.com:9300/bm.mp3?type=http&nocache=20';
+    } else {
+      url = _song!.streamLink;
+    }
+    return url;
+  }
 
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async {
+    String url = await _getStreamUrl();
+    if (_radioMode) {
+      _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+    } /*else if (url != _latestId) {
+      Map<String, String> headers = {'Host': host, 'Referer': _song.link};
+      if (_sessionId != null) headers['Cookie'] = _sessionId;
+      await _audioPlayer.setUrl(url, headers: headers);
+    }*/
+
+    //_latestId = url;
+    return _player.play();
+  }
 
   @override
   Future<void> pause() => _player.pause();
@@ -95,6 +115,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
                 ? null
                 : Duration(seconds: songMap['duration']));
         this.setNotification();
+        break;
+      case 'set_radio_mode':
+        _radioMode = extras!['radio_mode'];
         break;
     }
   }
