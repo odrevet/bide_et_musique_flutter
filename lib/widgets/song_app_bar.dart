@@ -301,7 +301,43 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
   }
 }
 
-class SongPlayerControls extends StatelessWidget {
+
+////////////////////////////////
+//// Player
+
+class SongPlayerWidget extends StatefulWidget {
+  final Song? _song;
+
+  SongPlayerWidget(this._song, {Key? key}) : super(key: key);
+
+  @override
+  _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
+}
+
+class _SongPlayerWidgetState extends State<SongPlayerWidget> {
+  _SongPlayerWidgetState();
+
+  /*play() async {
+    if (AudioService.running) await AudioService.stop();
+
+    await AudioService.start(
+      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
+      androidNotificationChannelName: 'Bide&Musique',
+      androidNotificationIcon: 'mipmap/ic_launcher',
+    );
+
+    await AudioService.customAction('set_radio_mode', false);
+    await AudioService.customAction(
+        'set_session_id', Session.headers['cookie']);
+    await AudioService.customAction('set_song', widget._song!.toJson());
+    await AudioService.play();
+  }*/
+
+  Future<void> playSong() async {
+    await audioHandler.customAction('set_song', widget._song!.toJson());
+    audioHandler.play();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -320,7 +356,7 @@ class SongPlayerControls extends StatelessWidget {
                 if (playing)
                   _button(Icons.pause, audioHandler.pause)
                 else
-                  _button(Icons.play_arrow, audioHandler.play),
+                  _button(Icons.play_arrow, this.playSong),
                 _button(Icons.stop, audioHandler.stop),
               ],
             );
@@ -357,95 +393,4 @@ class SongPlayerControls extends StatelessWidget {
     iconSize: 64.0,
     onPressed: onPressed,
   );
-}
-
-
-////////////////////////////////
-//// Player
-
-class SongPlayerWidget extends StatefulWidget {
-  final Song? _song;
-
-  SongPlayerWidget(this._song, {Key? key}) : super(key: key);
-
-  @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
-}
-
-class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  _SongPlayerWidgetState();
-
-  @override
-  Widget build(BuildContext context) {
-    return SongPlayerControls();
-    /*StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
-            AudioService.currentMediaItemStream,
-            AudioService.playbackStateStream,
-            (mediaItem, playbackState) =>
-                ScreenState(mediaItem, playbackState)),
-        builder: (context, snapshot) {
-          final dynamic screenState = snapshot.data;
-          final mediaItem = screenState?.mediaItem;
-          final state = screenState?.playbackState;
-          final processingState =
-              state?.processingState ?? AudioProcessingState.none;
-          final playing = state?.playing ?? false;
-          final radioMode = mediaItem?.album == radioIcon;
-
-          // Display the play song button when no song is being played or player is in player mode
-          if (processingState == AudioProcessingState.none ||
-              radioMode == true ||
-              mediaItem == null ||
-              widget._song?.streamLink != mediaItem.id) {
-            return ElevatedButton.icon(
-                icon: Icon(Icons.play_arrow),
-                label: Text('Écouter'),
-                onPressed: () => play());
-          } else {
-            Widget playPauseControl;
-            if (playing == null ||
-                processingState == AudioProcessingState.buffering ||
-                processingState == AudioProcessingState.connecting) {
-              playPauseControl = Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                      height: 25.0,
-                      width: 25.0,
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black))));
-            } else if (playing == true) {
-              playPauseControl = pauseSongButton;
-            } else {
-              playPauseControl = resumeSongButton;
-            }
-
-            return Column(children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[playPauseControl, stopSongButton],
-              ),
-              SongPositionSlider(mediaItem, state),
-              Divider()
-            ]);
-          }
-        });*/
-  }
-
-  play() async {
-    /*if (AudioService.running) await AudioService.stop();
-
-    await AudioService.start(
-      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-      androidNotificationChannelName: 'Bide&Musique',
-      androidNotificationIcon: 'mipmap/ic_launcher',
-    );
-
-    await AudioService.customAction('set_radio_mode', false);
-    await AudioService.customAction(
-        'set_session_id', Session.headers['cookie']);
-    await AudioService.customAction('set_song', widget._song!.toJson());
-    await AudioService.play();*/
-  }
 }

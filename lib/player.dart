@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 
+import 'models/song.dart';
+
 // You might want to provide this using dependency injection rather than a
 // global variable.
 late AudioHandler audioHandler;
@@ -16,17 +18,9 @@ class MediaState {
 
 /// An [AudioHandler] for playing a single item.
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
-  static final _item = MediaItem(
-    id: 'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3',
-    album: "Science Friday",
-    title: "A Salute To Head-Scratching Science",
-    artist: "Science Friday and WNYC Studios",
-    duration: const Duration(milliseconds: 5739820),
-    artUri: Uri.parse(
-        'https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg'),
-  );
-
   final _player = AudioPlayer();
+
+  Song? _song;
 
   /// Initialise our audio handler.
   AudioPlayerHandler() {
@@ -34,11 +28,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     // what state to display, here we set up our audio handler to broadcast all
     // playback state changes as they happen via playbackState...
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    // ... and also the current media item via mediaItem.
-    mediaItem.add(_item);
-
-    // Load the player.
-    _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
   }
 
   // In this simple example, we handle only 4 actions: play, pause, seek and
@@ -90,5 +79,37 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       speed: _player.speed,
       queueIndex: event.currentIndex,
     );
+  }
+
+  @override
+  Future<dynamic> customAction(String name,
+      [Map<String, dynamic>? extras]) async {
+    switch (name) {
+      case 'set_song':
+        Map songMap = extras!;
+        this._song = Song(
+            id: songMap['id'],
+            name: songMap['name'],
+            artist: songMap['artist'],
+            duration: songMap['duration'] == null
+                ? null
+                : Duration(seconds: songMap['duration']));
+        this.setNotification();
+        break;
+    }
+  }
+
+  void setNotification() {
+    var item = MediaItem(
+      id: _song!.streamLink,
+      album: "Bide et Musique",
+      title: _song!.name,
+      artist: _song!.artist,
+      duration: _song!.duration,
+      artUri: Uri.parse(_song!.coverLink),
+    );
+
+    mediaItem.add(item);
+    _player.setAudioSource(AudioSource.uri(Uri.parse(item.id)));
   }
 }
