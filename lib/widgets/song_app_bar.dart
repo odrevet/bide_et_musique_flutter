@@ -301,58 +301,46 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatelessWidget {
+class SongPlayerControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Show media item title
-          StreamBuilder<MediaItem?>(
-            stream: audioHandler.mediaItem,
-            builder: (context, snapshot) {
-              final mediaItem = snapshot.data;
-              return Text(mediaItem?.title ?? '');
-            },
-          ),
-          // Play/pause/stop buttons.
-          StreamBuilder<bool>(
-            stream: audioHandler.playbackState
-                .map((state) => state.playing)
-                .distinct(),
-            builder: (context, snapshot) {
-              final playing = snapshot.data ?? false;
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _button(Icons.fast_rewind, audioHandler.rewind),
-                  if (playing)
-                    _button(Icons.pause, audioHandler.pause)
-                  else
-                    _button(Icons.play_arrow, audioHandler.play),
-                  _button(Icons.stop, audioHandler.stop),
-                  _button(Icons.fast_forward, audioHandler.fastForward),
-                ],
-              );
-            },
-          ),
-          // A seek bar.
-          StreamBuilder<MediaState>(
-            stream: _mediaStateStream,
-            builder: (context, snapshot) {
-              final mediaState = snapshot.data;
-              return SeekBar(
-                duration: mediaState?.mediaItem?.duration ?? Duration.zero,
-                position: mediaState?.position ?? Duration.zero,
-                onChangeEnd: (newPosition) {
-                  audioHandler.seek(newPosition);
-                },
-              );
-            },
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Play/pause/stop buttons.
+        StreamBuilder<bool>(
+          stream: audioHandler.playbackState
+              .map((state) => state.playing)
+              .distinct(),
+          builder: (context, snapshot) {
+            final playing = snapshot.data ?? false;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (playing)
+                  _button(Icons.pause, audioHandler.pause)
+                else
+                  _button(Icons.play_arrow, audioHandler.play),
+                _button(Icons.stop, audioHandler.stop),
+              ],
+            );
+          },
+        ),
+        // A seek bar.
+        StreamBuilder<MediaState>(
+          stream: _mediaStateStream,
+          builder: (context, snapshot) {
+            final mediaState = snapshot.data;
+            return SeekBar(
+              duration: mediaState?.mediaItem?.duration ?? Duration.zero,
+              position: mediaState?.position ?? Duration.zero,
+              onChangeEnd: (newPosition) {
+                audioHandler.seek(newPosition);
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -389,7 +377,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen();
+    return SongPlayerControls();
     /*StreamBuilder(
         stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
             AudioService.currentMediaItemStream,
@@ -444,21 +432,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
           }
         });*/
   }
-
-  Widget stopSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.stop),
-      label: Text('Stop'),
-      onPressed: () => AudioService.stop());
-
-  Widget pauseSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.pause),
-      label: Text('Pause'),
-      onPressed: () => AudioService.pause());
-
-  Widget resumeSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.play_arrow),
-      label: Text('Reprendre'),
-      onPressed: () => AudioService.play());
 
   play() async {
     /*if (AudioService.running) await AudioService.stop();
