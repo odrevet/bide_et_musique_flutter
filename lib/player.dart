@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils.dart' show site;
+import 'utils.dart' show site, host;
 import 'models/song.dart';
 
 late AudioHandler audioHandler;
@@ -21,6 +21,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
 
   Song? _song;
   bool _radioMode = false;
+  String? _sessionId;
 
   /// Initialise our audio handler.
   AudioPlayerHandler() {
@@ -47,7 +48,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   Future<void> play() async {
     String url = await _getStreamUrl();
     if (_radioMode) {
-      _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+      Map<String, String> headers = {'Host': host, 'Referer': _song!.link};
+      if (_sessionId != null) headers['Cookie'] = _sessionId!;
+      _player.setAudioSource(AudioSource.uri(Uri.parse(url), headers: headers));
     } /*else if (url != _latestId) {
       Map<String, String> headers = {'Host': host, 'Referer': _song.link};
       if (_sessionId != null) headers['Cookie'] = _sessionId;
@@ -118,6 +121,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
         break;
       case 'set_radio_mode':
         _radioMode = extras!['radio_mode'];
+        break;
+      case 'set_session_id':
+        _sessionId = extras!['session_id'];;
         break;
     }
   }

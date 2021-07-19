@@ -334,6 +334,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   }*/
 
   Future<void> playSong() async {
+    await audioHandler.customAction('set_session_id', <String, dynamic>{'session_id': Session.headers['cookie']});
+    await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': true});
     await audioHandler.customAction('set_song', widget._song!.toJson());
     audioHandler.play();
   }
