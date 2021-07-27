@@ -52,7 +52,8 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
     //bm table may list favourite songs or messages.
     //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage = document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasMessage =
+        document.getElementsByClassName('titre-message').isNotEmpty;
     bool hasFavorite = (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 

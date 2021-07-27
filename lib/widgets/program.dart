@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../models/program.dart';
 import '../utils.dart';
+import 'html_with_style.dart';
 import 'pochettoscope.dart';
 import 'song.dart';
-import 'htmlWithStyle.dart';
 
 class ProgramPage extends StatefulWidget {
   final Future<Program>? program;

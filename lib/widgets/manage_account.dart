@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:ui';
 
@@ -13,7 +11,7 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'bidebox.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
 import 'song.dart';
@@ -139,7 +137,8 @@ class ManageAccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            openAccountImageViewerDialog(context, image, account.name);
+                            openAccountImageViewerDialog(
+                                context, image, account.name);
                           },
                           child: Image.network(url))),
                   Expanded(

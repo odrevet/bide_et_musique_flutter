@@ -34,7 +34,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
                 TextSpan(
                     text: '\n${snapshot.data!.nbListeners} auditeurs',
                     style:
-                    TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+                        TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
               ],
             ),
           );
@@ -44,11 +44,11 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           label: label,
           onPressed: () async {
             SongAiringNotifier().songNowPlaying!.then((song) async {
-              await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': true});
+              await audioHandler.customAction(
+                  'set_radio_mode', <String, dynamic>{'radio_mode': true});
               await audioHandler.customAction('set_song', song.toJson());
               await audioHandler.play();
             });
-
 
             /*bool success = false;
             if (!AudioService.running) {

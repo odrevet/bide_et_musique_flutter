@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:ui';
 
@@ -12,7 +10,7 @@ import '../session.dart';
 import '../utils.dart';
 import '../widgets/song.dart';
 import 'bidebox.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'pochettoscope.dart';
 
 openAccountImageViewerDialog(context, image, title) {
@@ -105,7 +103,8 @@ class _AccountPageState extends State<AccountPage> {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                openAccountImageViewerDialog(context, image, account.name);
+                                openAccountImageViewerDialog(
+                                    context, image, account.name);
                               },
                               child: Image.network(url))),
                       Expanded(

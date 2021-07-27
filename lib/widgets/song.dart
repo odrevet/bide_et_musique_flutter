@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:ui';
 
@@ -17,7 +15,7 @@ import '../utils.dart';
 import 'account.dart';
 import 'artist.dart';
 import 'cover_viewer.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'search.dart';
 import 'song_app_bar.dart';
 
@@ -509,7 +507,8 @@ class SongInformations extends StatelessWidget {
                                 title: Text(
                                     'Recherche de l\'année "${song!.year.toString()}"'),
                               ),
-                              body: SearchResults(song!.year.toString(), '7')))),
+                              body:
+                                  SearchResults(song!.year.toString(), '7')))),
                 }));
     }
 

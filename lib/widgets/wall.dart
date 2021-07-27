@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
@@ -13,7 +11,7 @@ import '../services/wall.dart';
 import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'song.dart';
 
 class WallWidget extends StatefulWidget {

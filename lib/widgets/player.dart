@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'seek_bar.dart';
 import '../models/song.dart';
 import '../player.dart';
 import 'radio_stream_button.dart';
+import 'seek_bar.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -36,7 +36,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
       builder: (context, snapshot) {
         final playing = snapshot.data ?? false;
 
-        if(!playing){
+        if (!playing) {
           return RadioStreamButton(widget._songNowPlaying);
         }
 
@@ -93,7 +93,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
                     ),
                   ],
                 );
-
               }
             }
 
@@ -103,14 +102,14 @@ class _PlayerWidgetState extends State<PlayerWidget>
       },
     );
   }
+
   /// A stream reporting the combined state of the current media item and its
   /// current position.
   Stream<MediaState> get _mediaStateStream =>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
           audioHandler.mediaItem,
           AudioService.position,
-              (mediaItem, position) => MediaState(mediaItem, position));
-
+          (mediaItem, position) => MediaState(mediaItem, position));
 
   _streamInfoDialog(BuildContext context) {
     return showDialog<void>(

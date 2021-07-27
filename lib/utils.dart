@@ -51,7 +51,8 @@ Widget? handleLink(String url, BuildContext context) {
 
     switch (type) {
       case 'song':
-        return SongPageWidget(songLink: SongLink(id: id, name: ''), song: fetchSong(id));
+        return SongPageWidget(
+            songLink: SongLink(id: id, name: ''), song: fetchSong(id));
       case 'account':
         return AccountPage(account: fetchAccount(id));
       case 'artist':

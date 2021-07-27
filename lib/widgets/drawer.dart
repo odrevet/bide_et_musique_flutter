@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -143,7 +140,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: SongLink(id: id!, name: ''), song: fetchSong(id)))));
+                        songLink: SongLink(id: id!, name: ''),
+                        song: fetchSong(id)))));
           },
         ),
         ListTile(

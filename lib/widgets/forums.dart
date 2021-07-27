@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/forum.dart';
 import '../services/forum.dart';
 import '../utils.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 
 class ForumWidget extends StatefulWidget {
   @override
@@ -35,7 +33,8 @@ class _ForumPageState extends State<ForumWidget> {
                             forum.name!,
                           ),
                           subtitle: Text(forum.subtitle!),
-                          trailing: forum.hasNew! ? Icon(Icons.fiber_new) : null,
+                          trailing:
+                              forum.hasNew! ? Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -87,8 +86,9 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                           ),
                           subtitle: Text(
                               '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name} ${forumThread.lastDate}'),
-                          trailing:
-                              forumThread.hasNew! ? Icon(Icons.fiber_new) : null,
+                          trailing: forumThread.hasNew!
+                              ? Icon(Icons.fiber_new)
+                              : null,
                           onTap: () {
                             Navigator.push(
                                 context,

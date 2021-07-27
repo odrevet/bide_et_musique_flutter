@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -69,7 +67,8 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
           SongNowPlaying songNowPlaying = snapshot.data!;
 
           String? subtitle = songNowPlaying.artist!;
-          if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year!}';
+          if (songNowPlaying.year != 0)
+            subtitle += ' • ${songNowPlaying.year!}';
           subtitle += ' • ${songNowPlaying.program.name!}';
 
           Widget title;
@@ -95,11 +94,11 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
             );
           } else {
             title = Text(
-                '${songNowPlaying.name} • $subtitle',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+              '${songNowPlaying.name} • $subtitle',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
             );
           }
 

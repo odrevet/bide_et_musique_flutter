@@ -16,7 +16,8 @@ abstract class Session {
   }
 
   static Future<http.Response> post(String url, {body}) async {
-    http.Response response = await http.post(Uri.parse(url), body: body, headers: headers);
+    http.Response response =
+        await http.post(Uri.parse(url), body: body, headers: headers);
     _updateCookie(response);
     return response;
   }

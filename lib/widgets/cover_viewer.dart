@@ -1,5 +1,3 @@
-
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -30,8 +28,11 @@ class _CoverViewerState extends State<CoverViewer> {
         Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: () => setState(() => _threeDimensionMode = !_threeDimensionMode),
-              child: Icon(_threeDimensionMode ? Icons.threed_rotation : Icons.zoom_out_map ),
+              onTap: () =>
+                  setState(() => _threeDimensionMode = !_threeDimensionMode),
+              child: Icon(_threeDimensionMode
+                  ? Icons.threed_rotation
+                  : Icons.zoom_out_map),
             )),
       ]),
       body: Center(

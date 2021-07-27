@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -83,8 +81,9 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
     programLinks = programLinks
-        .where((programLink) =>
-            programLink.name!.toLowerCase().contains(_searchInput.toLowerCase()))
+        .where((programLink) => programLink.name!
+            .toLowerCase()
+            .contains(_searchInput.toLowerCase()))
         .toList();
 
     return ListView.builder(

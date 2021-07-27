@@ -45,7 +45,8 @@ Future<Account> fetchAccount(int? accountId) async {
 
     //bm tables list favourite songs or messages, either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage = document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasMessage =
+        document.getElementsByClassName('titre-message').isNotEmpty;
     bool hasFavorite = (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 
@@ -122,7 +123,8 @@ Future<Account> fetchAccountSession() async {
     //bm table may list favourite songs or messages.
     //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage = document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasMessage =
+        document.getElementsByClassName('titre-message').isNotEmpty;
     bool hasFavorite = (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 

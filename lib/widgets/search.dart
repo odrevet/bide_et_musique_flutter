@@ -64,11 +64,10 @@ class _SearchResultsState extends State<SearchResults> {
         _pageCurrent++;
       });
       fetchSearchSong(search, type, _pageCurrent)
-          .then((SearchResult searchResult) =>
-          setState(() {
-            _loadingMore = false;
-            _songLinks = [..._songLinks!, ...searchResult.songLinks];
-          }));
+          .then((SearchResult searchResult) => setState(() {
+                _loadingMore = false;
+                _songLinks = [..._songLinks!, ...searchResult.songLinks];
+              }));
     }
   }
 
@@ -152,14 +151,13 @@ class _SearchState extends State<Search> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  Scaffold(
+              builder: (context) => Scaffold(
                     appBar: AppBar(
                       title: Text('Recherche de chansons'),
                     ),
                     body: Center(
                         child:
-                        SearchResults(_controller.text, this._currentItem)),
+                            SearchResults(_controller.text, this._currentItem)),
                   )));
     }
   }
@@ -180,9 +178,7 @@ class _SearchState extends State<Search> {
                 Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme
-                              .of(context)
-                              .accentColor, width: 2.0),
+                          color: Theme.of(context).accentColor, width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),
@@ -198,7 +194,7 @@ class _SearchState extends State<Search> {
                     decoration: InputDecoration(
                       hintText: 'Entrez ici votre recherche',
                       contentPadding:
-                      EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32.0)),
                     ),
