@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
+import 'seek_bar.dart';
 import '../models/song.dart';
 import '../player.dart';
 import 'radio_stream_button.dart';
@@ -33,107 +35,82 @@ class _PlayerWidgetState extends State<PlayerWidget>
           audioHandler.playbackState.map((state) => state.playing).distinct(),
       builder: (context, snapshot) {
         final playing = snapshot.data ?? false;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (playing)
-              _button(Icons.stop, audioHandler.stop)
-            else
-              RadioStreamButton(widget._songNowPlaying),
-          ],
+
+        if(!playing){
+          return RadioStreamButton(widget._songNowPlaying);
+        }
+
+        return FutureBuilder<dynamic>(
+          future: audioHandler.customAction('get_radio_mode'),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              bool radioMode = snapshot.data;
+              if (radioMode) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    playing
+                        ? _button(Icons.stop, audioHandler.stop)
+                        : RadioStreamButton(widget._songNowPlaying),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    // Play/pause/stop buttons.
+                    StreamBuilder<bool>(
+                      stream: audioHandler.playbackState
+                          .map((state) => state.playing)
+                          .distinct(),
+                      builder: (context, snapshot) {
+                        final playing = snapshot.data ?? false;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (playing)
+                              _button(Icons.pause, audioHandler.pause),
+                            _button(Icons.stop, audioHandler.stop),
+                          ],
+                        );
+                      },
+                    ),
+                    // A seek bar.
+                    StreamBuilder<MediaState>(
+                      stream: _mediaStateStream,
+                      builder: (context, snapshot) {
+                        final mediaState = snapshot.data;
+                        return Expanded(
+                          child: SeekBar(
+                            duration: mediaState?.mediaItem?.duration ??
+                                Duration.zero,
+                            position: mediaState?.position ?? Duration.zero,
+                            onChangeEnd: (newPosition) {
+                              audioHandler.seek(newPosition);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+
+              }
+            }
+
+            return CircularProgressIndicator();
+          },
         );
       },
     );
-
-    return RadioStreamButton(widget._songNowPlaying);
-    /*StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem?, PlaybackState, ScreenState>(
-            AudioService.currentMediaItemStream,
-            AudioService.playbackStateStream,
-            (mediaItem, playbackState) =>
-                ScreenState(mediaItem, playbackState)),
-        builder: (context, snapshot) {
-          final dynamic screenState = snapshot.data;
-          final mediaItem = screenState?.mediaItem;
-          final state = screenState?.playbackState;
-          final processingState =
-              state?.processingState ?? AudioProcessingState.none;
-          final bool playing = state?.playing ?? false;
-          final bool? radioMode =
-              mediaItem != null ? mediaItem.album == radioIcon : null;
-
-          List<Widget> controls;
-
-          if (processingState == AudioProcessingState.none) {
-            controls = [RadioStreamButton(widget._songNowPlaying)];
-          } else {
-            Widget playPauseControl;
-            if (playing == null ||
-                processingState == AudioProcessingState.buffering ||
-                processingState == AudioProcessingState.connecting) {
-              playPauseControl = Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                      height: 25.0,
-                      width: 25.0,
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black))));
-            } else if (playing == true) {
-              playPauseControl = pauseButton();
-            } else {
-              playPauseControl = playButton();
-            }
-
-            controls = <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    radioMode == false
-                        ? InkWell(
-                            onTap: () => Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              int id = getIdFromUrl(mediaItem.id)!;
-                              return SongPageWidget(
-                                  songLink: SongLink(id: id, name: ''),
-                                  song: fetchSong(id));
-                            })),
-                            child: Icon(
-                              Icons.music_note,
-                              size: 18.0,
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () => _streamInfoDialog(context),
-                            child: Icon(
-                              Icons.radio,
-                              size: 18.0,
-                            ),
-                          ),
-                    playPauseControl,
-                    stopButton()
-                  ]),
-              /*if (radioMode != null && radioMode != true)
-                Container(
-                    height: 20, child: SongPositionSlider(mediaItem, state))*/
-            ];
-          }
-
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              widget.orientation == Orientation.portrait
-                  ? Row(
-                      children: controls,
-                    )
-                  : Column(
-                      children: controls,
-                    )
-            ],
-          );
-        });*/
   }
+  /// A stream reporting the combined state of the current media item and its
+  /// current position.
+  Stream<MediaState> get _mediaStateStream =>
+      Rx.combineLatest2<MediaItem?, Duration, MediaState>(
+          audioHandler.mediaItem,
+          AudioService.position,
+              (mediaItem, position) => MediaState(mediaItem, position));
+
 
   _streamInfoDialog(BuildContext context) {
     return showDialog<void>(

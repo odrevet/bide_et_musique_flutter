@@ -37,6 +37,8 @@ class _SeekBarState extends State<SeekBar> {
         Slider(
           min: 0.0,
           max: widget.duration.inMilliseconds.toDouble(),
+          activeColor: Colors.black,
+          inactiveColor: Colors.grey,
           value: value,
           onChanged: (value) {
             if (!_dragging) {
