@@ -219,7 +219,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   var tdSong = tr.children[3];
   String title = stripTags(tdSong.innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
-  late dom.Element a;
+  dom.Element? a;
   bool isNew = false;
   if (title.contains(newFlag)) {
     isNew = true;
@@ -230,10 +230,8 @@ SongLink songLinkFromTr(dom.Element tr) {
     if (tdSong.children.isNotEmpty) a = tdSong.children[0];
   }
 
-  int? id = getIdFromUrl(a.attributes['href']!);
-
   return SongLink(
-      id: id!,
+      id: a != null ? getIdFromUrl(a.attributes['href']!)! : 0,
       artist: stripTags(tdArtist.innerHtml).trim(),
       name: title.trim(),
       info: stripTags(tdInfo.innerHtml).trim(),
