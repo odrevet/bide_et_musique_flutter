@@ -340,6 +340,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
               return _button(Icons.play_arrow, this.playSong);
             }
 
+            // check if the displayed song is the song being played
             return getIdFromUrl(mediaItem.id) == widget._song!.id
                 ? Column(
                     children: [
@@ -379,7 +380,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                       ),
                     ],
                   )
-                : _button(Icons.play_arrow, audioHandler.play);
+                : _button(Icons.play_arrow, this.playSong);
           },
         ),
       ],
