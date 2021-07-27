@@ -279,8 +279,8 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return ElevatedButton.icon(
         icon: Icon(Icons.code),
         label: Text('Copier le code HTML du lien'),
-        onPressed: () => Clipboard.setData(
-            ClipboardData(text: '<a href="${_song!.link}">${_song!.name}</a>')));
+        onPressed: () => Clipboard.setData(ClipboardData(
+            text: '<a href="${_song!.link}">${_song!.name}</a>')));
   }
 }
 
@@ -301,7 +301,6 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
   }
 }
 
-
 ////////////////////////////////
 //// Player
 
@@ -318,8 +317,10 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   _SongPlayerWidgetState();
 
   Future<void> playSong() async {
-    await audioHandler.customAction('set_session_id', <String, dynamic>{'session_id': Session.headers['cookie']});
-    await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
+    await audioHandler.customAction('set_session_id',
+        <String, dynamic>{'session_id': Session.headers['cookie']});
+    await audioHandler
+        .customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
     await audioHandler.customAction('set_song', widget._song!.toJson());
     audioHandler.play();
   }
@@ -329,37 +330,56 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Play/pause/stop buttons.
-        StreamBuilder<bool>(
-          stream: audioHandler.playbackState
-              .map((state) => state.playing)
-              .distinct(),
+        StreamBuilder<MediaItem?>(
+          stream: audioHandler.mediaItem,
           builder: (context, snapshot) {
-            final playing = snapshot.data ?? false;
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (playing)
-                  _button(Icons.pause, audioHandler.pause)
-                else
-                  _button(Icons.play_arrow, this.playSong),
-                _button(Icons.stop, audioHandler.stop),
-              ],
-            );
-          },
-        ),
-        // A seek bar.
-        StreamBuilder<MediaState>(
-          stream: _mediaStateStream,
-          builder: (context, snapshot) {
-            final mediaState = snapshot.data;
-            return SeekBar(
-              duration: mediaState?.mediaItem?.duration ?? Duration.zero,
-              position: mediaState?.position ?? Duration.zero,
-              onChangeEnd: (newPosition) {
-                audioHandler.seek(newPosition);
-              },
-            );
+            final mediaItem = snapshot.data;
+
+            // No song is being played. Display play arrow
+            if (mediaItem == null) {
+              return _button(Icons.play_arrow, this.playSong);
+            }
+
+            return getIdFromUrl(mediaItem.id) == widget._song!.id
+                ? Column(
+                    children: [
+                      // Play/pause/stop buttons.
+                      StreamBuilder<bool>(
+                        stream: audioHandler.playbackState
+                            .map((state) => state.playing)
+                            .distinct(),
+                        builder: (context, snapshot) {
+                          final playing = snapshot.data ?? false;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (playing)
+                                _button(Icons.pause, audioHandler.pause)
+                              else
+                                _button(Icons.play_arrow, this.playSong),
+                              _button(Icons.stop, audioHandler.stop),
+                            ],
+                          );
+                        },
+                      ),
+                      // A seek bar.
+                      StreamBuilder<MediaState>(
+                        stream: _mediaStateStream,
+                        builder: (context, snapshot) {
+                          final mediaState = snapshot.data;
+                          return SeekBar(
+                            duration: mediaState?.mediaItem?.duration ??
+                                Duration.zero,
+                            position: mediaState?.position ?? Duration.zero,
+                            onChangeEnd: (newPosition) {
+                              audioHandler.seek(newPosition);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : _button(Icons.play_arrow, audioHandler.play);
           },
         ),
       ],
@@ -372,11 +392,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
           audioHandler.mediaItem,
           AudioService.position,
-              (mediaItem, position) => MediaState(mediaItem, position));
+          (mediaItem, position) => MediaState(mediaItem, position));
 
   IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
-    icon: Icon(iconData),
-    iconSize: 64.0,
-    onPressed: onPressed,
-  );
+        icon: Icon(iconData),
+        iconSize: 64.0,
+        onPressed: onPressed,
+      );
 }
