@@ -7,7 +7,7 @@ import '../player.dart' show audioHandler;
 import '../widgets/song_airing_notifier.dart';
 
 class RadioStreamButton extends StatefulWidget {
-  final Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying>? _songNowPlaying;
 
   RadioStreamButton(this._songNowPlaying);
 

@@ -48,7 +48,7 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
 class SongNowPlayingAppBar extends StatefulWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
-  final Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying>? _songNowPlaying;
   final Orientation _orientation;
 
   SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key? key})

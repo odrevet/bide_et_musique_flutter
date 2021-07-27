@@ -12,7 +12,7 @@ import 'radio_stream_button.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
-  final Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying>? _songNowPlaying;
 
   PlayerWidget(this.orientation, this._songNowPlaying);
 
