@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import '../models/program.dart';
 import '../utils.dart';
 import 'pochettoscope.dart';
 import 'song.dart';
+import 'htmlWithStyle.dart';
 
 class ProgramPage extends StatefulWidget {
   final Future<Program>? program;
@@ -72,11 +71,9 @@ class _ProgramPageState extends State<ProgramPage> {
       airedOn += '\n$airedOnEntry';
     }
 
-    return Text('TODO');
-    //TODO
-    /*return GestureDetector(
+    return GestureDetector(
       onTap: () {
-        return showDialog<void>(
+        showDialog<void>(
           context: context,
           barrierDismissible: true,
           builder: (BuildContext context) {
@@ -98,7 +95,7 @@ class _ProgramPageState extends State<ProgramPage> {
         );
       },
       child: Icon(Icons.info_outline),
-    );*/
+    );
   }
 
   Widget _switchViewButton() {
