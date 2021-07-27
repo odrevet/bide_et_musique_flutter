@@ -4,8 +4,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../player.dart';
 import '../models/song.dart';
+import '../player.dart';
 import 'radio_stream_button.dart';
 
 class PlayerWidget extends StatefulWidget {

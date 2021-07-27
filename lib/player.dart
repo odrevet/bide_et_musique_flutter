@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils.dart' show site, host;
+
 import 'models/song.dart';
+import 'utils.dart' show site, host;
 
 late AudioHandler audioHandler;
 

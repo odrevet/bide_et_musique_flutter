@@ -85,14 +85,12 @@ class CoverWithGesture extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {
-                if (songLink!.id != null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SongPageWidget(
-                              songLink: songLink,
-                              song: fetchSong(songLink!.id))));
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SongPageWidget(
+                            songLink: songLink,
+                            song: fetchSong(songLink!.id))));
               },
               onLongPress: () {
                 Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -181,7 +179,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     var coverLink = songLink.coverLink;
 
     var loadingMessage = '';
-    if (songLink.name != null && songLink.name.isNotEmpty) {
+    if (songLink.name.isNotEmpty) {
       loadingMessage += songLink.name;
     } else {
       loadingMessage = 'Chargement';
@@ -469,13 +467,11 @@ class SongListingWidgetState extends State<SongListingWidget> {
 }
 
 void launchSongPage(SongLink songLink, BuildContext context) {
-  if (songLink.id != null) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SongPageWidget(
-                songLink: songLink, song: fetchSong(songLink.id))));
-  }
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SongPageWidget(
+              songLink: songLink, song: fetchSong(songLink.id))));
 }
 
 class SongInformations extends StatelessWidget {

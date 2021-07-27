@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/song.dart';
+import '../player.dart' show audioHandler;
 import '../services/identification.dart';
 import '../utils.dart' show ErrorDisplay;
 import '../widgets/drawer.dart';
@@ -13,7 +13,6 @@ import '../widgets/now_playing.dart';
 import '../widgets/player.dart';
 import '../widgets/song.dart';
 import '../widgets/song_airing_notifier.dart';
-import '../player.dart' show audioHandler;
 
 class BideApp extends StatefulWidget {
   @override
@@ -75,7 +74,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
+  /*@override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
@@ -88,7 +87,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       default:
         break;
     }
-  }
+  }*/
 
   Widget refreshNowPlayingSongButton() {
     return Center(

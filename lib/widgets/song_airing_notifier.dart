@@ -17,7 +17,7 @@ class SongAiringNotifier extends ChangeNotifier {
   SongAiringNotifier._internal();
 
   Future<SongNowPlaying>? songNowPlaying;
-  dynamic? e;
+  dynamic e;
   Timer? _t;
 
   void periodicFetchSongNowPlaying() {
