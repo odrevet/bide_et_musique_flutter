@@ -40,9 +40,6 @@ class SongLink {
   String get thumbLink {
     return '$baseUri/images/thumb100/${this.id}.jpg';
   }
-
-  // 20 25 30 50 75 100 150 200
-  String getThumbLink(int size) => '$baseUri/images/thumb$size/${this.id}.jpg';
 }
 
 class Song extends SongLink {

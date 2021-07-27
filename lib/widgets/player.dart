@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/song.dart';
 import '../player.dart';
+import 'song.dart';
+import '../services/song.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';
 
@@ -57,6 +60,25 @@ class _PlayerWidgetState extends State<PlayerWidget>
               } else {
                 return Row(
                   children: [
+                    StreamBuilder<MediaItem?>(
+                      stream: audioHandler.mediaItem,
+                      builder: (context, snapshot) {
+                        final mediaItem = snapshot.data;
+                        final songLink = SongLink(id: getIdFromUrl(mediaItem!.id)!, name: mediaItem.title);
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SongPageWidget(
+                                          songLink: songLink,
+                                          song: fetchSong(songLink.id))));
+                            },
+                          child: CachedNetworkImage(
+                              imageUrl: songLink.thumbLink),
+                        );
+                      },
+                    ),
                     // Play/pause/stop buttons.
                     StreamBuilder<bool>(
                       stream: audioHandler.playbackState
