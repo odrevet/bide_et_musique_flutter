@@ -4,7 +4,7 @@ import 'package:package_info/package_info.dart';
 
 import '../models/song.dart';
 import '../services/account.dart';
-import '../services/randomSong.dart';
+import '../services/random_song.dart';
 import '../services/schedule.dart';
 import '../services/song.dart';
 import '../services/thematics.dart';
