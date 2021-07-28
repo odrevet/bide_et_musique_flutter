@@ -67,14 +67,14 @@ Future<List<NowSong>> fetchNowSongs() async {
   }
 }
 
-Future<SongNowPlaying> fetchNowPlaying() async {
+Future<SongNowAiring> fetchNowAiring() async {
   final url = '$baseUri/wapi/song/now';
   try {
     final responseJson = await Session.get(url);
     if (responseJson.statusCode == 200) {
       String decodedString = utf8.decode(responseJson.bodyBytes);
       Map<String, dynamic> decodedJson = json.decode(decodedString);
-      return SongNowPlaying.fromJson(decodedJson);
+      return SongNowAiring.fromJson(decodedJson);
     } else {
       throw ('Response was ${responseJson.statusCode}');
     }

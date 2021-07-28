@@ -7,9 +7,9 @@ import '../player.dart' show audioHandler;
 import '../widgets/song_airing_notifier.dart';
 
 class RadioStreamButton extends StatefulWidget {
-  final Future<SongNowPlaying>? _songNowPlaying;
+  final Future<SongNowAiring>? _songNowAiring;
 
-  RadioStreamButton(this._songNowPlaying);
+  RadioStreamButton(this._songNowAiring);
 
   @override
   _RadioStreamButtonState createState() => _RadioStreamButtonState();
@@ -22,8 +22,8 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           fontSize: 20.0,
         ));
 
-    return FutureBuilder<SongNowPlaying>(
-      future: widget._songNowPlaying,
+    return FutureBuilder<SongNowAiring>(
+      future: widget._songNowAiring,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           label = RichText(
@@ -43,7 +43,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           icon: Icon(Icons.radio, size: 40),
           label: label,
           onPressed: () async {
-            SongAiringNotifier().songNowPlaying!.then((song) async {
+            SongAiringNotifier().songNowAiring!.then((song) async {
               await audioHandler.customAction(
                   'set_radio_mode', <String, dynamic>{'radio_mode': true});
               await audioHandler.customAction('set_song', song.toJson());
@@ -59,7 +59,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               );
             }
             if (success) {
-              SongAiringNotifier().songNowPlaying!.then((song) async {
+              SongAiringNotifier().songNowAiring!.then((song) async {
                 //await AudioService.customAction('set_radio_mode', true);
                 await AudioService.customAction('set_song', song.toJson());
                 await AudioService.play();

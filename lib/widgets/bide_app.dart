@@ -9,7 +9,7 @@ import '../player.dart' show audioHandler;
 import '../services/identification.dart';
 import '../utils.dart' show ErrorDisplay;
 import '../widgets/drawer.dart';
-import '../widgets/now_playing.dart';
+import '../widgets/now_airing.dart';
 import '../widgets/player.dart';
 import '../widgets/song.dart';
 import '../widgets/song_airing_notifier.dart';
@@ -20,7 +20,7 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  Future<SongNowPlaying>? _songNowPlaying;
+  Future<SongNowAiring>? _songNowAiring;
   Exception? _e;
   late SongAiringNotifier _songAiring;
 
@@ -29,13 +29,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _songAiring = SongAiringNotifier();
     _songAiring.addListener(() {
       setState(() {
-        _songNowPlaying = _songAiring.songNowPlaying;
-        if (_songNowPlaying == null)
+        _songNowAiring = _songAiring.songNowAiring;
+        if (_songNowAiring == null)
           _e = _songAiring.e;
         else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true) {
-              _songAiring.songNowPlaying!.then((song) async {
+              _songAiring.songNowAiring!.then((song) async {
                 await audioHandler.customAction('set_song', song.toJson());
               });
             }
@@ -43,7 +43,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         }
       });
     });
-    _songAiring.periodicFetchSongNowPlaying();
+    _songAiring.periodicFetchSongNowAiring();
   }
 
   @override
@@ -78,7 +78,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        _songAiring.periodicFetchSongNowPlaying();
+        _songAiring.periodicFetchSongNowAiring();
         await AudioService.customAction('stop_song_listener', Map());
         break;
       case AppLifecycleState.inactive:
@@ -89,7 +89,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
   }*/
 
-  Widget refreshNowPlayingSongButton() {
+  Widget refreshNowAiringSongButton() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +99,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           ElevatedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _songAiring.periodicFetchSongNowPlaying();
+              _songAiring.periodicFetchSongNowAiring();
             },
             label: Text('Ré-essayer maintenant'),
           ),
@@ -112,53 +112,53 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     Widget home;
     Widget? body;
-    Widget nowPlayingWidget;
+    Widget NowAiringWidget;
 
     FlutterStatusbarcolor.setStatusBarColor(Colors.orange);
     FlutterStatusbarcolor.setNavigationBarColor(Colors.orange);
 
-    if (_e != null && _songNowPlaying == null)
-      nowPlayingWidget = refreshNowPlayingSongButton();
-    else if (_songNowPlaying == null)
-      nowPlayingWidget = Center(child: CircularProgressIndicator());
+    if (_e != null && _songNowAiring == null)
+      NowAiringWidget = refreshNowAiringSongButton();
+    else if (_songNowAiring == null)
+      NowAiringWidget = Center(child: CircularProgressIndicator());
     else
-      nowPlayingWidget = NowPlayingCard(_songNowPlaying!);
+      NowAiringWidget = NowAiringCard(_songNowAiring!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: SongNowAiringAppBar(orientation, _songNowAiring),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
-                      child: PlayerWidget(orientation, _songNowPlaying))),
+                      child: PlayerWidget(orientation, _songNowAiring))),
               drawer: DrawerWidget(),
-              body: nowPlayingWidget);
+              body: NowAiringWidget);
         } else {
           return Scaffold(
-              appBar: SongNowPlayingAppBar(orientation, _songNowPlaying),
+              appBar: SongNowAiringAppBar(orientation, _songNowAiring),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: nowPlayingWidget),
+                  Expanded(child: NowAiringWidget),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        FutureBuilder<SongNowPlaying>(
-                            future: _songNowPlaying,
+                        FutureBuilder<SongNowAiring>(
+                            future: _songNowAiring,
                             builder: (BuildContext context,
-                                AsyncSnapshot<SongNowPlaying> snapshot) {
+                                AsyncSnapshot<SongNowAiring> snapshot) {
                               if (snapshot.hasData)
                                 return SongInformations(
                                     song: snapshot.data, compact: true);
                               else
                                 return CircularProgressIndicator();
                             }),
-                        PlayerWidget(orientation, _songNowPlaying!),
+                        PlayerWidget(orientation, _songNowAiring!),
                       ],
                     ),
                   )
@@ -171,7 +171,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: SizedBox(
               height: 60,
               child: BottomAppBar(
-                  child: PlayerWidget(Orientation.portrait, _songNowPlaying!))),
+                  child: PlayerWidget(Orientation.portrait, _songNowAiring!))),
           body: body);
     }
 
