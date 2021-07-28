@@ -85,13 +85,24 @@ class _PlayerWidgetState extends State<PlayerWidget>
                           .distinct(),
                       builder: (context, snapshot) {
                         final playing = snapshot.data ?? false;
+                        var controls;
+
+                        if(playing){
+                          controls = [
+                            _button(Icons.fast_rewind, audioHandler.rewind),
+                            _button(Icons.pause, audioHandler.pause),
+                            _button(Icons.stop, audioHandler.stop),
+                            _button(
+                                Icons.fast_forward, audioHandler.fastForward),
+                          ];
+                        }
+                        else{
+                          controls = [_button(Icons.stop, audioHandler.stop)];
+                        }
+
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (playing)
-                              _button(Icons.pause, audioHandler.pause),
-                            _button(Icons.stop, audioHandler.stop),
-                          ],
+                          children: controls,
                         );
                       },
                     ),

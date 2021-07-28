@@ -351,15 +351,22 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                             .distinct(),
                         builder: (context, snapshot) {
                           final playing = snapshot.data ?? false;
+                          var controls;
+                          if (playing) {
+                            controls = [
+                              _button(Icons.fast_rewind, audioHandler.rewind),
+                              _button(Icons.pause, audioHandler.pause),
+                              _button(
+                                  Icons.fast_forward, audioHandler.fastForward),
+                            ];
+                          } else {
+                            controls = [
+                              _button(Icons.play_arrow, this.playSong),
+                            ];
+                          }
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (playing)
-                                _button(Icons.pause, audioHandler.pause)
-                              else
-                                _button(Icons.play_arrow, this.playSong),
-                              _button(Icons.stop, audioHandler.stop),
-                            ],
+                            children: controls,
                           );
                         },
                       ),
