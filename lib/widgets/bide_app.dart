@@ -112,17 +112,17 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     Widget home;
     Widget? body;
-    Widget NowAiringWidget;
+    Widget nowAiringWidget;
 
     FlutterStatusbarcolor.setStatusBarColor(Colors.orange);
     FlutterStatusbarcolor.setNavigationBarColor(Colors.orange);
 
     if (_e != null && _songNowAiring == null)
-      NowAiringWidget = refreshNowAiringSongButton();
+      nowAiringWidget = refreshNowAiringSongButton();
     else if (_songNowAiring == null)
-      NowAiringWidget = Center(child: CircularProgressIndicator());
+      nowAiringWidget = Center(child: CircularProgressIndicator());
     else
-      NowAiringWidget = NowAiringCard(_songNowAiring!);
+      nowAiringWidget = NowAiringCard(_songNowAiring!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
@@ -135,14 +135,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                   child: BottomAppBar(
                       child: PlayerWidget(orientation, _songNowAiring))),
               drawer: DrawerWidget(),
-              body: NowAiringWidget);
+              body: nowAiringWidget);
         } else {
           return Scaffold(
               appBar: SongNowAiringAppBar(orientation, _songNowAiring),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: NowAiringWidget),
+                  Expanded(child: nowAiringWidget),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
