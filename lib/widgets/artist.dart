@@ -8,18 +8,18 @@ import '../utils.dart';
 import 'song.dart';
 
 class ArtistPageWidget extends StatelessWidget {
-  final Future<Artist> artist;
+  final Future<Artist?>? artist;
 
-  ArtistPageWidget({Key key, this.artist}) : super(key: key);
+  ArtistPageWidget({Key? key, this.artist}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<Artist>(
+      child: FutureBuilder<Artist?>(
         future: artist,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
@@ -65,11 +65,11 @@ class ArtistPageWidget extends StatelessWidget {
                         children: <Widget>[
                           if (artist.site != null)
                             GestureDetector(
-                              onTap: () => launchURL(artist.site),
-                              child: Text(artist.site, style: linkStyle),
+                              onTap: () => launchURL(artist.site!),
+                              child: Text(artist.site!, style: linkStyle),
                             ),
-                          Text(artist.alias),
-                          if (artist.dates != null) Text(artist.dates)
+                          Text(artist.alias!),
+                          if (artist.dates != null) Text(artist.dates!)
                         ],
                       )),
                     ],

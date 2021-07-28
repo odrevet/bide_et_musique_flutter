@@ -7,9 +7,9 @@ import '../utils.dart';
 import 'song.dart';
 
 class SongsWidget extends StatelessWidget {
-  final Future<List<SongLink>> songs;
+  final Future<List<SongLink>>? songs;
 
-  SongsWidget({Key key, this.songs}) : super(key: key);
+  SongsWidget({Key? key, this.songs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

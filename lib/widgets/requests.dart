@@ -8,16 +8,16 @@ import '../services/song.dart';
 import 'song.dart';
 
 class RequestsPageWidget extends StatefulWidget {
-  RequestsPageWidget({Key key}) : super(key: key);
+  RequestsPageWidget({Key? key}) : super(key: key);
 
   @override
   _RequestsPageWidgetState createState() => _RequestsPageWidgetState();
 }
 
 class _RequestsPageWidgetState extends State<RequestsPageWidget> {
-  int _selectedRequestId;
+  int? _selectedRequestId;
   final _dedicateController = TextEditingController();
-  Future<List<Request>> _requests;
+  Future<List<Request>>? _requests;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
         future: this._requests,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
@@ -54,8 +54,8 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
     Widget listview = ListView.builder(
       itemCount: requests.length,
       itemBuilder: (context, index) {
-        var songLink = requests[index].songLink;
-        bool isAvailable = requests[index].isAvailable;
+        var songLink = requests[index].songLink!;
+        bool? isAvailable = requests[index].isAvailable;
 
         Widget listTile = ListTile(
             leading: GestureDetector(
@@ -69,10 +69,10 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
               child: CoverThumb(songLink),
             ),
             title: Text(songLink.name),
-            subtitle: Text(songLink.artist),
+            subtitle: Text(songLink.artist!),
             trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
             onTap: () => setState(() {
-                  if (isAvailable) _selectedRequestId = songLink.id;
+                  if (isAvailable!) _selectedRequestId = songLink.id;
                 }));
 
         if (songLink.id == _selectedRequestId)

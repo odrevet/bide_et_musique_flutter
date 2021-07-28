@@ -4,10 +4,10 @@ import '../models/song.dart';
 import 'song.dart';
 
 class PochettoscopeWidget extends StatefulWidget {
-  final List<SongLink> songLinks;
-  final Function onEndReached;
+  final List<SongLink>? songLinks;
+  final Function? onEndReached;
 
-  PochettoscopeWidget({this.songLinks, this.onEndReached, Key key})
+  PochettoscopeWidget({this.songLinks, this.onEndReached, Key? key})
       : super(key: key);
 
   @override
@@ -16,9 +16,9 @@ class PochettoscopeWidget extends StatefulWidget {
 }
 
 class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
-  ScrollController _controller;
-  List<SongLink> _songLinks;
-  bool _isLoading;
+  ScrollController? _controller;
+  List<SongLink>? _songLinks;
+  bool? _isLoading;
 
   _PochettoscopeWidgetState(this._songLinks);
 
@@ -27,9 +27,9 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
     super.initState();
     if (widget.onEndReached != null) {
       _controller = ScrollController();
-      _controller.addListener(_scrollListener);
+      _controller!.addListener(_scrollListener);
       _isLoading = true;
-      widget.onEndReached().then((songLinks) => {
+      widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
               _songLinks = songLinks;
@@ -43,20 +43,20 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   void dispose() {
     super.dispose();
     if (widget.onEndReached != null)
-      _controller.removeListener(_scrollListener);
+      _controller!.removeListener(_scrollListener);
   }
 
   _scrollListener() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange &&
+    if (_controller!.offset >= _controller!.position.maxScrollExtent &&
+        !_controller!.position.outOfRange &&
         _isLoading == false) {
       setState(() {
         _isLoading = true;
       });
-      widget.onEndReached().then((songLinks) => {
+      widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
-              _songLinks = [..._songLinks, ...songLinks];
+              _songLinks = [..._songLinks!, ...songLinks];
             })
           });
     }
@@ -69,7 +69,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       return Center(child: CircularProgressIndicator());
     }
     return GridView.builder(
-        itemCount: _songLinks.length,
+        itemCount: _songLinks!.length,
         controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
@@ -77,7 +77,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
           return Padding(
               padding: EdgeInsets.all(1),
               child: CoverWithGesture(
-                  songLink: _songLinks[index],
+                  songLink: _songLinks![index],
                   displayPlaceholder: true,
                   fadeInDuration: Duration(milliseconds: 250)));
         });

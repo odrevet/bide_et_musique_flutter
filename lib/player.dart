@@ -5,181 +5,29 @@ import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/song.dart';
-import 'services/song.dart';
-import 'utils.dart';
+import 'utils.dart' show site, host;
 
-class ScreenState {
-  final MediaItem mediaItem;
-  final PlaybackState playbackState;
+late AudioHandler audioHandler;
 
-  ScreenState(this.mediaItem, this.playbackState);
+class MediaState {
+  final MediaItem? mediaItem;
+  final Duration position;
+
+  MediaState(this.mediaItem, this.position);
 }
 
-void audioPlayerTaskEntrypoint() async {
-  AudioServiceBackground.run(() => AudioPlayerTask());
-}
+/// An [AudioHandler] for playing a single item.
+class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
+  final _player = AudioPlayer();
 
-class AudioPlayerTask extends BackgroundAudioTask {
-  AudioPlayer _audioPlayer = AudioPlayer();
-  AudioProcessingState _audioProcessingState;
+  Song? _song;
+  bool _radioMode = false;
+  String? _sessionId;
+  String? _latestId;
 
-  StreamSubscription<PlaybackEvent> _eventSubscription;
-
-  Song _song;
-  bool _radioMode;
-  String _sessionId;
-  String _latestId;
-
-  Timer _t;
-
-  void periodicFetchSongNowPlaying() {
-    fetchNowPlaying().then((song) async {
-      if (_radioMode == true)
-        await AudioService.customAction('set_song', song.toJson());
-      int delay = (song.duration.inSeconds -
-              (song.duration.inSeconds * song.elapsedPcent / 100))
-          .ceil();
-      _t = Timer(Duration(seconds: delay), () {
-        periodicFetchSongNowPlaying();
-      });
-    });
-  }
-
-  //Seeker _seeker;
-
-  //List<MediaItem> get queue => _mediaLibrary.items;
-  //int get index => _player.currentIndex;
-  //MediaItem get mediaItem => index == null ? null : queue[index];
-
-  /// Broadcasts the current state to all clients.
-  Future<void> _broadcastState() async {
-    await AudioServiceBackground.setState(
-      controls: [
-        //MediaControl.skipToPrevious,
-        if (_audioPlayer.playing) MediaControl.pause else MediaControl.play,
-        //if (_audioPlayer.playing) pauseControl else playControl,
-        MediaControl.stop,
-        //stopControl
-        //MediaControl.skipToNext,
-      ],
-      systemActions: [
-        MediaAction.seekTo,
-        //MediaAction.seekForward,
-        //MediaAction.seekBackward,
-      ],
-      processingState: _getProcessingState(),
-      playing: _audioPlayer.playing,
-      position: _audioPlayer.position,
-      bufferedPosition: _audioPlayer.bufferedPosition,
-      speed: _audioPlayer.speed,
-    );
-  }
-
-  /// Maps just_audio's processing state into into audio_service's playing
-  /// state. If we are in the middle of a skip, we use [_audioProcessingState] instead.
-  AudioProcessingState _getProcessingState() {
-    if (_audioProcessingState != null) return _audioProcessingState;
-    switch (_audioPlayer.processingState) {
-      case ProcessingState.idle:
-        return AudioProcessingState.stopped;
-      case ProcessingState.loading:
-        return AudioProcessingState.connecting;
-      case ProcessingState.buffering:
-        return AudioProcessingState.buffering;
-      case ProcessingState.ready:
-        return AudioProcessingState.ready;
-      case ProcessingState.completed:
-        return AudioProcessingState.completed;
-      default:
-        throw Exception("Invalid state: ${_audioPlayer.processingState}");
-    }
-  }
-
-  @override
-  Future<void> onStart(Map<String, dynamic> params) async {
-    // Broadcast media item changes.
-    /*_player.currentIndexStream.listen((index) {
-      if (index != null) AudioServiceBackground.setMediaItem(queue[index]);
-    });*/
-    // Propagate all events from the audio player to AudioService clients.
-    _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
-      AudioServiceBackground.sendCustomEvent(event.icyMetadata);
-      _broadcastState();
-    });
-    // Special processing for state transitions.
-    _audioPlayer.processingStateStream.listen((state) {
-      switch (state) {
-        case ProcessingState.completed:
-          // In this example, the service stops when reaching the end.
-          onStop();
-          break;
-        case ProcessingState.ready:
-          // If we just came from skipping between tracks, clear the skip
-          // state now that we're ready to play.
-          _audioProcessingState = null;
-          break;
-        default:
-          break;
-      }
-    });
-
-    // Load and broadcast the queue
-    try {
-      // immediately start playing on start.
-      onPlay();
-    } catch (e) {
-      print("Error: $e");
-      onStop();
-    }
-  }
-
-  void playPause() {
-    if (AudioServiceBackground.state.playing)
-      onPause();
-    else
-      onPlay();
-  }
-
-  @override
-  Future<void> onPlay() async {
-    String url = await _getStreamUrl();
-    if (_radioMode) {
-      await _audioPlayer.setUrl(url);
-      AudioServiceBackground.setState(
-        controls: [MediaControl.pause, MediaControl.stop],
-        processingState: AudioProcessingState.ready,
-        playing: true,
-      );
-    } else if (url != _latestId) {
-      Map<String, String> headers = {'Host': host, 'Referer': _song.link};
-      if (_sessionId != null) headers['Cookie'] = _sessionId;
-      await _audioPlayer.setUrl(url, headers: headers);
-    }
-
-    _latestId = url;
-    return _audioPlayer.play();
-  }
-
-  @override
-  Future<void> onPause() {
-    return _audioPlayer.pause();
-  }
-
-  @override
-  Future<void> onSeekTo(Duration position) {
-    return _audioPlayer.seek(position);
-  }
-
-  @override
-  Future<void> onStop() async {
-    await _audioPlayer.dispose();
-    _eventSubscription.cancel();
-    // It is important to wait for this state to be broadcast before we shut
-    // down the task. If we don't, the background task will be destroyed before
-    // the message gets sent to the UI.
-    await _broadcastState();
-    // Shut down this task
-    await super.onStop();
+  /// Initialise our audio handler.
+  AudioPlayerHandler() {
+    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
   }
 
   Future<String> _getStreamUrl() async {
@@ -188,20 +36,86 @@ class AudioPlayerTask extends BackgroundAudioTask {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       int relay = 2; //prefs.getInt('relay') ?? 1;
-      int port = radioHiQuality ? 9100 : 9200;
-      url = 'http://relay$relay.$site:$port';
+      int port = 9300; //radioHiQuality ? 9100 : 9200;
+      url = 'https://relay$relay.$site:$port';
+      url =
+          'https://relay2.bide-et-musique.com:9300/bm.mp3?type=http&nocache=20';
     } else {
-      url = _song.streamLink;
+      url = _song!.streamLink;
     }
     return url;
   }
 
   @override
-  Future<dynamic> onCustomAction(String name, dynamic arguments) async {
-    dynamic res;
+  Future<void> play() async {
+    String url = await _getStreamUrl();
+
+    if (_radioMode) {
+      _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+    } else if (url != _latestId) {
+      url = _song!.streamLink;
+      Map<String, String> headers = {'Host': host, 'Referer': _song!.link};
+
+      if (_sessionId != null) {
+        headers['Cookie'] = _sessionId!;
+      }
+
+      _player.setAudioSource(AudioSource.uri(Uri.parse(url), headers: headers));
+    }
+
+    _latestId = url;
+    return _player.play();
+  }
+
+  @override
+  Future<void> pause() => _player.pause();
+
+  @override
+  Future<void> seek(Duration position) => _player.seek(position);
+
+  @override
+  Future<void> stop() => _player.stop();
+
+  /// Transform a just_audio event into an audio_service state.
+  ///
+  /// This method is used from the constructor. Every event received from the
+  /// just_audio player will be transformed into an audio_service state so that
+  /// it can be broadcast to audio_service clients.
+  PlaybackState _transformEvent(PlaybackEvent event) {
+    return PlaybackState(
+      controls: [
+        MediaControl.rewind,
+        if (_player.playing) MediaControl.pause else MediaControl.play,
+        MediaControl.stop,
+        MediaControl.fastForward,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: const {
+        ProcessingState.idle: AudioProcessingState.idle,
+        ProcessingState.loading: AudioProcessingState.loading,
+        ProcessingState.buffering: AudioProcessingState.buffering,
+        ProcessingState.ready: AudioProcessingState.ready,
+        ProcessingState.completed: AudioProcessingState.completed,
+      }[_player.processingState]!,
+      playing: _player.playing,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
+      queueIndex: event.currentIndex,
+    );
+  }
+
+  @override
+  Future<dynamic> customAction(String name,
+      [Map<String, dynamic>? extras]) async {
     switch (name) {
       case 'set_song':
-        Map songMap = arguments;
+        Map songMap = extras!;
         this._song = Song(
             id: songMap['id'],
             name: songMap['name'],
@@ -212,32 +126,28 @@ class AudioPlayerTask extends BackgroundAudioTask {
         this.setNotification();
         break;
       case 'set_radio_mode':
-        _radioMode = arguments;
+        _radioMode = extras!['radio_mode'];
         break;
       case 'get_radio_mode':
-        res = _radioMode;
-        break;
+        return _radioMode;
       case 'set_session_id':
-        _sessionId = arguments;
+        _sessionId = extras!['session_id'];
         break;
-      case 'start_song_listener':
-        periodicFetchSongNowPlaying();
-        break;
-      case 'stop_song_listener':
-        _t?.cancel();
-        break;
+      default:
+        return super.customAction(name, extras);
     }
-    await super.onCustomAction(name, arguments);
-    return res;
   }
 
   void setNotification() {
-    AudioServiceBackground.setMediaItem(MediaItem(
-        id: _song.streamLink,
-        album: _radioMode ? radioIcon : songIcon,
-        title: _song.name.isEmpty ? 'Titre non disponible' : _song.name,
-        artist: _song.artist.isEmpty ? 'Artiste non disponible' : _song.artist,
-        artUri: Uri.parse(_song.coverLink),
-        duration: _song.duration ?? null));
+    var item = MediaItem(
+      id: _song!.streamLink,
+      album: "Bide et Musique",
+      title: _song!.name,
+      artist: _song!.artist,
+      duration: _song!.duration,
+      artUri: Uri.parse(_song!.coverLink),
+    );
+
+    mediaItem.add(item);
   }
 }

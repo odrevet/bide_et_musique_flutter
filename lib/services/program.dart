@@ -5,7 +5,7 @@ import '../models/program.dart';
 import '../session.dart';
 import '../utils.dart';
 
-Future<Program> fetchProgram(int programId) async {
+Future<Program> fetchProgram(int? programId) async {
   var program;
   final url = '$baseUri/program/$programId';
 

@@ -11,18 +11,18 @@ import '../services/wall.dart';
 import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'song.dart';
 
 class WallWidget extends StatefulWidget {
-  WallWidget({Key key}) : super(key: key);
+  WallWidget({Key? key}) : super(key: key);
 
   @override
   _WallWidgetState createState() => _WallWidgetState();
 }
 
 class _WallWidgetState extends State<WallWidget> {
-  Future<List<Post>> posts;
+  Future<List<Post>>? posts;
   final _newMessageController = TextEditingController();
 
   @override
@@ -90,7 +90,7 @@ class _WallWidgetState extends State<WallWidget> {
           future: this.posts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
+              return _buildView(context, snapshot.data!);
             } else if (snapshot.hasError) {
               return ErrorDisplay(snapshot.error);
             }

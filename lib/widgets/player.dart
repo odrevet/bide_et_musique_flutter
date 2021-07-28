@@ -5,17 +5,17 @@ import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/song.dart';
 import '../player.dart';
-import '../services/song.dart';
 import 'song.dart';
-import 'song_airing_notifier.dart';
-import 'song_position_slider.dart';
+import '../services/song.dart';
+import 'radio_stream_button.dart';
+import 'seek_bar.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
-  final Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying>? _songNowPlaying;
 
   PlayerWidget(this.orientation, this._songNowPlaying);
 
@@ -25,96 +25,113 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
+  IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
+        icon: Icon(iconData),
+        iconSize: 32.0,
+        onPressed: onPressed,
+      );
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem, PlaybackState, ScreenState>(
-            AudioService.currentMediaItemStream,
-            AudioService.playbackStateStream,
-            (mediaItem, playbackState) =>
-                ScreenState(mediaItem, playbackState)),
-        builder: (context, snapshot) {
-          final screenState = snapshot.data;
-          final mediaItem = screenState?.mediaItem;
-          final state = screenState?.playbackState;
-          final processingState =
-              state?.processingState ?? AudioProcessingState.none;
-          final bool playing = state?.playing ?? false;
-          final bool radioMode =
-              mediaItem != null ? mediaItem.album == radioIcon : null;
+    return StreamBuilder<bool>(
+      stream:
+          audioHandler.playbackState.map((state) => state.playing).distinct(),
+      builder: (context, snapshot) {
+        final playing = snapshot.data ?? false;
 
-          List<Widget> controls;
+        if (!playing) {
+          return RadioStreamButton(widget._songNowPlaying);
+        }
 
-          if (processingState == AudioProcessingState.none) {
-            controls = [RadioStreamButton(widget._songNowPlaying)];
-          } else {
-            Widget playPauseControl;
-            if (playing == null ||
-                processingState == AudioProcessingState.buffering ||
-                processingState == AudioProcessingState.connecting) {
-              playPauseControl = Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                      height: 25.0,
-                      width: 25.0,
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black))));
-            } else if (playing == true) {
-              playPauseControl = pauseButton();
-            } else {
-              playPauseControl = playButton();
+        return FutureBuilder<dynamic>(
+          future: audioHandler.customAction('get_radio_mode'),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              bool radioMode = snapshot.data;
+              if (radioMode) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    playing
+                        ? _button(Icons.stop, audioHandler.stop)
+                        : RadioStreamButton(widget._songNowPlaying),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    StreamBuilder<MediaItem?>(
+                      stream: audioHandler.mediaItem,
+                      builder: (context, snapshot) {
+                        final mediaItem = snapshot.data;
+                        final songLink = SongLink(id: getIdFromUrl(mediaItem!.id)!, name: mediaItem.title);
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SongPageWidget(
+                                          songLink: songLink,
+                                          song: fetchSong(songLink.id))));
+                            },
+                          child: CachedNetworkImage(
+                              imageUrl: songLink.thumbLink),
+                        );
+                      },
+                    ),
+                    // Play/pause/stop buttons.
+                    StreamBuilder<bool>(
+                      stream: audioHandler.playbackState
+                          .map((state) => state.playing)
+                          .distinct(),
+                      builder: (context, snapshot) {
+                        final playing = snapshot.data ?? false;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (playing)
+                              _button(Icons.pause, audioHandler.pause),
+                            _button(Icons.stop, audioHandler.stop),
+                          ],
+                        );
+                      },
+                    ),
+                    // A seek bar.
+                    StreamBuilder<MediaState>(
+                      stream: _mediaStateStream,
+                      builder: (context, snapshot) {
+                        final mediaState = snapshot.data;
+                        return Expanded(
+                          child: SeekBar(
+                            duration: mediaState?.mediaItem?.duration ??
+                                Duration.zero,
+                            position: mediaState?.position ?? Duration.zero,
+                            onChangeEnd: (newPosition) {
+                              audioHandler.seek(newPosition);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              }
             }
 
-            controls = <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    radioMode == false
-                        ? InkWell(
-                            onTap: () => Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              int id = getIdFromUrl(mediaItem.id);
-                              return SongPageWidget(
-                                  songLink: SongLink(id: id),
-                                  song: fetchSong(id));
-                            })),
-                            child: Icon(
-                              Icons.music_note,
-                              size: 18.0,
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () => _streamInfoDialog(context),
-                            child: Icon(
-                              Icons.radio,
-                              size: 18.0,
-                            ),
-                          ),
-                    playPauseControl,
-                    stopButton()
-                  ]),
-              if (radioMode != null && radioMode != true)
-                Container(
-                    height: 20, child: SongPositionSlider(mediaItem, state))
-            ];
-          }
-
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              widget.orientation == Orientation.portrait
-                  ? Row(
-                      children: controls,
-                    )
-                  : Column(
-                      children: controls,
-                    )
-            ],
-          );
-        });
+            return CircularProgressIndicator();
+          },
+        );
+      },
+    );
   }
+
+  /// A stream reporting the combined state of the current media item and its
+  /// current position.
+  Stream<MediaState> get _mediaStateStream =>
+      Rx.combineLatest2<MediaItem?, Duration, MediaState>(
+          audioHandler.mediaItem,
+          AudioService.position,
+          (mediaItem, position) => MediaState(mediaItem, position));
 
   _streamInfoDialog(BuildContext context) {
     return showDialog<void>(
@@ -146,80 +163,3 @@ bitrate ${icyMetadata.headers.bitrate}
         });
   }
 }
-
-class RadioStreamButton extends StatefulWidget {
-  final Future<SongNowPlaying> _songNowPlaying;
-
-  RadioStreamButton(this._songNowPlaying);
-
-  @override
-  _RadioStreamButtonState createState() => _RadioStreamButtonState();
-}
-
-class _RadioStreamButtonState extends State<RadioStreamButton> {
-  Widget build(BuildContext context) {
-    Widget label = Text("Écouter la radio",
-        style: TextStyle(
-          fontSize: 20.0,
-        ));
-
-    return FutureBuilder<SongNowPlaying>(
-      future: widget._songNowPlaying,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          label = RichText(
-            text: TextSpan(
-              text: 'Écouter la radio ',
-              style: DefaultTextStyle.of(context).style,
-              children: <TextSpan>[
-                TextSpan(
-                    text: '\n${snapshot.data.nbListeners} auditeurs',
-                    style:
-                        TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
-              ],
-            ),
-          );
-        }
-        return ElevatedButton.icon(
-          icon: Icon(Icons.radio, size: 40),
-          label: label,
-          onPressed: () async {
-            bool success = false;
-            if (!AudioService.running) {
-              success = await AudioService.start(
-                backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-                androidNotificationChannelName: 'Bide&Musique',
-                androidNotificationIcon: 'mipmap/ic_launcher',
-              );
-            }
-            if (success) {
-              SongAiringNotifier().songNowPlaying.then((song) async {
-                await AudioService.customAction('set_radio_mode', true);
-                await AudioService.customAction('set_song', song.toJson());
-                await AudioService.play();
-              });
-            }
-          },
-        );
-      },
-    );
-  }
-}
-
-IconButton playButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.play_arrow),
-      iconSize: iconSize,
-      onPressed: AudioService.play,
-    );
-
-IconButton pauseButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.pause),
-      iconSize: iconSize,
-      onPressed: AudioService.pause,
-    );
-
-IconButton stopButton([double iconSize = 40]) => IconButton(
-      icon: Icon(Icons.stop),
-      iconSize: iconSize,
-      onPressed: AudioService.stop,
-    );

@@ -1,6 +1,6 @@
 import 'song.dart';
 
 class SearchResult {
-  int pageCount;
+  int? pageCount;
   List<SongLink> songLinks = <SongLink>[];
 }

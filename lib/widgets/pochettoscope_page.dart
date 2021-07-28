@@ -4,7 +4,7 @@ import '../services/pochettoscope.dart';
 import 'pochettoscope.dart';
 
 class PochettoScopePage extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
   PochettoScopePage({this.child});
 

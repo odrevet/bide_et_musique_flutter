@@ -14,19 +14,19 @@ class SongAiringNotifier extends ChangeNotifier {
 
   SongAiringNotifier._internal();
 
-  Future<SongNowPlaying> songNowPlaying;
-  Exception e;
-  Timer _t;
+  Future<SongNowPlaying>? songNowPlaying;
+  dynamic e;
+  Timer? _t;
 
   void periodicFetchSongNowPlaying() {
     e = null;
     _reset();
     try {
       songNowPlaying = fetchNowPlaying();
-      songNowPlaying.then((s) async {
+      songNowPlaying!.then((s) async {
         notifyListeners();
-        int delay = (s.duration.inSeconds -
-                (s.duration.inSeconds * s.elapsedPcent / 100))
+        int delay = (s.duration!.inSeconds -
+                (s.duration!.inSeconds * s.elapsedPcent! / 100))
             .ceil();
         _t = Timer(Duration(seconds: delay), () {
           periodicFetchSongNowPlaying();

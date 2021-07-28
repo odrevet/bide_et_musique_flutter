@@ -8,9 +8,9 @@ import '../utils.dart';
 import 'program.dart';
 
 class ThematicPageWidget extends StatefulWidget {
-  final Future<List<ProgramLink>> programLinks;
+  final Future<List<ProgramLink>>? programLinks;
 
-  ThematicPageWidget({Key key, this.programLinks}) : super(key: key);
+  ThematicPageWidget({Key? key, this.programLinks}) : super(key: key);
 
   @override
   _ThematicPageWidgetState createState() => _ThematicPageWidgetState();
@@ -68,7 +68,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
             future: widget.programLinks,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return _buildView(context, snapshot.data);
+                return _buildView(context, snapshot.data!);
               } else if (snapshot.hasError) {
                 return ErrorDisplay(snapshot.error);
               }
@@ -81,16 +81,17 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
     programLinks = programLinks
-        .where((programLink) =>
-            programLink.name.toLowerCase().contains(_searchInput.toLowerCase()))
+        .where((programLink) => programLink.name!
+            .toLowerCase()
+            .contains(_searchInput.toLowerCase()))
         .toList();
 
     return ListView.builder(
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
         return ListTile(
-            title: Text(programLinks[index].name),
-            subtitle: Text(programLinks[index].songCount),
+            title: Text(programLinks[index].name!),
+            subtitle: Text(programLinks[index].songCount!),
             onTap: () {
               Navigator.push(
                   context,

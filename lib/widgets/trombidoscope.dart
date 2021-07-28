@@ -7,7 +7,7 @@ import '../utils.dart';
 import 'account.dart';
 
 class TrombidoscopeWidget extends StatefulWidget {
-  TrombidoscopeWidget({Key key}) : super(key: key);
+  TrombidoscopeWidget({Key? key}) : super(key: key);
 
   @override
   _TrombidoscopeWidgetState createState() => _TrombidoscopeWidgetState();
@@ -16,7 +16,7 @@ class TrombidoscopeWidget extends StatefulWidget {
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accountLinks = <AccountLink>[];
   ScrollController _controller = ScrollController();
-  bool _isLoading;
+  bool? _isLoading;
 
   final _font = TextStyle(
       fontSize: 18.0,
@@ -68,7 +68,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                 crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
             itemBuilder: (BuildContext context, int index) {
               var account = _accountLinks[index];
-              final url = baseUri + account.image;
+              final url = baseUri + account.image!;
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -78,10 +78,11 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                               AccountPage(account: fetchAccount(account.id))));
                 },
                 onLongPress: () {
-                  openAccountImageViewerDialog(context, NetworkImage(url), account.name);
+                  openAccountImageViewerDialog(
+                      context, NetworkImage(url), account.name);
                 },
                 child: Container(
-                  child: Text(account.name, style: _font),
+                  child: Text(account.name!, style: _font),
                   decoration: BoxDecoration(
                       color: Colors.orangeAccent,
                       image: DecorationImage(

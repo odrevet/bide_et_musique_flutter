@@ -5,7 +5,7 @@ import 'package:flutter_html/style.dart';
 import '../utils.dart';
 
 class HtmlWithStyle extends StatelessWidget {
-  final String data;
+  final String? data;
 
   HtmlWithStyle({this.data});
 
@@ -18,7 +18,7 @@ class HtmlWithStyle extends StatelessWidget {
           'a': Style(color: Colors.red),
         },
         onLinkTap: (url, _, __, ___) {
-          onLinkTap(url, context);
+          onLinkTap(url!, context);
         });
   }
 }

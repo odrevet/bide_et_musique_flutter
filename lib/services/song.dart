@@ -21,11 +21,12 @@ Future<List<SongLink>> fetchNewSongs() async {
     var document = XmlDocument.parse(body);
     for (var item in document.findAllElements('item')) {
       var link = item.children[2].text;
-      var song = SongLink();
-      song.id = getIdFromUrl(link);
-      var artistTitle = stripTags(item.firstChild.text).split(' - ');
-      song.name = artistTitle[1];
-      song.artist = artistTitle[0];
+
+      var artistTitle = stripTags(item.firstChild!.text).split(' - ');
+      var song = SongLink(
+          id: getIdFromUrl(link)!,
+          name: artistTitle[1],
+          artist: artistTitle[0]);
       songs.add(song);
     }
     return songs;
@@ -48,9 +49,10 @@ Future<List<NowSong>> fetchNowSongs() async {
     int index = 0;
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
-      var songLink = SongLink();
-      songLink.name = tds[3].children[0].innerHtml;
-      songLink.id = getIdFromUrl(tds[3].children[0].attributes['href']);
+      var songLink = SongLink(
+          id: getIdFromUrl(tds[3].children[0].attributes['href']!)!,
+          name: tds[3].children[0].innerHtml,
+          index: index);
       songLink.index = index;
       var nowSong = NowSong();
       nowSong.date = tds[0].innerHtml.trim();
@@ -93,9 +95,9 @@ List<Comment> parseComments(document) {
       var tdCommentChildren = divNormal.children;
       //get comment id (remove 'comment' string)
       comment.id =
-          int.parse(tdCommentChildren[0].attributes['id'].substring(8));
+          int.parse(tdCommentChildren[0].attributes['id']!.substring(8));
       dom.Element aAccount = tdCommentChildren[1].children[0];
-      int accountId = getIdFromUrl(aAccount.attributes['href']);
+      int? accountId = getIdFromUrl(aAccount.attributes['href']!);
       String accountName = aAccount.innerHtml;
       comment.author = AccountLink(id: accountId, name: accountName);
       var commentLines = divNormal.innerHtml.split('<br>');
@@ -110,7 +112,7 @@ List<Comment> parseComments(document) {
   return comments;
 }
 
-Future<Song> fetchSong(int songId) async {
+Future<Song> fetchSong(int? songId) async {
   Song song;
   final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
@@ -217,7 +219,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   var tdSong = tr.children[3];
   String title = stripTags(tdSong.innerHtml.replaceAll('\n', ''));
   const String newFlag = '[nouveauté]';
-  dom.Element a;
+  dom.Element? a;
   bool isNew = false;
   if (title.contains(newFlag)) {
     isNew = true;
@@ -229,7 +231,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   }
 
   return SongLink(
-      id: a == null ? null : getIdFromUrl(a.attributes['href']),
+      id: a != null ? getIdFromUrl(a.attributes['href']!)! : 0,
       artist: stripTags(tdArtist.innerHtml).trim(),
       name: title.trim(),
       info: stripTags(tdInfo.innerHtml).trim(),
@@ -244,7 +246,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     dom.Document document = parser.parse(body);
 
     var songLinksNext = <SongLink>[];
-    var tableNext = document.getElementById('BM_next_songs').children[1];
+    var tableNext = document.getElementById('BM_next_songs')!.children[1];
     var trsNext = tableNext.getElementsByTagName('tr');
     int indexNext = 0;
     for (dom.Element tr in trsNext) {
@@ -255,7 +257,7 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
     }
 
     var songLinksPast = <SongLink>[];
-    var tablePast = document.getElementById('BM_past_songs').children[1];
+    var tablePast = document.getElementById('BM_past_songs')!.children[1];
     var trsPast = tablePast.getElementsByTagName('tr');
     trsPast.removeLast(); //remove the 'show more' button
     int indexPast = 0;

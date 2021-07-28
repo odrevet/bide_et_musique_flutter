@@ -3,12 +3,12 @@ import 'dart:async';
 import '../session.dart';
 import '../utils.dart';
 
-Future<int> fetchRandomSongId() async {
+Future<int?> fetchRandomSongId() async {
   final url = '$baseUri/morceau-au-pif.html';
   final response = await Session.post(url);
   print(url);
   if (response.statusCode == 302) {
-    String location = response.headers['location'];
+    String location = response.headers['location']!;
     return getIdFromUrl(location);
   } else {
     print(response.body);

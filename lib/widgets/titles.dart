@@ -11,15 +11,15 @@ import 'song_airing_notifier.dart';
 class TitlesWidget extends StatefulWidget {
   final SongAiringNotifier _songAiring = SongAiringNotifier();
 
-  TitlesWidget({Key key}) : super(key: key);
+  TitlesWidget({Key? key}) : super(key: key);
 
   @override
   _TitlesWidgetState createState() => _TitlesWidgetState();
 }
 
 class _TitlesWidgetState extends State<TitlesWidget> {
-  Future<Map<String, List<SongLink>>> _songLinks;
-  VoidCallback listener;
+  Future<Map<String, List<SongLink>>>? _songLinks;
+  late VoidCallback listener;
 
   void updateTitles() {
     setState(() {
@@ -51,7 +51,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
         future: _songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(snapshot.data);
+            return _buildView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Scaffold(
                 appBar: AppBar(title: Text('Ouille ouille ouille !')),

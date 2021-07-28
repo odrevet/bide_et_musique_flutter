@@ -11,7 +11,7 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'bidebox.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
 import 'song.dart';
@@ -31,7 +31,7 @@ class DisconnectButton extends StatelessWidget {
 }
 
 class LoggedInPage extends StatelessWidget {
-  LoggedInPage({Key key}) : super(key: key);
+  LoggedInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class LoggedInPage extends StatelessWidget {
               Tab(icon: Icon(Icons.feedback)),
             ],
           ),
-          title: Text(Session.accountLink.name),
+          title: Text(Session.accountLink.name!),
         ),
         body: TabBarView(
           children: [
@@ -74,7 +74,7 @@ class LoggedInPage extends StatelessWidget {
 class VoteListing extends StatelessWidget {
   final Future<List<SongLink>> songLinks;
 
-  VoteListing(this.songLinks, {Key key}) : super(key: key);
+  VoteListing(this.songLinks, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class VoteListing extends StatelessWidget {
         future: songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data.isEmpty)
+            if (snapshot.data!.isEmpty)
               return Center(
                   child: Text('Vous n\'avez pas voté cette semaine. '));
             else
@@ -97,9 +97,9 @@ class VoteListing extends StatelessWidget {
 }
 
 class ManageAccountPageWidget extends StatelessWidget {
-  final Future<Account> account;
+  final Future<Account>? account;
 
-  ManageAccountPageWidget({Key key, this.account}) : super(key: key);
+  ManageAccountPageWidget({Key? key, this.account}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,7 @@ class ManageAccountPageWidget extends StatelessWidget {
         future: account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
@@ -121,7 +121,7 @@ class ManageAccountPageWidget extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, Account account) {
-    final url = baseUri + account.image;
+    final url = baseUri + account.image!;
     final image = NetworkImage(url);
 
     return Container(
@@ -137,7 +137,8 @@ class ManageAccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            openAccountImageViewerDialog(context, image, account.name);
+                            openAccountImageViewerDialog(
+                                context, image, account.name);
                           },
                           child: Image.network(url))),
                   Expanded(

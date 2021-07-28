@@ -10,12 +10,12 @@ import '../services/favorite.dart';
 import '../services/song.dart';
 import '../session.dart';
 import '../utils.dart';
-import 'song_position_slider.dart';
+import 'seek_bar.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final Future<Song> _song;
+  final Future<Song>? _song;
 
-  SongAppBar(this._song, {Key key})
+  SongAppBar(this._song, {Key? key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -33,7 +33,7 @@ class _SongAppBarState extends State<SongAppBar> {
       future: widget._song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          Song song = snapshot.data;
+          Song? song = snapshot.data;
           Widget songActionButton = IconButton(
               icon: Icon(Icons.menu),
               onPressed: () => showDialog<void>(
@@ -51,7 +51,7 @@ class _SongAppBarState extends State<SongAppBar> {
                   ));
 
           return AppBar(
-            title: Text(snapshot.data.name),
+            title: Text(snapshot.data!.name),
             actions: <Widget>[songActionButton],
           );
         } else if (snapshot.hasError) {
@@ -69,7 +69,7 @@ class _SongAppBarState extends State<SongAppBar> {
 // Actions Buttons
 
 class SongActionMenu extends StatelessWidget {
-  final Song _song;
+  final Song? _song;
 
   SongActionMenu(this._song);
 
@@ -80,13 +80,13 @@ class SongActionMenu extends StatelessWidget {
     //some action buttons are not available on some songs
     final _actions = <Widget>[];
     //if the song can be listen, add the song player
-    if (_song.canListen) {
+    if (_song!.canListen) {
       _actions.add(SongPlayerWidget(_song));
     }
 
     //if the user is logged in
     if (Session.accountLink.id != null) {
-      if (_song.canFavourite) {
+      if (_song!.canFavourite) {
         _actions.add(SongFavoriteIconWidget(_song));
       }
 
@@ -101,7 +101,7 @@ class SongActionMenu extends StatelessWidget {
     var shareSongStream = ElevatedButton.icon(
         icon: Icon(Icons.music_note),
         label: Text('Flux musical'),
-        onPressed: () => Share.share(_song.streamLink));
+        onPressed: () => Share.share(_song!.streamLink));
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);
@@ -147,9 +147,9 @@ class SongActionMenu extends StatelessWidget {
 ////////////////////////////////
 //// Add to favorite
 class SongFavoriteIconWidget extends StatefulWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongFavoriteIconWidget(this._song, {Key key}) : super(key: key);
+  SongFavoriteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongFavoriteIconWidgetState createState() => _SongFavoriteIconWidgetState();
@@ -160,15 +160,15 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget._song.isFavourite) {
+    if (widget._song!.isFavourite) {
       return ElevatedButton.icon(
           icon: Icon(Icons.star),
           label: Text('Retirer des favoris'),
           onPressed: () async {
-            int statusCode = await removeSongFromFavorites(widget._song.id);
+            int statusCode = await removeSongFromFavorites(widget._song!.id);
             if (statusCode == 200) {
               setState(() {
-                widget._song.isFavourite = false;
+                widget._song!.isFavourite = false;
               });
             }
           });
@@ -177,9 +177,9 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
         icon: Icon(Icons.star_border),
         label: Text('Ajouter aux favoris'),
         onPressed: () async {
-          int statusCode = await addSongToFavorites(widget._song.link);
+          int statusCode = await addSongToFavorites(widget._song!.link);
           if (statusCode == 200) {
-            setState(() => widget._song.isFavourite = true);
+            setState(() => widget._song!.isFavourite = true);
           } else {
             print('Add song to favorites returned status code $statusCode');
           }
@@ -191,9 +191,9 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 
 // Vote
 class SongVoteIconWidget extends StatefulWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongVoteIconWidget(this._song, {Key key}) : super(key: key);
+  SongVoteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongVoteIconWidgetState createState() => _SongVoteIconWidgetState();
@@ -205,11 +205,11 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   @override
   Widget build(BuildContext context) {
     var callbackVote = () async {
-      int statusCode = await voteForSong(widget._song.link);
+      int statusCode = await voteForSong(widget._song!.link);
 
       if (statusCode == 200) {
         setState(() {
-          widget._song.hasVote = true;
+          widget._song!.hasVote = true;
         });
       } else {
         print('Vote for song returned status code $statusCode');
@@ -219,7 +219,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
     return ElevatedButton.icon(
         icon: Icon(Icons.exposure_plus_1),
         label: Text('Voter'),
-        onPressed: (widget._song.hasVote ? null : callbackVote));
+        onPressed: (widget._song!.hasVote ? null : callbackVote));
   }
 }
 
@@ -227,9 +227,9 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 //// Share
 
 class SongShareIconWidget extends StatelessWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongShareIconWidget(this._song, {Key key}) : super(key: key);
+  SongShareIconWidget(this._song, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
@@ -237,16 +237,16 @@ class SongShareIconWidget extends StatelessWidget {
         icon: Icon(Icons.message),
         label: Text('Message'),
         onPressed: () => Share.share(
-            '''En ce moment j'écoute '${_song.name}' sur Bide et Musique !
+            '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
 
 Tu peux consulter la fiche de cette chanson à l'adresse :
-${_song.link}
+${_song!.link}
 
 --------
 Message envoyé avec l'application 'Bide et Musique'. Disponible pour  
 * Android https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique 
 * IOS https://apps.apple.com/fr/app/bide-et-musique/id1524513644''',
-            subject: "'${_song.name}' sur Bide et Musique"));
+            subject: "'${_song!.name}' sur Bide et Musique"));
   }
 }
 
@@ -254,9 +254,9 @@ Message envoyé avec l'application 'Bide et Musique'. Disponible pour
 //// Copy
 
 class SongCopyLinkIconWidget extends StatelessWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongCopyLinkIconWidget(this._song, {Key key}) : super(key: key);
+  SongCopyLinkIconWidget(this._song, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
@@ -264,23 +264,23 @@ class SongCopyLinkIconWidget extends StatelessWidget {
         icon: Icon(Icons.link),
         label: Text('Copier l\'url'),
         onPressed: () {
-          Clipboard.setData(new ClipboardData(text: _song.link));
+          Clipboard.setData(new ClipboardData(text: _song!.link));
         });
   }
 }
 
 class SongCopyLinkHtmlIconWidget extends StatelessWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongCopyLinkHtmlIconWidget(this._song, {Key key}) : super(key: key);
+  SongCopyLinkHtmlIconWidget(this._song, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
         icon: Icon(Icons.code),
         label: Text('Copier le code HTML du lien'),
-        onPressed: () => Clipboard.setData(
-            ClipboardData(text: '<a href="${_song.link}">${_song.name}</a>')));
+        onPressed: () => Clipboard.setData(ClipboardData(
+            text: '<a href="${_song!.link}">${_song!.name}</a>')));
   }
 }
 
@@ -288,16 +288,16 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
 //// Open in browser
 
 class SongOpenInBrowserIconWidget extends StatelessWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongOpenInBrowserIconWidget(this._song, {Key key}) : super(key: key);
+  SongOpenInBrowserIconWidget(this._song, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
         icon: Icon(Icons.open_in_browser),
         label: Text('Ouvrir l\'url'),
-        onPressed: () => launchURL(_song.link));
+        onPressed: () => launchURL(_song!.link));
   }
 }
 
@@ -305,9 +305,9 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
 //// Player
 
 class SongPlayerWidget extends StatefulWidget {
-  final Song _song;
+  final Song? _song;
 
-  SongPlayerWidget(this._song, {Key key}) : super(key: key);
+  SongPlayerWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
@@ -316,91 +316,88 @@ class SongPlayerWidget extends StatefulWidget {
 class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   _SongPlayerWidgetState();
 
+  Future<void> playSong() async {
+    await audioHandler.customAction('set_session_id',
+        <String, dynamic>{'session_id': Session.headers['cookie']});
+    await audioHandler
+        .customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
+    await audioHandler.customAction('set_song', widget._song!.toJson());
+    audioHandler.play();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: Rx.combineLatest2<MediaItem, PlaybackState, ScreenState>(
-            AudioService.currentMediaItemStream,
-            AudioService.playbackStateStream,
-            (mediaItem, playbackState) =>
-                ScreenState(mediaItem, playbackState)),
-        builder: (context, snapshot) {
-          final screenState = snapshot.data;
-          final mediaItem = screenState?.mediaItem;
-          final state = screenState?.playbackState;
-          final processingState =
-              state?.processingState ?? AudioProcessingState.none;
-          final playing = state?.playing ?? false;
-          final radioMode = mediaItem?.album == radioIcon;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        StreamBuilder<MediaItem?>(
+          stream: audioHandler.mediaItem,
+          builder: (context, snapshot) {
+            final mediaItem = snapshot.data;
 
-          // Display the play song button when no song is being played or player is in player mode
-          if (processingState == AudioProcessingState.none ||
-              radioMode == true ||
-              mediaItem == null ||
-              widget._song?.streamLink != mediaItem.id) {
-            return ElevatedButton.icon(
-                icon: Icon(Icons.play_arrow),
-                label: Text('Écouter'),
-                onPressed: () => play());
-          } else {
-            Widget playPauseControl;
-            if (playing == null ||
-                processingState == AudioProcessingState.buffering ||
-                processingState == AudioProcessingState.connecting) {
-              playPauseControl = Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                      height: 25.0,
-                      width: 25.0,
-                      child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black))));
-            } else if (playing == true) {
-              playPauseControl = pauseSongButton;
-            } else {
-              playPauseControl = resumeSongButton;
+            // No song is being played. Display play arrow
+            if (mediaItem == null) {
+              return _button(Icons.play_arrow, this.playSong);
             }
 
-            return Column(children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[playPauseControl, stopSongButton],
-              ),
-              SongPositionSlider(mediaItem, state),
-              Divider()
-            ]);
-          }
-        });
-  }
-
-  Widget stopSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.stop),
-      label: Text('Stop'),
-      onPressed: () => AudioService.stop());
-
-  Widget pauseSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.pause),
-      label: Text('Pause'),
-      onPressed: () => AudioService.pause());
-
-  Widget resumeSongButton = ElevatedButton.icon(
-      icon: Icon(Icons.play_arrow),
-      label: Text('Reprendre'),
-      onPressed: () => AudioService.play());
-
-  play() async {
-    if (AudioService.running) await AudioService.stop();
-
-    await AudioService.start(
-      backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-      androidNotificationChannelName: 'Bide&Musique',
-      androidNotificationIcon: 'mipmap/ic_launcher',
+            // check if the displayed song is the song being played
+            return getIdFromUrl(mediaItem.id) == widget._song!.id
+                ? Column(
+                    children: [
+                      // Play/pause/stop buttons.
+                      StreamBuilder<bool>(
+                        stream: audioHandler.playbackState
+                            .map((state) => state.playing)
+                            .distinct(),
+                        builder: (context, snapshot) {
+                          final playing = snapshot.data ?? false;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (playing)
+                                _button(Icons.pause, audioHandler.pause)
+                              else
+                                _button(Icons.play_arrow, this.playSong),
+                              _button(Icons.stop, audioHandler.stop),
+                            ],
+                          );
+                        },
+                      ),
+                      // A seek bar.
+                      StreamBuilder<MediaState>(
+                        stream: _mediaStateStream,
+                        builder: (context, snapshot) {
+                          final mediaState = snapshot.data;
+                          return SeekBar(
+                            duration: mediaState?.mediaItem?.duration ??
+                                Duration.zero,
+                            position: mediaState?.position ?? Duration.zero,
+                            onChangeEnd: (newPosition) {
+                              audioHandler.seek(newPosition);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : _button(Icons.play_arrow, this.playSong);
+          },
+        ),
+      ],
     );
-
-    await AudioService.customAction('set_radio_mode', false);
-    await AudioService.customAction(
-        'set_session_id', Session.headers['cookie']);
-    await AudioService.customAction('set_song', widget._song.toJson());
-    await AudioService.play();
   }
+
+  /// A stream reporting the combined state of the current media item and its
+  /// current position.
+  Stream<MediaState> get _mediaStateStream =>
+      Rx.combineLatest2<MediaItem?, Duration, MediaState>(
+          audioHandler.mediaItem,
+          AudioService.position,
+          (mediaItem, position) => MediaState(mediaItem, position));
+
+  IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
+        icon: Icon(iconData),
+        iconSize: 64.0,
+        onPressed: onPressed,
+      );
 }

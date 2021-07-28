@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../models/program.dart';
 import '../utils.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'pochettoscope.dart';
 import 'song.dart';
 
 class ProgramPage extends StatefulWidget {
-  final Future<Program> program;
+  final Future<Program>? program;
 
-  ProgramPage({Key key, this.program}) : super(key: key);
+  ProgramPage({Key? key, this.program}) : super(key: key);
 
   @override
   _ProgramPageState createState() => _ProgramPageState();
@@ -27,7 +27,7 @@ class _ProgramPageState extends State<ProgramPage> {
         future: widget.program,
         builder: (context, snapshot) {
           if (snapshot.hasData)
-            return _buildView(context, snapshot.data);
+            return _buildView(context, snapshot.data!);
           else if (snapshot.hasError) return Text("${snapshot.error}");
 
           return Scaffold(
@@ -54,7 +54,7 @@ class _ProgramPageState extends State<ProgramPage> {
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: program.description != null && program.airedOn.isNotEmpty
+              child: program.description != null && program.airedOn!.isNotEmpty
                   ? displayInfoButton(program)
                   : null),
           Padding(
@@ -67,13 +67,13 @@ class _ProgramPageState extends State<ProgramPage> {
 
   Widget displayInfoButton(Program program) {
     String airedOn = '';
-    for (var airedOnEntry in program.airedOn) {
+    for (var airedOnEntry in program.airedOn!) {
       airedOn += '\n$airedOnEntry';
     }
 
     return GestureDetector(
       onTap: () {
-        return showDialog<void>(
+        showDialog<void>(
           context: context,
           barrierDismissible: true,
           builder: (BuildContext context) {
@@ -84,10 +84,10 @@ class _ProgramPageState extends State<ProgramPage> {
               ),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.0)),
-              title: Text(program.name),
+              title: Text(program.name!),
               children: [
                 HtmlWithStyle(data: program.description),
-                if (program.airedOn.isNotEmpty)
+                if (program.airedOn!.isNotEmpty)
                   Text('Dernière diffusion $airedOn')
               ],
             );

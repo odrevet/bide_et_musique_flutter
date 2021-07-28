@@ -9,7 +9,7 @@ import 'song.dart';
 class NowPlayingCard extends StatefulWidget {
   final Future<Song> _song;
 
-  NowPlayingCard(this._song, {Key key}) : super(key: key);
+  NowPlayingCard(this._song, {Key? key}) : super(key: key);
 
   @override
   _NowPlayingCardState createState() => _NowPlayingCardState();
@@ -46,10 +46,10 @@ class _NowPlayingCardState extends State<NowPlayingCard> {
 class SongNowPlayingAppBar extends StatefulWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
-  final Future<SongNowPlaying> _songNowPlaying;
+  final Future<SongNowPlaying>? _songNowPlaying;
   final Orientation _orientation;
 
-  SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key key})
+  SongNowPlayingAppBar(this._orientation, this._songNowPlaying, {Key? key})
       : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
@@ -64,11 +64,12 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
       future: widget._songNowPlaying,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SongNowPlaying songNowPlaying = snapshot.data;
+          SongNowPlaying songNowPlaying = snapshot.data!;
 
-          String subtitle = songNowPlaying.artist;
-          if (songNowPlaying.year != 0) subtitle += ' • ${songNowPlaying.year}';
-          subtitle += ' • ${songNowPlaying.program.name}';
+          String? subtitle = songNowPlaying.artist!;
+          if (songNowPlaying.year != 0)
+            subtitle += ' • ${songNowPlaying.year!}';
+          subtitle += ' • ${songNowPlaying.program.name!}';
 
           Widget title;
 
@@ -93,11 +94,11 @@ class _SongNowPlayingAppBarState extends State<SongNowPlayingAppBar> {
             );
           } else {
             title = Text(
-                '${songNowPlaying.name} • $subtitle',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+              '${songNowPlaying.name} • $subtitle',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
             );
           }
 

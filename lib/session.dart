@@ -16,13 +16,14 @@ abstract class Session {
   }
 
   static Future<http.Response> post(String url, {body}) async {
-    http.Response response = await http.post(Uri.parse(url), body: body, headers: headers);
+    http.Response response =
+        await http.post(Uri.parse(url), body: body, headers: headers);
     _updateCookie(response);
     return response;
   }
 
   static void _updateCookie(http.Response response) {
-    String rawCookie = response.headers['set-cookie'];
+    String? rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
       headers['cookie'] =

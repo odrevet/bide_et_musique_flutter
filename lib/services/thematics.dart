@@ -24,7 +24,7 @@ Future<List<ProgramLink>> fetchThematics() async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
-      int id = getIdFromUrl(a.attributes['href']);
+      int? id = getIdFromUrl(a.attributes['href']!);
       String name = stripTags(a.innerHtml);
       String songCount = tds[1].innerHtml;
 
@@ -36,6 +36,6 @@ Future<List<ProgramLink>> fetchThematics() async {
   }
 
   programLinks
-      .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      .sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
   return programLinks;
 }

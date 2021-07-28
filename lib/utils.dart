@@ -27,41 +27,38 @@ var defaultStyle = TextStyle(
   color: Colors.black,
 );
 
-int getIdFromUrl(String url) {
+int? getIdFromUrl(String url) {
   final idRegex = RegExp(r'(\d+).(?:html|php)$');
-  if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)[1]);
+  if (idRegex.hasMatch(url)) return int.parse(idRegex.firstMatch(url)![1]!);
   return null;
 }
 
-String stripTags(String htmlString) {
+String stripTags(String? htmlString) {
   var document = parser.parse(htmlString);
-  return parser.parse(document.body.text).documentElement.text;
+  return parser.parse(document.body!.text).documentElement!.text;
 }
 
 //handle an url (e.g deep link) if the app can understand it returns the
 //corresponding Widget or returns false otherwise
-Widget handleLink(String url, BuildContext context) {
+Widget? handleLink(String url, BuildContext context) {
   RegExp regExp = RegExp(
       r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
       caseSensitive: false);
 
   if (regExp.hasMatch(url) == true) {
-    var type = regExp.firstMatch(url)[1];
-    int id = int.parse(regExp.firstMatch(url)[2]);
+    var type = regExp.firstMatch(url)![1];
+    int id = int.parse(regExp.firstMatch(url)![2]!);
 
     switch (type) {
       case 'song':
-        return SongPageWidget(songLink: SongLink(id: id), song: fetchSong(id));
-        break;
+        return SongPageWidget(
+            songLink: SongLink(id: id, name: ''), song: fetchSong(id));
       case 'account':
         return AccountPage(account: fetchAccount(id));
-        break;
       case 'artist':
         return ArtistPageWidget(artist: fetchArtist(id));
-        break;
       case 'program':
         return ProgramPage(program: fetchProgram(id));
-        break;
       default:
         return null;
     }
@@ -72,7 +69,7 @@ Widget handleLink(String url, BuildContext context) {
 
 void onLinkTap(String url, BuildContext context) {
   if (url.startsWith('/')) url = baseUri + url;
-  Widget widget = handleLink(url, context);
+  Widget? widget = handleLink(url, context);
   if (widget == null)
     launchURL(url);
   else

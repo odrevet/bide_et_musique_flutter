@@ -10,7 +10,7 @@ import '../session.dart';
 import '../utils.dart';
 import '../widgets/song.dart';
 import 'bidebox.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'pochettoscope.dart';
 
 openAccountImageViewerDialog(context, image, title) {
@@ -36,20 +36,20 @@ openAccountImageViewerDialog(context, image, title) {
 }
 
 class AccountPage extends StatefulWidget {
-  final Future<Account> account;
+  final Future<Account>? account;
   final int defaultPage;
 
-  AccountPage({Key key, this.account, this.defaultPage = 0}) : super(key: key);
+  AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
   _AccountPageState createState() => _AccountPageState(this.account);
 }
 
 class _AccountPageState extends State<AccountPage> {
-  int _currentPage;
-  PageController controller;
+  int? _currentPage;
+  PageController? controller;
   bool _viewPochettoscope = false;
-  Future<Account> _account;
+  Future<Account>? _account;
 
   _AccountPageState(this._account);
 
@@ -66,7 +66,7 @@ class _AccountPageState extends State<AccountPage> {
       future: _account,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildView(context, snapshot.data);
+          return _buildView(context, snapshot.data!);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -82,7 +82,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _buildView(BuildContext context, Account account) {
-    final url = baseUri + account.image;
+    final url = baseUri + account.image!;
     final image = NetworkImage(url);
 
     var nestedScrollView = NestedScrollView(
@@ -103,7 +103,8 @@ class _AccountPageState extends State<AccountPage> {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                openAccountImageViewerDialog(context, image, account.name);
+                                openAccountImageViewerDialog(
+                                    context, image, account.name);
                               },
                               child: Image.network(url))),
                       Expanded(
@@ -159,7 +160,7 @@ class _AccountPageState extends State<AccountPage> {
                           data: account.presentation,
                         ),
                       )),
-                account.favorites.isEmpty
+                account.favorites!.isEmpty
                     ? Center(
                         child: Text('${account.name} n\'a pas de favoris. '))
                     : _viewPochettoscope
@@ -180,7 +181,7 @@ class _AccountPageState extends State<AccountPage> {
       )),
     );
 
-    Widget mailButton = Session.accountLink.id == null || _currentPage != 2
+    Widget? mailButton = Session.accountLink.id == null || _currentPage != 2
         ? null
         : FloatingActionButton(
             onPressed: () => showDialog(
@@ -198,7 +199,7 @@ class _AccountPageState extends State<AccountPage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(account.name),
+            title: Text(account.name!),
             actions: _currentPage == 1
                 ? <Widget>[
                     Padding(
@@ -225,16 +226,16 @@ class _AccountPageState extends State<AccountPage> {
 }
 
 class MessageListing extends StatelessWidget {
-  final List<Message> messages;
+  final List<Message>? messages;
 
   MessageListing(this.messages);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: messages.length,
+        itemCount: messages!.length,
         itemBuilder: (BuildContext context, int index) {
-          Message message = messages[index];
+          Message message = messages![index];
           return ListTile(
               title: Text(message.body),
               subtitle: Text('${message.recipient} ${message.date}'));
@@ -243,14 +244,14 @@ class MessageListing extends StatelessWidget {
 }
 
 class AccountListing extends StatelessWidget {
-  final List<AccountLink> _accountLinks;
+  final List<AccountLink>? _accountLinks;
 
-  AccountListing(this._accountLinks, {Key key}) : super(key: key);
+  AccountListing(this._accountLinks, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var rows = <ListTile>[];
-    for (AccountLink accountLink in _accountLinks) {
+    for (AccountLink accountLink in _accountLinks!) {
       rows.add(ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.black12,
@@ -259,7 +260,7 @@ class AccountListing extends StatelessWidget {
                   '$baseUri/images/avatars/${accountLink.id}.png')),
         ),
         title: Text(
-          accountLink.name,
+          accountLink.name!,
         ),
         onTap: () {
           Navigator.push(
@@ -278,7 +279,7 @@ class AccountListing extends StatelessWidget {
 class AccountListingFuture extends StatelessWidget {
   final Future<List<AccountLink>> accounts;
 
-  AccountListingFuture(this.accounts, {Key key}) : super(key: key);
+  AccountListingFuture(this.accounts, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

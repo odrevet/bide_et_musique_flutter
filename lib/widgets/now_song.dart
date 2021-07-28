@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../models/nowSong.dart';
 import '../utils.dart';
-import 'htmlWithStyle.dart';
+import 'html_with_style.dart';
 import 'song.dart';
 
 class NowSongsWidget extends StatelessWidget {
-  final Future<List<NowSong>> nowSongs;
+  final Future<List<NowSong>>? nowSongs;
 
-  NowSongsWidget({Key key, this.nowSongs}) : super(key: key);
+  NowSongsWidget({Key? key, this.nowSongs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class NowSongsWidget extends StatelessWidget {
           future: nowSongs,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildView(context, snapshot.data);
+              return _buildView(context, snapshot.data!);
             } else if (snapshot.hasError) {
               return ErrorDisplay(snapshot.error);
             }
@@ -41,10 +41,10 @@ class NowSongsWidget extends StatelessWidget {
 
     for (NowSong nowSong in nowSongs) {
       rows.add(ListTile(
-          onTap: () => launchSongPage(nowSong.songLink, context),
+          onTap: () => launchSongPage(nowSong.songLink!, context),
           leading: CoverThumb(nowSong.songLink),
-          title:
-              HtmlWithStyle(data: nowSong.songLink.name + '<br/>' + nowSong.desc),
+          title: HtmlWithStyle(
+              data: nowSong.songLink!.name + '<br/>' + nowSong.desc),
           subtitle: Text('Le ${nowSong.date}')));
     }
 

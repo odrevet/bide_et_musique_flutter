@@ -17,7 +17,7 @@ Future<List<AccountLink>> fetchTrombidoscope() async {
     var table = document.getElementsByClassName('bmtable')[0];
     for (dom.Element td in table.getElementsByTagName('td')) {
       var a = td.children[0];
-      var href = a.attributes['href'];
+      var href = a.attributes['href']!;
       var id = getIdFromUrl(href);
       var account = AccountLink();
       account.id = id;

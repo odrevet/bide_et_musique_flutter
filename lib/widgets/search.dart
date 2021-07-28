@@ -7,10 +7,10 @@ import 'account.dart';
 import 'song.dart';
 
 class SearchResults extends StatefulWidget {
-  final String search;
-  final String type;
+  final String? search;
+  final String? type;
 
-  SearchResults(this.search, this.type, {Key key}) : super(key: key);
+  SearchResults(this.search, this.type, {Key? key}) : super(key: key);
 
   @override
   _SearchResultsState createState() =>
@@ -18,13 +18,13 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchResultsState extends State<SearchResults> {
-  int _pageCount;
-  int _pageCurrent;
-  List<SongLink> _songLinks;
-  bool _loading;
-  bool _loadingMore;
-  final String search;
-  final String type;
+  int? _pageCount;
+  int _pageCurrent = 0;
+  List<SongLink>? _songLinks;
+  bool? _loading;
+  bool? _loadingMore;
+  final String? search;
+  final String? type;
 
   var _controller = ScrollController();
 
@@ -43,7 +43,7 @@ class _SearchResultsState extends State<SearchResults> {
       setState(() {
         _loading = false;
         _pageCount = searchResult.pageCount;
-        _songLinks = [..._songLinks, ...searchResult.songLinks];
+        _songLinks = [..._songLinks!, ...searchResult.songLinks];
       });
     });
   }
@@ -57,7 +57,7 @@ class _SearchResultsState extends State<SearchResults> {
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
-        _pageCurrent < _pageCount &&
+        _pageCurrent < _pageCount! &&
         _loadingMore == false) {
       setState(() {
         _loadingMore = true;
@@ -66,7 +66,7 @@ class _SearchResultsState extends State<SearchResults> {
       fetchSearchSong(search, type, _pageCurrent)
           .then((SearchResult searchResult) => setState(() {
                 _loadingMore = false;
-                _songLinks = [..._songLinks, ...searchResult.songLinks];
+                _songLinks = [..._songLinks!, ...searchResult.songLinks];
               }));
     }
   }
@@ -74,28 +74,28 @@ class _SearchResultsState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
     if (_loading == true) return Center(child: CircularProgressIndicator());
-    if (_songLinks.isEmpty)
+    if (_songLinks!.isEmpty)
       return Center(child: Text('Pas de résultats pour cette recherche'));
 
     return ListView.builder(
         controller: _controller,
-        itemCount: _songLinks.length,
+        itemCount: _songLinks!.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              leading: CoverThumb(_songLinks[index]),
+              leading: CoverThumb(_songLinks![index]),
               title: Text(
-                _songLinks[index].name,
+                _songLinks![index].name,
               ),
-              subtitle: Text(_songLinks[index].artist == null
+              subtitle: Text(_songLinks![index].artist == null
                   ? ''
-                  : _songLinks[index].artist),
-              onTap: () => launchSongPage(_songLinks[index], context));
+                  : _songLinks![index].artist!),
+              onTap: () => launchSongPage(_songLinks![index], context));
         });
   }
 }
 
 class Search extends StatefulWidget {
-  Search({Key key}) : super(key: key);
+  Search({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -116,19 +116,20 @@ class _SearchState extends State<Search> {
     'Dans une émission',
     'Bidonaute'
   ];
-  List<DropdownMenuItem<String>> _dropDownMenuItems;
+  List<DropdownMenuItem<String>>? _dropDownMenuItems;
 
-  String _currentItem; //selected index from 1
+  String? _currentItem; //selected index from 1
 
   _SearchState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = [];
     var i = 1;
-    for (String searchType in _searchTypes) {
+    _searchTypes.forEach((searchType) {
       items.add(DropdownMenuItem(value: i.toString(), child: Text(searchType)));
       i++;
-    }
+    });
+
     return items;
   }
 
@@ -136,7 +137,7 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
     _dropDownMenuItems = getDropDownMenuItems();
-    this._currentItem = _dropDownMenuItems[0].value;
+    this._currentItem = _dropDownMenuItems![0].value;
   }
 
   void performSearch() {
@@ -211,7 +212,7 @@ class _SearchState extends State<Search> {
             )));
   }
 
-  void changedDropDownItem(String searchType) {
+  void changedDropDownItem(String? searchType) {
     setState(() {
       _currentItem = searchType;
     });
