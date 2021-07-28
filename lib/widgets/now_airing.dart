@@ -75,6 +75,8 @@ class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
 
           if (widget._orientation == Orientation.portrait) {
             title = RichText(
+              softWrap : false,
+              overflow: TextOverflow.fade,
               text: TextSpan(
                 text: songNowAiring.name,
                 style: TextStyle(
