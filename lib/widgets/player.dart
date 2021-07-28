@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/song.dart';
@@ -132,34 +131,4 @@ class _PlayerWidgetState extends State<PlayerWidget>
           audioHandler.mediaItem,
           AudioService.position,
           (mediaItem, position) => MediaState(mediaItem, position));
-
-  _streamInfoDialog(BuildContext context) {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.0)),
-              actions: <Widget>[],
-              title: Text('Informations du flux musical'),
-              content: StreamBuilder<dynamic>(
-                  stream: AudioService.customEventStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data is IcyMetadata) {
-                      var icyMetadata = snapshot.data;
-                      String info =
-                          '''${icyMetadata.headers.name} ${icyMetadata.headers.genre}
-${icyMetadata.info.title}
-bitrate ${icyMetadata.headers.bitrate}
-''';
-                      return Text(info);
-                    } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
-                    }
-
-                    return Text('Veuillez attendre');
-                  }));
-        });
-  }
 }
