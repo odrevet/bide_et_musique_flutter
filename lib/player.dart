@@ -34,12 +34,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     String url;
     if (_radioMode == true) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
-      int relay = 2; //prefs.getInt('relay') ?? 1;
-      int port = 9300; //radioHiQuality ? 9100 : 9200;
-      url = 'https://relay$relay.$site:$port';
-      url =
-          'https://relay2.bide-et-musique.com:9300/bm.mp3?type=http&nocache=20';
+      int relay = prefs.getInt('relay') ?? 1;
+      int port = 9300;
+      url = 'https://relay$relay.$site:$port/bm.mp3?type=http&nocache=20';
     } else {
       url = _song!.streamLink;
     }

@@ -11,7 +11,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool? _radioHiQuality = true;
   bool? _rememberIdents = false;
   bool? _autoConnect = false;
   int _relay = 1;
@@ -25,17 +24,9 @@ class _SettingsPageState extends State<SettingsPage> {
   _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _radioHiQuality = prefs.getBool('radioHiQuality') ?? true;
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
       _autoConnect = prefs.getBool('autoConnect') ?? false;
       _relay = prefs.getInt('relay') ?? 1;
-    });
-  }
-
-  void _onToggleRadioQuality(bool? value) {
-    setState(() {
-      _radioHiQuality = value;
-      _saveOptionBool('radioHiQuality', value);
     });
   }
 
@@ -89,10 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
             children: <Widget>[
               Form(
                   child: ListView(children: [
-                CheckboxListTile(
-                    title: Text('Radio haute qualitée'),
-                    value: _radioHiQuality,
-                    onChanged: _onToggleRadioQuality),
                 ListTile(
                   title: Text('Relais'),
                   trailing: SizedBox(
