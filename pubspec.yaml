@@ -23,7 +23,6 @@ dependencies:
   url_launcher: ^6.0.10
   xml: ^5.3.0
   flutter_launcher_icons: ^0.9.1
-  flutter_statusbarcolor_ns: ^0.3.0-nullsafety
 
 flutter_icons:
   android: false
