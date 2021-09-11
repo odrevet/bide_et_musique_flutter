@@ -31,7 +31,7 @@ class _WallWidgetState extends State<WallWidget> {
     super.initState();
   }
 
-  _updatePosts() async {
+  Future<void> _updatePosts() async {
     setState(() {
       posts = fetchPosts();
     });
@@ -153,6 +153,6 @@ class _WallWidgetState extends State<WallWidget> {
       ));
     }
 
-    return ListView(children: rows);
+    return RefreshIndicator(onRefresh: _updatePosts, child: ListView(children: rows));
   }
 }
