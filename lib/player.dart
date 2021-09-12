@@ -141,7 +141,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       album: "Bide et Musique",
       title: _song!.name,
       artist: _song!.artist,
-      duration: _song!.duration,
+      duration: _radioMode ? null : _song!.duration,
       artUri: Uri.parse(_song!.coverLink),
     );
 
