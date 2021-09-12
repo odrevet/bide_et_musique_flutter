@@ -49,22 +49,6 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
               await audioHandler.customAction('set_song', song.toJson());
               await audioHandler.play();
             });
-
-            /*bool success = false;
-            if (!AudioService.running) {
-              success = await AudioService.start(
-                backgroundTaskEntrypoint: audioPlayerTaskEntrypoint,
-                androidNotificationChannelName: 'Bide&Musique',
-                androidNotificationIcon: 'mipmap/ic_launcher',
-              );
-            }
-            if (success) {
-              SongAiringNotifier().songNowAiring!.then((song) async {
-                //await AudioService.customAction('set_radio_mode', true);
-                await AudioService.customAction('set_song', song.toJson());
-                await AudioService.play();
-              });
-            }*/
           },
         );
       },
