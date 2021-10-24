@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/song.dart';
 import '../services/song.dart';
 import '../utils.dart';
-import 'song.dart';
+import 'song_listing.dart';
 import 'song_airing_notifier.dart';
 
 class TitlesWidget extends StatefulWidget {

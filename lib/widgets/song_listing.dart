@@ -8,6 +8,14 @@ import 'song_app_bar.dart';
 import 'song_page.dart';
 import 'cover.dart';
 
+void launchSongPage(SongLink songLink, BuildContext context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SongPageWidget(
+              songLink: songLink, song: fetchSong(songLink.id))));
+}
+
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
@@ -71,10 +79,3 @@ class SongListingWidgetState extends State<SongListingWidget> {
   }
 }
 
-void launchSongPage(SongLink songLink, BuildContext context) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SongPageWidget(
-              songLink: songLink, song: fetchSong(songLink.id))));
-}

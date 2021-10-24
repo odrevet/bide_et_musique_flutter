@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/nowSong.dart';
 import '../utils.dart';
 import 'html_with_style.dart';
-import 'song.dart';
+import 'song_listing.dart';
 import 'cover.dart';
 
 class NowSongsWidget extends StatelessWidget {

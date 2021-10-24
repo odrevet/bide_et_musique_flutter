@@ -14,7 +14,7 @@ import 'bidebox.dart';
 import 'html_with_style.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
-import 'song.dart';
+import 'song_listing.dart';
 
 class DisconnectButton extends StatelessWidget {
   @override

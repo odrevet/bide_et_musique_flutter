@@ -8,7 +8,7 @@ import '../models/account.dart';
 import '../services/account.dart';
 import '../session.dart';
 import '../utils.dart';
-import '../widgets/song.dart';
+import '../widgets/song_listing.dart';
 import 'bidebox.dart';
 import 'html_with_style.dart';
 import 'pochettoscope.dart';

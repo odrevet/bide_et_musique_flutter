@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../models/artist.dart';
 import '../utils.dart';
-import 'song.dart';
+import 'song_listing.dart';
 
 class ArtistPageWidget extends StatelessWidget {
   final Future<Artist?>? artist;
