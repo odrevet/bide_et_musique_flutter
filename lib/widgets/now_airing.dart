@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 import '../utils.dart';
-import 'song.dart';
+import 'cover.dart';
 
 class NowAiringCard extends StatefulWidget {
   final Future<Song> _song;

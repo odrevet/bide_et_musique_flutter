@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
-import 'song.dart';
+import 'cover.dart';
 
 class PochettoscopeWidget extends StatefulWidget {
   final List<SongLink>? songLinks;

@@ -6,6 +6,7 @@ import '../models/nowSong.dart';
 import '../utils.dart';
 import 'html_with_style.dart';
 import 'song.dart';
+import 'cover.dart';
 
 class NowSongsWidget extends StatelessWidget {
   final Future<List<NowSong>>? nowSongs;

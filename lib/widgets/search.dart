@@ -5,6 +5,7 @@ import '../models/song.dart';
 import '../services/search.dart';
 import 'account.dart';
 import 'song.dart';
+import 'cover.dart';
 
 class SearchResults extends StatefulWidget {
   final String? search;

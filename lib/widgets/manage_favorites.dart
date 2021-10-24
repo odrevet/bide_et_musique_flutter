@@ -8,7 +8,7 @@ import '../models/song.dart';
 import '../services/account.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
-import 'song.dart';
+import 'cover.dart';
 import 'song_page.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
