@@ -178,7 +178,7 @@ class _SearchState extends State<Search> {
                 Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).accentColor, width: 2.0),
+                          color: Theme.of(context).colorScheme.secondary, width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),

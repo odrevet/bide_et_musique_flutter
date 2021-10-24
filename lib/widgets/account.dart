@@ -142,7 +142,7 @@ class _AccountPageState extends State<AccountPage> {
             padding: const EdgeInsets.all(10),
             shape: IndicatorShape.circle(size: 8),
             indicatorColor: Theme.of(context).canvasColor,
-            indicatorSelectorColor: Theme.of(context).accentColor,
+            indicatorSelectorColor: Theme.of(context).colorScheme.secondary,
             child: PageView(
               controller: controller,
               onPageChanged: (int page) => setState(() {
