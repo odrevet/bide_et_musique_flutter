@@ -9,6 +9,7 @@ import '../services/account.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
 import 'song.dart';
+import 'song_page.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   ManageFavoritesWidget({Key? key}) : super(key: key);

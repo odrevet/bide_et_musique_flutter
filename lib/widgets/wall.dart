@@ -12,7 +12,7 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'html_with_style.dart';
-import 'song.dart';
+import 'song_page.dart';
 
 class WallWidget extends StatefulWidget {
   WallWidget({Key? key}) : super(key: key);

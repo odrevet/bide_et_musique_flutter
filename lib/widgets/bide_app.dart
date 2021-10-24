@@ -10,7 +10,7 @@ import '../utils.dart' show ErrorDisplay;
 import '../widgets/drawer.dart';
 import '../widgets/now_airing.dart';
 import '../widgets/player.dart';
-import '../widgets/song.dart';
+import '../widgets/song_information.dart';
 import '../widgets/song_airing_notifier.dart';
 
 class BideApp extends StatefulWidget {

@@ -20,7 +20,7 @@ import 'pochettoscope_page.dart';
 import 'schedule.dart';
 import 'search.dart';
 import 'settings.dart';
-import 'song.dart';
+import 'song_page.dart';
 import 'thematics.dart';
 import 'titles.dart';
 import 'trombidoscope.dart';

@@ -10,7 +10,7 @@ import 'services/song.dart';
 import 'widgets/account.dart';
 import 'widgets/artist.dart';
 import 'widgets/program.dart';
-import 'widgets/song.dart';
+import 'widgets/song_page.dart';
 
 const site = 'bide-et-musique.com';
 const host = 'www.$site';
@@ -112,4 +112,10 @@ class ErrorDisplay extends StatelessWidget {
       ),
     );
   }
+}
+
+String createTag(SongLink songLink) {
+  return songLink.index == null
+      ? 'cover_${songLink.id}'
+      : 'cover_${songLink.id}_${songLink.index}';
 }

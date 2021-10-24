@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
+import '../utils.dart';
 import 'song.dart';
 
 class CoverViewer extends StatefulWidget {
