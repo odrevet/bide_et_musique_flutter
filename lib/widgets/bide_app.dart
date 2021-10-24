@@ -78,10 +78,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         _songAiring.periodicFetchSongNowAiring();
-        await AudioService.customAction('stop_song_listener', Map());
+        await audioHandler.customAction('stop_song_listener', Map());
         break;
       case AppLifecycleState.inactive:
-        await AudioService.customAction('start_song_listener', Map());
+        await audioHandler.customAction('start_song_listener', Map());
         break;
       default:
         break;

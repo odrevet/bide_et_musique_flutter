@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/song.dart';
 import 'utils.dart' show site, host;
+import 'services/song.dart' show fetchNowAiring;
 
 late AudioHandler audioHandler;
 
@@ -16,10 +17,12 @@ class MediaState {
   MediaState(this.mediaItem, this.position);
 }
 
+
 /// An [AudioHandler] for playing a single item.
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();
 
+  //Timer? _t;
   Song? _song;
   bool _radioMode = false;
   String? _sessionId;
@@ -29,6 +32,19 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   AudioPlayerHandler() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
   }
+
+  /*void periodicFetchSongNowPlaying() {
+    fetchNowAiring().then((song) async {
+      if (_radioMode == true)
+        await audioHandler.customAction('set_song', song.toJson());
+      int delay = (song.duration!.inSeconds -
+          (song.duration!.inSeconds * song.elapsedPcent! / 100))
+          .ceil();
+      _t = Timer(Duration(seconds: delay), () {
+        periodicFetchSongNowPlaying();
+      });
+    });
+  }*/
 
   Future<String> _getStreamUrl() async {
     String url;
@@ -130,6 +146,12 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       case 'set_session_id':
         _sessionId = extras!['session_id'];
         break;
+      /*case 'start_song_listener':
+        periodicFetchSongNowPlaying();
+        break;
+      case 'stop_song_listener':
+        _t?.cancel();
+        break;*/
       default:
         return super.customAction(name, extras);
     }
