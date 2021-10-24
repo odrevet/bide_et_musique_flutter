@@ -96,7 +96,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: [
             ElevatedButton.icon(
               icon: Icon(Icons.send),
@@ -168,32 +168,32 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               floating: true,
               flexibleSpace: FlexibleSpaceBar(
                   background: Row(children: [
-                    Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Hero(
-                                      tag: tag,
-                                      child: InkWell(
-                                          onTap: () {
-                                            _openCoverViewerDialog(
-                                                widget.songLink, context);
-                                          },
-                                          child: CachedNetworkImage(
-                                              imageUrl: coverLink)))),
-                            ),
-                            Expanded(
-                                flex: 1,
-                                child: SingleChildScrollView(
-                                    child: SongInformations(song: song))),
-                          ],
-                        ))
-                  ])),
+                Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Hero(
+                                  tag: tag,
+                                  child: InkWell(
+                                      onTap: () {
+                                        _openCoverViewerDialog(
+                                            widget.songLink, context);
+                                      },
+                                      child: CachedNetworkImage(
+                                          imageUrl: coverLink)))),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: SingleChildScrollView(
+                                child: SongInformations(song: song))),
+                      ],
+                    ))
+              ])),
             ),
           ];
         },
@@ -227,12 +227,12 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               children: <Widget>[
                 SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.only(left: 4.0, top: 2.0),
-                      child: HtmlWithStyle(
-                          data: song.lyrics == ''
-                              ? '<center><i>Paroles non renseignées</i></center>'
-                              : song.lyrics),
-                    )),
+                  padding: EdgeInsets.only(left: 4.0, top: 2.0),
+                  child: HtmlWithStyle(
+                      data: song.lyrics == ''
+                          ? '<center><i>Paroles non renseignées</i></center>'
+                          : song.lyrics),
+                )),
                 _buildViewComments(context, song),
               ],
             ),
@@ -242,9 +242,9 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     Widget? postNewComment = Session.accountLink.id == null || _currentPage != 1
         ? null
         : FloatingActionButton(
-      onPressed: () => _newMessageDialog(context, song),
-      child: Icon(Icons.add_comment),
-    );
+            onPressed: () => _newMessageDialog(context, song),
+            child: Icon(Icons.add_comment),
+          );
 
     return Scaffold(
       appBar: SongAppBar(widget.song),
@@ -275,11 +275,11 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName
               ? IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () async {
-              _editMessageDialog(context, song, comment);
-            },
-          )
+                  icon: Icon(Icons.edit),
+                  onPressed: () async {
+                    _editMessageDialog(context, song, comment);
+                  },
+                )
               : null));
       rows.add(Divider());
     }

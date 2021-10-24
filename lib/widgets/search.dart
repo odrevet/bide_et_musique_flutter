@@ -4,8 +4,8 @@ import '../models/search.dart';
 import '../models/song.dart';
 import '../services/search.dart';
 import 'account.dart';
-import 'song_listing.dart';
 import 'cover.dart';
+import 'song_listing.dart';
 
 class SearchResults extends StatefulWidget {
   final String? search;
@@ -179,7 +179,8 @@ class _SearchState extends State<Search> {
                 Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.secondary, width: 2.0),
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),

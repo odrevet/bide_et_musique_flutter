@@ -153,6 +153,7 @@ class _WallWidgetState extends State<WallWidget> {
       ));
     }
 
-    return RefreshIndicator(onRefresh: _updatePosts, child: ListView(children: rows));
+    return RefreshIndicator(
+        onRefresh: _updatePosts, child: ListView(children: rows));
   }
 }

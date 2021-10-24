@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../utils.dart';
 import '../models/song.dart';
 import '../services/song.dart';
+import '../utils.dart';
 import 'cover_viewer.dart';
 import 'song_page.dart';
 
@@ -41,9 +41,9 @@ class CoverWithGesture extends StatelessWidget {
 
   CoverWithGesture(
       {Key? key,
-        this.songLink,
-        this.fadeInDuration = const Duration(),
-        this.displayPlaceholder = false})
+      this.songLink,
+      this.fadeInDuration = const Duration(),
+      this.displayPlaceholder = false})
       : super(key: key);
 
   @override
@@ -95,7 +95,7 @@ class Cover extends StatelessWidget {
 
   Cover(this._url,
       {this.fadeInDuration = const Duration(),
-        this.displayPlaceholder = false});
+      this.displayPlaceholder = false});
 
   @override
   Widget build(BuildContext context) {

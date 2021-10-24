@@ -1,12 +1,13 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 import '../services/song.dart';
+import 'cover.dart';
 import 'cover_viewer.dart';
 import 'song_app_bar.dart';
 import 'song_page.dart';
-import 'cover.dart';
 
 void launchSongPage(SongLink songLink, BuildContext context) {
   Navigator.push(
@@ -78,4 +79,3 @@ class SongListingWidgetState extends State<SongListingWidget> {
     return ListView(children: rows);
   }
 }
-

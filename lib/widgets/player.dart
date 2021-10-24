@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:bide_et_musique/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
-import '../services/song.dart';
 import '../models/song.dart';
 import '../player.dart';
-import 'song_page.dart';
+import '../services/song.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';
+import 'song_page.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -64,18 +64,20 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       stream: audioHandler.mediaItem,
                       builder: (context, snapshot) {
                         final mediaItem = snapshot.data;
-                        final songLink = SongLink(id: getIdFromUrl(mediaItem!.id)!, name: mediaItem.title);
+                        final songLink = SongLink(
+                            id: getIdFromUrl(mediaItem!.id)!,
+                            name: mediaItem.title);
                         return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SongPageWidget(
-                                          songLink: songLink,
-                                          song: fetchSong(songLink.id))));
-                            },
-                          child: CachedNetworkImage(
-                              imageUrl: songLink.thumbLink),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SongPageWidget(
+                                        songLink: songLink,
+                                        song: fetchSong(songLink.id))));
+                          },
+                          child:
+                              CachedNetworkImage(imageUrl: songLink.thumbLink),
                         );
                       },
                     ),
@@ -88,7 +90,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         final playing = snapshot.data ?? false;
                         var controls;
 
-                        if(playing){
+                        if (playing) {
                           controls = [
                             _button(Icons.fast_rewind, audioHandler.rewind),
                             _button(Icons.pause, audioHandler.pause),
@@ -96,8 +98,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                             _button(
                                 Icons.fast_forward, audioHandler.fastForward),
                           ];
-                        }
-                        else{
+                        } else {
                           controls = [_button(Icons.stop, audioHandler.stop)];
                         }
 

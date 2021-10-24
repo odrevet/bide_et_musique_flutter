@@ -36,17 +36,17 @@ class SongInformations extends StatelessWidget {
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                          appBar: AppBar(
-                            title: Text(
-                                'Recherche de l\'année "${song!.year.toString()}"'),
-                          ),
-                          body:
-                          SearchResults(song!.year.toString(), '7')))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Scaffold(
+                              appBar: AppBar(
+                                title: Text(
+                                    'Recherche de l\'année "${song!.year.toString()}"'),
+                              ),
+                              body:
+                                  SearchResults(song!.year.toString(), '7')))),
+                }));
     }
 
     if (!compact && song!.artist != null) {
@@ -60,12 +60,12 @@ class SongInformations extends StatelessWidget {
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ArtistPageWidget(
-                          artist: fetchArtist(song!.artistId)))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ArtistPageWidget(
+                              artist: fetchArtist(song!.artistId)))),
+                }));
     }
 
     if (song!.durationPretty != null) {
@@ -91,16 +91,16 @@ class SongInformations extends StatelessWidget {
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                          appBar: AppBar(
-                            title:
-                            Text('Recherche du label "${song!.label}"'),
-                          ),
-                          body: SearchResults(song!.label, '5')))),
-            }));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Scaffold(
+                              appBar: AppBar(
+                                title:
+                                    Text('Recherche du label "${song!.label}"'),
+                              ),
+                              body: SearchResults(song!.label, '5')))),
+                }));
     }
 
     if (song!.reference != null && song!.reference != '') {

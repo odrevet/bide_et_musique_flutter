@@ -67,15 +67,14 @@ class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
           SongNowAiring songNowAiring = snapshot.data!;
 
           String? subtitle = songNowAiring.artist!;
-          if (songNowAiring.year != 0)
-            subtitle += ' • ${songNowAiring.year!}';
+          if (songNowAiring.year != 0) subtitle += ' • ${songNowAiring.year!}';
           subtitle += ' • ${songNowAiring.program.name!}';
 
           Widget title;
 
           if (widget._orientation == Orientation.portrait) {
             title = RichText(
-              softWrap : false,
+              softWrap: false,
               overflow: TextOverflow.fade,
               text: TextSpan(
                 text: songNowAiring.name,
