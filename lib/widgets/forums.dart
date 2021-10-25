@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/forum.dart';
 import '../services/forum.dart';
-import '../utils.dart';
+import '../widgets/error_display.dart';
 import 'html_with_style.dart';
 
 class ForumWidget extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/program.dart';
 import '../services/program.dart';
-import '../utils.dart';
+import 'error_display.dart';
 import 'program.dart';
 
 class ThematicPageWidget extends StatefulWidget {

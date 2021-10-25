@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/nowSong.dart';
-import '../utils.dart';
+import '../widgets/error_display.dart';
 import 'cover.dart';
 import 'html_with_style.dart';
 import 'song_listing.dart';

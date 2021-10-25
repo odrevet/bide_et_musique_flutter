@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/song.dart';
 import 'utils.dart' show site, host;
-import 'services/song.dart' show fetchNowAiring;
 
 late AudioHandler audioHandler;
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
-import '../utils.dart';
+import '../widgets/error_display.dart';
 import 'song_listing.dart';
 
 class SongsWidget extends StatelessWidget {
