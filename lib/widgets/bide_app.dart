@@ -73,20 +73,20 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  /*@override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
         _songAiring.periodicFetchSongNowAiring();
-        await audioHandler.customAction('stop_song_listener', Map());
+        //await audioHandler.customAction('stop_song_listener', Map());
         break;
-      case AppLifecycleState.inactive:
+      /*case AppLifecycleState.inactive:
         await audioHandler.customAction('start_song_listener', Map());
-        break;
+        break;*/
       default:
         break;
     }
-  }*/
+  }
 
   Widget refreshNowAiringSongButton() {
     return Center(
