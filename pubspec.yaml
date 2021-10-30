@@ -22,6 +22,7 @@ dependencies:
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.12
   xml: ^5.3.1
+  wakelock: ^0.5.6
   flutter_launcher_icons: ^0.9.1
 
 flutter_icons:

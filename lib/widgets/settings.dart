@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wakelock/wakelock.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool? _rememberIdents = false;
   bool? _autoConnect = false;
+  bool? _wakelock = false;
   int _relay = 1;
 
   @override
@@ -26,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
       _autoConnect = prefs.getBool('autoConnect') ?? false;
+      _wakelock = prefs.getBool('wakelock') ?? false;
       _relay = prefs.getInt('relay') ?? 1;
     });
   }
@@ -41,6 +44,14 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _autoConnect = value;
       _saveOptionBool('autoConnect', value);
+    });
+  }
+
+  void _onToggleWakeLock(bool? value) {
+    setState(() {
+      _wakelock = value;
+      Wakelock.toggle(enable: _wakelock!);
+      _saveOptionBool('wakelock', value);
     });
   }
 
@@ -99,6 +110,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: _autoConnect,
                     onChanged:
                         _rememberIdents == true ? _onToggleAutoConnect : null),
+                CheckboxListTile(
+                    title: Text(
+                        'Empêcher la mise en veille'),
+                    value: _wakelock,
+                    onChanged: _onToggleWakeLock),
               ])),
             ],
           )
