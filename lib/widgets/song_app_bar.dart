@@ -340,54 +340,70 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
               return _button(Icons.play_arrow, this.playSong);
             }
 
-            // check if the displayed song is the song being played
-            return getIdFromUrl(mediaItem.id) == widget._song!.id
-                ? Column(
-                    children: [
-                      // Play/pause/stop buttons.
-                      StreamBuilder<bool>(
-                        stream: audioHandler.playbackState
-                            .map((state) => state.playing)
-                            .distinct(),
-                        builder: (context, snapshot) {
-                          final playing = snapshot.data ?? false;
-                          var controls;
-                          if (playing) {
-                            controls = [
-                              _button(Icons.fast_rewind, audioHandler.rewind),
-                              _button(Icons.pause, audioHandler.pause),
-                              _button(
-                                  Icons.fast_forward, audioHandler.fastForward),
-                            ];
-                          } else {
-                            controls = [
-                              _button(Icons.play_arrow, this.playSong),
-                            ];
-                          }
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: controls,
-                          );
-                        },
-                      ),
-                      // A seek bar.
-                      StreamBuilder<MediaState>(
-                        stream: _mediaStateStream,
-                        builder: (context, snapshot) {
-                          final mediaState = snapshot.data;
-                          return SeekBar(
-                            duration: mediaState?.mediaItem?.duration ??
-                                Duration.zero,
-                            position: mediaState?.position ?? Duration.zero,
-                            onChangeEnd: (newPosition) {
-                              audioHandler.seek(newPosition);
+            return FutureBuilder<dynamic>(
+                future: audioHandler.customAction('get_radio_mode'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    bool radioMode = snapshot.data;
+                    if (radioMode) {
+                      return _button(Icons.play_arrow, this.playSong);
+                    }
+                    else {
+                      // check if the displayed song is the song being played
+                      return getIdFromUrl(mediaItem.id) == widget._song!.id
+                          ? Column(
+                        children: [
+                          // Play/pause/stop buttons.
+                          StreamBuilder<bool>(
+                            stream: audioHandler.playbackState
+                                .map((state) => state.playing)
+                                .distinct(),
+                            builder: (context, snapshot) {
+                              final playing = snapshot.data ?? false;
+                              var controls;
+                              if (playing) {
+                                controls = [
+                                  _button(Icons.fast_rewind, audioHandler.rewind),
+                                  _button(Icons.pause, audioHandler.pause),
+                                  _button(
+                                      Icons.fast_forward, audioHandler.fastForward),
+                                ];
+                              } else {
+                                controls = [
+                                  _button(Icons.play_arrow, this.playSong),
+                                ];
+                              }
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: controls,
+                              );
                             },
-                          );
-                        },
-                      ),
-                    ],
-                  )
-                : _button(Icons.play_arrow, this.playSong);
+                          ),
+                          // A seek bar.
+                          StreamBuilder<MediaState>(
+                            stream: _mediaStateStream,
+                            builder: (context, snapshot) {
+                              final mediaState = snapshot.data;
+                              return SeekBar(
+                                duration: mediaState?.mediaItem?.duration ??
+                                    Duration.zero,
+                                position: mediaState?.position ?? Duration.zero,
+                                onChangeEnd: (newPosition) {
+                                  audioHandler.seek(newPosition);
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                          : _button(Icons.play_arrow, this.playSong);
+                    }
+                  }
+
+                  return CircularProgressIndicator();
+                } );
+
+
           },
         ),
       ],
