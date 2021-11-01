@@ -33,6 +33,7 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
+    - assets/lets-encrypt-r3.pem
     - assets/bandeau.png
     - assets/bm_logo_white.png
     - assets/vinyl-default.jpg
