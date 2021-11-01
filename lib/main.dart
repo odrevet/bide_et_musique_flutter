@@ -17,8 +17,8 @@ Future<void> main() async {
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandler(),
     config: const AudioServiceConfig(
-      androidNotificationChannelId: 'com.ryanheise.myapp.channel.audio',
-      androidNotificationChannelName: 'Audio playback',
+      androidNotificationChannelId: 'fr.odrevet.bide_et_musique.channel.audio',
+      androidNotificationChannelName: 'Audio playback for Bide et Musique',
       androidNotificationOngoing: true,
     ),
   );
