@@ -21,6 +21,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
   _SongPlayerWidgetState();
 
   Future<void> playSong() async {
+    audioHandler.stop();
     await audioHandler.customAction('set_session_id',
         <String, dynamic>{'session_id': Session.headers['cookie']});
     await audioHandler
