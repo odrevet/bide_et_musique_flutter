@@ -64,21 +64,27 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       stream: audioHandler.mediaItem,
                       builder: (context, snapshot) {
                         final mediaItem = snapshot.data;
-                        final songLink = SongLink(
-                            id: getIdFromUrl(mediaItem!.id)!,
-                            name: mediaItem.title);
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SongPageWidget(
-                                        songLink: songLink,
-                                        song: fetchSong(songLink.id))));
-                          },
-                          child:
-                              CachedNetworkImage(imageUrl: songLink.thumbLink),
-                        );
+                        if(mediaItem != null){
+                          final songLink = SongLink(
+                              id: getIdFromUrl(mediaItem.id)!,
+                              name: mediaItem.title);
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SongPageWidget(
+                                          songLink: songLink,
+                                          song: fetchSong(songLink.id))));
+                            },
+                            child:
+                            CachedNetworkImage(imageUrl: songLink.thumbLink),
+                          );
+                        }
+                        else{
+                          return Container();
+                        }
+
                       },
                     ),
                     // Play/pause/stop buttons.
