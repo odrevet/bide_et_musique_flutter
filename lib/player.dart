@@ -32,19 +32,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
   }
 
-  /*void periodicFetchSongNowPlaying() {
-    fetchNowAiring().then((song) async {
-      if (_radioMode == true)
-        await audioHandler.customAction('set_song', song.toJson());
-      int delay = (song.duration!.inSeconds -
-          (song.duration!.inSeconds * song.elapsedPcent! / 100))
-          .ceil();
-      _t = Timer(Duration(seconds: delay), () {
-        periodicFetchSongNowPlaying();
-      });
-    });
-  }*/
-
   Future<String> _getStreamUrl() async {
     String url;
     if (_radioMode == true) {
@@ -145,12 +132,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       case 'set_session_id':
         _sessionId = extras!['session_id'];
         break;
-      /*case 'start_song_listener':
-        periodicFetchSongNowPlaying();
-        break;
-      case 'stop_song_listener':
-        _t?.cancel();
-        break;*/
       default:
         return super.customAction(name, extras);
     }

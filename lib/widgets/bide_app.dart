@@ -80,9 +80,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         _songAiring.periodicFetchSongNowAiring();
         //await audioHandler.customAction('stop_song_listener', Map());
         break;
-      /*case AppLifecycleState.inactive:
-        await audioHandler.customAction('start_song_listener', Map());
-        break;*/
       default:
         break;
     }
