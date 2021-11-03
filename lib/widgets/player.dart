@@ -93,7 +93,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         if (playing) {
                           controls = [
                             _button(Icons.fast_rewind, audioHandler.rewind),
-                            _button(Icons.pause, audioHandler.pause),
+                            //_button(Icons.pause, audioHandler.pause),
                             _button(Icons.stop, audioHandler.stop),
                             _button(
                                 Icons.fast_forward, audioHandler.fastForward),

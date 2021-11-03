@@ -57,7 +57,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                       return getIdFromUrl(mediaItem.id) == widget._song!.id
                           ? Column(
                         children: [
-                          // Play/pause/stop buttons.
                           StreamBuilder<bool>(
                             stream: audioHandler.playbackState
                                 .map((state) => state.playing)
