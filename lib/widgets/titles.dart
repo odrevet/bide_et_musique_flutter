@@ -84,7 +84,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
         ),
         body: TabBarView(
           children: [
-            SongListingWidget(songLinks['next']),
+            SongListingWidget(songLinks['next'], split:true),
             SongListingWidget(songLinks['past']),
           ],
         ),
