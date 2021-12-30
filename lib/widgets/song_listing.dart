@@ -35,10 +35,10 @@ class SongListingWidgetState extends State<SongListingWidget> {
     var rows = <ListTile>[];
 
     for (SongLink songLink in widget._songLinks!) {
-      String subtitle = songLink.artist == null ? '' : songLink.artist!;
+      String subtitle = '';
+      subtitle = songLink.artist ?? songLink.artist!;
 
       if (songLink.info != null && songLink.info!.isNotEmpty) {
-        if (subtitle != '') subtitle += ' • ';
         subtitle += songLink.info!;
       }
 
