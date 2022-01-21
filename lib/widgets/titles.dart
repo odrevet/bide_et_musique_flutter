@@ -30,18 +30,23 @@ class _TitlesWidgetState extends State<TitlesWidget> {
 
   @override
   initState() {
+    // Update song list and title when song airing changes
     listener = () {
       if (mounted) updateTitles();
       widget._songAiringNotifier.songAiring!.then((song) async {
         setState(() {
           _title = song.name;
         });
-
       });
     };
 
     _songLinks = fetchTitles();
     widget._songAiringNotifier.addListener(listener);
+
+    // Update title on page load
+    fetchAiring().then((song) => setState(() {
+          _title = song.name;
+        }));
     super.initState();
   }
 
@@ -91,7 +96,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
         ),
         body: TabBarView(
           children: [
-            SongListingWidget(songLinks['next'], split:true),
+            SongListingWidget(songLinks['next'], split: true),
             SongListingWidget(songLinks['past']),
           ],
         ),
