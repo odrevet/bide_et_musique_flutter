@@ -21,20 +21,20 @@ class BideApp extends StatefulWidget {
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Future<SongAiring>? _songNowAiring;
   Exception? _e;
-  late SongAiringNotifier _songAiring;
+  late SongAiringNotifier _songAiringNotifier;
 
   void initSongFetch() {
     _e = null;
-    _songAiring = SongAiringNotifier();
-    _songAiring.addListener(() {
+    _songAiringNotifier = SongAiringNotifier();
+    _songAiringNotifier.addListener(() {
       setState(() {
-        _songNowAiring = _songAiring.songAiring;
+        _songNowAiring = _songAiringNotifier.songAiring;
         if (_songNowAiring == null)
-          _e = _songAiring.e;
+          _e = _songAiringNotifier.e;
         else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true) {
-              _songAiring.songAiring!.then((song) async {
+              _songAiringNotifier.songAiring!.then((song) async {
                 await audioHandler.customAction('set_song', song.toJson());
               });
             }
@@ -42,7 +42,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         }
       });
     });
-    _songAiring.periodicFetchSongNowAiring();
+    _songAiringNotifier.periodicFetchSongNowAiring();
   }
 
   @override
@@ -77,7 +77,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        _songAiring.periodicFetchSongNowAiring();
+        _songAiringNotifier.periodicFetchSongNowAiring();
         //await audioHandler.customAction('stop_song_listener', Map());
         break;
       default:
@@ -95,7 +95,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           ElevatedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _songAiring.periodicFetchSongNowAiring();
+              _songAiringNotifier.periodicFetchSongNowAiring();
             },
             label: Text('Ré-essayer maintenant'),
           ),
