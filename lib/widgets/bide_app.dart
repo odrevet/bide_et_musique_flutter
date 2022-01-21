@@ -6,11 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/song.dart';
 import '../player.dart' show audioHandler;
 import '../services/identification.dart';
-import '../widgets/airing.dart';
+import '../widgets/airing_card.dart';
 import '../widgets/drawer.dart';
 import '../widgets/error_display.dart';
 import '../widgets/player.dart';
 import '../widgets/song_airing_notifier.dart';
+import '../widgets/song_airing_app_bar.dart';
 import '../widgets/song_information.dart';
 
 class BideApp extends StatefulWidget {
