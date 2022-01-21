@@ -66,11 +66,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                     var controls;
                                     if (playing) {
                                       controls = [
-                                        _button(Icons.fast_rewind,
+                                        _button(Icons.fast_rewind_rounded,
                                             audioHandler.rewind),
                                         _button(
                                             Icons.pause, audioHandler.pause),
-                                        _button(Icons.fast_forward,
+                                        _button(Icons.fast_forward_rounded,
                                             audioHandler.fastForward),
                                       ];
                                     } else {
