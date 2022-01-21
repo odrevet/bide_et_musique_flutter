@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 
-class SongAiringAppBar extends StatefulWidget with PreferredSizeWidget {
+class SongAiringTitle extends StatefulWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
   final Future<SongAiring>? _songAiring;
   final Orientation _orientation;
 
-  SongAiringAppBar(this._orientation, this._songAiring, {Key? key})
+  SongAiringTitle(this._orientation, this._songAiring, {Key? key})
       : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
   @override
-  _SongAiringAppBarState createState() => _SongAiringAppBarState();
+  _SongAiringTitleState createState() => _SongAiringTitleState();
 }
 
-class _SongAiringAppBarState extends State<SongAiringAppBar> {
+class _SongAiringTitleState extends State<SongAiringTitle> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SongAiring>(
@@ -64,12 +64,12 @@ class _SongAiringAppBarState extends State<SongAiringAppBar> {
             );
           }
 
-          return AppBar(title: title);
+          return title;
         } else if (snapshot.hasError) {
-          return AppBar(title: Text("Erreur"));
+          return Text("Erreur");
         }
 
-        return AppBar(title: Text(""));
+        return Text("Chargement");
       },
     );
   }

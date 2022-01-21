@@ -11,7 +11,7 @@ import '../widgets/drawer.dart';
 import '../widgets/error_display.dart';
 import '../widgets/player.dart';
 import '../widgets/song_airing_notifier.dart';
-import '../widgets/song_airing_app_bar.dart';
+import '../widgets/song_airing_title.dart';
 import '../widgets/song_information.dart';
 
 class BideApp extends StatefulWidget {
@@ -122,7 +122,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongAiringAppBar(orientation, _songAiring),
+              appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
@@ -131,7 +131,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               body: airingWidget);
         } else {
           return Scaffold(
-              appBar: SongAiringAppBar(orientation, _songAiring),
+              appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
