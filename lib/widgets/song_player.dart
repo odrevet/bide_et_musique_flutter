@@ -52,62 +52,65 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                     bool radioMode = snapshot.data;
                     if (radioMode) {
                       return _button(Icons.play_arrow, this.playSong);
-                    }
-                    else {
+                    } else {
                       // check if the displayed song is the song being played
                       return getIdFromUrl(mediaItem.id) == widget._song!.id
                           ? Column(
-                        children: [
-                          StreamBuilder<bool>(
-                            stream: audioHandler.playbackState
-                                .map((state) => state.playing)
-                                .distinct(),
-                            builder: (context, snapshot) {
-                              final playing = snapshot.data ?? false;
-                              var controls;
-                              if (playing) {
-                                controls = [
-                                  _button(Icons.fast_rewind, audioHandler.rewind),
-                                  _button(Icons.pause, audioHandler.pause),
-                                  _button(
-                                      Icons.fast_forward, audioHandler.fastForward),
-                                ];
-                              } else {
-                                controls = [
-                                  _button(Icons.play_arrow, this.playSong),
-                                ];
-                              }
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: controls,
-                              );
-                            },
-                          ),
-                          // A seek bar.
-                          StreamBuilder<MediaState>(
-                            stream: _mediaStateStream,
-                            builder: (context, snapshot) {
-                              final mediaState = snapshot.data;
-                              return SeekBar(
-                                duration: mediaState?.mediaItem?.duration ??
-                                    Duration.zero,
-                                position: mediaState?.position ?? Duration.zero,
-                                onChangeEnd: (newPosition) {
-                                  audioHandler.seek(newPosition);
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      )
+                              children: [
+                                StreamBuilder<bool>(
+                                  stream: audioHandler.playbackState
+                                      .map((state) => state.playing)
+                                      .distinct(),
+                                  builder: (context, snapshot) {
+                                    final playing = snapshot.data ?? false;
+                                    var controls;
+                                    if (playing) {
+                                      controls = [
+                                        _button(Icons.fast_rewind,
+                                            audioHandler.rewind),
+                                        _button(
+                                            Icons.pause, audioHandler.pause),
+                                        _button(Icons.fast_forward,
+                                            audioHandler.fastForward),
+                                      ];
+                                    } else {
+                                      controls = [
+                                        _button(
+                                            Icons.play_arrow, this.playSong),
+                                      ];
+                                    }
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: controls,
+                                    );
+                                  },
+                                ),
+                                // A seek bar.
+                                StreamBuilder<MediaState>(
+                                  stream: _mediaStateStream,
+                                  builder: (context, snapshot) {
+                                    final mediaState = snapshot.data;
+                                    return SeekBar(
+                                      duration:
+                                          mediaState?.mediaItem?.duration ??
+                                              Duration.zero,
+                                      position:
+                                          mediaState?.position ?? Duration.zero,
+                                      onChangeEnd: (newPosition) {
+                                        audioHandler.seek(newPosition);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
                           : _button(Icons.play_arrow, this.playSong);
                     }
                   }
 
                   return CircularProgressIndicator();
-                } );
-
-
+                });
           },
         ),
       ],
@@ -120,11 +123,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
           audioHandler.mediaItem,
           AudioService.position,
-              (mediaItem, position) => MediaState(mediaItem, position));
+          (mediaItem, position) => MediaState(mediaItem, position));
 
   IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
-    icon: Icon(iconData),
-    iconSize: 64.0,
-    onPressed: onPressed,
-  );
+        icon: Icon(iconData),
+        iconSize: 64.0,
+        onPressed: onPressed,
+      );
 }

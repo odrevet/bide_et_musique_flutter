@@ -111,8 +111,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     onChanged:
                         _rememberIdents == true ? _onToggleAutoConnect : null),
                 CheckboxListTile(
-                    title: Text(
-                        'Empêcher la mise en veille'),
+                    title: Text('Empêcher la mise en veille'),
                     value: _wakelock,
                     onChanged: _onToggleWakeLock),
               ])),

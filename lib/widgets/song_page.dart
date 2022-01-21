@@ -12,10 +12,10 @@ import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'cover_viewer.dart';
+import 'error_display.dart';
 import 'html_with_style.dart';
 import 'song_app_bar.dart';
 import 'song_information.dart';
-import 'error_display.dart';
 
 class SongPageWidget extends StatefulWidget {
   final SongLink? songLink;

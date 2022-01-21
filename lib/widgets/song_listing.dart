@@ -22,7 +22,8 @@ class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
   var split;
 
-  SongListingWidget(this._songLinks, {this.split = false, Key? key}) : super(key: key);
+  SongListingWidget(this._songLinks, {this.split = false, Key? key})
+      : super(key: key);
 
   @override
   SongListingWidgetState createState() => SongListingWidgetState();
@@ -41,34 +42,34 @@ class SongListingWidgetState extends State<SongListingWidget> {
       subtitle = songLink.artist ?? songLink.artist!;
 
       if (songLink.info != null && songLink.info!.isNotEmpty) {
-        if(this.widget.split == true && latest_info != songLink.info!){
+        if (this.widget.split == true && latest_info != songLink.info!) {
           latest_info = songLink.info!;
-          rows.add(Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Divider(
-                  indent: 20.0,
-                  endIndent: 10.0,
-                  thickness: 1,
+          rows.add(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Divider(
+                    indent: 20.0,
+                    endIndent: 10.0,
+                    thickness: 1,
+                  ),
                 ),
-              ),
-              Text(
-                songLink.info!,
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-              Expanded(
-                child: Divider(
-                  indent: 10.0,
-                  endIndent: 20.0,
-                  thickness: 1,
+                Text(
+                  songLink.info!,
+                  style: TextStyle(color: Colors.blueGrey),
                 ),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: Divider(
+                    indent: 10.0,
+                    endIndent: 20.0,
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
           );
-        }
-        else if(this.widget.split != true){
+        } else if (this.widget.split != true) {
           subtitle += ' • ' + songLink.info!;
         }
       }

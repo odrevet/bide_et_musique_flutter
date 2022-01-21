@@ -16,7 +16,6 @@ class MediaState {
   MediaState(this.mediaItem, this.position);
 }
 
-
 /// An [AudioHandler] for playing a single item.
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();

@@ -20,10 +20,10 @@ class ErrorDisplay extends StatelessWidget {
           TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
           TextSpan(
               text:
-              ' \n • Verifiez que votre appareil est connecté à Internet\n'),
+                  ' \n • Verifiez que votre appareil est connecté à Internet\n'),
           TextSpan(
               text:
-              ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
+                  ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
         ],
       ),
     );

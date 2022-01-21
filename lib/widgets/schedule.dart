@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/schedule.dart';
-import 'error_display.dart';
 import '../utils.dart';
+import 'error_display.dart';
 
 class Schedule extends StatelessWidget {
   final Future<List<DaySchedule?>>? schedule;

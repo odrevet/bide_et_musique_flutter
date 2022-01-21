@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 
-import 'song_player.dart';
 import '../models/song.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
 import '../session.dart';
 import '../utils.dart';
+import 'song_player.dart';
 
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song>? _song;
@@ -297,4 +297,3 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
         onPressed: () => launchURL(_song!.link));
   }
 }
-
