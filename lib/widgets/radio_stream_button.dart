@@ -7,9 +7,9 @@ import '../player.dart' show audioHandler;
 import '../widgets/song_airing_notifier.dart';
 
 class RadioStreamButton extends StatefulWidget {
-  final Future<SongAiring>? _songNowAiring;
+  final Future<SongAiring>? _songAiring;
 
-  RadioStreamButton(this._songNowAiring);
+  RadioStreamButton(this._songAiring);
 
   @override
   _RadioStreamButtonState createState() => _RadioStreamButtonState();
@@ -23,7 +23,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
         ));
 
     return FutureBuilder<SongAiring>(
-      future: widget._songNowAiring,
+      future: widget._songAiring,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           label = RichText(

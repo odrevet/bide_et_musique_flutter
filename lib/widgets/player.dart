@@ -15,9 +15,9 @@ import 'song_page.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
-  final Future<SongAiring>? _songNowAiring;
+  final Future<SongAiring>? _songAiring;
 
-  PlayerWidget(this.orientation, this._songNowAiring);
+  PlayerWidget(this.orientation, this._songAiring);
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -40,7 +40,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
         final playing = snapshot.data ?? false;
 
         if (!playing) {
-          return RadioStreamButton(widget._songNowAiring);
+          return RadioStreamButton(widget._songAiring);
         }
 
         return FutureBuilder<dynamic>(
@@ -54,7 +54,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   children: [
                     playing
                         ? _button(Icons.stop, audioHandler.stop)
-                        : RadioStreamButton(widget._songNowAiring),
+                        : RadioStreamButton(widget._songAiring),
                   ],
                 );
               } else {

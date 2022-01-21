@@ -67,7 +67,7 @@ Future<List<NowSong>> fetchNowSongs() async {
   }
 }
 
-Future<SongAiring> fetchNowAiring() async {
+Future<SongAiring> fetchAiring() async {
   final url = '$baseUri/wapi/song/now';
   try {
     final responseJson = await Session.get(url);

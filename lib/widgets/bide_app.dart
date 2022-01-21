@@ -42,7 +42,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         }
       });
     });
-    _songAiringNotifier.periodicFetchSongNowAiring();
+    _songAiringNotifier.periodicFetchSongAiring();
   }
 
   @override
@@ -77,7 +77,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        _songAiringNotifier.periodicFetchSongNowAiring();
+        _songAiringNotifier.periodicFetchSongAiring();
         //await audioHandler.customAction('stop_song_listener', Map());
         break;
       default:
@@ -85,7 +85,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
   }
 
-  Widget refreshNowAiringSongButton() {
+  Widget refreshAiringSongButton() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +95,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           ElevatedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _songAiringNotifier.periodicFetchSongNowAiring();
+              _songAiringNotifier.periodicFetchSongAiring();
             },
             label: Text('Ré-essayer maintenant'),
           ),
@@ -111,18 +111,18 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     Widget nowAiringWidget;
 
     if (_e != null && _songAiring == null)
-      nowAiringWidget = refreshNowAiringSongButton();
+      nowAiringWidget = refreshAiringSongButton();
     else if (_songAiring == null)
       nowAiringWidget = Center(child: CircularProgressIndicator());
     else
-      nowAiringWidget = NowAiringCard(_songAiring!);
+      nowAiringWidget = AiringCard(_songAiring!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowAiringAppBar(orientation, _songAiring),
+              appBar: SongAiringAppBar(orientation, _songAiring),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
@@ -131,7 +131,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               body: nowAiringWidget);
         } else {
           return Scaffold(
-              appBar: SongNowAiringAppBar(orientation, _songAiring),
+              appBar: SongAiringAppBar(orientation, _songAiring),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[

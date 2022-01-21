@@ -18,18 +18,18 @@ class SongAiringNotifier extends ChangeNotifier {
   dynamic e;
   Timer? _t;
 
-  void periodicFetchSongNowAiring() {
+  void periodicFetchSongAiring() {
     e = null;
     _reset();
     try {
-      songAiring = fetchNowAiring();
+      songAiring = fetchAiring();
       songAiring!.then((s) async {
         notifyListeners();
         int delay = (s.duration!.inSeconds -
                 (s.duration!.inSeconds * s.elapsedPcent! / 100))
             .ceil();
         _t = Timer(Duration(seconds: delay), () {
-          periodicFetchSongNowAiring();
+          periodicFetchSongAiring();
         });
       }, onError: (e) {
         this.e = e;

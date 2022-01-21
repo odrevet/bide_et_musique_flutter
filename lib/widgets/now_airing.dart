@@ -6,17 +6,17 @@ import '../models/song.dart';
 import '../widgets/error_display.dart';
 import 'cover.dart';
 
-class NowAiringCard extends StatefulWidget {
+class AiringCard extends StatefulWidget {
   final Future<Song> _song;
 
-  NowAiringCard(this._song, {Key? key}) : super(key: key);
+  AiringCard(this._song, {Key? key}) : super(key: key);
 
   @override
-  _NowAiringCardState createState() => _NowAiringCardState();
+  _AiringCardState createState() => _AiringCardState();
 }
 
-class _NowAiringCardState extends State<NowAiringCard> {
-  _NowAiringCardState();
+class _AiringCardState extends State<AiringCard> {
+  _AiringCardState();
 
   @override
   Widget build(BuildContext context) {
@@ -43,32 +43,32 @@ class _NowAiringCardState extends State<NowAiringCard> {
   }
 }
 
-class SongNowAiringAppBar extends StatefulWidget with PreferredSizeWidget {
+class SongAiringAppBar extends StatefulWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
-  final Future<SongAiring>? _songNowAiring;
+  final Future<SongAiring>? _songAiring;
   final Orientation _orientation;
 
-  SongNowAiringAppBar(this._orientation, this._songNowAiring, {Key? key})
+  SongAiringAppBar(this._orientation, this._songAiring, {Key? key})
       : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
   @override
-  _SongNowAiringAppBarState createState() => _SongNowAiringAppBarState();
+  _SongAiringAppBarState createState() => _SongAiringAppBarState();
 }
 
-class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
+class _SongAiringAppBarState extends State<SongAiringAppBar> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SongAiring>(
-      future: widget._songNowAiring,
+      future: widget._songAiring,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SongAiring songNowAiring = snapshot.data!;
+          SongAiring songAiring = snapshot.data!;
 
-          String? subtitle = songNowAiring.artist!;
-          if (songNowAiring.year != 0) subtitle += ' • ${songNowAiring.year!}';
-          subtitle += ' • ${songNowAiring.program.name!}';
+          String? subtitle = songAiring.artist!;
+          if (songAiring.year != 0) subtitle += ' • ${songAiring.year!}';
+          subtitle += ' • ${songAiring.program.name!}';
 
           Widget title;
 
@@ -77,7 +77,7 @@ class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
               softWrap: false,
               overflow: TextOverflow.fade,
               text: TextSpan(
-                text: songNowAiring.name,
+                text: songAiring.name,
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
             );
           } else {
             title = Text(
-              '${songNowAiring.name} • $subtitle',
+              '${songAiring.name} • $subtitle',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
