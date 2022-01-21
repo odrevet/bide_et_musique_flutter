@@ -108,14 +108,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     Widget home;
     Widget? body;
-    Widget nowAiringWidget;
+    Widget airingWidget;
 
     if (_e != null && _songAiring == null)
-      nowAiringWidget = refreshAiringSongButton();
+      airingWidget = refreshAiringSongButton();
     else if (_songAiring == null)
-      nowAiringWidget = Center(child: CircularProgressIndicator());
+      airingWidget = Center(child: CircularProgressIndicator());
     else
-      nowAiringWidget = AiringCard(_songAiring!);
+      airingWidget = AiringCard(_songAiring!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
@@ -128,14 +128,14 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                   child: BottomAppBar(
                       child: PlayerWidget(orientation, _songAiring))),
               drawer: DrawerWidget(),
-              body: nowAiringWidget);
+              body: airingWidget);
         } else {
           return Scaffold(
               appBar: SongAiringAppBar(orientation, _songAiring),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
-                  Expanded(child: nowAiringWidget),
+                  Expanded(child: airingWidget),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
