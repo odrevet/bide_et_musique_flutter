@@ -64,7 +64,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                       stream: audioHandler.mediaItem,
                       builder: (context, snapshot) {
                         final mediaItem = snapshot.data;
-                        if(mediaItem != null){
+                        if (mediaItem != null) {
                           final songLink = SongLink(
                               id: getIdFromUrl(mediaItem.id)!,
                               name: mediaItem.title);
@@ -77,14 +77,12 @@ class _PlayerWidgetState extends State<PlayerWidget>
                                           songLink: songLink,
                                           song: fetchSong(songLink.id))));
                             },
-                            child:
-                            CachedNetworkImage(imageUrl: songLink.thumbLink),
+                            child: CachedNetworkImage(
+                                imageUrl: songLink.thumbLink),
                           );
-                        }
-                        else{
+                        } else {
                           return Container();
                         }
-
                       },
                     ),
                     // Play/pause/stop buttons.

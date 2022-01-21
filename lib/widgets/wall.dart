@@ -11,9 +11,9 @@ import '../services/wall.dart';
 import '../session.dart';
 import '../utils.dart';
 import 'account.dart';
+import 'error_display.dart';
 import 'html_with_style.dart';
 import 'song_page.dart';
-import 'error_display.dart';
 
 class WallWidget extends StatefulWidget {
   WallWidget({Key? key}) : super(key: key);
