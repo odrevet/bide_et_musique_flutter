@@ -19,7 +19,7 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  Future<SongAiring>? _songNowAiring;
+  Future<SongAiring>? _songAiring;
   Exception? _e;
   late SongAiringNotifier _songAiringNotifier;
 
@@ -28,8 +28,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _songAiringNotifier = SongAiringNotifier();
     _songAiringNotifier.addListener(() {
       setState(() {
-        _songNowAiring = _songAiringNotifier.songAiring;
-        if (_songNowAiring == null)
+        _songAiring = _songAiringNotifier.songAiring;
+        if (_songAiring == null)
           _e = _songAiringNotifier.e;
         else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
@@ -110,28 +110,28 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     Widget? body;
     Widget nowAiringWidget;
 
-    if (_e != null && _songNowAiring == null)
+    if (_e != null && _songAiring == null)
       nowAiringWidget = refreshNowAiringSongButton();
-    else if (_songNowAiring == null)
+    else if (_songAiring == null)
       nowAiringWidget = Center(child: CircularProgressIndicator());
     else
-      nowAiringWidget = NowAiringCard(_songNowAiring!);
+      nowAiringWidget = NowAiringCard(_songAiring!);
 
     //no url match from deep link or not launched from deep link
     if (body == null)
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: SongNowAiringAppBar(orientation, _songNowAiring),
+              appBar: SongNowAiringAppBar(orientation, _songAiring),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
-                      child: PlayerWidget(orientation, _songNowAiring))),
+                      child: PlayerWidget(orientation, _songAiring))),
               drawer: DrawerWidget(),
               body: nowAiringWidget);
         } else {
           return Scaffold(
-              appBar: SongNowAiringAppBar(orientation, _songNowAiring),
+              appBar: SongNowAiringAppBar(orientation, _songAiring),
               drawer: DrawerWidget(),
               body: Row(
                 children: <Widget>[
@@ -142,7 +142,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         FutureBuilder<SongAiring>(
-                            future: _songNowAiring,
+                            future: _songAiring,
                             builder: (BuildContext context,
                                 AsyncSnapshot<SongAiring> snapshot) {
                               if (snapshot.hasData)
@@ -151,7 +151,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                               else
                                 return CircularProgressIndicator();
                             }),
-                        PlayerWidget(orientation, _songNowAiring!),
+                        PlayerWidget(orientation, _songAiring!),
                       ],
                     ),
                   )
@@ -164,7 +164,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bottomNavigationBar: SizedBox(
               height: 60,
               child: BottomAppBar(
-                  child: PlayerWidget(Orientation.portrait, _songNowAiring!))),
+                  child: PlayerWidget(Orientation.portrait, _songAiring!))),
           body: body);
     }
 
