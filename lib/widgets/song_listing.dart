@@ -41,7 +41,10 @@ class SongListingWidgetState extends State<SongListingWidget> {
       String subtitle = '';
       subtitle = songLink.artist ?? songLink.artist!;
 
-      if (songLink.info != null && songLink.info!.isNotEmpty) {
+      if (songLink.info != null) {
+        if(songLink.info!.isEmpty){
+          songLink.info = "Programmation générale";
+        }
         if (this.widget.split == true && latest_info != songLink.info!) {
           latest_info = songLink.info!;
           rows.add(
