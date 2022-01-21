@@ -14,7 +14,7 @@ class SongAiringNotifier extends ChangeNotifier {
 
   SongAiringNotifier._internal();
 
-  Future<SongNowAiring>? songNowAiring;
+  Future<SongAiring>? songAiring;
   dynamic e;
   Timer? _t;
 
@@ -22,8 +22,8 @@ class SongAiringNotifier extends ChangeNotifier {
     e = null;
     _reset();
     try {
-      songNowAiring = fetchNowAiring();
-      songNowAiring!.then((s) async {
+      songAiring = fetchNowAiring();
+      songAiring!.then((s) async {
         notifyListeners();
         int delay = (s.duration!.inSeconds -
                 (s.duration!.inSeconds * s.elapsedPcent! / 100))
@@ -45,6 +45,6 @@ class SongAiringNotifier extends ChangeNotifier {
 
   _reset() {
     _t?.cancel();
-    songNowAiring = null;
+    songAiring = null;
   }
 }

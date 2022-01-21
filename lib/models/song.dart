@@ -105,12 +105,12 @@ class Comment {
   Comment();
 }
 
-class SongNowAiring extends Song {
+class SongAiring extends Song {
   final int? elapsedPcent;
   final int? nbListeners;
   final Program program;
 
-  SongNowAiring.fromJson(Map<String, dynamic> json)
+  SongAiring.fromJson(Map<String, dynamic> json)
       : elapsedPcent = json['now']['elapsed_pcent'],
         nbListeners = json['now']['nb_listeners'],
         program = Program(

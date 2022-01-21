@@ -15,7 +15,7 @@ import 'song_page.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
-  final Future<SongNowAiring>? _songNowAiring;
+  final Future<SongAiring>? _songNowAiring;
 
   PlayerWidget(this.orientation, this._songNowAiring);
 

@@ -7,7 +7,7 @@ import '../player.dart' show audioHandler;
 import '../widgets/song_airing_notifier.dart';
 
 class RadioStreamButton extends StatefulWidget {
-  final Future<SongNowAiring>? _songNowAiring;
+  final Future<SongAiring>? _songNowAiring;
 
   RadioStreamButton(this._songNowAiring);
 
@@ -22,7 +22,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           fontSize: 20.0,
         ));
 
-    return FutureBuilder<SongNowAiring>(
+    return FutureBuilder<SongAiring>(
       future: widget._songNowAiring,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -43,7 +43,7 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           icon: Icon(Icons.radio, size: 40),
           label: label,
           onPressed: () async {
-            SongAiringNotifier().songNowAiring!.then((song) async {
+            SongAiringNotifier().songAiring!.then((song) async {
               await audioHandler.customAction(
                   'set_radio_mode', <String, dynamic>{'radio_mode': true});
               await audioHandler.customAction('set_song', song.toJson());

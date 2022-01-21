@@ -46,7 +46,7 @@ class _NowAiringCardState extends State<NowAiringCard> {
 class SongNowAiringAppBar extends StatefulWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
-  final Future<SongNowAiring>? _songNowAiring;
+  final Future<SongAiring>? _songNowAiring;
   final Orientation _orientation;
 
   SongNowAiringAppBar(this._orientation, this._songNowAiring, {Key? key})
@@ -60,11 +60,11 @@ class SongNowAiringAppBar extends StatefulWidget with PreferredSizeWidget {
 class _SongNowAiringAppBarState extends State<SongNowAiringAppBar> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SongNowAiring>(
+    return FutureBuilder<SongAiring>(
       future: widget._songNowAiring,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          SongNowAiring songNowAiring = snapshot.data!;
+          SongAiring songNowAiring = snapshot.data!;
 
           String? subtitle = songNowAiring.artist!;
           if (songNowAiring.year != 0) subtitle += ' • ${songNowAiring.year!}';

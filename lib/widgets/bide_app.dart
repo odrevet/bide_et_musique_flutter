@@ -19,7 +19,7 @@ class BideApp extends StatefulWidget {
 }
 
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
-  Future<SongNowAiring>? _songNowAiring;
+  Future<SongAiring>? _songNowAiring;
   Exception? _e;
   late SongAiringNotifier _songAiring;
 
@@ -28,13 +28,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _songAiring = SongAiringNotifier();
     _songAiring.addListener(() {
       setState(() {
-        _songNowAiring = _songAiring.songNowAiring;
+        _songNowAiring = _songAiring.songAiring;
         if (_songNowAiring == null)
           _e = _songAiring.e;
         else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true) {
-              _songAiring.songNowAiring!.then((song) async {
+              _songAiring.songAiring!.then((song) async {
                 await audioHandler.customAction('set_song', song.toJson());
               });
             }
@@ -141,10 +141,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        FutureBuilder<SongNowAiring>(
+                        FutureBuilder<SongAiring>(
                             future: _songNowAiring,
                             builder: (BuildContext context,
-                                AsyncSnapshot<SongNowAiring> snapshot) {
+                                AsyncSnapshot<SongAiring> snapshot) {
                               if (snapshot.hasData)
                                 return SongInformations(
                                     song: snapshot.data, compact: true);

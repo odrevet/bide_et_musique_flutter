@@ -9,7 +9,7 @@ import 'song_airing_notifier.dart';
 import 'song_listing.dart';
 
 class TitlesWidget extends StatefulWidget {
-  final SongAiringNotifier _songAiring = SongAiringNotifier();
+  final SongAiringNotifier _songAiringNotifier = SongAiringNotifier();
 
   TitlesWidget({Key? key}) : super(key: key);
 
@@ -20,6 +20,7 @@ class TitlesWidget extends StatefulWidget {
 class _TitlesWidgetState extends State<TitlesWidget> {
   Future<Map<String, List<SongLink>>>? _songLinks;
   late VoidCallback listener;
+  String _title = "Les titres";
 
   void updateTitles() {
     setState(() {
@@ -31,16 +32,22 @@ class _TitlesWidgetState extends State<TitlesWidget> {
   initState() {
     listener = () {
       if (mounted) updateTitles();
+      widget._songAiringNotifier.songAiring!.then((song) async {
+        setState(() {
+          _title = song.name;
+        });
+
+      });
     };
 
     _songLinks = fetchTitles();
-    widget._songAiring.addListener(listener);
+    widget._songAiringNotifier.addListener(listener);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget._songAiring.removeListener(listener);
+    widget._songAiringNotifier.removeListener(listener);
     super.dispose();
   }
 
@@ -74,7 +81,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Les titres'),
+          title: Text(_title),
           bottom: TabBar(
             tabs: [
               Tab(text: 'A venir sur la platine'),
