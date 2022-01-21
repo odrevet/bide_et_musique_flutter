@@ -8,7 +8,7 @@ import '../player.dart' show audioHandler;
 import '../services/identification.dart';
 import '../widgets/drawer.dart';
 import '../widgets/error_display.dart';
-import '../widgets/now_airing.dart';
+import '../widgets/airing.dart';
 import '../widgets/player.dart';
 import '../widgets/song_airing_notifier.dart';
 import '../widgets/song_information.dart';
