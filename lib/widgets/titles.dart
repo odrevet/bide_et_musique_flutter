@@ -72,26 +72,29 @@ class _TitlesWidgetState extends State<TitlesWidget> {
   }
 
   Widget _buildView(Map<String, List<SongLink>> songLinks) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: SongAiringTitle(
-              Orientation.portrait, widget._songAiringNotifier.songAiring),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: 'A venir sur la platine'),
-                Tab(text: 'De retour dans leur bac'),
-              ],
-            )
+    return OrientationBuilder(builder: (context, orientation){
+      return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+              title: SongAiringTitle(
+                  orientation, widget._songAiringNotifier.songAiring),
+              bottom: orientation == Orientation.portrait ? TabBar(
+                tabs: [
+                  Tab(text: 'A venir sur la platine'),
+                  Tab(text: 'De retour dans leur bac'),
+                ],
+              ) : null
+          ),
+          body: TabBarView(
+            children: [
+              SongListingWidget(songLinks['next'], split: true),
+              SongListingWidget(songLinks['past']),
+            ],
+          ),
         ),
-        body: TabBarView(
-          children: [
-            SongListingWidget(songLinks['next'], split: true),
-            SongListingWidget(songLinks['past']),
-          ],
-        ),
-      ),
-    );
+      );
+    });
+
   }
 }
