@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 import '../services/song.dart';
-import 'song_airing_title.dart';
 import 'error_display.dart';
 import 'song_airing_notifier.dart';
+import 'song_airing_title.dart';
 import 'song_listing.dart';
 
 class TitlesWidget extends StatefulWidget {
@@ -72,29 +72,38 @@ class _TitlesWidgetState extends State<TitlesWidget> {
   }
 
   Widget _buildView(Map<String, List<SongLink>> songLinks) {
-    return OrientationBuilder(builder: (context, orientation){
+    return OrientationBuilder(builder: (context, orientation) {
       return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
               title: SongAiringTitle(
                   orientation, widget._songAiringNotifier.songAiring),
-              bottom: orientation == Orientation.portrait ? TabBar(
-                tabs: [
-                  Tab(text: 'A venir sur la platine'),
-                  Tab(text: 'De retour dans leur bac'),
-                ],
-              ) : null
-          ),
-          body: TabBarView(
-            children: [
-              SongListingWidget(songLinks['next'], split: true),
-              SongListingWidget(songLinks['past']),
-            ],
-          ),
+              bottom: orientation == Orientation.portrait
+                  ? TabBar(
+                      tabs: [
+                        Tab(text: 'A venir sur la platine'),
+                        Tab(text: 'De retour dans leur bac'),
+                      ],
+                    )
+                  : null),
+          body: orientation == Orientation.portrait
+              ? TabBarView(
+                  children: [
+                    SongListingWidget(songLinks['next'], split: true),
+                    SongListingWidget(songLinks['past']),
+                  ],
+                )
+              : Row(
+                  children: <Widget>[
+                    Expanded(
+                        child:
+                            SongListingWidget(songLinks['next'], split: true)),
+                    Expanded(child: SongListingWidget(songLinks['past'])),
+                  ],
+                ),
         ),
       );
     });
-
   }
 }
