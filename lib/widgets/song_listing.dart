@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import '../models/song.dart';
@@ -20,7 +18,7 @@ void launchSongPage(SongLink songLink, BuildContext context) {
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
-  var split;
+  final split;
 
   SongListingWidget(this._songLinks, {this.split = false, Key? key})
       : super(key: key);
@@ -35,7 +33,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
   @override
   Widget build(BuildContext context) {
     var rows = <Widget>[];
-    var latest_info = "";
+    var latestInfo = "";
 
     for (SongLink songLink in widget._songLinks!) {
       String subtitle = '';
@@ -45,8 +43,8 @@ class SongListingWidgetState extends State<SongListingWidget> {
         if(songLink.info!.isEmpty){
           songLink.info = "Programmation générale";
         }
-        if (this.widget.split == true && latest_info != songLink.info!) {
-          latest_info = songLink.info!;
+        if (this.widget.split == true && latestInfo != songLink.info!) {
+          latestInfo = songLink.info!;
           rows.add(
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
