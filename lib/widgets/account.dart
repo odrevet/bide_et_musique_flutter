@@ -14,7 +14,7 @@ import 'html_with_style.dart';
 import 'pochettoscope.dart';
 
 openAccountImageViewerDialog(context, image, title) {
-  Navigator.of(context).push(MaterialPageRoute<Null>(
+  Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(title: Text(title)),
@@ -74,9 +74,9 @@ class _AccountPageState extends State<AccountPage> {
         // By default, show a loading spinner
         return Scaffold(
             appBar: AppBar(
-              title: Text('Chargement du compte utilisateur'),
+              title: const Text('Chargement du compte utilisateur'),
             ),
-            body: Center(child: CircularProgressIndicator()));
+            body: const Center(child: CircularProgressIndicator()));
       },
     );
   }
@@ -117,7 +117,7 @@ class _AccountPageState extends State<AccountPage> {
                                 '\n' +
                                 account.comments +
                                 '\n',
-                            style: TextStyle(fontSize: 14)),
+                            style: const TextStyle(fontSize: 14)),
                       )
                     ],
                   ))
@@ -155,7 +155,7 @@ class _AccountPageState extends State<AccountPage> {
                             '${account.name} n\'a pas renseigné sa présentation. '))
                     : SingleChildScrollView(
                         child: Padding(
-                        padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                        padding: const EdgeInsets.only(left: 8.0, top: 2.0),
                         child: HtmlWithStyle(
                           data: account.presentation,
                         ),
@@ -194,7 +194,7 @@ class _AccountPageState extends State<AccountPage> {
                 });
               }
             }),
-            child: Icon(Icons.mail),
+            child: const Icon(Icons.mail),
           );
 
     return Scaffold(
@@ -228,7 +228,7 @@ class _AccountPageState extends State<AccountPage> {
 class MessageListing extends StatelessWidget {
   final List<Message>? messages;
 
-  MessageListing(this.messages);
+  const MessageListing(this.messages, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +246,7 @@ class MessageListing extends StatelessWidget {
 class AccountListing extends StatelessWidget {
   final List<AccountLink>? _accountLinks;
 
-  AccountListing(this._accountLinks, {Key? key}) : super(key: key);
+  const AccountListing(this._accountLinks, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +285,7 @@ class AccountListingFuture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recherche de bidonautes'),
+        title: const Text('Recherche de bidonautes'),
       ),
       body: Center(
         child: FutureBuilder<List<AccountLink>>(
@@ -298,7 +298,7 @@ class AccountListingFuture extends StatelessWidget {
             }
 
             // By default, show a loading spinner
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),

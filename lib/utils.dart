@@ -70,10 +70,11 @@ Widget? handleLink(String url, BuildContext context) {
 void onLinkTap(String url, BuildContext context) {
   if (url.startsWith('/')) url = baseUri + url;
   Widget? widget = handleLink(url, context);
-  if (widget == null)
+  if (widget == null) {
     launchURL(url);
-  else
+  } else {
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+  }
 }
 
 launchURL(String url) async {

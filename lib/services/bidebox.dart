@@ -52,7 +52,7 @@ Future<List<Exchange>> fetchExchanges() async {
 }
 
 Future<bool> sendMessage(String message, int? destId) async {
-  final url = '$baseUri/bidebox_send.html';
+  const url = '$baseUri/bidebox_send.html';
 
   if (message.isNotEmpty) {
     var response = await Session.post(url, body: {

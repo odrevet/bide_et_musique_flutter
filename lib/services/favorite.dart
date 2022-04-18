@@ -13,14 +13,14 @@ List<SongLink> parseFavoriteTable(dom.Element table) {
   int pageCount;
   List<dom.Element> navbars = table.getElementsByClassName('navbar');
 
-  if (navbars.isEmpty)
+  if (navbars.isEmpty) {
     pageCount = 0;
-  else {
+  } else {
     pageCount = navbars[0].getElementsByTagName('td').length - 1;
   }
 
   List<dom.Element> trs = table.children[0].children;
-  print(trs.length);
+
   if (pageCount > 0) {
     trs.removeAt(0);
     trs.removeLast();
@@ -62,14 +62,14 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
     int pageCount = 0;
     if (hasFavorite) {
       List<dom.Element> navbars = tables[0].getElementsByClassName('navbar');
-      if (navbars.isEmpty)
+      if (navbars.isEmpty) {
         pageCount = 0;
-      else {
+      } else {
         pageCount = navbars[0].getElementsByTagName('td').length - 1;
       }
 
       List<dom.Element> trs = tables[0].children[0].children;
-      print(trs.length);
+
       if (pageCount > 0) {
         trs.removeAt(0);
         trs.removeLast();
@@ -78,8 +78,9 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
       for (dom.Element tr in trs) {
         dom.Element aTitle = tr.children[4].children[0];
 
-        if (aTitle.toString() == '<html div>')
+        if (aTitle.toString() == '<html div>') {
           aTitle = tr.children[4].children[1];
+        }
 
         favorites.add(SongLink(
             id: getIdFromUrl(aTitle.attributes['href']!)!,

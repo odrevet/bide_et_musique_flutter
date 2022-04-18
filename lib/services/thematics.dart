@@ -9,7 +9,7 @@ import '../utils.dart';
 
 Future<List<ProgramLink>> fetchThematics() async {
   var programLinks = <ProgramLink>[];
-  final url = '$baseUri/programmes-thematiques.html';
+  const url = '$baseUri/programmes-thematiques.html';
 
   final response = await Session.get(url);
 

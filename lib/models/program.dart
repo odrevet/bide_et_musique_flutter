@@ -25,7 +25,7 @@ class Program {
         type = json['type'],
         name = stripTags(json['name']),
         description = json['description'] {
-    this.songs = <SongLink>[];
+    songs = <SongLink>[];
     for (var songEntry in json['songs']) {
       songs!.add(SongLink(
           id: songEntry['song_id'],

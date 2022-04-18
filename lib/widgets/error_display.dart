@@ -15,7 +15,7 @@ class ErrorDisplay extends StatelessWidget {
         style: defaultStyle,
         children: <TextSpan>[
           TextSpan(text: 'Ouille ouille ouille !', style: title),
-          TextSpan(text: ' \n Une erreur est survenue !'),
+          const TextSpan(text: ' \n Une erreur est survenue !'),
           TextSpan(text: ' \n Le message reporté est : \n'),
           TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
           TextSpan(

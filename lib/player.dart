@@ -114,14 +114,14 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     switch (name) {
       case 'set_song':
         Map songMap = extras!;
-        this._song = Song(
+        _song = Song(
             id: songMap['id'],
             name: songMap['name'],
             artist: songMap['artist'],
             duration: songMap['duration'] == null
                 ? null
                 : Duration(seconds: songMap['duration']));
-        this.setNotification();
+        setNotification();
         break;
       case 'set_radio_mode':
         _radioMode = extras!['radio_mode'];

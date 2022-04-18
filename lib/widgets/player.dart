@@ -96,11 +96,12 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
                         if (playing) {
                           controls = [
-                            _button(Icons.fast_rewind_rounded, audioHandler.rewind),
+                            _button(
+                                Icons.fast_rewind_rounded, audioHandler.rewind),
                             //_button(Icons.pause, audioHandler.pause),
                             _button(Icons.stop, audioHandler.stop),
-                            _button(
-                                Icons.fast_forward_rounded, audioHandler.fastForward),
+                            _button(Icons.fast_forward_rounded,
+                                audioHandler.fastForward),
                           ];
                         } else {
                           controls = [_button(Icons.stop, audioHandler.stop)];

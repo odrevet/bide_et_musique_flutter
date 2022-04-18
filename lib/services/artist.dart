@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import '../models/artist.dart';
 import '../session.dart';
 import '../utils.dart';
 
 Future<Artist?> fetchArtist(int? artistId) async {
-  var artist;
+  Artist? artist;
   final url = '$baseUri/artist/$artistId';
 
   final responseJson = await Session.get(url);
@@ -15,7 +17,9 @@ Future<Artist?> fetchArtist(int? artistId) async {
       artist =
           Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
-      print('Error while decoding artist : ' + e.toString());
+      if (kDebugMode) {
+        print('Error while decoding artist : ' + e.toString());
+      }
     }
   } else {
     throw Exception('Failed to load artist with id $artistId');

@@ -38,10 +38,11 @@ Future<Account> fetchAccount(int? accountId) async {
 
     //set avatar path
     var img = divInfo.getElementsByTagName('img');
-    if (img.isEmpty)
+    if (img.isEmpty) {
       account.image = '';
-    else
+    } else {
       account.image = img[0].attributes['src'];
+    }
 
     //bm tables list favourite songs or messages, either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
@@ -51,10 +52,11 @@ Future<Account> fetchAccount(int? accountId) async {
         (tables.length == 2 && hasMessage);
 
     //parse favorites
-    if (hasFavorite)
+    if (hasFavorite) {
       account.favorites = parseFavoriteTable(tables[0]);
-    else
+    } else {
       account.favorites = [];
+    }
 
     //parse message
     List<Message> messages = [];
@@ -82,7 +84,7 @@ Future<Account> fetchAccount(int? accountId) async {
 
 Future<List<SongLink>> fetchVotes() async {
   var songLinks = <SongLink>[];
-  final url = '$baseUri/mes-votes.html';
+  const url = '$baseUri/mes-votes.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -129,10 +131,11 @@ Future<Account> fetchAccountSession() async {
         (tables.length == 2 && hasMessage);
 
     //parse favorites
-    if (hasFavorite)
+    if (hasFavorite) {
       account.favorites = parseFavoriteTable(tables[0]);
-    else
+    } else {
       account.favorites = [];
+    }
 
     return account;
   } else {

@@ -8,7 +8,7 @@ import '../session.dart';
 import '../utils.dart';
 
 Future<List<DaySchedule?>> fetchSchedule() async {
-  final url = '$baseUri/grille.html';
+  const url = '$baseUri/grille.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

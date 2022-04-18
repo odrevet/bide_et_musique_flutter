@@ -15,6 +15,8 @@ import '../widgets/song_airing_title.dart';
 import '../widgets/song_information.dart';
 
 class BideApp extends StatefulWidget {
+  const BideApp({Key? key}) : super(key: key);
+
   @override
   _BideAppState createState() => _BideAppState();
 }
@@ -97,7 +99,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             onPressed: () {
               _songAiringNotifier.periodicFetchSongAiring();
             },
-            label: Text('Ré-essayer maintenant'),
+            label: const Text('Ré-essayer maintenant'),
           ),
         ],
       ),
@@ -110,12 +112,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     Widget? body;
     Widget airingWidget;
 
-    if (_e != null && _songAiring == null)
+    if (_e != null && _songAiring == null) {
       airingWidget = refreshAiringSongButton();
-    else if (_songAiring == null)
+    } else if (_songAiring == null) {
       airingWidget = Center(child: CircularProgressIndicator());
-    else
+    } else {
       airingWidget = AiringCard(_songAiring!);
+    }
 
     //no url match from deep link or not launched from deep link
     if (body == null)

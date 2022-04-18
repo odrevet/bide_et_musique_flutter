@@ -2,19 +2,20 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:xml/xml.dart';
 
 import '../models/account.dart';
-import '../models/nowSong.dart';
+import '../models/now_song.dart';
 import '../models/song.dart';
 import '../session.dart';
 import '../utils.dart';
 
 Future<List<SongLink>> fetchNewSongs() async {
   var songs = <SongLink>[];
-  final url = '$baseUri/new_song.rss';
+  const url = '$baseUri/new_song.rss';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -37,7 +38,7 @@ Future<List<SongLink>> fetchNewSongs() async {
 
 Future<List<NowSong>> fetchNowSongs() async {
   var nowSongs = <NowSong>[];
-  final url = '$baseUri/morceaux-du-moment.html';
+  const url = '$baseUri/morceaux-du-moment.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -68,7 +69,7 @@ Future<List<NowSong>> fetchNowSongs() async {
 }
 
 Future<SongAiring> fetchAiring() async {
-  final url = '$baseUri/wapi/song/now';
+  const url = '$baseUri/wapi/song/now';
   try {
     final responseJson = await Session.get(url);
     if (responseJson.statusCode == 200) {
@@ -79,7 +80,6 @@ Future<SongAiring> fetchAiring() async {
       throw ('Response was ${responseJson.statusCode}');
     }
   } catch (e) {
-    print('ERROR $e');
     rethrow;
   }
 }
@@ -106,7 +106,7 @@ List<Comment> parseComments(document) {
       comment.time = tdCommentChildren[2].innerHtml;
       comments.add(comment);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
   return comments;
@@ -239,7 +239,7 @@ SongLink songLinkFromTr(dom.Element tr) {
 }
 
 Future<Map<String, List<SongLink>>> fetchTitles() async {
-  final url = '$baseUri/programmes.php';
+  const url = '$baseUri/programmes.php';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

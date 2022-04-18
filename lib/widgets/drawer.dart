@@ -133,8 +133,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Morceau au pif'),
-          leading: Icon(Icons.shuffle),
+          title: const Text('Morceau au pif'),
+          leading: const Icon(Icons.shuffle),
           onTap: () {
             fetchRandomSongId().then((id) => Navigator.push(
                 context,
@@ -145,25 +145,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Recherche'),
-          leading: Icon(Icons.search),
+          title: const Text('Recherche'),
+          leading: const Icon(Icons.search),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Search()));
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text('Mur des messages'),
-          leading: Icon(Icons.comment),
+          title: const Text('Mur des messages'),
+          leading: const Icon(Icons.comment),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => WallWidget()));
           },
         ),
         ListTile(
-          title: Text('Forums'),
-          leading: Icon(Icons.forum),
+          title: const Text('Forums'),
+          leading: const Icon(Icons.forum),
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ForumWidget()));

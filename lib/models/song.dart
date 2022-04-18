@@ -21,24 +21,25 @@ class SongLink {
       this.isNew = false});
 
   String get streamLink {
-    return '$baseUri/stream_${this.id}.php';
+    return '$baseUri/stream_$id.php';
   }
 
   String get link {
-    return '$baseUri/song/${this.id}.html';
+    return '$baseUri/song/$id.html';
   }
 
   String get coverLink {
     String url = '$baseUri/images/pochettes/';
-    if (this.cover == null || this.cover == '')
-      url += '${this.id}.jpg';
-    else
-      url += this.cover!;
+    if (cover == null || cover == '') {
+      url += '$id.jpg';
+    } else {
+      url += cover!;
+    }
     return url;
   }
 
   String get thumbLink {
-    return '$baseUri/images/thumb100/${this.id}.jpg';
+    return '$baseUri/images/thumb100/$id.jpg';
   }
 }
 

@@ -6,7 +6,7 @@ import '../session.dart';
 import '../utils.dart';
 
 Future<Program> fetchProgram(int? programId) async {
-  var program;
+  Program program;
   final url = '$baseUri/program/$programId';
 
   final responseJson = await Session.get(url);
@@ -17,7 +17,7 @@ Future<Program> fetchProgram(int? programId) async {
           Program.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       program = Program();
-      program.id = '?';
+      program.id = 0;
       program.type = '?';
       program.name = '?';
       program.description = e.toString();

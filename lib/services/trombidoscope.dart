@@ -8,7 +8,7 @@ import '../utils.dart';
 Future<List<AccountLink>> fetchTrombidoscope() async {
   List<AccountLink> accounts = [];
 
-  final url = '$baseUri/trombidoscope.html';
+  const url = '$baseUri/trombidoscope.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;

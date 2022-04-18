@@ -69,10 +69,11 @@ Future<SearchResult> fetchSearchSong(
     var trs = result.getElementsByTagName('tr');
 
     var navbar = document.getElementsByClassName('navbar');
-    if (navbar.isEmpty)
+    if (navbar.isEmpty) {
       searchResult.pageCount = 1;
-    else
+    } else {
       searchResult.pageCount = navbar[0].getElementsByTagName('td').length - 1;
+    }
 
     for (dom.Element tr in trs) {
       if (tr.className == 'p1' || tr.className == 'p0') {

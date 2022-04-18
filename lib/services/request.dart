@@ -10,7 +10,7 @@ import 'song.dart';
 
 Future<List<Request>> fetchRequests() async {
   var requests = <Request>[];
-  final url = '$baseUri/requetes.html';
+  const url = '$baseUri/requetes.html';
 
   final response = await Session.get(url);
 
@@ -42,7 +42,7 @@ Future<List<Request>> fetchRequests() async {
 }
 
 Future<int> sendRequest(int? requestId, String dedicate) async {
-  final url = '$baseUri/requetes.html';
+  const url = '$baseUri/requetes.html';
 
   var resp = await Session.post(url, body: {
     'Nb': requestId.toString(),

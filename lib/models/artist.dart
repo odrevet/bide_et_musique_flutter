@@ -17,14 +17,14 @@ class Artist {
         alias = json['alias'],
         site = json['site'],
         dates = json['dates']['pretty'] {
-    this.disco = <SongLink>[];
+    disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
-      this.disco!.add(
+      disco!.add(
           SongLink(id: discoEntry['id'], name: stripTags(discoEntry['name'])));
     }
   }
 
   String get urlImage {
-    return '$baseUri/images/photos/ART${this.id}.jpg';
+    return '$baseUri/images/photos/ART$id.jpg';
   }
 }

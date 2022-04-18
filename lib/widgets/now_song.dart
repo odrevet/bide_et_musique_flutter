@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/nowSong.dart';
+import '../models/now_song.dart';
 import '../widgets/error_display.dart';
 import 'cover.dart';
 import 'html_with_style.dart';

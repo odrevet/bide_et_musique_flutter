@@ -11,7 +11,7 @@ import '../utils.dart';
 
 Future<List<Post>> fetchPosts() async {
   var posts = <Post>[];
-  final url = '$baseUri/mur-des-messages.html';
+  const url = '$baseUri/mur-des-messages.html';
   final response = await Session.get(url);
   if (response.statusCode == 200) {
     var body = response.body;
@@ -32,7 +32,7 @@ Future<List<Post>> fetchPosts() async {
       String? time = '';
       var links = basmsg.children[0].getElementsByTagName('a');
 
-      if (links.length > 0) {
+      if (links.isNotEmpty) {
         var artistLink = links[0];
         var title = links[1];
 

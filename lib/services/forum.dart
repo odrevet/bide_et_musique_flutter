@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+
 import '../models/forum.dart';
 import '../session.dart';
 import '../utils.dart';
 
 Future<List<Forum>> fetchForums() async {
   List<Forum> forums = [];
-  final url = '$baseUri/forums/';
+  const url = '$baseUri/forums/';
   final responseJson = await Session.get(url);
 
   if (responseJson.statusCode == 200) {
@@ -18,10 +20,10 @@ Future<List<Forum>> fetchForums() async {
         forums.add(Forum.fromJson(forum));
       }
     } catch (e) {
-      print('ERROR $e');
+      debugPrint('ERROR $e');
     }
   } else {
-    print('Response was ${responseJson.statusCode}');
+    debugPrint('Response was ${responseJson.statusCode}');
   }
 
   return forums;
@@ -41,10 +43,10 @@ Future<List<ForumThread>> fetchForumThreads(forumId) async {
         forumThreads.add(ForumThread.fromJson(forumThread));
       }
     } catch (e) {
-      print('ERROR $e');
+      debugPrint('ERROR $e');
     }
   } else {
-    print('Response was ${responseJson.statusCode}');
+    debugPrint('Response was ${responseJson.statusCode}');
   }
 
   return forumThreads;

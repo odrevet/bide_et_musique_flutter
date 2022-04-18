@@ -6,7 +6,7 @@ import '../session.dart';
 import '../utils.dart';
 
 Future<List<SongLink>> fetchPochettoscope() async {
-  final url = '$baseUri/le-pochettoscope.html';
+  const url = '$baseUri/le-pochettoscope.html';
   List<SongLink> songLinks = [];
   final response = await Session.get(url);
   if (response.statusCode == 200) {

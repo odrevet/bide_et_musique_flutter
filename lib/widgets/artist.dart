@@ -30,7 +30,7 @@ class ArtistPageWidget extends StatelessWidget {
             appBar: AppBar(
               title: Text(loadingMessage),
             ),
-            body: Center(
+            body: const Center(
               child: CircularProgressIndicator(),
             ),
           );

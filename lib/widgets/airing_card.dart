@@ -9,7 +9,7 @@ import 'cover.dart';
 class AiringCard extends StatefulWidget {
   final Future<Song> _song;
 
-  AiringCard(this._song, {Key? key}) : super(key: key);
+  const AiringCard(this._song, {Key? key}) : super(key: key);
 
   @override
   _AiringCardState createState() => _AiringCardState();

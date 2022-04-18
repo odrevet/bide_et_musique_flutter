@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
+import 'package:http/src/response.dart';
 
 import '../session.dart';
 import '../utils.dart';
@@ -28,8 +29,8 @@ Future<IdentificationResponse> sendIdentifiers(
     return identificationResponse;
   }
 
-  final url = '$baseUri/ident.html';
-  var response;
+  const url = '$baseUri/ident.html';
+  Response response;
   try {
     response =
         await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
