@@ -130,12 +130,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                   height: 60,
                   child: BottomAppBar(
                       child: PlayerWidget(orientation, _songAiring))),
-              drawer: DrawerWidget(),
+              drawer: const DrawerWidget(),
               body: airingWidget);
         } else {
           return Scaffold(
               appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
-              drawer: DrawerWidget(),
+              drawer: const DrawerWidget(),
               body: Row(
                 children: <Widget>[
                   Expanded(child: airingWidget),

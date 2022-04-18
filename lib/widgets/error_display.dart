@@ -6,7 +6,7 @@ class ErrorDisplay extends StatelessWidget {
   final reportedError = const TextStyle(fontStyle: FontStyle.italic);
   final dynamic exception;
 
-  const ErrorDisplay(this.exception);
+  const ErrorDisplay(this.exception, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -17,6 +17,8 @@ import 'requests.dart';
 import 'song_listing.dart';
 
 class DisconnectButton extends StatelessWidget {
+  const DisconnectButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -37,7 +39,7 @@ class LoggedInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //disconnect button
     var actions = <Widget>[];
-    actions.add(DisconnectButton());
+    actions.add(const DisconnectButton());
 
     return DefaultTabController(
       length: 5,

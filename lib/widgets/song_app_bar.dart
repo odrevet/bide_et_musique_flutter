@@ -68,7 +68,7 @@ class _SongAppBarState extends State<SongAppBar> {
 class SongActionMenu extends StatelessWidget {
   final Song? _song;
 
-  const SongActionMenu(this._song);
+  const SongActionMenu(this._song, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +178,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           if (statusCode == 200) {
             setState(() => widget._song!.isFavourite = true);
           } else {
-            print('Add song to favorites returned status code $statusCode');
+            debugPrint(
+                'Add song to favorites returned status code $statusCode');
           }
         },
       );
@@ -201,22 +202,22 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var callbackVote = () async {
-      int statusCode = await voteForSong(widget._song!.link);
-
-      if (statusCode == 200) {
-        setState(() {
-          widget._song!.hasVote = true;
-        });
-      } else {
-        print('Vote for song returned status code $statusCode');
-      }
-    };
-
     return ElevatedButton.icon(
         icon: const Icon(Icons.exposure_plus_1),
         label: const Text('Voter'),
         onPressed: (widget._song!.hasVote ? null : callbackVote));
+  }
+
+  void callbackVote() async {
+    int statusCode = await voteForSong(widget._song!.link);
+
+    if (statusCode == 200) {
+      setState(() {
+        widget._song!.hasVote = true;
+      });
+    } else {
+      debugPrint('Vote for song returned status code $statusCode');
+    }
   }
 }
 

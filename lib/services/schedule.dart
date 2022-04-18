@@ -19,7 +19,7 @@ Future<List<DaySchedule?>> fetchSchedule() async {
     var table = document.getElementsByClassName('bmtable')[0];
     var trs = table.getElementsByTagName('tr');
 
-    var daySchedule;
+    late DaySchedule daySchedule;
     for (dom.Element tr in trs) {
       //each class named 'titre' is a new day in the schedule
       if (tr.classes.first == 'titre') {

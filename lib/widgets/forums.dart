@@ -8,6 +8,8 @@ import '../widgets/error_display.dart';
 import 'html_with_style.dart';
 
 class ForumWidget extends StatefulWidget {
+  const ForumWidget({Key? key}) : super(key: key);
+
   @override
   _ForumPageState createState() => _ForumPageState();
 }
@@ -33,8 +35,9 @@ class _ForumPageState extends State<ForumWidget> {
                             forum.name!,
                           ),
                           subtitle: Text(forum.subtitle!),
-                          trailing:
-                              forum.hasNew! ? const Icon(Icons.fiber_new) : null,
+                          trailing: forum.hasNew!
+                              ? const Icon(Icons.fiber_new)
+                              : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -56,7 +59,8 @@ class ForumThreadWidget extends StatefulWidget {
   final Future<List<ForumThread>> _forumThreads;
   final Forum _forum;
 
-  const ForumThreadWidget(this._forum, this._forumThreads);
+  const ForumThreadWidget(this._forum, this._forumThreads, {Key? key})
+      : super(key: key);
 
   @override
   _ForumThreadWidgetState createState() => _ForumThreadWidgetState();
@@ -112,7 +116,8 @@ class ForumMessagesWidget extends StatefulWidget {
   final ForumThread _forumThread;
   final Future<List<ForumMessage>> _forumMessages;
 
-  const ForumMessagesWidget(this._forumThread, this._forumMessages);
+  const ForumMessagesWidget(this._forumThread, this._forumMessages, {Key? key})
+      : super(key: key);
 
   @override
   _ForumMessagesWidgetState createState() => _ForumMessagesWidgetState();

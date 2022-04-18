@@ -107,7 +107,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                     : sendRequest(_selectedRequestId, _dedicateController.text)
                         .then((statusCode) {
                         if (statusCode != 200) {
-                          print(
+                          debugPrint(
                               'Send request error with status code $statusCode');
                         }
 

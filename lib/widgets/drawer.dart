@@ -27,6 +27,8 @@ import 'trombidoscope.dart';
 import 'wall.dart';
 
 class DrawerWidget extends StatefulWidget {
+  const DrawerWidget({Key? key}) : super(key: key);
+
   @override
   _DrawerWidgetState createState() => _DrawerWidgetState();
 }
@@ -82,11 +84,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ListTile(
           title: Text(_accountTitle),
           leading: const Icon(Icons.account_circle),
-          trailing: Session.accountLink.id == null ? null : DisconnectButton(),
+          trailing:
+              Session.accountLink.id == null ? null : const DisconnectButton(),
           onTap: () {
-            Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Identification()))
-                .then((_) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const Identification())).then((_) {
               _setAccountTitle();
             });
           },
@@ -148,8 +152,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Recherche'),
           leading: const Icon(Icons.search),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Search()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Search()));
           },
         ),
         const Divider(),
@@ -157,8 +161,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Mur des messages'),
           leading: const Icon(Icons.comment),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const WallWidget()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const WallWidget()));
           },
         ),
         ListTile(
@@ -166,7 +170,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: const Icon(Icons.forum),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ForumWidget()));
+                MaterialPageRoute(builder: (context) => const ForumWidget()));
           },
         ),
         const Divider(),
@@ -174,16 +178,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Pochettoscope'),
           leading: const Icon(Icons.image),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const PochettoScopePage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PochettoScopePage()));
           },
         ),
         ListTile(
           title: const Text('Trombidoscope'),
           leading: const Icon(Icons.face),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const TrombidoscopeWidget()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TrombidoscopeWidget()));
           },
         ),
         const Divider(),

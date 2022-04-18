@@ -15,7 +15,7 @@ class SearchResults extends StatefulWidget {
 
   @override
   _SearchResultsState createState() =>
-      _SearchResultsState(search, type);
+      _SearchResultsState();
 }
 
 class _SearchResultsState extends State<SearchResults> {
@@ -24,12 +24,10 @@ class _SearchResultsState extends State<SearchResults> {
   List<SongLink>? _songLinks;
   bool? _loading;
   bool? _loadingMore;
-  final String? search;
-  final String? type;
 
   final _controller = ScrollController();
 
-  _SearchResultsState(this.search, this.type);
+  _SearchResultsState();
 
   @override
   void initState() {
@@ -39,7 +37,7 @@ class _SearchResultsState extends State<SearchResults> {
     _songLinks = [];
     _loading = true;
     _loadingMore = false;
-    fetchSearchSong(search, type, _pageCurrent)
+    fetchSearchSong(widget.search, widget.type, _pageCurrent)
         .then((SearchResult searchResult) {
       setState(() {
         _loading = false;
@@ -64,7 +62,7 @@ class _SearchResultsState extends State<SearchResults> {
         _loadingMore = true;
         _pageCurrent++;
       });
-      fetchSearchSong(search, type, _pageCurrent)
+      fetchSearchSong(widget.search, widget.type, _pageCurrent)
           .then((SearchResult searchResult) => setState(() {
                 _loadingMore = false;
                 _songLinks = [..._songLinks!, ...searchResult.songLinks];

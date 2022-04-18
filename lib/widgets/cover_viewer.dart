@@ -10,20 +10,19 @@ class CoverViewer extends StatefulWidget {
   const CoverViewer(this.songLink, {Key? key}) : super(key: key);
 
   @override
-  _CoverViewerState createState() => _CoverViewerState(songLink);
+  _CoverViewerState createState() => _CoverViewerState();
 }
 
 class _CoverViewerState extends State<CoverViewer> {
-  SongLink? songLink;
   Offset _offset = Offset.zero;
   var _threeDimensionMode = false; // 3D or zoom
 
-  _CoverViewerState(this.songLink);
+  _CoverViewerState();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(songLink!.name), actions: <Widget>[
+      appBar: AppBar(title: Text(widget.songLink!.name), actions: <Widget>[
         Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -56,7 +55,7 @@ class _CoverViewerState extends State<CoverViewer> {
   }
 
   _buildView(BuildContext context) {
-    var tag = createTag(songLink!);
-    return Hero(tag: tag, child: Cover(songLink!.coverLink));
+    var tag = createTag(widget.songLink!);
+    return Hero(tag: tag, child: Cover(widget.songLink!.coverLink));
   }
 }

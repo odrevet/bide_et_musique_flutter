@@ -18,7 +18,7 @@ void launchSongPage(SongLink songLink, BuildContext context) {
 /// Display given songs in a ListView
 class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
-  final split;
+  final bool split;
 
   const SongListingWidget(this._songLinks, {this.split = false, Key? key})
       : super(key: key);

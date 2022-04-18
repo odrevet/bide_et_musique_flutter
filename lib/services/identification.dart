@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
-import 'package:http/src/response.dart';
+import 'package:http/http.dart';
 
 import '../session.dart';
 import '../utils.dart';

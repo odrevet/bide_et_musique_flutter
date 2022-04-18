@@ -65,7 +65,7 @@ class BideBoxWidget extends StatelessWidget {
 class MessageEditor extends StatefulWidget {
   final AccountLink? _accountLink;
 
-  const MessageEditor(this._accountLink);
+  const MessageEditor(this._accountLink, {Key? key}) : super(key: key);
 
   @override
   _MessageEditorState createState() => _MessageEditorState();
