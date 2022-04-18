@@ -64,7 +64,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           height: 120.0,
           child: DrawerHeader(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fitWidth,
                     image: AssetImage('assets/bm_logo_white.png'),
@@ -72,7 +72,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 child: Container(),
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
                   image: AssetImage('assets/bandeau.png'),
@@ -81,28 +81,28 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         ListTile(
           title: Text(_accountTitle),
-          leading: Icon(Icons.account_circle),
+          leading: const Icon(Icons.account_circle),
           trailing: Session.accountLink.id == null ? null : DisconnectButton(),
           onTap: () {
             Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Identification()))
+                    MaterialPageRoute(builder: (context) => const Identification()))
                 .then((_) {
               _setAccountTitle();
             });
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text('Titres'),
-          leading: Icon(Icons.queue_music),
+          title: const Text('Titres'),
+          leading: const Icon(Icons.queue_music),
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => TitlesWidget()));
           },
         ),
         ListTile(
-          title: Text('Programmation'),
-          leading: Icon(Icons.calendar_view_day),
+          title: const Text('Programmation'),
+          leading: const Icon(Icons.calendar_view_day),
           onTap: () {
             Navigator.push(
                 context,
@@ -111,8 +111,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Thématiques'),
-          leading: Icon(Icons.photo_album),
+          title: const Text('Thématiques'),
+          leading: const Icon(Icons.photo_album),
           onTap: () {
             Navigator.push(
                 context,
@@ -122,8 +122,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Morceau du moment'),
-          leading: Icon(Icons.access_alarms),
+          title: const Text('Morceau du moment'),
+          leading: const Icon(Icons.access_alarms),
           onTap: () {
             Navigator.push(
                 context,
@@ -149,7 +149,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: const Icon(Icons.search),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Search()));
+                context, MaterialPageRoute(builder: (context) => const Search()));
           },
         ),
         const Divider(),
@@ -158,7 +158,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: const Icon(Icons.comment),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => WallWidget()));
+                context, MaterialPageRoute(builder: (context) => const WallWidget()));
           },
         ),
         ListTile(
@@ -169,27 +169,27 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(builder: (context) => ForumWidget()));
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text('Pochettoscope'),
-          leading: Icon(Icons.image),
+          title: const Text('Pochettoscope'),
+          leading: const Icon(Icons.image),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PochettoScopePage()));
+                MaterialPageRoute(builder: (context) => const PochettoScopePage()));
           },
         ),
         ListTile(
-          title: Text('Trombidoscope'),
-          leading: Icon(Icons.face),
+          title: const Text('Trombidoscope'),
+          leading: const Icon(Icons.face),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TrombidoscopeWidget()));
+                MaterialPageRoute(builder: (context) => const TrombidoscopeWidget()));
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text('Nouvelles entrées'),
-          leading: Icon(Icons.fiber_new),
+          title: const Text('Nouvelles entrées'),
+          leading: const Icon(Icons.fiber_new),
           onTap: () {
             Navigator.push(
                 context,
@@ -198,16 +198,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           },
         ),
         ListTile(
-          title: Text('Options'),
-          leading: Icon(Icons.settings),
+          title: const Text('Options'),
+          leading: const Icon(Icons.settings),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SettingsPage()));
+                MaterialPageRoute(builder: (context) => const SettingsPage()));
           },
         ),
         ListTile(
-            title: Text('À propos'),
-            leading: Icon(Icons.info),
+            title: const Text('À propos'),
+            leading: const Icon(Icons.info),
             onTap: () => showAboutDialog(
                     context: context,
                     applicationName: _packageInfo.appName,

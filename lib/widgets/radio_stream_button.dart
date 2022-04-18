@@ -9,15 +9,16 @@ import '../widgets/song_airing_notifier.dart';
 class RadioStreamButton extends StatefulWidget {
   final Future<SongAiring>? _songAiring;
 
-  RadioStreamButton(this._songAiring);
+  const RadioStreamButton(this._songAiring);
 
   @override
   _RadioStreamButtonState createState() => _RadioStreamButtonState();
 }
 
 class _RadioStreamButtonState extends State<RadioStreamButton> {
+  @override
   Widget build(BuildContext context) {
-    Widget label = Text("Écouter la radio",
+    Widget label = const Text("Écouter la radio",
         style: TextStyle(
           fontSize: 20.0,
         ));
@@ -34,13 +35,13 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
                 TextSpan(
                     text: '\n${snapshot.data!.nbListeners} auditeurs',
                     style:
-                        TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+                        const TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
               ],
             ),
           );
         }
         return ElevatedButton.icon(
-          icon: Icon(Icons.radio, size: 40),
+          icon: const Icon(Icons.radio, size: 40),
           label: label,
           onPressed: () async {
             SongAiringNotifier().songAiring!.then((song) async {

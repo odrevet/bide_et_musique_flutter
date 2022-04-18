@@ -7,7 +7,7 @@ import '../utils.dart';
 import 'account.dart';
 
 class TrombidoscopeWidget extends StatefulWidget {
-  TrombidoscopeWidget({Key? key}) : super(key: key);
+  const TrombidoscopeWidget({Key? key}) : super(key: key);
 
   @override
   _TrombidoscopeWidgetState createState() => _TrombidoscopeWidgetState();
@@ -15,12 +15,12 @@ class TrombidoscopeWidget extends StatefulWidget {
 
 class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accountLinks = <AccountLink>[];
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   bool? _isLoading;
 
   final _font = TextStyle(
       fontSize: 18.0,
-      background: Paint()..color = Color.fromARGB(180, 150, 150, 100));
+      background: Paint()..color = const Color.fromARGB(180, 150, 150, 100));
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Le trombidoscope'),
+          title: const Text('Le trombidoscope'),
         ),
         body: GridView.builder(
             itemCount: _accountLinks.length,

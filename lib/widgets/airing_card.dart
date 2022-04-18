@@ -28,7 +28,7 @@ class _AiringCardState extends State<AiringCard> {
             return CoverWithGesture(
                 songLink: snapshot.data,
                 displayPlaceholder: false,
-                fadeInDuration: Duration());
+                fadeInDuration: const Duration());
           } else if (snapshot.hasError) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,

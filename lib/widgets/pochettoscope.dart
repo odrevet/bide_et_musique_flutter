@@ -7,12 +7,12 @@ class PochettoscopeWidget extends StatefulWidget {
   final List<SongLink>? songLinks;
   final Function? onEndReached;
 
-  PochettoscopeWidget({this.songLinks, this.onEndReached, Key? key})
+  const PochettoscopeWidget({this.songLinks, this.onEndReached, Key? key})
       : super(key: key);
 
   @override
   _PochettoscopeWidgetState createState() =>
-      _PochettoscopeWidgetState(this.songLinks);
+      _PochettoscopeWidgetState(songLinks);
 }
 
 class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
@@ -35,15 +35,17 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
               _songLinks = songLinks;
             })
           });
-    } else
+    } else {
       _isLoading = false;
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    if (widget.onEndReached != null)
+    if (widget.onEndReached != null) {
       _controller!.removeListener(_scrollListener);
+    }
   }
 
   _scrollListener() {
@@ -66,7 +68,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     if (_songLinks == null) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
     return GridView.builder(
         itemCount: _songLinks!.length,
@@ -75,11 +77,11 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-              padding: EdgeInsets.all(1),
+              padding: const EdgeInsets.all(1),
               child: CoverWithGesture(
                   songLink: _songLinks![index],
                   displayPlaceholder: true,
-                  fadeInDuration: Duration(milliseconds: 250)));
+                  fadeInDuration: const Duration(milliseconds: 250)));
         });
   }
 }

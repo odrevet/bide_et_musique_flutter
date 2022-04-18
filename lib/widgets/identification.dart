@@ -9,7 +9,7 @@ import '../utils.dart';
 import 'manage_account.dart';
 
 class Identification extends StatefulWidget {
-  Identification({Key? key}) : super(key: key);
+  const Identification({Key? key}) : super(key: key);
 
   @override
   _IdentificationState createState() => _IdentificationState();
@@ -34,19 +34,19 @@ class _IdentificationState extends State<Identification> {
   @override
   Widget build(BuildContext context) {
     if (Session.accountLink.id != null) {
-      return LoggedInPage();
+      return const LoggedInPage();
     } else {
       return Center(
         child: FutureBuilder<IdentificationResponse>(
           future: _identificationResponse,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data!.isLoggedIn == true)
-                return LoggedInPage();
-              else if (snapshot.data!.isLoggedIn == false) {
+              if (snapshot.data!.isLoggedIn == true) {
+                return const LoggedInPage();
+              } else if (snapshot.data!.isLoggedIn == false) {
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text("Connexion à votre compte"),
+                    title: const Text("Connexion à votre compte"),
                   ),
                   body: _buildViewLoginForm(context, snapshot.data),
                 );
@@ -58,7 +58,7 @@ class _IdentificationState extends State<Identification> {
             // By default, show the login form
             return Scaffold(
               appBar: AppBar(
-                title: Text("Connexion à votre compte"),
+                title: const Text("Connexion à votre compte"),
               ),
               body: _buildViewLoginForm(context),
             );
@@ -112,7 +112,7 @@ class _IdentificationState extends State<Identification> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    this.setState(() {
+    setState(() {
       _identificationResponse = sendIdentifiers(username, password);
     });
 
@@ -135,55 +135,55 @@ class _IdentificationState extends State<Identification> {
         children: <Widget>[
           TextFormField(
               controller: _usernameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Nom utilisateur',
               )),
           TextFormField(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Mot de passe',
               )),
           identificationResponse != null &&
                   identificationResponse.isLoggedIn == false
               ? Container(
-                  margin: EdgeInsets.only(top: 20.0),
+                  margin: const EdgeInsets.only(top: 20.0),
                   child: Text(
                       'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.red)))
-              : Text(''),
+              : const Text(''),
           CheckboxListTile(
-              title: Text("Se souvenir des identifiants"),
+              title: const Text("Se souvenir des identifiants"),
               value: _remember,
               onChanged: _onRememberToggle),
           Container(
             child: ElevatedButton(
-                child: Text(
+                child: const Text(
                   'Se connecter',
                 ),
                 onPressed: _performLogin),
-            margin: EdgeInsets.only(top: 2.0),
+            margin: const EdgeInsets.only(top: 2.0),
           ),
-          Divider(),
+          const Divider(),
           Column(children: [
-            Text("Pas de compte ? "),
+            const Text("Pas de compte ? "),
             ElevatedButton(
               onPressed: () => launchURL('$baseUri/create_account.html'),
-              child: Text('En créer un sur bide-et-musique.com'),
+              child: const Text('En créer un sur bide-et-musique.com'),
             ),
           ]),
-          Divider(),
+          const Divider(),
           Column(children: [
             ElevatedButton(
               onPressed: _clearSettings,
-              child: Text('Oublier les identifiants'),
+              child: const Text('Oublier les identifiants'),
             ),
           ])
         ],
       ),
     );
 
-    return Container(padding: EdgeInsets.all(30.0), child: form);
+    return Container(padding: const EdgeInsets.all(30.0), child: form);
   }
 }

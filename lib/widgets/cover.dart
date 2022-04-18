@@ -10,7 +10,7 @@ import 'song_page.dart';
 class CoverThumb extends StatelessWidget {
   final SongLink? _songLink;
 
-  CoverThumb(this._songLink);
+  const CoverThumb(this._songLink);
 
   Widget _sizedContainer({Widget? child}) {
     return SizedBox(
@@ -28,9 +28,9 @@ class CoverThumb extends StatelessWidget {
         child: _sizedContainer(
             child: CachedNetworkImage(
                 imageUrl: _songLink!.thumbLink,
-                placeholder: (context, url) => Icon(Icons.album, size: 50.0),
+                placeholder: (context, url) => const Icon(Icons.album, size: 50.0),
                 errorWidget: (context, url, error) =>
-                    Icon(Icons.album, size: 50.0))));
+                    const Icon(Icons.album, size: 50.0))));
   }
 }
 
@@ -39,7 +39,7 @@ class CoverWithGesture extends StatelessWidget {
   final Duration fadeInDuration;
   final bool displayPlaceholder;
 
-  CoverWithGesture(
+  const CoverWithGesture(
       {Key? key,
       this.songLink,
       this.fadeInDuration = const Duration(),
@@ -54,7 +54,7 @@ class CoverWithGesture extends StatelessWidget {
             : Axis.vertical,
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
               boxShadow: [
                 BoxShadow(
@@ -73,7 +73,7 @@ class CoverWithGesture extends StatelessWidget {
                             song: fetchSong(songLink!.id))));
               },
               onLongPress: () {
-                Navigator.of(context).push(MaterialPageRoute<Null>(
+                Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (BuildContext context) {
                       return CoverViewer(songLink);
                     },
@@ -93,7 +93,7 @@ class Cover extends StatelessWidget {
   final Duration fadeInDuration;
   final bool displayPlaceholder;
 
-  Cover(this._url,
+  const Cover(this._url,
       {this.fadeInDuration = const Duration(),
       this.displayPlaceholder = false});
 

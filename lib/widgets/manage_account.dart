@@ -20,7 +20,7 @@ class DisconnectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.close),
+      icon: const Icon(Icons.close),
       onPressed: () {
         Session.accountLink.id = null;
         Session.headers = {};
@@ -31,7 +31,7 @@ class DisconnectButton extends StatelessWidget {
 }
 
 class LoggedInPage extends StatelessWidget {
-  LoggedInPage({Key? key}) : super(key: key);
+  const LoggedInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class LoggedInPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: actions,
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.account_circle)),
               Tab(icon: Icon(Icons.star)),
@@ -59,10 +59,10 @@ class LoggedInPage extends StatelessWidget {
           children: [
             ManageAccountPageWidget(
                 account: fetchAccount(Session.accountLink.id)),
-            ManageFavoritesWidget(),
+            const ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
             BideBoxWidget(exchanges: fetchExchanges()),
-            RequestsPageWidget()
+            const RequestsPageWidget()
           ],
         ),
       ),
@@ -74,7 +74,7 @@ class LoggedInPage extends StatelessWidget {
 class VoteListing extends StatelessWidget {
   final Future<List<SongLink>> songLinks;
 
-  VoteListing(this.songLinks, {Key? key}) : super(key: key);
+  const VoteListing(this.songLinks, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +82,17 @@ class VoteListing extends StatelessWidget {
         future: songLinks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.isEmpty)
-              return Center(
+            if (snapshot.data!.isEmpty) {
+              return const Center(
                   child: Text('Vous n\'avez pas voté cette semaine. '));
-            else
+            } else {
               return SongListingWidget(snapshot.data);
+            }
           } else if (snapshot.hasError) {
             return Center(child: Text("${snapshot.error}"));
           }
 
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
   }
 }
@@ -99,7 +100,7 @@ class VoteListing extends StatelessWidget {
 class ManageAccountPageWidget extends StatelessWidget {
   final Future<Account>? account;
 
-  ManageAccountPageWidget({Key? key, this.account}) : super(key: key);
+  const ManageAccountPageWidget({Key? key, this.account}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +115,7 @@ class ManageAccountPageWidget extends StatelessWidget {
           }
 
           // By default, show a loading spinner
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
@@ -151,7 +152,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                             '\n' +
                             account.comments +
                             '\n',
-                        style: TextStyle(fontSize: 14)),
+                        style: const TextStyle(fontSize: 14)),
                   ),
                 ],
               )),

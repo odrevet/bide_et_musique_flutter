@@ -12,13 +12,13 @@ import 'account.dart';
 class BideBoxWidget extends StatelessWidget {
   final Future<List<Exchange>>? exchanges;
 
-  BideBoxWidget({Key? key, this.exchanges}) : super(key: key);
+  const BideBoxWidget({Key? key, this.exchanges}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<Exchange>>(
-        future: this.exchanges,
+        future: exchanges,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data!);
@@ -28,7 +28,7 @@ class BideBoxWidget extends StatelessWidget {
             );
           }
 
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
@@ -57,7 +57,7 @@ class BideBoxWidget extends StatelessWidget {
                         builder: (BuildContext context) =>
                             MessageEditor(message.recipient),
                       ),
-                  child: Icon(Icons.mail)));
+                  child: const Icon(Icons.mail)));
         });
   }
 }
@@ -65,7 +65,7 @@ class BideBoxWidget extends StatelessWidget {
 class MessageEditor extends StatefulWidget {
   final AccountLink? _accountLink;
 
-  MessageEditor(this._accountLink);
+  const MessageEditor(this._accountLink);
 
   @override
   _MessageEditorState createState() => _MessageEditorState();
@@ -80,8 +80,8 @@ class _MessageEditorState extends State<MessageEditor> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       actions: [
         ElevatedButton.icon(
-          icon: Icon(Icons.send),
-          label: Text("Envoyer"),
+          icon: const Icon(Icons.send),
+          label: const Text("Envoyer"),
           onPressed: () async {
             bool status = await sendMessage(
                 _newMessageController.text, widget._accountLink!.id);
@@ -94,7 +94,7 @@ class _MessageEditorState extends State<MessageEditor> {
           maxLength: 500,
           maxLines: 5,
           controller: _newMessageController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Entrez votre message ici',
           )),
     );

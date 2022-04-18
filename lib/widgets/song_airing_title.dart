@@ -11,7 +11,7 @@ class SongAiringTitle extends StatefulWidget with PreferredSizeWidget {
   final Orientation _orientation;
 
   SongAiringTitle(this._orientation, this._songAiring, {Key? key})
-      : preferredSize = Size.fromHeight(50.0),
+      : preferredSize = const Size.fromHeight(50.0),
         super(key: key);
 
   @override
@@ -39,14 +39,14 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
               overflow: TextOverflow.fade,
               text: TextSpan(
                 text: songAiring.name,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
                 children: <TextSpan>[
                   TextSpan(
                     text: '\n$subtitle',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
                         fontSize: 14),
@@ -57,7 +57,7 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
           } else {
             title = Text(
               '${songAiring.name} • $subtitle',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
@@ -66,10 +66,10 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
 
           return title;
         } else if (snapshot.hasError) {
-          return Text("Erreur");
+          return const Text("Erreur");
         }
 
-        return Text("Chargement");
+        return const Text("Chargement");
       },
     );
   }

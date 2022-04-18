@@ -58,7 +58,7 @@ Future<List<Post>> fetchPosts() async {
 }
 
 Future<void> sendMessage(String message) async {
-  final url = '$baseUri/mur-des-messages.html';
+  const url = '$baseUri/mur-des-messages.html';
 
   if (message.isNotEmpty) {
     await Session.post(url, body: {'T': message, 'Type': '2'});

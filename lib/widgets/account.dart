@@ -39,10 +39,10 @@ class AccountPage extends StatefulWidget {
   final Future<Account>? account;
   final int defaultPage;
 
-  AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
+  const AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState(this.account);
+  _AccountPageState createState() => _AccountPageState(account);
 }
 
 class _AccountPageState extends State<AccountPage> {
@@ -203,7 +203,7 @@ class _AccountPageState extends State<AccountPage> {
             actions: _currentPage == 1
                 ? <Widget>[
                     Padding(
-                        padding: EdgeInsets.only(right: 20.0),
+                        padding: const EdgeInsets.only(right: 20.0),
                         child: _switchViewButton())
                   ]
                 : []),
@@ -279,7 +279,7 @@ class AccountListing extends StatelessWidget {
 class AccountListingFuture extends StatelessWidget {
   final Future<List<AccountLink>> accounts;
 
-  AccountListingFuture(this.accounts, {Key? key}) : super(key: key);
+  const AccountListingFuture(this.accounts, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

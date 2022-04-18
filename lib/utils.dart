@@ -19,11 +19,11 @@ const baseUri = 'https://$host';
 const radioIcon = '\u{1F4FB}';
 const songIcon = '♪';
 
-var linkStyle = TextStyle(
+var linkStyle = const TextStyle(
   color: Colors.red,
 );
 
-var defaultStyle = TextStyle(
+var defaultStyle = const TextStyle(
   color: Colors.black,
 );
 

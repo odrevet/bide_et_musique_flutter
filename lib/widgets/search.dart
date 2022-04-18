@@ -11,11 +11,11 @@ class SearchResults extends StatefulWidget {
   final String? search;
   final String? type;
 
-  SearchResults(this.search, this.type, {Key? key}) : super(key: key);
+  const SearchResults(this.search, this.type, {Key? key}) : super(key: key);
 
   @override
   _SearchResultsState createState() =>
-      _SearchResultsState(this.search, this.type);
+      _SearchResultsState(search, type);
 }
 
 class _SearchResultsState extends State<SearchResults> {
@@ -27,7 +27,7 @@ class _SearchResultsState extends State<SearchResults> {
   final String? search;
   final String? type;
 
-  var _controller = ScrollController();
+  final _controller = ScrollController();
 
   _SearchResultsState(this.search, this.type);
 
@@ -74,9 +74,10 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading == true) return Center(child: CircularProgressIndicator());
-    if (_songLinks!.isEmpty)
-      return Center(child: Text('Pas de résultats pour cette recherche'));
+    if (_loading == true) return const Center(child: CircularProgressIndicator());
+    if (_songLinks!.isEmpty) {
+      return const Center(child: Text('Pas de résultats pour cette recherche'));
+    }
 
     return ListView.builder(
         controller: _controller,
@@ -96,7 +97,7 @@ class _SearchResultsState extends State<SearchResults> {
 }
 
 class Search extends StatefulWidget {
-  Search({Key? key}) : super(key: key);
+  const Search({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -105,7 +106,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
 
-  List _searchTypes = [
+  final List _searchTypes = [
     'Interprète / Nom du morceau',
     'Interprète',
     'Nom du morceau',
@@ -126,10 +127,10 @@ class _SearchState extends State<Search> {
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = [];
     var i = 1;
-    _searchTypes.forEach((searchType) {
+    for (var searchType in _searchTypes) {
       items.add(DropdownMenuItem(value: i.toString(), child: Text(searchType)));
       i++;
-    });
+    }
 
     return items;
   }
@@ -138,11 +139,11 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
     _dropDownMenuItems = getDropDownMenuItems();
-    this._currentItem = _dropDownMenuItems![0].value;
+    _currentItem = _dropDownMenuItems![0].value;
   }
 
   void performSearch() {
-    if (this._currentItem == '10') {
+    if (_currentItem == '10') {
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -154,11 +155,11 @@ class _SearchState extends State<Search> {
           MaterialPageRoute(
               builder: (context) => Scaffold(
                     appBar: AppBar(
-                      title: Text('Recherche de chansons'),
+                      title: const Text('Recherche de chansons'),
                     ),
                     body: Center(
                         child:
-                            SearchResults(_controller.text, this._currentItem)),
+                            SearchResults(_controller.text, _currentItem)),
                   )));
     }
   }
@@ -167,27 +168,27 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Rechercher dans la base'),
+          title: const Text('Rechercher dans la base'),
         ),
         body: Container(
-            padding: EdgeInsets.all(30.0),
-            margin: EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.all(30.0),
+            margin: const EdgeInsets.only(top: 20.0),
             child: ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               children: [
                 Container(
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).colorScheme.secondary,
                           width: 2.0),
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(3.0),
                     child: DropdownButtonFormField(
-                      decoration: InputDecoration.collapsed(hintText: ''),
-                      value: this._currentItem,
+                      decoration: const InputDecoration.collapsed(hintText: ''),
+                      value: _currentItem,
                       items: _dropDownMenuItems,
                       onChanged: changedDropDownItem,
                     )),
@@ -196,7 +197,7 @@ class _SearchState extends State<Search> {
                     decoration: InputDecoration(
                       hintText: 'Entrez ici votre recherche',
                       contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32.0)),
                     ),
@@ -204,11 +205,11 @@ class _SearchState extends State<Search> {
                     controller: _controller),
                 Container(
                   child: ElevatedButton(
-                      child: Text(
+                      child: const Text(
                         'Lancer la recherche',
                       ),
                       onPressed: () => performSearch()),
-                  margin: EdgeInsets.only(top: 20.0),
+                  margin: const EdgeInsets.only(top: 20.0),
                 )
               ],
             )));

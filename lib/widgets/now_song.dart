@@ -11,13 +11,13 @@ import 'song_listing.dart';
 class NowSongsWidget extends StatelessWidget {
   final Future<List<NowSong>>? nowSongs;
 
-  NowSongsWidget({Key? key, this.nowSongs}) : super(key: key);
+  const NowSongsWidget({Key? key, this.nowSongs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Morceau du moment'),
+        title: const Text('Morceau du moment'),
       ),
       body: Center(
         child: FutureBuilder<List<NowSong>>(
@@ -30,7 +30,7 @@ class NowSongsWidget extends StatelessWidget {
             }
 
             // By default, show a loading spinner
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),

@@ -21,10 +21,10 @@ class SongPageWidget extends StatefulWidget {
   final SongLink? songLink;
   final Future<Song>? song;
 
-  SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
+  const SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
 
   @override
-  _SongPageWidgetState createState() => _SongPageWidgetState(this.song);
+  _SongPageWidgetState createState() => _SongPageWidgetState(song);
 }
 
 class _SongPageWidgetState extends State<SongPageWidget> {
@@ -37,13 +37,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Song>(
-      future: this.song,
+      future: song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildView(context, snapshot.data!);
         } else if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(title: Text('Ouille ouille ouille !')),
+            appBar: AppBar(title: const Text('Ouille ouille ouille !')),
             body: Center(child: ErrorDisplay(snapshot.error)),
           );
         }
@@ -54,7 +54,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
   }
 
   void _openCoverViewerDialog(SongLink? songLink, BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (BuildContext context) {
           return CoverViewer(songLink);
         },
@@ -82,7 +82,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         errorWidget: (context, url, error) =>
             Image.asset('assets/vinyl-default.jpg'),
       ),
-      Align(alignment: Alignment.center, child: CircularProgressIndicator())
+      const Align(alignment: Alignment.center, child: CircularProgressIndicator())
     ]);
 
     return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
@@ -100,8 +100,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: [
             ElevatedButton.icon(
-              icon: Icon(Icons.send),
-              label: Text("Envoyer"),
+              icon: const Icon(Icons.send),
+              label: const Text("Envoyer"),
               onPressed: () async {
                 sendAddComment(song, _commentController.text);
                 Navigator.of(context).pop();
@@ -111,11 +111,11 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               },
             )
           ],
-          title: Text('Nouveau commentaire'),
+          title: const Text('Nouveau commentaire'),
           content: TextFormField(
               maxLines: 5,
               controller: _commentController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Entrez votre commentaire ici',
               )),
         );
@@ -132,8 +132,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         return AlertDialog(
           actions: [
             ElevatedButton.icon(
-              icon: Icon(Icons.send),
-              label: Text("Envoyer"),
+              icon: const Icon(Icons.send),
+              label: const Text("Envoyer"),
               onPressed: () async {
                 sendEditComment(song, comment, _commentController.text);
                 setState(() {
@@ -143,11 +143,11 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               },
             )
           ],
-          title: Text('Edition d\'un commentaire'),
+          title: const Text('Edition d\'un commentaire'),
           content: TextFormField(
               maxLines: 5,
               controller: _commentController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Entrez votre commentaire ici',
               )),
         );
@@ -177,7 +177,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                         Expanded(
                           flex: 1,
                           child: Padding(
-                              padding: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Hero(
                                   tag: tag,
                                   child: InkWell(
@@ -228,7 +228,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               children: <Widget>[
                 SingleChildScrollView(
                     child: Padding(
-                  padding: EdgeInsets.only(left: 4.0, top: 2.0),
+                  padding: const EdgeInsets.only(left: 4.0, top: 2.0),
                   child: HtmlWithStyle(
                       data: song.lyrics == ''
                           ? '<center><i>Paroles non renseignées</i></center>'
@@ -244,7 +244,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         ? null
         : FloatingActionButton(
             onPressed: () => _newMessageDialog(context, song),
-            child: Icon(Icons.add_comment),
+            child: const Icon(Icons.add_comment),
           );
 
     return Scaffold(
@@ -258,7 +258,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     List<Comment> comments = song.comments;
     var rows = <Widget>[];
     String? loginName = Session.accountLink.name;
-    var selfComment = TextStyle(
+    var selfComment = const TextStyle(
       color: Colors.red,
     );
 
@@ -276,13 +276,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName
               ? IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () async {
                     _editMessageDialog(context, song, comment);
                   },
                 )
               : null));
-      rows.add(Divider());
+      rows.add(const Divider());
     }
 
     return ListView(children: rows);

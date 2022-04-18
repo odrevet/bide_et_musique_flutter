@@ -17,7 +17,7 @@ class _ForumPageState extends State<ForumWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Les forums'),
+          title: const Text('Les forums'),
         ),
         body: FutureBuilder<List<Forum>>(
             future: fetchForums(),
@@ -34,7 +34,7 @@ class _ForumPageState extends State<ForumWidget> {
                           ),
                           subtitle: Text(forum.subtitle!),
                           trailing:
-                              forum.hasNew! ? Icon(Icons.fiber_new) : null,
+                              forum.hasNew! ? const Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -47,7 +47,7 @@ class _ForumPageState extends State<ForumWidget> {
                 return Center(child: ErrorDisplay(snapshot.error));
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }));
   }
 }
@@ -56,7 +56,7 @@ class ForumThreadWidget extends StatefulWidget {
   final Future<List<ForumThread>> _forumThreads;
   final Forum _forum;
 
-  ForumThreadWidget(this._forum, this._forumThreads);
+  const ForumThreadWidget(this._forum, this._forumThreads);
 
   @override
   _ForumThreadWidgetState createState() => _ForumThreadWidgetState();
@@ -70,7 +70,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
           title: Text(widget._forum.name!),
         ),
         body: FutureBuilder<List<ForumThread>>(
-            future: this.widget._forumThreads,
+            future: widget._forumThreads,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<ForumThread> forumThreads = snapshot.data!;
@@ -87,7 +87,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                           subtitle: Text(
                               '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name} ${forumThread.lastDate}'),
                           trailing: forumThread.hasNew!
-                              ? Icon(Icons.fiber_new)
+                              ? const Icon(Icons.fiber_new)
                               : null,
                           onTap: () {
                             Navigator.push(
@@ -103,7 +103,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                 return Center(child: ErrorDisplay(snapshot.error));
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }));
   }
 }
@@ -112,7 +112,7 @@ class ForumMessagesWidget extends StatefulWidget {
   final ForumThread _forumThread;
   final Future<List<ForumMessage>> _forumMessages;
 
-  ForumMessagesWidget(this._forumThread, this._forumMessages);
+  const ForumMessagesWidget(this._forumThread, this._forumMessages);
 
   @override
   _ForumMessagesWidgetState createState() => _ForumMessagesWidgetState();
@@ -126,12 +126,12 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
           title: Text(widget._forumThread.title!),
         ),
         body: FutureBuilder<List<ForumMessage>>(
-            future: this.widget._forumMessages,
+            future: widget._forumMessages,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var forumMessages = snapshot.data!;
                 return ListView.separated(
-                    separatorBuilder: (context, index) => Divider(),
+                    separatorBuilder: (context, index) => const Divider(),
                     itemCount: forumMessages.length,
                     itemBuilder: (BuildContext context, int index) {
                       ForumMessage forumMessage = forumMessages[index];
@@ -144,7 +144,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                 return Center(child: ErrorDisplay(snapshot.error));
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }));
   }
 }

@@ -9,7 +9,7 @@ import 'cover.dart';
 import 'song_page.dart';
 
 class RequestsPageWidget extends StatefulWidget {
-  RequestsPageWidget({Key? key}) : super(key: key);
+  const RequestsPageWidget({Key? key}) : super(key: key);
 
   @override
   _RequestsPageWidgetState createState() => _RequestsPageWidgetState();
@@ -37,7 +37,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<List<Request>>(
-        future: this._requests,
+        future: _requests,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data!);
@@ -45,7 +45,7 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             return Text("${snapshot.error}");
           }
 
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
@@ -71,17 +71,18 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
             ),
             title: Text(songLink.name),
             subtitle: Text(songLink.artist!),
-            trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
+            trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
             onTap: () => setState(() {
                   if (isAvailable!) _selectedRequestId = songLink.id;
                 }));
 
-        if (songLink.id == _selectedRequestId)
+        if (songLink.id == _selectedRequestId) {
           return Material(color: Colors.orange[400], child: listTile);
-        else if (isAvailable != true)
+        } else if (isAvailable != true) {
           return Material(color: Colors.red[300], child: listTile);
-        else
+        } else {
           return listTile;
+        }
       },
     );
 
@@ -95,12 +96,12 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 maxLength: 40,
                 enabled: _selectedRequestId != null,
                 controller: _dedicateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: 'Dédicace (facultative, 40 caractères maximum)'),
               ),
             ),
             IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () => _selectedRequestId == null
                     ? null
                     : sendRequest(_selectedRequestId, _dedicateController.text)

@@ -7,10 +7,10 @@ import 'cover.dart';
 class CoverViewer extends StatefulWidget {
   final SongLink? songLink;
 
-  CoverViewer(this.songLink, {Key? key}) : super(key: key);
+  const CoverViewer(this.songLink, {Key? key}) : super(key: key);
 
   @override
-  _CoverViewerState createState() => _CoverViewerState(this.songLink);
+  _CoverViewerState createState() => _CoverViewerState(songLink);
 }
 
 class _CoverViewerState extends State<CoverViewer> {
@@ -25,7 +25,7 @@ class _CoverViewerState extends State<CoverViewer> {
     return Scaffold(
       appBar: AppBar(title: Text(songLink!.name), actions: <Widget>[
         Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () =>
                   setState(() => _threeDimensionMode = !_threeDimensionMode),

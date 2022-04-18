@@ -11,7 +11,7 @@ import 'seek_bar.dart';
 class SongPlayerWidget extends StatefulWidget {
   final Song? _song;
 
-  SongPlayerWidget(this._song, {Key? key}) : super(key: key);
+  const SongPlayerWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
@@ -42,7 +42,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
             // No song is being played. Display play arrow
             if (mediaItem == null) {
-              return _button(Icons.play_arrow, this.playSong);
+              return _button(Icons.play_arrow, playSong);
             }
 
             return FutureBuilder<dynamic>(
@@ -51,7 +51,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                   if (snapshot.hasData) {
                     bool radioMode = snapshot.data;
                     if (radioMode) {
-                      return _button(Icons.play_arrow, this.playSong);
+                      return _button(Icons.play_arrow, playSong);
                     } else {
                       // check if the displayed song is the song being played
                       return getIdFromUrl(mediaItem.id) == widget._song!.id
@@ -63,7 +63,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                       .distinct(),
                                   builder: (context, snapshot) {
                                     final playing = snapshot.data ?? false;
-                                    var controls;
+                                    List<IconButton> controls;
                                     if (playing) {
                                       controls = [
                                         _button(Icons.fast_rewind_rounded,
@@ -76,7 +76,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                     } else {
                                       controls = [
                                         _button(
-                                            Icons.play_arrow, this.playSong),
+                                            Icons.play_arrow, playSong),
                                       ];
                                     }
                                     return Row(
@@ -105,11 +105,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                 ),
                               ],
                             )
-                          : _button(Icons.play_arrow, this.playSong);
+                          : _button(Icons.play_arrow, playSong);
                     }
                   }
 
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 });
           },
         ),

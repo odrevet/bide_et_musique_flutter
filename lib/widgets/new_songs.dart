@@ -9,13 +9,13 @@ import 'song_listing.dart';
 class SongsWidget extends StatelessWidget {
   final Future<List<SongLink>>? songs;
 
-  SongsWidget({Key? key, this.songs}) : super(key: key);
+  const SongsWidget({Key? key, this.songs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Les nouvelles entrées'),
+        title: const Text('Les nouvelles entrées'),
       ),
       body: Center(
         child: FutureBuilder<List<SongLink>>(
@@ -28,7 +28,7 @@ class SongsWidget extends StatelessWidget {
             }
 
             // By default, show a loading spinner
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),

@@ -23,5 +23,5 @@ Future<void> main() async {
       androidNotificationOngoing: true,
     ),
   );
-  runApp(BideApp());
+  runApp(const BideApp());
 }

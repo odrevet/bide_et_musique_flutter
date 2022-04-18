@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -75,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Options'),
+        title: const Text('Options'),
       ),
       body: Center(
           child: Container(
@@ -92,33 +92,33 @@ class _SettingsPageState extends State<SettingsPage> {
               Form(
                   child: ListView(children: [
                 ListTile(
-                  title: Text('Relais'),
+                  title: const Text('Relais'),
                   trailing: SizedBox(
                       width: 42,
                       child: TextButton(
                           child: Text(_relay.toString()),
                           onPressed: _onToggleRelay)),
                 ),
-                Divider(),
+                const Divider(),
                 CheckboxListTile(
-                    title: Text('Se souvenir des identifiants'),
+                    title: const Text('Se souvenir des identifiants'),
                     value: _rememberIdents,
                     onChanged: _onToggleRememberIdents),
                 CheckboxListTile(
-                    title: Text(
+                    title: const Text(
                         'Connexion au compte au démarrage de l\'application'),
                     value: _autoConnect,
                     onChanged:
                         _rememberIdents == true ? _onToggleAutoConnect : null),
                 CheckboxListTile(
-                    title: Text('Empêcher la mise en veille'),
+                    title: const Text('Empêcher la mise en veille'),
                     value: _wakelock,
                     onChanged: _onToggleWakeLock),
               ])),
             ],
           )
         ]),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/bm_logo.png'),
           ),

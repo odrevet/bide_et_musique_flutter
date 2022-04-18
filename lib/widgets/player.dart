@@ -17,7 +17,7 @@ class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
   final Future<SongAiring>? _songAiring;
 
-  PlayerWidget(this.orientation, this._songAiring);
+  const PlayerWidget(this.orientation, this._songAiring);
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -92,7 +92,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
                           .distinct(),
                       builder: (context, snapshot) {
                         final playing = snapshot.data ?? false;
-                        var controls;
+                        List<IconButton> controls;
 
                         if (playing) {
                           controls = [
@@ -135,7 +135,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
               }
             }
 
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         );
       },

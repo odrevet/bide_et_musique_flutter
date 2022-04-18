@@ -11,11 +11,11 @@ class SongInformations extends StatelessWidget {
   final Song? song;
   final bool compact;
 
-  SongInformations({this.song, this.compact = false});
+  const SongInformations({this.song, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
-    var linkStyle = TextStyle(
+    var linkStyle = const TextStyle(
       fontSize: 16.0,
       color: Colors.red,
       fontWeight: FontWeight.bold,

@@ -20,7 +20,7 @@ class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
   final split;
 
-  SongListingWidget(this._songLinks, {this.split = false, Key? key})
+  const SongListingWidget(this._songLinks, {this.split = false, Key? key})
       : super(key: key);
 
   @override
@@ -43,13 +43,13 @@ class SongListingWidgetState extends State<SongListingWidget> {
         if (songLink.info!.isEmpty) {
           songLink.info = "Programmation générale";
         }
-        if (this.widget.split == true && latestInfo != songLink.info!) {
+        if (widget.split == true && latestInfo != songLink.info!) {
           latestInfo = songLink.info!;
           rows.add(
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
+                const Expanded(
                   child: Divider(
                     indent: 20.0,
                     endIndent: 10.0,
@@ -58,9 +58,9 @@ class SongListingWidgetState extends State<SongListingWidget> {
                 ),
                 Text(
                   songLink.info!,
-                  style: TextStyle(color: Colors.blueGrey),
+                  style: const TextStyle(color: Colors.blueGrey),
                 ),
-                Expanded(
+                const Expanded(
                   child: Divider(
                     indent: 10.0,
                     endIndent: 20.0,
@@ -70,7 +70,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
               ],
             ),
           );
-        } else if (this.widget.split != true) {
+        } else if (widget.split != true) {
           subtitle += ' • ' + songLink.info!;
         }
       }
@@ -78,7 +78,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
       rows.add(ListTile(
         leading: GestureDetector(
           child: CoverThumb(songLink),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute<Null>(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
               builder: (BuildContext context) {
                 return CoverViewer(songLink);
               },
@@ -87,7 +87,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
         title: Text(
           songLink.name,
         ),
-        trailing: songLink.isNew ? Icon(Icons.fiber_new) : null,
+        trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
         subtitle: Text(subtitle),
         onTap: () => launchSongPage(songLink, context),
         onLongPress: () {
@@ -97,9 +97,9 @@ class SongListingWidgetState extends State<SongListingWidget> {
               barrierDismissible: true,
               builder: (BuildContext context) {
                 return SimpleDialog(
-                  contentPadding: EdgeInsets.all(20.0),
+                  contentPadding: const EdgeInsets.all(20.0),
                   children: [SongActionMenu(song)],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 );
               },

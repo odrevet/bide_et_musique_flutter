@@ -16,7 +16,7 @@ import 'html_with_style.dart';
 import 'song_page.dart';
 
 class WallWidget extends StatefulWidget {
-  WallWidget({Key? key}) : super(key: key);
+  const WallWidget({Key? key}) : super(key: key);
 
   @override
   _WallWidgetState createState() => _WallWidgetState();
@@ -48,8 +48,8 @@ class _WallWidgetState extends State<WallWidget> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: <Widget>[
             ElevatedButton.icon(
-              icon: Icon(Icons.send),
-              label: Text("Envoyer"),
+              icon: const Icon(Icons.send),
+              label: const Text("Envoyer"),
               onPressed: () async {
                 await sendMessage(_newMessageController.text);
                 _updatePosts();
@@ -58,11 +58,11 @@ class _WallWidgetState extends State<WallWidget> {
               },
             )
           ],
-          title: Text('Nouveau message'),
+          title: const Text('Nouveau message'),
           content: TextFormField(
               maxLines: 5,
               controller: _newMessageController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Entrez votre message ici',
               )),
         );
@@ -78,17 +78,17 @@ class _WallWidgetState extends State<WallWidget> {
             onPressed: () {
               _newMessageDialog(context);
             },
-            child: Icon(Icons.add_comment),
+            child: const Icon(Icons.add_comment),
           );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quoi de neuf ?'),
+        title: const Text('Quoi de neuf ?'),
       ),
       floatingActionButton: postNew,
       body: Center(
         child: FutureBuilder<List<Post>>(
-          future: this.posts,
+          future: posts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildView(context, snapshot.data!);
@@ -97,7 +97,7 @@ class _WallWidgetState extends State<WallWidget> {
             }
 
             // By default, show a loading spinner
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),
@@ -112,7 +112,7 @@ class _WallWidgetState extends State<WallWidget> {
           children: [
             RichText(
               text: TextSpan(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14.0,
                     color: Colors.black,
                   ),
@@ -145,7 +145,7 @@ class _WallWidgetState extends State<WallWidget> {
                     ),
                   ]),
             ),
-            Divider(),
+            const Divider(),
             HtmlWithStyle(
               data: post.body,
             )

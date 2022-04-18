@@ -10,7 +10,7 @@ import 'program.dart';
 class ThematicPageWidget extends StatefulWidget {
   final Future<List<ProgramLink>>? programLinks;
 
-  ThematicPageWidget({Key? key, this.programLinks}) : super(key: key);
+  const ThematicPageWidget({Key? key, this.programLinks}) : super(key: key);
 
   @override
   _ThematicPageWidgetState createState() => _ThematicPageWidgetState();
@@ -38,7 +38,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
           });
         });
       },
-      child: Icon(
+      child: const Icon(
         Icons.filter_list,
       ),
     );
@@ -53,13 +53,13 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
                   controller: controller,
                   autofocus: true,
                   decoration:
-                      InputDecoration(hintText: 'Filtrer les thématiques'),
+                      const InputDecoration(hintText: 'Filtrer les thématiques'),
                   onChanged: onSearchTextChanged,
                 )
-              : Text('Thématiques'),
+              : const Text('Thématiques'),
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: _switchSearchMode())
           ],
         ),
@@ -73,7 +73,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
                 return ErrorDisplay(snapshot.error);
               }
 
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             },
           ),
         ));

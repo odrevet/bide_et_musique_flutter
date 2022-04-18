@@ -56,15 +56,15 @@ class _TitlesWidgetState extends State<TitlesWidget> {
             return _buildView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Scaffold(
-                appBar: AppBar(title: Text('Ouille ouille ouille !')),
+                appBar: AppBar(title: const Text('Ouille ouille ouille !')),
                 body: Center(
                     child: ErrorDisplay(Exception(snapshot.error.toString()))));
           }
 
           // By default, show a loading spinner
           return Scaffold(
-            appBar: AppBar(title: Text('Chargement des titres')),
-            body: Center(child: CircularProgressIndicator()),
+            appBar: AppBar(title: const Text('Chargement des titres')),
+            body: const Center(child: CircularProgressIndicator()),
           );
         },
       ),
@@ -80,7 +80,7 @@ class _TitlesWidgetState extends State<TitlesWidget> {
               title: SongAiringTitle(
                   orientation, widget._songAiringNotifier.songAiring),
               bottom: orientation == Orientation.portrait
-                  ? TabBar(
+                  ? const TabBar(
                       tabs: [
                         Tab(text: 'A venir sur la platine'),
                         Tab(text: 'De retour dans leur bac'),

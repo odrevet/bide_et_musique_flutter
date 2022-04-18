@@ -32,9 +32,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     _songAiringNotifier.addListener(() {
       setState(() {
         _songAiring = _songAiringNotifier.songAiring;
-        if (_songAiring == null)
+        if (_songAiring == null) {
           _e = _songAiringNotifier.e;
-        else {
+        } else {
           audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true) {
               _songAiringNotifier.songAiring!.then((song) async {
@@ -95,7 +95,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         children: <Widget>[
           ErrorDisplay(_e),
           ElevatedButton.icon(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () {
               _songAiringNotifier.periodicFetchSongAiring();
             },
@@ -115,13 +115,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     if (_e != null && _songAiring == null) {
       airingWidget = refreshAiringSongButton();
     } else if (_songAiring == null) {
-      airingWidget = Center(child: CircularProgressIndicator());
+      airingWidget = const Center(child: CircularProgressIndicator());
     } else {
       airingWidget = AiringCard(_songAiring!);
     }
 
     //no url match from deep link or not launched from deep link
-    if (body == null)
+    if (body == null) {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
@@ -148,11 +148,12 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                             future: _songAiring,
                             builder: (BuildContext context,
                                 AsyncSnapshot<SongAiring> snapshot) {
-                              if (snapshot.hasData)
+                              if (snapshot.hasData) {
                                 return SongInformations(
                                     song: snapshot.data, compact: true);
-                              else
-                                return CircularProgressIndicator();
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
                             }),
                         PlayerWidget(orientation, _songAiring!),
                       ],
@@ -162,7 +163,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               ));
         }
       });
-    else {
+    } else {
       home = Scaffold(
           bottomNavigationBar: SizedBox(
               height: 60,
@@ -177,8 +178,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             primarySwatch: Colors.orange,
             secondaryHeaderColor: Colors.deepOrange,
             bottomAppBarColor: Colors.orange,
-            canvasColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-            dialogBackgroundColor: Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+            canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+            dialogBackgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
             buttonTheme: ButtonThemeData(
                 buttonColor: Colors.orangeAccent,
                 shape: RoundedRectangleBorder(

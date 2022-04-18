@@ -6,14 +6,14 @@ import '../utils.dart';
 class HtmlWithStyle extends StatelessWidget {
   final String? data;
 
-  HtmlWithStyle({this.data});
+  const HtmlWithStyle({this.data});
 
   @override
   Widget build(BuildContext context) {
     return Html(
         data: data,
         style: {
-          'html': Style(fontSize: FontSize(18.0)),
+          'html': Style(fontSize: const FontSize(18.0)),
           'a': Style(color: Colors.red),
         },
         onLinkTap: (url, _, __, ___) {

@@ -12,8 +12,8 @@ import 'song_player.dart';
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song>? _song;
 
-  SongAppBar(this._song, {Key? key})
-      : preferredSize = Size.fromHeight(kToolbarHeight),
+  const SongAppBar(this._song, {Key? key})
+      : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
   @override
@@ -32,15 +32,15 @@ class _SongAppBarState extends State<SongAppBar> {
         if (snapshot.hasData) {
           Song? song = snapshot.data;
           Widget songActionButton = IconButton(
-              icon: Icon(Icons.menu),
+              icon: const Icon(Icons.menu),
               onPressed: () => showDialog<void>(
                     context: context,
                     barrierDismissible: true,
                     builder: (BuildContext context) {
                       return SimpleDialog(
-                        contentPadding: EdgeInsets.all(20.0),
+                        contentPadding: const EdgeInsets.all(20.0),
                         children: [SongActionMenu(song)],
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0))),
                       );
@@ -52,11 +52,11 @@ class _SongAppBarState extends State<SongAppBar> {
             actions: <Widget>[songActionButton],
           );
         } else if (snapshot.hasError) {
-          return AppBar(title: Text("Chargement"));
+          return AppBar(title: const Text("Chargement"));
         }
 
         // By default, show a loading spinner
-        return AppBar(title: CircularProgressIndicator());
+        return AppBar(title: const CircularProgressIndicator());
       },
     );
   }
@@ -68,7 +68,7 @@ class _SongAppBarState extends State<SongAppBar> {
 class SongActionMenu extends StatelessWidget {
   final Song? _song;
 
-  SongActionMenu(this._song);
+  const SongActionMenu(this._song);
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +96,8 @@ class SongActionMenu extends StatelessWidget {
     var actionsShare = <Widget>[];
 
     var shareSongStream = ElevatedButton.icon(
-        icon: Icon(Icons.music_note),
-        label: Text('Flux musical'),
+        icon: const Icon(Icons.music_note),
+        label: const Text('Flux musical'),
         onPressed: () => Share.share(_song!.streamLink));
 
     actionsShare.add(SongShareIconWidget(_song));
@@ -110,7 +110,7 @@ class SongActionMenu extends StatelessWidget {
     }
 
     Widget popupMenuButtonShare = PopupMenuButton<Widget>(
-        icon: Icon(
+        icon: const Icon(
           Icons.share,
         ),
         itemBuilder: (BuildContext context) => popupMenuShare);
@@ -124,7 +124,7 @@ class SongActionMenu extends StatelessWidget {
         .add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
 
     Widget popupMenuButtonCopy = PopupMenuButton<Widget>(
-        icon: Icon(
+        icon: const Icon(
           Icons.content_copy,
         ),
         itemBuilder: (BuildContext context) => popupMenuCopy);
@@ -146,7 +146,7 @@ class SongActionMenu extends StatelessWidget {
 class SongFavoriteIconWidget extends StatefulWidget {
   final Song? _song;
 
-  SongFavoriteIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongFavoriteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongFavoriteIconWidgetState createState() => _SongFavoriteIconWidgetState();
@@ -159,8 +159,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   Widget build(BuildContext context) {
     if (widget._song!.isFavourite) {
       return ElevatedButton.icon(
-          icon: Icon(Icons.star),
-          label: Text('Retirer des favoris'),
+          icon: const Icon(Icons.star),
+          label: const Text('Retirer des favoris'),
           onPressed: () async {
             int statusCode = await removeSongFromFavorites(widget._song!.id);
             if (statusCode == 200) {
@@ -171,8 +171,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           });
     } else {
       return ElevatedButton.icon(
-        icon: Icon(Icons.star_border),
-        label: Text('Ajouter aux favoris'),
+        icon: const Icon(Icons.star_border),
+        label: const Text('Ajouter aux favoris'),
         onPressed: () async {
           int statusCode = await addSongToFavorites(widget._song!.link);
           if (statusCode == 200) {
@@ -190,7 +190,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 class SongVoteIconWidget extends StatefulWidget {
   final Song? _song;
 
-  SongVoteIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongVoteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
   _SongVoteIconWidgetState createState() => _SongVoteIconWidgetState();
@@ -214,8 +214,8 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
     };
 
     return ElevatedButton.icon(
-        icon: Icon(Icons.exposure_plus_1),
-        label: Text('Voter'),
+        icon: const Icon(Icons.exposure_plus_1),
+        label: const Text('Voter'),
         onPressed: (widget._song!.hasVote ? null : callbackVote));
   }
 }
@@ -226,13 +226,14 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 class SongShareIconWidget extends StatelessWidget {
   final Song? _song;
 
-  SongShareIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongShareIconWidget(this._song, {Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: Icon(Icons.message),
-        label: Text('Message'),
+        icon: const Icon(Icons.message),
+        label: const Text('Message'),
         onPressed: () => Share.share(
             '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
 
@@ -253,15 +254,16 @@ Message envoyé avec l'application 'Bide et Musique'. Disponible pour
 class SongCopyLinkIconWidget extends StatelessWidget {
   final Song? _song;
 
-  SongCopyLinkIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongCopyLinkIconWidget(this._song, {Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: Icon(Icons.link),
-        label: Text('Copier l\'url'),
+        icon: const Icon(Icons.link),
+        label: const Text('Copier l\'url'),
         onPressed: () {
-          Clipboard.setData(new ClipboardData(text: _song!.link));
+          Clipboard.setData(ClipboardData(text: _song!.link));
         });
   }
 }
@@ -269,13 +271,14 @@ class SongCopyLinkIconWidget extends StatelessWidget {
 class SongCopyLinkHtmlIconWidget extends StatelessWidget {
   final Song? _song;
 
-  SongCopyLinkHtmlIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongCopyLinkHtmlIconWidget(this._song, {Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: Icon(Icons.code),
-        label: Text('Copier le code HTML du lien'),
+        icon: const Icon(Icons.code),
+        label: const Text('Copier le code HTML du lien'),
         onPressed: () => Clipboard.setData(ClipboardData(
             text: '<a href="${_song!.link}">${_song!.name}</a>')));
   }
@@ -287,13 +290,14 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
 class SongOpenInBrowserIconWidget extends StatelessWidget {
   final Song? _song;
 
-  SongOpenInBrowserIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongOpenInBrowserIconWidget(this._song, {Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: Icon(Icons.open_in_browser),
-        label: Text('Ouvrir l\'url'),
+        icon: const Icon(Icons.open_in_browser),
+        label: const Text('Ouvrir l\'url'),
         onPressed: () => launchURL(_song!.link));
   }
 }

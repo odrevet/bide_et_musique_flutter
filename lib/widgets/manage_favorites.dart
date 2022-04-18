@@ -12,7 +12,7 @@ import 'cover.dart';
 import 'song_page.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
-  ManageFavoritesWidget({Key? key}) : super(key: key);
+  const ManageFavoritesWidget({Key? key}) : super(key: key);
 
   @override
   _ManageFavoritesWidgetState createState() => _ManageFavoritesWidgetState();
@@ -60,7 +60,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Retirer un favoris'),
+          title: const Text('Retirer un favoris'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -70,7 +70,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Oui'),
+              child: const Text('Oui'),
               onPressed: () async {
                 int statusCode = await removeSongFromFavorites(songLink.id);
 
@@ -84,7 +84,7 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
               },
             ),
             TextButton(
-              child: Text('Non'),
+              child: const Text('Non'),
               onPressed: () {
                 int index = account.favorites!.indexOf(songLink);
 
@@ -135,17 +135,18 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         future: _account,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.favorites!.isEmpty)
-              return Center(
+            if (snapshot.data!.favorites!.isEmpty) {
+              return const Center(
                   child: Text('Vous n\'avez pas de chanson dans vos favoris'));
-            else
+            } else {
               return _buildView(context, snapshot.data!);
+            }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
 
           // By default, show a loading spinner
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
