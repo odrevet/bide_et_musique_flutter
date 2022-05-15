@@ -4,7 +4,7 @@ description: Écouter et consulter la web radio 'Bide et Musique'
 version: 4.0.1+51
 
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
   flutter:
