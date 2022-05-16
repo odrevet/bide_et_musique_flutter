@@ -24,11 +24,11 @@ class SongListingWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  SongListingWidgetState createState() => SongListingWidgetState();
+  State<SongListingWidget> createState() => _SongListingWidgetState();
 }
 
-class SongListingWidgetState extends State<SongListingWidget> {
-  SongListingWidgetState();
+class _SongListingWidgetState extends State<SongListingWidget> {
+  _SongListingWidgetState();
 
   @override
   Widget build(BuildContext context) {

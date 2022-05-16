@@ -15,11 +15,11 @@ class ManageFavoritesWidget extends StatefulWidget {
   const ManageFavoritesWidget({Key? key}) : super(key: key);
 
   @override
-  ManageFavoritesWidgetState createState() => ManageFavoritesWidgetState();
+  State<ManageFavoritesWidget> createState() => _ManageFavoritesWidgetState();
 }
 
-class ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
-  ManageFavoritesWidgetState();
+class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
+  _ManageFavoritesWidgetState();
 
   Future<Account>? _account;
 

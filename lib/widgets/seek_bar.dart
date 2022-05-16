@@ -17,10 +17,10 @@ class SeekBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  SeekBarState createState() => SeekBarState();
+  State<SeekBar> createState() => _SeekBarState();
 }
 
-class SeekBarState extends State<SeekBar> {
+class _SeekBarState extends State<SeekBar> {
   double? _dragValue;
   bool _dragging = false;
 

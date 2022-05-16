@@ -20,10 +20,10 @@ class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   @override
-  SongAppBarState createState() => SongAppBarState();
+  State<SongAppBar> createState() => _SongAppBarState();
 }
 
-class SongAppBarState extends State<SongAppBar> {
+class _SongAppBarState extends State<SongAppBar> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Song>(
@@ -149,11 +149,11 @@ class SongFavoriteIconWidget extends StatefulWidget {
   const SongFavoriteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
-  SongFavoriteIconWidgetState createState() => SongFavoriteIconWidgetState();
+  State<SongFavoriteIconWidget> createState() => _SongFavoriteIconWidgetState();
 }
 
-class SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
-  SongFavoriteIconWidgetState();
+class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
+  _SongFavoriteIconWidgetState();
 
   @override
   Widget build(BuildContext context) {
@@ -194,11 +194,11 @@ class SongVoteIconWidget extends StatefulWidget {
   const SongVoteIconWidget(this._song, {Key? key}) : super(key: key);
 
   @override
-  SongVoteIconWidgetState createState() => SongVoteIconWidgetState();
+  State<SongVoteIconWidget> createState() => _SongVoteIconWidgetState();
 }
 
-class SongVoteIconWidgetState extends State<SongVoteIconWidget> {
-  SongVoteIconWidgetState();
+class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
+  _SongVoteIconWidgetState();
 
   @override
   Widget build(BuildContext context) {

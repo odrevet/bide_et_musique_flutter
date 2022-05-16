@@ -10,10 +10,10 @@ class TrombidoscopeWidget extends StatefulWidget {
   const TrombidoscopeWidget({Key? key}) : super(key: key);
 
   @override
-  TrombidoscopeWidgetState createState() => TrombidoscopeWidgetState();
+  State<TrombidoscopeWidget> createState() => _TrombidoscopeWidgetState();
 }
 
-class TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
+class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accountLinks = <AccountLink>[];
   final ScrollController _controller = ScrollController();
   bool? _isLoading;

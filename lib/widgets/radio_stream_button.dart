@@ -12,10 +12,10 @@ class RadioStreamButton extends StatefulWidget {
   const RadioStreamButton(this._songAiring, {Key? key}) : super(key: key);
 
   @override
-  RadioStreamButtonState createState() => RadioStreamButtonState();
+  State<RadioStreamButton> createState() => _RadioStreamButtonState();
 }
 
-class RadioStreamButtonState extends State<RadioStreamButton> {
+class _RadioStreamButtonState extends State<RadioStreamButton> {
   @override
   Widget build(BuildContext context) {
     Widget label = const Text("Écouter la radio",

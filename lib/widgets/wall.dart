@@ -19,10 +19,10 @@ class WallWidget extends StatefulWidget {
   const WallWidget({Key? key}) : super(key: key);
 
   @override
-  WallWidgetState createState() => WallWidgetState();
+  State<WallWidget> createState() => _WallWidgetState();
 }
 
-class WallWidgetState extends State<WallWidget> {
+class _WallWidgetState extends State<WallWidget> {
   Future<List<Post>>? posts;
   final _newMessageController = TextEditingController();
 
