@@ -15,10 +15,10 @@ class TitlesWidget extends StatefulWidget {
   TitlesWidget({Key? key}) : super(key: key);
 
   @override
-  _TitlesWidgetState createState() => _TitlesWidgetState();
+  TitlesWidgetState createState() => TitlesWidgetState();
 }
 
-class _TitlesWidgetState extends State<TitlesWidget> {
+class TitlesWidgetState extends State<TitlesWidget> {
   Future<Map<String, List<SongLink>>>? _songLinks;
   late VoidCallback listener;
 

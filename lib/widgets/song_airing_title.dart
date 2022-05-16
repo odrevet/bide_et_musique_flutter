@@ -15,10 +15,10 @@ class SongAiringTitle extends StatefulWidget with PreferredSizeWidget {
         super(key: key);
 
   @override
-  _SongAiringTitleState createState() => _SongAiringTitleState();
+  SongAiringTitleState createState() => SongAiringTitleState();
 }
 
-class _SongAiringTitleState extends State<SongAiringTitle> {
+class SongAiringTitleState extends State<SongAiringTitle> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SongAiring>(

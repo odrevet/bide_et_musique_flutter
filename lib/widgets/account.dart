@@ -42,16 +42,16 @@ class AccountPage extends StatefulWidget {
   const AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState(account);
+  AccountPageState createState() => AccountPageState(account);
 }
 
-class _AccountPageState extends State<AccountPage> {
+class AccountPageState extends State<AccountPage> {
   int? _currentPage;
   PageController? controller;
   bool _viewPochettoscope = false;
   Future<Account>? _account;
 
-  _AccountPageState(this._account);
+  AccountPageState(this._account);
 
   @override
   void initState() {

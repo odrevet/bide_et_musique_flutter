@@ -23,6 +23,7 @@ dependencies:
   url_launcher: ^6.0.20
   xml: ^6.0.1
   wakelock: ^0.6.1+1
+  rxdart: ^0.27.3
 
 dev_dependencies:
   test: ^1.16.5

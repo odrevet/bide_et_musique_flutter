@@ -13,10 +13,10 @@ class ThematicPageWidget extends StatefulWidget {
   const ThematicPageWidget({Key? key, this.programLinks}) : super(key: key);
 
   @override
-  _ThematicPageWidgetState createState() => _ThematicPageWidgetState();
+  ThematicPageWidgetState createState() => ThematicPageWidgetState();
 }
 
-class _ThematicPageWidgetState extends State<ThematicPageWidget> {
+class ThematicPageWidgetState extends State<ThematicPageWidget> {
   TextEditingController controller = TextEditingController();
   bool _searchMode = false;
   String _searchInput = '';

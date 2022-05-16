@@ -11,10 +11,10 @@ class ForumWidget extends StatefulWidget {
   const ForumWidget({Key? key}) : super(key: key);
 
   @override
-  _ForumPageState createState() => _ForumPageState();
+  ForumPageState createState() => ForumPageState();
 }
 
-class _ForumPageState extends State<ForumWidget> {
+class ForumPageState extends State<ForumWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +63,10 @@ class ForumThreadWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ForumThreadWidgetState createState() => _ForumThreadWidgetState();
+  ForumThreadWidgetState createState() => ForumThreadWidgetState();
 }
 
-class _ForumThreadWidgetState extends State<ForumThreadWidget> {
+class ForumThreadWidgetState extends State<ForumThreadWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,10 +120,10 @@ class ForumMessagesWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ForumMessagesWidgetState createState() => _ForumMessagesWidgetState();
+  ForumMessagesWidgetState createState() => ForumMessagesWidgetState();
 }
 
-class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
+class ForumMessagesWidgetState extends State<ForumMessagesWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

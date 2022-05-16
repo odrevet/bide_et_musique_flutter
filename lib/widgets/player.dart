@@ -21,10 +21,10 @@ class PlayerWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PlayerWidgetState createState() => _PlayerWidgetState();
+  PlayerWidgetState createState() => PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>
+class PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
   IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
         icon: Icon(iconData),

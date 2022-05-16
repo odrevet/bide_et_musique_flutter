@@ -14,11 +14,11 @@ class SearchResults extends StatefulWidget {
   const SearchResults(this.search, this.type, {Key? key}) : super(key: key);
 
   @override
-  _SearchResultsState createState() =>
-      _SearchResultsState();
+  SearchResultsState createState() =>
+      SearchResultsState();
 }
 
-class _SearchResultsState extends State<SearchResults> {
+class SearchResultsState extends State<SearchResults> {
   int? _pageCount;
   int _pageCurrent = 0;
   List<SongLink>? _songLinks;
@@ -27,7 +27,7 @@ class _SearchResultsState extends State<SearchResults> {
 
   final _controller = ScrollController();
 
-  _SearchResultsState();
+  SearchResultsState();
 
   @override
   void initState() {
@@ -98,10 +98,10 @@ class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
   @override
-  _SearchState createState() => _SearchState();
+  SearchState createState() => SearchState();
 }
 
-class _SearchState extends State<Search> {
+class SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
 
   final List _searchTypes = [
@@ -120,7 +120,7 @@ class _SearchState extends State<Search> {
 
   String? _currentItem; //selected index from 1
 
-  _SearchState();
+  SearchState();
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = [];

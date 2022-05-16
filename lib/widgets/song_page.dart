@@ -24,15 +24,15 @@ class SongPageWidget extends StatefulWidget {
   const SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
 
   @override
-  _SongPageWidgetState createState() => _SongPageWidgetState(song);
+  SongPageWidgetState createState() => SongPageWidgetState(song);
 }
 
-class _SongPageWidgetState extends State<SongPageWidget> {
+class SongPageWidgetState extends State<SongPageWidget> {
   int? _currentPage;
   final _commentController = TextEditingController();
   Future<Song>? song;
 
-  _SongPageWidgetState(this.song);
+  SongPageWidgetState(this.song);
 
   @override
   Widget build(BuildContext context) {

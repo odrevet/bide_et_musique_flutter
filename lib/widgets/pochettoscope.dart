@@ -11,16 +11,16 @@ class PochettoscopeWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PochettoscopeWidgetState createState() =>
-      _PochettoscopeWidgetState(songLinks);
+  PochettoscopeWidgetState createState() =>
+      PochettoscopeWidgetState(songLinks);
 }
 
-class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
+class PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   ScrollController? _controller;
   List<SongLink>? _songLinks;
   bool? _isLoading;
 
-  _PochettoscopeWidgetState(this._songLinks);
+  PochettoscopeWidgetState(this._songLinks);
 
   @override
   void initState() {

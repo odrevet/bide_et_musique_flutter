@@ -12,10 +12,10 @@ class RequestsPageWidget extends StatefulWidget {
   const RequestsPageWidget({Key? key}) : super(key: key);
 
   @override
-  _RequestsPageWidgetState createState() => _RequestsPageWidgetState();
+  RequestsPageWidgetState createState() => RequestsPageWidgetState();
 }
 
-class _RequestsPageWidgetState extends State<RequestsPageWidget> {
+class RequestsPageWidgetState extends State<RequestsPageWidget> {
   int? _selectedRequestId;
   final _dedicateController = TextEditingController();
   Future<List<Request>>? _requests;

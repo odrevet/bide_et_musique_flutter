@@ -12,11 +12,11 @@ class Identification extends StatefulWidget {
   const Identification({Key? key}) : super(key: key);
 
   @override
-  _IdentificationState createState() => _IdentificationState();
+  IdentificationState createState() => IdentificationState();
 }
 
-class _IdentificationState extends State<Identification> {
-  _IdentificationState();
+class IdentificationState extends State<Identification> {
+  IdentificationState();
 
   Future<IdentificationResponse>? _identificationResponse;
 

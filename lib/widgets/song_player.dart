@@ -14,11 +14,11 @@ class SongPlayerWidget extends StatefulWidget {
   const SongPlayerWidget(this._song, {Key? key}) : super(key: key);
 
   @override
-  _SongPlayerWidgetState createState() => _SongPlayerWidgetState();
+  SongPlayerWidgetState createState() => SongPlayerWidgetState();
 }
 
-class _SongPlayerWidgetState extends State<SongPlayerWidget> {
-  _SongPlayerWidgetState();
+class SongPlayerWidgetState extends State<SongPlayerWidget> {
+  SongPlayerWidgetState();
 
   Future<void> playSong() async {
     audioHandler.stop();

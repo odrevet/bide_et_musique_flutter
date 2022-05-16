@@ -68,10 +68,10 @@ class MessageEditor extends StatefulWidget {
   const MessageEditor(this._accountLink, {Key? key}) : super(key: key);
 
   @override
-  _MessageEditorState createState() => _MessageEditorState();
+  MessageEditorState createState() => MessageEditorState();
 }
 
-class _MessageEditorState extends State<MessageEditor> {
+class MessageEditorState extends State<MessageEditor> {
   final _newMessageController = TextEditingController();
 
   @override
