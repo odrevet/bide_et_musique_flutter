@@ -80,6 +80,8 @@ class ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                         .removeWhere((song) => song.id == songLink.id);
                   });
                 }
+
+                if (!mounted) return;
                 Navigator.of(context).pop();
               },
             ),

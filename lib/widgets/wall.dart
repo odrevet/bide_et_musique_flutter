@@ -54,6 +54,8 @@ class WallWidgetState extends State<WallWidget> {
                 await sendMessage(_newMessageController.text);
                 _updatePosts();
                 _newMessageController.text = '';
+
+                if (!mounted) return;
                 Navigator.of(context).pop();
               },
             )

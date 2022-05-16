@@ -85,6 +85,8 @@ class MessageEditorState extends State<MessageEditor> {
           onPressed: () async {
             bool status = await sendMessage(
                 _newMessageController.text, widget._accountLink!.id);
+
+            if (!mounted) return;
             Navigator.of(context).pop(status);
           },
         )
