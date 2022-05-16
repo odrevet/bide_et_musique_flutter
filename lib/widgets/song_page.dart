@@ -272,7 +272,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                         AccountPage(account: fetchAccount(comment.author.id))));
           },
           title: HtmlWithStyle(data: comment.body),
-          subtitle: Text('Par ' + comment.author.name! + ' ' + comment.time,
+          subtitle: Text('Par ${comment.author.name!} ${comment.time}',
               style: comment.author.name == loginName ? selfComment : null),
           trailing: comment.author.name == loginName
               ? IconButton(

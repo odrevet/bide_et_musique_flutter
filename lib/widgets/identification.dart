@@ -158,12 +158,12 @@ class _IdentificationState extends State<Identification> {
               value: _remember,
               onChanged: _onRememberToggle),
           Container(
+            margin: const EdgeInsets.only(top: 2.0),
             child: ElevatedButton(
+                onPressed: _performLogin,
                 child: const Text(
                   'Se connecter',
-                ),
-                onPressed: _performLogin),
-            margin: const EdgeInsets.only(top: 2.0),
+                )),
           ),
           const Divider(),
           Column(children: [

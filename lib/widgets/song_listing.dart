@@ -71,7 +71,7 @@ class SongListingWidgetState extends State<SongListingWidget> {
             ),
           );
         } else if (widget.split != true) {
-          subtitle += ' • ' + songLink.info!;
+          subtitle += ' • ${songLink.info!}';
         }
       }
 
@@ -98,9 +98,9 @@ class SongListingWidgetState extends State<SongListingWidget> {
               builder: (BuildContext context) {
                 return SimpleDialog(
                   contentPadding: const EdgeInsets.all(20.0),
-                  children: [SongActionMenu(song)],
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  children: [SongActionMenu(song)],
                 );
               },
             );

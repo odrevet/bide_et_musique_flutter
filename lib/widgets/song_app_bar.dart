@@ -39,10 +39,10 @@ class _SongAppBarState extends State<SongAppBar> {
                     builder: (BuildContext context) {
                       return SimpleDialog(
                         contentPadding: const EdgeInsets.all(20.0),
-                        children: [SongActionMenu(song)],
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0))),
+                        children: [SongActionMenu(song)],
                       );
                     },
                   ));
@@ -75,22 +75,22 @@ class SongActionMenu extends StatelessWidget {
     //add buttons to the actions menu
     //some action buttons are added when user is logged in
     //some action buttons are not available on some songs
-    final _actions = <Widget>[];
+    final actions = <Widget>[];
     //if the song can be listen, add the song player
     if (_song!.canListen) {
-      _actions.add(SongPlayerWidget(_song));
+      actions.add(SongPlayerWidget(_song));
     }
 
     //if the user is logged in
     if (Session.accountLink.id != null) {
       if (_song!.canFavourite) {
-        _actions.add(SongFavoriteIconWidget(_song));
+        actions.add(SongFavoriteIconWidget(_song));
       }
 
-      _actions.add(SongVoteIconWidget(_song));
+      actions.add(SongVoteIconWidget(_song));
     }
 
-    _actions.add(SongOpenInBrowserIconWidget(_song));
+    actions.add(SongOpenInBrowserIconWidget(_song));
 
     // Share buttons (message and song id)
     var actionsShare = <Widget>[];
@@ -129,7 +129,7 @@ class SongActionMenu extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) => popupMenuCopy);
 
-    _actions.add(Row(
+    actions.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
     ));
@@ -137,7 +137,7 @@ class SongActionMenu extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _actions);
+        children: actions);
   }
 }
 

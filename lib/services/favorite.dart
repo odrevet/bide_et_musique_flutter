@@ -129,8 +129,8 @@ Future<int> changeFavoriteRank(
       body: {
         'K': K,
         'Step': step.abs().toString(),
-        direction + '.x': '1',
-        direction + '.y': '1'
+        '$direction.x': '1',
+        '$direction.y': '1'
       });
 
   return response.statusCode;

@@ -82,7 +82,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                       context, NetworkImage(url), account.name);
                 },
                 child: Container(
-                  child: Text(account.name!, style: _font),
                   decoration: BoxDecoration(
                       color: Colors.orangeAccent,
                       image: DecorationImage(
@@ -90,6 +89,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                         alignment: FractionalOffset.topCenter,
                         image: NetworkImage(url),
                       )),
+                  child: Text(account.name!, style: _font),
                 ),
               );
             }));

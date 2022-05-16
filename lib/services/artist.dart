@@ -18,7 +18,7 @@ Future<Artist?> fetchArtist(int? artistId) async {
           Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       if (kDebugMode) {
-        print('Error while decoding artist : ' + e.toString());
+        print('Error while decoding artist : $e');
       }
     }
   } else {

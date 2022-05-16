@@ -65,6 +65,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         SizedBox(
           height: 120.0,
           child: DrawerHeader(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  image: AssetImage('assets/bandeau.png'),
+                ),
+              ),
               child: Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -73,12 +79,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                 ),
                 child: Container(),
-              ),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  image: AssetImage('assets/bandeau.png'),
-                ),
               )),
         ),
         ListTile(

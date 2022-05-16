@@ -80,6 +80,12 @@ class ArtistPageWidget extends StatelessWidget {
       },
       body: Center(
           child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.fill,
+          alignment: FractionalOffset.topCenter,
+          image: NetworkImage(urlArtistImage),
+        )),
         child: Stack(children: [
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
@@ -90,12 +96,6 @@ class ArtistPageWidget extends StatelessWidget {
           ),
           SongListingWidget(artist.disco)
         ]),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.fill,
-          alignment: FractionalOffset.topCenter,
-          image: NetworkImage(urlArtistImage),
-        )),
       )),
     );
 

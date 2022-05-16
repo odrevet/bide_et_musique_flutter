@@ -31,7 +31,7 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: song!.year.toString() + '\n\n',
+          text: '${song!.year}\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -55,7 +55,7 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: song!.artist! + '\n\n',
+          text: '${song!.artist!}\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -74,7 +74,7 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-        text: song!.durationPretty! + '\n\n',
+        text: '${song!.durationPretty!}\n\n',
         style: defaultStyle,
       ));
     }
@@ -86,7 +86,7 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: song!.label! + '\n\n',
+          text: '${song!.label!}\n\n',
           style: linkStyle,
           recognizer: TapGestureRecognizer()
             ..onTap = () => {
@@ -109,7 +109,7 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-        text: song!.reference.toString() + '\n\n',
+        text: '${song!.reference}\n\n',
         style: defaultStyle,
       ));
     }

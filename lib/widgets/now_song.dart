@@ -45,7 +45,7 @@ class NowSongsWidget extends StatelessWidget {
           onTap: () => launchSongPage(nowSong.songLink!, context),
           leading: CoverThumb(nowSong.songLink),
           title: HtmlWithStyle(
-              data: nowSong.songLink!.name + '<br/>' + nowSong.desc),
+              data: '${nowSong.songLink!.name}<br/>${nowSong.desc}'),
           subtitle: Text('Le ${nowSong.date}')));
     }
 

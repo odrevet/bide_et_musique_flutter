@@ -202,12 +202,12 @@ class _SearchState extends State<Search> {
                     onSubmitted: (value) => performSearch(),
                     controller: _controller),
                 Container(
+                  margin: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
                       child: const Text(
                         'Lancer la recherche',
                       ),
                       onPressed: () => performSearch()),
-                  margin: const EdgeInsets.only(top: 20.0),
                 )
               ],
             )));

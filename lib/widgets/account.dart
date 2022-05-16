@@ -109,14 +109,7 @@ class _AccountPageState extends State<AccountPage> {
                               child: Image.network(url))),
                       Expanded(
                         child: Text(
-                            account.type +
-                                '\n' +
-                                account.inscription +
-                                '\n' +
-                                account.messageForum +
-                                '\n' +
-                                account.comments +
-                                '\n',
+                            '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}\n',
                             style: const TextStyle(fontSize: 14)),
                       )
                     ],
@@ -127,6 +120,12 @@ class _AccountPageState extends State<AccountPage> {
       },
       body: Center(
           child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.fill,
+          alignment: FractionalOffset.topCenter,
+          image: NetworkImage(url),
+        )),
         child: Stack(children: [
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
@@ -172,12 +171,6 @@ class _AccountPageState extends State<AccountPage> {
             ),
           )
         ]),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.fill,
-          alignment: FractionalOffset.topCenter,
-          image: NetworkImage(url),
-        )),
       )),
     );
 

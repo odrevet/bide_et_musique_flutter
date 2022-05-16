@@ -79,6 +79,11 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Center(
           child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bm_logo.png'),
+          ),
+        ),
         child: Stack(children: [
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
@@ -96,8 +101,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: SizedBox(
                       width: 42,
                       child: TextButton(
-                          child: Text(_relay.toString()),
-                          onPressed: _onToggleRelay)),
+                          onPressed: _onToggleRelay,
+                          child: Text(_relay.toString()))),
                 ),
                 const Divider(),
                 CheckboxListTile(
@@ -118,11 +123,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
           )
         ]),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/bm_logo.png'),
-          ),
-        ),
       )),
     );
   }

@@ -146,14 +146,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                           child: Image.network(url))),
                   Expanded(
                     child: Text(
-                        account.type +
-                            '\n' +
-                            account.inscription +
-                            '\n' +
-                            account.messageForum +
-                            '\n' +
-                            account.comments +
-                            '\n',
+                        '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}\n',
                         style: const TextStyle(fontSize: 14)),
                   ),
                 ],
@@ -161,6 +154,12 @@ class ManageAccountPageWidget extends StatelessWidget {
           Expanded(
             flex: 7,
             child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.fill,
+                alignment: FractionalOffset.topCenter,
+                image: image,
+              )),
               child: Stack(children: [
                 PageView(
                   children: <Widget>[
@@ -178,12 +177,6 @@ class ManageAccountPageWidget extends StatelessWidget {
                   ],
                 )
               ]),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.fill,
-                alignment: FractionalOffset.topCenter,
-                image: image,
-              )),
             ),
           ),
         ],

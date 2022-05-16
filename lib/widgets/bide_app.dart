@@ -50,7 +50,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     autoLogin();
     initSongFetch();
 
@@ -72,7 +72,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
