@@ -30,10 +30,10 @@ class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
   @override
-  DrawerWidgetState createState() => DrawerWidgetState();
+  State<DrawerWidget> createState() => _DrawerWidgetState();
 }
 
-class DrawerWidgetState extends State<DrawerWidget> {
+class _DrawerWidgetState extends State<DrawerWidget> {
   late String _accountTitle;
   late PackageInfo _packageInfo;
 

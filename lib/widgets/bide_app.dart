@@ -18,10 +18,10 @@ class BideApp extends StatefulWidget {
   const BideApp({Key? key}) : super(key: key);
 
   @override
-  BideAppState createState() => BideAppState();
+  State<BideApp> createState() => _BideAppState();
 }
 
-class BideAppState extends State<BideApp> with WidgetsBindingObserver {
+class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Future<SongAiring>? _songAiring;
   Exception? _e;
   late SongAiringNotifier _songAiringNotifier;

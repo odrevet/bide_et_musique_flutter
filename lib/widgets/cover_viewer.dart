@@ -10,14 +10,14 @@ class CoverViewer extends StatefulWidget {
   const CoverViewer(this.songLink, {Key? key}) : super(key: key);
 
   @override
-  CoverViewerState createState() => CoverViewerState();
+  State<CoverViewer> createState() => _CoverViewerState();
 }
 
-class CoverViewerState extends State<CoverViewer> {
+class _CoverViewerState extends State<CoverViewer> {
   Offset _offset = Offset.zero;
   var _threeDimensionMode = false; // 3D or zoom
 
-  CoverViewerState();
+  _CoverViewerState();
 
   @override
   Widget build(BuildContext context) {

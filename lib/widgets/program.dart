@@ -14,10 +14,10 @@ class ProgramPage extends StatefulWidget {
   const ProgramPage({Key? key, this.program}) : super(key: key);
 
   @override
-  ProgramPageState createState() => ProgramPageState();
+  State<ProgramPage> createState() => _ProgramPageState();
 }
 
-class ProgramPageState extends State<ProgramPage> {
+class _ProgramPageState extends State<ProgramPage> {
   bool _viewPochettoscope = false;
 
   @override

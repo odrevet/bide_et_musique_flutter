@@ -12,11 +12,11 @@ class AiringCard extends StatefulWidget {
   const AiringCard(this._song, {Key? key}) : super(key: key);
 
   @override
-  AiringCardState createState() => AiringCardState();
+  State<AiringCard> createState() => _AiringCardState();
 }
 
-class AiringCardState extends State<AiringCard> {
-  AiringCardState();
+class _AiringCardState extends State<AiringCard> {
+  _AiringCardState();
 
   @override
   Widget build(BuildContext context) {
