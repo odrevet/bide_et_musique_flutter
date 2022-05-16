@@ -12,7 +12,7 @@ class PochettoscopeWidget extends StatefulWidget {
 
   @override
   PochettoscopeWidgetState createState() =>
-      PochettoscopeWidgetState(songLinks);
+      PochettoscopeWidgetState();
 }
 
 class PochettoscopeWidgetState extends State<PochettoscopeWidget> {
@@ -20,7 +20,7 @@ class PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   List<SongLink>? _songLinks;
   bool? _isLoading;
 
-  PochettoscopeWidgetState(this._songLinks);
+  PochettoscopeWidgetState();
 
   @override
   void initState() {
