@@ -24,20 +24,19 @@ class SongPageWidget extends StatefulWidget {
   const SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
 
   @override
-  State<SongPageWidget> createState() => _SongPageWidgetState(song);
+  State<SongPageWidget> createState() => _SongPageWidgetState();
 }
 
 class _SongPageWidgetState extends State<SongPageWidget> {
   int? _currentPage;
   final _commentController = TextEditingController();
-  Future<Song>? song;
 
-  _SongPageWidgetState(this.song);
+  _SongPageWidgetState();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Song>(
-      future: song,
+      future: widget.song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildView(context, snapshot.data!);
@@ -101,11 +100,15 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               icon: const Icon(Icons.send),
               label: const Text("Envoyer"),
               onPressed: () async {
-                sendAddComment(song, _commentController.text);
                 Navigator.of(context).pop();
-                setState(() {
-                  this.song = fetchSong(song.id);
-                });
+                sendAddComment(song, _commentController.text);
+                // refresh current page so posted comment is visible
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SongPageWidget(
+                            songLink: widget.songLink, song: fetchSong(widget.songLink!.id))));
+                // refresh current page so posted comment is visible
               },
             )
           ],
@@ -133,11 +136,14 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               icon: const Icon(Icons.send),
               label: const Text("Envoyer"),
               onPressed: () async {
-                sendEditComment(song, comment, _commentController.text);
-                setState(() {
-                  this.song = fetchSong(song.id);
-                });
                 Navigator.of(context).pop();
+                sendEditComment(song, comment, _commentController.text);
+                // refresh current page so posted comment is visible
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SongPageWidget(
+                            songLink: widget.songLink, song: fetchSong(widget.songLink!.id))));
               },
             )
           ],

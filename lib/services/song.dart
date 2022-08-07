@@ -182,7 +182,7 @@ Future<Song> fetchSong(int? songId) async {
   return song;
 }
 
-void sendEditComment(Song song, Comment comment, String text) async {
+Future<void> sendEditComment(Song song, Comment comment, String text) async {
   if (text.isNotEmpty) {
     await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}', body: {
       'mode': 'Edit',
@@ -193,7 +193,7 @@ void sendEditComment(Song song, Comment comment, String text) async {
   }
 }
 
-void sendAddComment(Song song, String text) async {
+Future<void> sendAddComment(Song song, String text) async {
   final url = song.link;
   if (text.isNotEmpty) {
     await Session.post(url, body: {
