@@ -42,16 +42,15 @@ class AccountPage extends StatefulWidget {
   const AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
 
   @override
-  State<AccountPage> createState() => _AccountPageState(account);
+  State<AccountPage> createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
   int? _currentPage;
   PageController? controller;
   bool _viewPochettoscope = false;
-  Future<Account>? _account;
 
-  _AccountPageState(this._account);
+  _AccountPageState();
 
   @override
   void initState() {
@@ -63,7 +62,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Account>(
-      future: _account,
+      future: widget.account,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildView(context, snapshot.data!);
@@ -176,9 +175,8 @@ class _AccountPageState extends State<AccountPage> {
               builder: (BuildContext context) => MessageEditor(account),
             ).then((status) async {
               if (status == true) {
-                setState(() {
-                  _account = fetchAccount(account.id);
-                });
+                // refresh current page so posted message is visible
+                Navigator.of(context).pop();
               }
             }),
             child: const Icon(Icons.mail),
