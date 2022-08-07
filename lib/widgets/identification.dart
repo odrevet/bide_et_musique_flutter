@@ -144,14 +144,11 @@ class _IdentificationState extends State<Identification> {
               decoration: const InputDecoration(
                 hintText: 'Mot de passe',
               )),
-          identificationResponse != null &&
-                  identificationResponse.isLoggedIn == false
+          identificationResponse != null && identificationResponse.isLoggedIn == false
               ? Container(
                   margin: const EdgeInsets.only(top: 20.0),
-                  child: Text(
-                      'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red)))
+                  child: Text('Erreur d\'authentification:\n${identificationResponse.loginMessage}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red)))
               : const Text(''),
           CheckboxListTile(
               title: const Text("Se souvenir des identifiants"),

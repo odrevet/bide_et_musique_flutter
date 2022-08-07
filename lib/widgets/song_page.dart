@@ -79,8 +79,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth),
           ),
         ),
-        errorWidget: (context, url, error) =>
-            Image.asset('assets/vinyl-default.jpg'),
+        errorWidget: (context, url, error) => Image.asset('assets/vinyl-default.jpg'),
       ),
       const Align(alignment: Alignment.center, child: CircularProgressIndicator())
     ]);
@@ -96,8 +95,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: [
             ElevatedButton.icon(
               icon: const Icon(Icons.send),
@@ -182,16 +180,13 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                                   tag: tag,
                                   child: InkWell(
                                       onTap: () {
-                                        _openCoverViewerDialog(
-                                            widget.songLink, context);
+                                        _openCoverViewerDialog(widget.songLink, context);
                                       },
-                                      child: CachedNetworkImage(
-                                          imageUrl: coverLink)))),
+                                      child: CachedNetworkImage(imageUrl: coverLink)))),
                         ),
                         Expanded(
                             flex: 1,
-                            child: SingleChildScrollView(
-                                child: SongInformations(song: song))),
+                            child: SingleChildScrollView(child: SongInformations(song: song))),
                       ],
                     ))
               ])),
@@ -202,14 +197,12 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           CachedNetworkImage(
             imageUrl: song.coverLink,
             imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover)),
+                decoration:
+                    BoxDecoration(image: DecorationImage(image: imageProvider, fit: BoxFit.cover)),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
+                    decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 )),
           ),
@@ -268,8 +261,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        AccountPage(account: fetchAccount(comment.author.id))));
+                    builder: (context) => AccountPage(account: fetchAccount(comment.author.id))));
           },
           title: HtmlWithStyle(data: comment.body),
           subtitle: Text('Par ${comment.author.name!} ${comment.time}',

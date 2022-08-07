@@ -35,7 +35,6 @@ Future<List<ProgramLink>> fetchThematics() async {
     throw Exception('Failed to load thematics');
   }
 
-  programLinks
-      .sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+  programLinks.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
   return programLinks;
 }

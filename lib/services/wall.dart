@@ -30,8 +30,7 @@ Future<List<Post>> fetchPosts() async {
         var accountHref = accountA.attributes['href']!;
 
         var idAccount = getIdFromUrl(accountHref);
-        var accountLink =
-        AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
+        var accountLink = AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
 
         var artistLink = links[1];
         var title = links[2];

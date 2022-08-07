@@ -40,8 +40,7 @@ class _SongAppBarState extends State<SongAppBar> {
                       return SimpleDialog(
                         contentPadding: const EdgeInsets.all(20.0),
                         shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
+                            borderRadius: BorderRadius.all(Radius.circular(20.0))),
                         children: [SongActionMenu(song)],
                       );
                     },
@@ -118,10 +117,8 @@ class SongActionMenu extends StatelessWidget {
     ///////////////////////////////////
     //// Copy
     var popupMenuCopy = <PopupMenuEntry<Widget>>[];
-    popupMenuCopy
-        .add(PopupMenuItem<Widget>(child: SongCopyLinkIconWidget(_song)));
-    popupMenuCopy
-        .add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
+    popupMenuCopy.add(PopupMenuItem<Widget>(child: SongCopyLinkIconWidget(_song)));
+    popupMenuCopy.add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
 
     Widget popupMenuButtonCopy = PopupMenuButton<Widget>(
         icon: const Icon(
@@ -178,8 +175,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
           if (statusCode == 200) {
             setState(() => widget._song!.isFavourite = true);
           } else {
-            debugPrint(
-                'Add song to favorites returned status code $statusCode');
+            debugPrint('Add song to favorites returned status code $statusCode');
           }
         },
       );
@@ -235,8 +231,7 @@ class SongShareIconWidget extends StatelessWidget {
     return ElevatedButton.icon(
         icon: const Icon(Icons.message),
         label: const Text('Message'),
-        onPressed: () => Share.share(
-            '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
+        onPressed: () => Share.share('''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
 
 Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song!.link}
@@ -280,8 +275,8 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return ElevatedButton.icon(
         icon: const Icon(Icons.code),
         label: const Text('Copier le code HTML du lien'),
-        onPressed: () => Clipboard.setData(ClipboardData(
-            text: '<a href="${_song!.link}">${_song!.name}</a>')));
+        onPressed: () =>
+            Clipboard.setData(ClipboardData(text: '<a href="${_song!.link}">${_song!.name}</a>')));
   }
 }
 

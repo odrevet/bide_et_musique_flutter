@@ -10,10 +10,8 @@ import 'widgets/bide_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ByteData data =
-      await PlatformAssetBundle().load('assets/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext
-      .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  ByteData data = await PlatformAssetBundle().load('assets/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
 
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandler(),

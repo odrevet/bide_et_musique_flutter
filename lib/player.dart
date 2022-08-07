@@ -109,8 +109,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   @override
-  Future<dynamic> customAction(String name,
-      [Map<String, dynamic>? extras]) async {
+  Future<dynamic> customAction(String name, [Map<String, dynamic>? extras]) async {
     switch (name) {
       case 'set_song':
         Map songMap = extras!;
@@ -118,9 +117,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
             id: songMap['id'],
             name: songMap['name'],
             artist: songMap['artist'],
-            duration: songMap['duration'] == null
-                ? null
-                : Duration(seconds: songMap['duration']));
+            duration: songMap['duration'] == null ? null : Duration(seconds: songMap['duration']));
         setNotification();
         break;
       case 'set_radio_mode':

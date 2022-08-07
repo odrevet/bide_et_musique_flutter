@@ -35,9 +35,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
-      var account = AccountLink(
-          id: getIdFromUrl(a.attributes['href']!),
-          name: a.text);
+      var account = AccountLink(id: getIdFromUrl(a.attributes['href']!), name: a.text);
       accounts.add(account);
     }
   } else {
@@ -47,8 +45,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
   return accounts;
 }
 
-Future<SearchResult> fetchSearchSong(
-    String? search, String? type, int? pageCurrent) async {
+Future<SearchResult> fetchSearchSong(String? search, String? type, int? pageCurrent) async {
   SearchResult searchResult = SearchResult();
   String url = '$baseUri/recherche.html?kw=$search&st=$type&Page=$pageCurrent';
   url = removeDiacritics(url); //server uses latin-1
@@ -58,8 +55,7 @@ Future<SearchResult> fetchSearchSong(
     var location = response.headers['location']!;
     //when the result is a single song, the host redirect to the song page
     //in our case parse the page and return a list with one song
-    searchResult.songLinks
-        .add(SongLink(id: getIdFromUrl(location)!, name: search!));
+    searchResult.songLinks.add(SongLink(id: getIdFromUrl(location)!, name: search!));
     searchResult.pageCount = 1;
     return searchResult;
   } else if (response.statusCode == 200) {

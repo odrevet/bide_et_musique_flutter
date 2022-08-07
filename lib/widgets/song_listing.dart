@@ -11,8 +11,7 @@ void launchSongPage(SongLink songLink, BuildContext context) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => SongPageWidget(
-              songLink: songLink, song: fetchSong(songLink.id))));
+          builder: (context) => SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
 }
 
 /// Display given songs in a ListView
@@ -20,8 +19,7 @@ class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
   final bool split;
 
-  const SongListingWidget(this._songLinks, {this.split = false, Key? key})
-      : super(key: key);
+  const SongListingWidget(this._songLinks, {this.split = false, Key? key}) : super(key: key);
 
   @override
   State<SongListingWidget> createState() => _SongListingWidgetState();

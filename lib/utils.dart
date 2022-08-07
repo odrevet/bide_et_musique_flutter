@@ -41,9 +41,8 @@ String stripTags(String? htmlString) {
 //handle an url (e.g deep link) if the app can understand it returns the
 //corresponding Widget or returns false otherwise
 Widget? handleLink(String url, BuildContext context) {
-  RegExp regExp = RegExp(
-      r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
-      caseSensitive: false);
+  RegExp regExp =
+      RegExp(r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html', caseSensitive: false);
 
   if (regExp.hasMatch(url) == true) {
     var type = regExp.firstMatch(url)![1];
@@ -51,8 +50,7 @@ Widget? handleLink(String url, BuildContext context) {
 
     switch (type) {
       case 'song':
-        return SongPageWidget(
-            songLink: SongLink(id: id, name: ''), song: fetchSong(id));
+        return SongPageWidget(songLink: SongLink(id: id, name: ''), song: fetchSong(id));
       case 'account':
         return AccountPage(account: fetchAccount(id));
       case 'artist':
@@ -86,7 +84,5 @@ launchURL(String url) async {
 }
 
 String createTag(SongLink songLink) {
-  return songLink.index == null
-      ? 'cover_${songLink.id}'
-      : 'cover_${songLink.id}_${songLink.index}';
+  return songLink.index == null ? 'cover_${songLink.id}' : 'cover_${songLink.id}_${songLink.index}';
 }

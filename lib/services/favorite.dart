@@ -52,10 +52,8 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
     //bm table may list favourite songs or messages.
     //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage =
-        document.getElementsByClassName('titre-message').isNotEmpty;
-    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
-        (tables.length == 2 && hasMessage);
+    bool hasMessage = document.getElementsByClassName('titre-message').isNotEmpty;
+    bool hasFavorite = (tables.length == 1 && !hasMessage) || (tables.length == 2 && hasMessage);
 
     //parse favorites
     List<SongLink> favorites = <SongLink>[];
@@ -89,8 +87,7 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
       }
     }
 
-    return FavoritesResults(
-        songLinks: favorites, page: page, pageCount: pageCount);
+    return FavoritesResults(songLinks: favorites, page: page, pageCount: pageCount);
   } else {
     throw Exception('Failed to load account with id $accountId');
   }
@@ -111,27 +108,19 @@ Future<int> addSongToFavorites(String songUrl) async {
 }
 
 Future<int> removeSongFromFavorites(int songId) async {
-  final response = await Session.post(
-      '$baseUri/account/${Session.accountLink.id}.html',
+  final response = await Session.post('$baseUri/account/${Session.accountLink.id}.html',
       body: {'K': songId.toString(), 'Step': '', 'DS.x': '1', 'DS.y': '1'});
 
   return response.statusCode;
 }
 
-Future<int> changeFavoriteRank(
-    int songId, int initialPosition, int targetPosition) async {
+Future<int> changeFavoriteRank(int songId, int initialPosition, int targetPosition) async {
   var K = songId.toString();
   var step = initialPosition - targetPosition;
   var direction = step < 0 ? 'down' : 'up';
 
-  final response = await Session.post(
-      '$baseUri/account/${Session.accountLink.id}.html',
-      body: {
-        'K': K,
-        'Step': step.abs().toString(),
-        '$direction.x': '1',
-        '$direction.y': '1'
-      });
+  final response = await Session.post('$baseUri/account/${Session.accountLink.id}.html',
+      body: {'K': K, 'Step': step.abs().toString(), '$direction.x': '1', '$direction.y': '1'});
 
   return response.statusCode;
 }

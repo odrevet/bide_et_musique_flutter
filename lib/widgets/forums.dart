@@ -35,15 +35,13 @@ class _ForumPageState extends State<ForumWidget> {
                             forum.name!,
                           ),
                           subtitle: Text(forum.subtitle!),
-                          trailing: forum.hasNew!
-                              ? const Icon(Icons.fiber_new)
-                              : null,
+                          trailing: forum.hasNew! ? const Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ForumThreadWidget(
-                                        forum, fetchForumThreads(forum.id))));
+                                    builder: (context) =>
+                                        ForumThreadWidget(forum, fetchForumThreads(forum.id))));
                           });
                     });
               } else if (snapshot.hasError) {
@@ -59,8 +57,7 @@ class ForumThreadWidget extends StatefulWidget {
   final Future<List<ForumThread>> _forumThreads;
   final Forum _forum;
 
-  const ForumThreadWidget(this._forum, this._forumThreads, {Key? key})
-      : super(key: key);
+  const ForumThreadWidget(this._forum, this._forumThreads, {Key? key}) : super(key: key);
 
   @override
   State<ForumThreadWidget> createState() => _ForumThreadWidgetState();
@@ -82,25 +79,20 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                     itemCount: forumThreads.length,
                     itemBuilder: (BuildContext context, int index) {
                       ForumThread forumThread = forumThreads[index];
-                      String messageCountText =
-                          forumThread.nbMsgs! > 1 ? 'messages' : 'message';
+                      String messageCountText = forumThread.nbMsgs! > 1 ? 'messages' : 'message';
                       return ListTile(
                           title: Text(
                             forumThread.title!,
                           ),
                           subtitle: Text(
                               '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name} ${forumThread.lastDate}'),
-                          trailing: forumThread.hasNew!
-                              ? const Icon(Icons.fiber_new)
-                              : null,
+                          trailing: forumThread.hasNew! ? const Icon(Icons.fiber_new) : null,
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ForumMessagesWidget(
-                                        forumThread,
-                                        fetchForumMessages(widget._forum.id,
-                                            forumThread.id))));
+                                    builder: (context) => ForumMessagesWidget(forumThread,
+                                        fetchForumMessages(widget._forum.id, forumThread.id))));
                           });
                     });
               } else if (snapshot.hasError) {
@@ -116,8 +108,7 @@ class ForumMessagesWidget extends StatefulWidget {
   final ForumThread _forumThread;
   final Future<List<ForumMessage>> _forumMessages;
 
-  const ForumMessagesWidget(this._forumThread, this._forumMessages, {Key? key})
-      : super(key: key);
+  const ForumMessagesWidget(this._forumThread, this._forumMessages, {Key? key}) : super(key: key);
 
   @override
   State<ForumMessagesWidget> createState() => _ForumMessagesWidgetState();
@@ -142,8 +133,7 @@ class _ForumMessagesWidgetState extends State<ForumMessagesWidget> {
                       ForumMessage forumMessage = forumMessages[index];
                       return ListTile(
                           title: HtmlWithStyle(data: forumMessage.text),
-                          subtitle: Text(
-                              '${forumMessage.date} par ${forumMessage.user?.name}'));
+                          subtitle: Text('${forumMessage.date} par ${forumMessage.user?.name}'));
                     });
               } else if (snapshot.hasError) {
                 return Center(child: ErrorDisplay(snapshot.error));

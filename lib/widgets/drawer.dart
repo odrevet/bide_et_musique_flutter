@@ -51,9 +51,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   _setAccountTitle() {
     setState(() {
-      _accountTitle = Session.accountLink.id == null
-          ? 'Connexion'
-          : '${Session.accountLink.name}';
+      _accountTitle = Session.accountLink.id == null ? 'Connexion' : '${Session.accountLink.name}';
     });
   }
 
@@ -84,13 +82,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ListTile(
           title: Text(_accountTitle),
           leading: const Icon(Icons.account_circle),
-          trailing:
-              Session.accountLink.id == null ? null : const DisconnectButton(),
+          trailing: Session.accountLink.id == null ? null : const DisconnectButton(),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const Identification())).then((_) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Identification()))
+                .then((_) {
               _setAccountTitle();
             });
           },
@@ -100,18 +95,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Titres'),
           leading: const Icon(Icons.queue_music),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TitlesWidget()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TitlesWidget()));
           },
         ),
         ListTile(
           title: const Text('Programmation'),
           leading: const Icon(Icons.calendar_view_day),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Schedule(schedule: fetchSchedule())));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Schedule(schedule: fetchSchedule())));
           },
         ),
         ListTile(
@@ -121,19 +113,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ThematicPageWidget(programLinks: fetchThematics())));
+                    builder: (context) => ThematicPageWidget(programLinks: fetchThematics())));
           },
         ),
         ListTile(
           title: const Text('Morceau du moment'),
           leading: const Icon(Icons.access_alarms),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NowSongsWidget(nowSongs: fetchNowSongs())));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NowSongsWidget(nowSongs: fetchNowSongs())));
           },
         ),
         ListTile(
@@ -144,16 +132,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: SongLink(id: id!, name: ''),
-                        song: fetchSong(id)))));
+                        songLink: SongLink(id: id!, name: ''), song: fetchSong(id)))));
           },
         ),
         ListTile(
           title: const Text('Recherche'),
           leading: const Icon(Icons.search),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Search()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Search()));
           },
         ),
         const Divider(),
@@ -161,16 +147,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Mur des messages'),
           leading: const Icon(Icons.comment),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const WallWidget()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const WallWidget()));
           },
         ),
         ListTile(
           title: const Text('Forums'),
           leading: const Icon(Icons.forum),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ForumWidget()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ForumWidget()));
           },
         ),
         const Divider(),
@@ -179,9 +163,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: const Icon(Icons.image),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PochettoScopePage()));
+                context, MaterialPageRoute(builder: (context) => const PochettoScopePage()));
           },
         ),
         ListTile(
@@ -189,9 +171,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           leading: const Icon(Icons.face),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TrombidoscopeWidget()));
+                context, MaterialPageRoute(builder: (context) => const TrombidoscopeWidget()));
           },
         ),
         const Divider(),
@@ -199,18 +179,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           title: const Text('Nouvelles entrées'),
           leading: const Icon(Icons.fiber_new),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongsWidget(songs: fetchNewSongs())));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SongsWidget(songs: fetchNewSongs())));
           },
         ),
         ListTile(
           title: const Text('Options'),
           leading: const Icon(Icons.settings),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
           },
         ),
         ListTile(
@@ -220,8 +197,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     context: context,
                     applicationName: _packageInfo.appName,
                     applicationVersion: _packageInfo.version,
-                    applicationIcon: Image.asset(
-                        'android/app/src/main/res/mipmap-mdpi/ic_launcher.png'),
+                    applicationIcon:
+                        Image.asset('android/app/src/main/res/mipmap-mdpi/ic_launcher.png'),
                     children: [
                       RichText(
                         text: TextSpan(
@@ -237,8 +214,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 ..onTap = () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AccountPage(
-                                            account: fetchAccount(84482)))),
+                                        builder: (context) =>
+                                            AccountPage(account: fetchAccount(84482)))),
                             ),
                             TextSpan(
                               text: '\n\nDistribuée sous la ',
@@ -248,8 +225,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               text: 'license GPLv3',
                               style: linkStyle,
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () => launchURL(
-                                    'https://www.gnu.org/licenses/gpl-3.0.fr.html'),
+                                ..onTap =
+                                    () => launchURL('https://www.gnu.org/licenses/gpl-3.0.fr.html'),
                             ),
                             TextSpan(
                               text: '\n\nCode source disponible sur ',
@@ -259,8 +236,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               text: 'github.com\n\n',
                               style: linkStyle,
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () => launchURL(
-                                    'https://github.com/odrevet/bide-et-musique-flutter'),
+                                ..onTap = () =>
+                                    launchURL('https://github.com/odrevet/bide-et-musique-flutter'),
                             ),
                             TextSpan(
                               text: 'Manuel Utilisateur en ligne',

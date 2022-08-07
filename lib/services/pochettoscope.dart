@@ -13,8 +13,7 @@ Future<List<SongLink>> fetchPochettoscope() async {
     var body = response.body;
     dom.Document document = parser.parse(body);
 
-    for (dom.Element vignette
-        in document.getElementsByClassName('vignette75')) {
+    for (dom.Element vignette in document.getElementsByClassName('vignette75')) {
       var src = vignette.children[1].attributes['src']!;
       final idRegex = RegExp(r'/images/thumb75/(\d+).jpg');
       var match = idRegex.firstMatch(src)!;

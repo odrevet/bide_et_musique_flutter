@@ -44,8 +44,7 @@ class _WallWidgetState extends State<WallWidget> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
           actions: <Widget>[
             ElevatedButton.icon(
               icon: const Icon(Icons.send),
@@ -126,8 +125,8 @@ class _WallWidgetState extends State<WallWidget> {
                         ..onTap = () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AccountPage(
-                                    account: fetchAccount(post.author.id)))),
+                                builder: (context) =>
+                                    AccountPage(account: fetchAccount(post.author.id)))),
                     ),
                     TextSpan(
                       text: ' ${post.time} pendant ',
@@ -140,9 +139,7 @@ class _WallWidgetState extends State<WallWidget> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SongPageWidget(
-                                    songLink: SongLink(
-                                        id: post.during.id,
-                                        name: post.during.name),
+                                    songLink: SongLink(id: post.during.id, name: post.during.name),
                                     song: fetchSong(post.during.id)))),
                     ),
                   ]),
@@ -156,7 +153,6 @@ class _WallWidgetState extends State<WallWidget> {
       ));
     }
 
-    return RefreshIndicator(
-        onRefresh: _updatePosts, child: ListView(children: rows));
+    return RefreshIndicator(onRefresh: _updatePosts, child: ListView(children: rows));
   }
 }

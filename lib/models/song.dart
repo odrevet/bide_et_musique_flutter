@@ -89,12 +89,8 @@ class Song extends SongLink {
             artist: stripTags(json['artists']['main']['alias']),
             cover: json['covers']['main']);
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'artist': artist,
-        'duration': duration!.inSeconds
-      };
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'name': name, 'artist': artist, 'duration': duration!.inSeconds};
 }
 
 class Comment {
@@ -115,7 +111,6 @@ class SongAiring extends Song {
       : elapsedPcent = json['now']['elapsed_pcent'],
         nbListeners = json['now']['nb_listeners'],
         program = Program(
-            id: json['now']['program']['id'],
-            name: stripTags(json['now']['program']['name'])),
+            id: json['now']['program']['id'], name: stripTags(json['now']['program']['name'])),
         super.fromJson(json);
 }

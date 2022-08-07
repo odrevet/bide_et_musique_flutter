@@ -28,10 +28,8 @@ class CoverThumb extends StatelessWidget {
         child: _sizedContainer(
             child: CachedNetworkImage(
                 imageUrl: _songLink!.thumbLink,
-                placeholder: (context, url) =>
-                    const Icon(Icons.album, size: 50.0),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.album, size: 50.0))));
+                placeholder: (context, url) => const Icon(Icons.album, size: 50.0),
+                errorWidget: (context, url, error) => const Icon(Icons.album, size: 50.0))));
   }
 }
 
@@ -69,9 +67,8 @@ class CoverWithGesture extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SongPageWidget(
-                            songLink: songLink,
-                            song: fetchSong(songLink!.id))));
+                        builder: (context) =>
+                            SongPageWidget(songLink: songLink, song: fetchSong(songLink!.id))));
               },
               onLongPress: () {
                 Navigator.of(context).push(MaterialPageRoute<void>(
@@ -81,8 +78,7 @@ class CoverWithGesture extends StatelessWidget {
                     fullscreenDialog: true));
               },
               child: Cover(songLink!.coverLink,
-                  displayPlaceholder: displayPlaceholder,
-                  fadeInDuration: fadeInDuration),
+                  displayPlaceholder: displayPlaceholder, fadeInDuration: fadeInDuration),
             ),
           )
         ]);
@@ -95,21 +91,17 @@ class Cover extends StatelessWidget {
   final bool displayPlaceholder;
 
   const Cover(this._url,
-      {this.fadeInDuration = const Duration(),
-      this.displayPlaceholder = false,
-      Key? key})
+      {this.fadeInDuration = const Duration(), this.displayPlaceholder = false, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       fadeInDuration: fadeInDuration,
-      placeholder: displayPlaceholder
-          ? (context, url) => Image.asset('assets/vinyl-default.jpg')
-          : null,
+      placeholder:
+          displayPlaceholder ? (context, url) => Image.asset('assets/vinyl-default.jpg') : null,
       imageUrl: _url,
-      errorWidget: (context, url, error) =>
-          Image.asset('assets/vinyl-default.jpg'),
+      errorWidget: (context, url, error) => Image.asset('assets/vinyl-default.jpg'),
     );
   }
 }

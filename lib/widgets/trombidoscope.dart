@@ -19,8 +19,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   bool? _isLoading;
 
   final _font = TextStyle(
-      fontSize: 18.0,
-      background: Paint()..color = const Color.fromARGB(180, 150, 150, 100));
+      fontSize: 18.0, background: Paint()..color = const Color.fromARGB(180, 150, 150, 100));
 
   @override
   void initState() {
@@ -74,12 +73,10 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              AccountPage(account: fetchAccount(account.id))));
+                          builder: (context) => AccountPage(account: fetchAccount(account.id))));
                 },
                 onLongPress: () {
-                  openAccountImageViewerDialog(
-                      context, NetworkImage(url), account.name);
+                  openAccountImageViewerDialog(context, NetworkImage(url), account.name);
                 },
                 child: Container(
                   decoration: BoxDecoration(

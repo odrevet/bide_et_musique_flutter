@@ -52,15 +52,12 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
               ? TextField(
                   controller: controller,
                   autofocus: true,
-                  decoration:
-                      const InputDecoration(hintText: 'Filtrer les thématiques'),
+                  decoration: const InputDecoration(hintText: 'Filtrer les thématiques'),
                   onChanged: onSearchTextChanged,
                 )
               : const Text('Thématiques'),
           actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: _switchSearchMode())
+            Padding(padding: const EdgeInsets.only(right: 20.0), child: _switchSearchMode())
           ],
         ),
         body: Center(
@@ -81,9 +78,8 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
 
   Widget _buildView(BuildContext context, List<ProgramLink> programLinks) {
     programLinks = programLinks
-        .where((programLink) => programLink.name!
-            .toLowerCase()
-            .contains(_searchInput.toLowerCase()))
+        .where(
+            (programLink) => programLink.name!.toLowerCase().contains(_searchInput.toLowerCase()))
         .toList();
 
     return ListView.builder(
@@ -96,8 +92,8 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProgramPage(
-                          program: fetchProgram(programLinks[index].id))));
+                      builder: (context) =>
+                          ProgramPage(program: fetchProgram(programLinks[index].id))));
             });
       },
     );

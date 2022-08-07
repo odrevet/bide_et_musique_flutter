@@ -26,11 +26,8 @@ class _CoverViewerState extends State<CoverViewer> {
         Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: () =>
-                  setState(() => _threeDimensionMode = !_threeDimensionMode),
-              child: Icon(_threeDimensionMode
-                  ? Icons.threed_rotation
-                  : Icons.zoom_out_map),
+              onTap: () => setState(() => _threeDimensionMode = !_threeDimensionMode),
+              child: Icon(_threeDimensionMode ? Icons.threed_rotation : Icons.zoom_out_map),
             )),
       ]),
       body: Center(
@@ -42,8 +39,7 @@ class _CoverViewerState extends State<CoverViewer> {
                   ..rotateY(-0.01 * _offset.dx),
                 alignment: FractionalOffset.center,
                 child: GestureDetector(
-                  onPanUpdate: (details) =>
-                      setState(() => _offset += details.delta),
+                  onPanUpdate: (details) => setState(() => _offset += details.delta),
                   onDoubleTap: () => setState(() => _offset = Offset.zero),
                   child: _buildView(context),
                 ))

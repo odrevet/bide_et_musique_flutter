@@ -11,8 +11,7 @@ class SongInformations extends StatelessWidget {
   final Song? song;
   final bool compact;
 
-  const SongInformations({this.song, this.compact = false, Key? key})
-      : super(key: key);
+  const SongInformations({this.song, this.compact = false, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +39,9 @@ class SongInformations extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
                               appBar: AppBar(
-                                title: Text(
-                                    'Recherche de l\'année "${song!.year.toString()}"'),
+                                title: Text('Recherche de l\'année "${song!.year.toString()}"'),
                               ),
-                              body:
-                                  SearchResults(song!.year.toString(), '7')))),
+                              body: SearchResults(song!.year.toString(), '7')))),
                 }));
     }
 
@@ -62,8 +59,8 @@ class SongInformations extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ArtistPageWidget(
-                              artist: fetchArtist(song!.artistId)))),
+                          builder: (context) =>
+                              ArtistPageWidget(artist: fetchArtist(song!.artistId)))),
                 }));
     }
 
@@ -95,8 +92,7 @@ class SongInformations extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
                               appBar: AppBar(
-                                title:
-                                    Text('Recherche du label "${song!.label}"'),
+                                title: Text('Recherche du label "${song!.label}"'),
                               ),
                               body: SearchResults(song!.label, '5')))),
                 }));
@@ -116,7 +112,6 @@ class SongInformations extends StatelessWidget {
 
     return Center(
         child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(style: defaultStyle, children: textSpans)));
+            textAlign: TextAlign.center, text: TextSpan(style: defaultStyle, children: textSpans)));
   }
 }

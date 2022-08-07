@@ -64,8 +64,8 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SongPageWidget(
-                            songLink: songLink, song: fetchSong(songLink.id))));
+                        builder: (context) =>
+                            SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))));
               },
               child: CoverThumb(songLink),
             ),
@@ -104,11 +104,9 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 icon: const Icon(Icons.send),
                 onPressed: () => _selectedRequestId == null
                     ? null
-                    : sendRequest(_selectedRequestId, _dedicateController.text)
-                        .then((statusCode) {
+                    : sendRequest(_selectedRequestId, _dedicateController.text).then((statusCode) {
                         if (statusCode != 200) {
-                          debugPrint(
-                              'Send request error with status code $statusCode');
+                          debugPrint('Send request error with status code $statusCode');
                         }
 
                         setState(() {

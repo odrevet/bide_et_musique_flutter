@@ -62,8 +62,7 @@ class ForumThread {
         ownerId = json['owner_id'],
         ownerName = json['owner_name'],
         lastDate = json['last']['date'],
-        last = AccountLink(
-            id: json['last']['user_id'], name: json['last']['user_name']);
+        last = AccountLink(id: json['last']['user_id'], name: json['last']['user_name']);
 }
 
 class ForumMessage {
@@ -75,14 +74,7 @@ class ForumMessage {
   bool? folded;
   AccountLink? user;
 
-  ForumMessage(
-      {this.id,
-      this.title,
-      this.date,
-      this.text,
-      this.signature,
-      this.folded,
-      this.user});
+  ForumMessage({this.id, this.title, this.date, this.text, this.signature, this.folded, this.user});
 
   ForumMessage.fromJson(Map<String, dynamic> json)
       : id = json['id'],
