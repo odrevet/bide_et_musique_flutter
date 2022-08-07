@@ -4,10 +4,10 @@ import '../models/song.dart';
 import 'cover.dart';
 
 class PochettoscopeWidget extends StatefulWidget {
-  List<SongLink> songLinks;
+  final List<SongLink> songLinks;
   final Function? onEndReached;
 
-  PochettoscopeWidget({required this.songLinks, this.onEndReached, Key? key}) : super(key: key);
+  const PochettoscopeWidget({required this.songLinks, this.onEndReached, Key? key}) : super(key: key);
 
   @override
   State<PochettoscopeWidget> createState() => _PochettoscopeWidgetState();
@@ -29,7 +29,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
-              widget.songLinks = songLinks;
+              widget.songLinks.addAll(songLinks);
             })
           });
     } else {
@@ -55,7 +55,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
-              widget.songLinks = [...widget.songLinks, ...songLinks];
+              widget.songLinks.addAll(songLinks);
             })
           });
     }

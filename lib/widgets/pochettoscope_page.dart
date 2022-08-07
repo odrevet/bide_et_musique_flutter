@@ -1,3 +1,4 @@
+import 'package:bide_et_musique/models/song.dart';
 import 'package:flutter/material.dart';
 
 import '../services/pochettoscope.dart';
@@ -14,6 +15,18 @@ class PochettoScopePage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Le pochettoscope'),
         ),
-        body: PochettoscopeWidget(songLinks: const [], onEndReached: fetchPochettoscope));
+        body: FutureBuilder<List<SongLink>>(
+          future: fetchPochettoscope(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return PochettoscopeWidget(
+                  songLinks: snapshot.data!, onEndReached: fetchPochettoscope);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            return const CircularProgressIndicator();
+          },
+        ));
   }
 }
