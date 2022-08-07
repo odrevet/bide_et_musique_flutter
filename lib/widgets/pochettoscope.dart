@@ -79,7 +79,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
               child: CoverWithGesture(
                   songLink: _songLinks![index],
                   displayPlaceholder: true,
-                  fadeInDuration: const Duration(milliseconds: 250)));
+                  fadeInDuration: const Duration(milliseconds: 20)));
         });
   }
 }
