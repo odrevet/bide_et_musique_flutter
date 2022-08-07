@@ -21,20 +21,20 @@ Future<List<Post>> fetchPosts() async {
       String body = msg.getElementsByClassName('corpsmsg')[0].innerHtml;
 
       var basmsg = msg.getElementsByClassName('basmsg')[0];
-
-      var accountA = basmsg.getElementsByTagName('a')[0];
-      var accountHref = accountA.attributes['href']!;
-
-      var idAccount = getIdFromUrl(accountHref);
-      var accountLink =
-          AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
-
       String? time = '';
+
       var links = basmsg.children[0].getElementsByTagName('a');
 
       if (links.isNotEmpty) {
-        var artistLink = links[0];
-        var title = links[1];
+        var accountA = links[0];
+        var accountHref = accountA.attributes['href']!;
+
+        var idAccount = getIdFromUrl(accountHref);
+        var accountLink =
+        AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
+
+        var artistLink = links[1];
+        var title = links[2];
 
         final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
         var match = idRegex.firstMatch(basmsg.innerHtml);
