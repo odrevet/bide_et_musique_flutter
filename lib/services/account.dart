@@ -24,14 +24,14 @@ Future<Account> fetchAccount(int? accountId) async {
     dom.Document document = parser.parse(body);
     var txtpresentation = document.getElementsByClassName('txtpresentation')[0].innerHtml.trim();
     account.presentation = txtpresentation;
-    account.name = document.getElementsByClassName('titre-utilisateur')[0].innerHtml;
+    account.name = document.getElementsByClassName('titre-utilisateur')[0].text.trim().replaceAll('\n', '');
 
     dom.Element divInfo = document.getElementById('gd-encartblc2')!;
     List<dom.Element> ps = divInfo.getElementsByTagName('p');
-    account.type = ps[1].text;
-    account.inscription = ps[2].text;
-    account.messageForum = ps[3].text;
-    account.comments = ps[4].text;
+    account.type = ps[1].text.trim().replaceAll('\n', '');
+    account.inscription = ps[2].text.trim().replaceAll('\n', '');
+    account.messageForum = ps[3].text.trim().replaceAll('\n', '');
+    account.comments = ps[4].text.trim().replaceAll('\n', '');
 
     //set avatar path
     var img = divInfo.getElementsByTagName('img');
