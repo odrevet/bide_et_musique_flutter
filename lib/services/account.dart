@@ -24,7 +24,8 @@ Future<Account> fetchAccount(int? accountId) async {
     dom.Document document = parser.parse(body);
     var txtpresentation = document.getElementsByClassName('txtpresentation')[0].innerHtml.trim();
     account.presentation = txtpresentation;
-    account.name = document.getElementsByClassName('titre-utilisateur')[0].text.trim().replaceAll('\n', '');
+    account.name =
+        document.getElementsByClassName('titre-utilisateur')[0].text.trim().replaceAll('\n', '');
 
     dom.Element divInfo = document.getElementById('gd-encartblc2')!;
     List<dom.Element> ps = divInfo.getElementsByTagName('p');

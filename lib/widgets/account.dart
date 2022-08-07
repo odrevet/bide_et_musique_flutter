@@ -158,7 +158,7 @@ class _AccountPageState extends State<AccountPage> {
                 account.favorites!.isEmpty
                     ? Center(child: Text('${account.name} n\'a pas de favoris. '))
                     : _viewPochettoscope
-                        ? PochettoscopeWidget(songLinks: account.favorites)
+                        ? PochettoscopeWidget(songLinks: account.favorites!)
                         : SongListingWidget(account.favorites),
                 if (Session.accountLink.id != null) MessageListing(account.messages)
               ],

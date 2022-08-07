@@ -4,10 +4,10 @@ import '../models/song.dart';
 import 'cover.dart';
 
 class PochettoscopeWidget extends StatefulWidget {
-  final List<SongLink>? songLinks;
+  List<SongLink> songLinks;
   final Function? onEndReached;
 
-  const PochettoscopeWidget({this.songLinks, this.onEndReached, Key? key}) : super(key: key);
+  PochettoscopeWidget({required this.songLinks, this.onEndReached, Key? key}) : super(key: key);
 
   @override
   State<PochettoscopeWidget> createState() => _PochettoscopeWidgetState();
@@ -15,7 +15,6 @@ class PochettoscopeWidget extends StatefulWidget {
 
 class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   ScrollController? _controller;
-  List<SongLink>? _songLinks;
   bool? _isLoading;
 
   _PochettoscopeWidgetState();
@@ -30,7 +29,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
-              _songLinks = songLinks;
+              widget.songLinks = songLinks;
             })
           });
     } else {
@@ -56,7 +55,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       widget.onEndReached!().then((songLinks) => {
             setState(() {
               _isLoading = false;
-              _songLinks = [..._songLinks!, ...songLinks];
+              widget.songLinks = [...widget.songLinks, ...songLinks];
             })
           });
     }
@@ -65,11 +64,12 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
-    if (_songLinks == null) {
+    if (widget.songLinks.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
+
     return GridView.builder(
-        itemCount: _songLinks!.length,
+        itemCount: widget.songLinks.length,
         controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
@@ -77,7 +77,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
           return Padding(
               padding: const EdgeInsets.all(1),
               child: CoverWithGesture(
-                  songLink: _songLinks![index],
+                  songLink: widget.songLinks[index],
                   displayPlaceholder: true,
                   fadeInDuration: const Duration(milliseconds: 20)));
         });

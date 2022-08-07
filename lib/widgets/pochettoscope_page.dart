@@ -14,6 +14,6 @@ class PochettoScopePage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Le pochettoscope'),
         ),
-        body: const PochettoscopeWidget(onEndReached: fetchPochettoscope));
+        body: PochettoscopeWidget(songLinks: const [], onEndReached: fetchPochettoscope));
   }
 }

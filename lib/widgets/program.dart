@@ -43,7 +43,7 @@ class _ProgramPageState extends State<ProgramPage> {
     Widget listing;
     if (program.type == 'program-liste') {
       if (_viewPochettoscope == true) {
-        listing = PochettoscopeWidget(songLinks: program.songs);
+        listing = PochettoscopeWidget(songLinks: program.songs!);
       } else {
         listing = SongListingWidget(program.songs);
       }

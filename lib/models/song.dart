@@ -111,6 +111,7 @@ class SongAiring extends Song {
       : elapsedPcent = json['now']['elapsed_pcent'],
         nbListeners = json['now']['nb_listeners'],
         program = Program(
-            id: json['now']['program']['id'], name: decodeHtmlEntities(json['now']['program']['name'])),
+            id: json['now']['program']['id'],
+            name: decodeHtmlEntities(json['now']['program']['name'])),
         super.fromJson(json);
 }
