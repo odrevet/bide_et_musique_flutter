@@ -151,7 +151,7 @@ Future<Song> fetchSong(int? songId) async {
 
     var divTitres = document.getElementsByClassName('titreorange');
     for (var divTitre in divTitres) {
-      var title = stripTags(divTitre.innerHtml).trim();
+      var title = divTitre.text.trim();
       switch (title) {
         case 'Écouter le morceau':
           song.canListen = true;
@@ -217,7 +217,7 @@ SongLink songLinkFromTr(dom.Element tr) {
   var tdInfo = tr.children[0]; //program for next, HH:MM for past
   var tdArtist = tr.children[2];
   var tdSong = tr.children[3];
-  String title = stripTags(tdSong.innerHtml.replaceAll('\n', ''));
+  String title = tdSong.text.replaceAll('\n', '');
   const String newFlag = '[nouveauté]';
   dom.Element? a;
   bool isNew = false;
@@ -232,9 +232,9 @@ SongLink songLinkFromTr(dom.Element tr) {
 
   return SongLink(
       id: a != null ? getIdFromUrl(a.attributes['href']!)! : 0,
-      artist: stripTags(tdArtist.innerHtml).trim(),
+      artist: tdArtist.text.trim(),
       name: title.trim(),
-      info: stripTags(tdInfo.innerHtml).trim(),
+      info: tdInfo.text.trim(),
       isNew: isNew);
 }
 

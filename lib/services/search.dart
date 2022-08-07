@@ -37,7 +37,7 @@ Future<List<AccountLink>> fetchSearchAccount(String search) async {
       var a = tds[0].children[0];
       var account = AccountLink(
           id: getIdFromUrl(a.attributes['href']!),
-          name: stripTags(a.innerHtml));
+          name: a.text);
       accounts.add(account);
     }
   } else {
@@ -81,8 +81,8 @@ Future<SearchResult> fetchSearchSong(
         var a = tds[3].children[0];
         searchResult.songLinks.add(SongLink(
             id: getIdFromUrl(a.attributes['href']!)!,
-            name: stripTags(a.innerHtml),
-            artist: stripTags(tds[2].children[0].innerHtml)));
+            name: a.text,
+            artist: tds[2].children[0].text));
       }
     }
   } else {

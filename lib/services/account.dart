@@ -31,10 +31,10 @@ Future<Account> fetchAccount(int? accountId) async {
 
     dom.Element divInfo = document.getElementById('gd-encartblc2')!;
     List<dom.Element> ps = divInfo.getElementsByTagName('p');
-    account.type = stripTags(ps[1].innerHtml);
-    account.inscription = stripTags(ps[2].innerHtml);
-    account.messageForum = stripTags(ps[3].innerHtml);
-    account.comments = stripTags(ps[4].innerHtml);
+    account.type = ps[1].text;
+    account.inscription = ps[2].text;
+    account.messageForum = ps[3].text;
+    account.comments = ps[4].text;
 
     //set avatar path
     var img = divInfo.getElementsByTagName('img');
@@ -101,8 +101,8 @@ Future<List<SongLink>> fetchVotes() async {
     for (var tr in trs) {
       var song = SongLink(
           id: getIdFromUrl(tr.children[3].children[0].attributes['href']!)!,
-          name: stripTags(tr.children[3].innerHtml),
-          artist: stripTags(tr.children[2].innerHtml));
+          name: tr.children[3].text,
+          artist: tr.children[2].text);
       songLinks.add(song);
     }
   } else {

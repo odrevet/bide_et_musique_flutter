@@ -21,7 +21,7 @@ Future<List<AccountLink>> fetchTrombidoscope() async {
       var id = getIdFromUrl(href);
       var account = AccountLink();
       account.id = id;
-      account.name = stripTags(a.innerHtml);
+      account.name = a.text;
       account.image = a.children[0].attributes['src'];
       accounts.add(account);
     }

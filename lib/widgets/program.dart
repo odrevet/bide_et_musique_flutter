@@ -54,7 +54,7 @@ class _ProgramPageState extends State<ProgramPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(stripTags(program.name)),
+        title: Text(program.name!),
         actions: <Widget>[
           Padding(
               padding: const EdgeInsets.only(right: 20.0),

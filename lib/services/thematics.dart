@@ -25,7 +25,7 @@ Future<List<ProgramLink>> fetchThematics() async {
       var tds = tr.getElementsByTagName('td');
       var a = tds[0].children[0];
       int? id = getIdFromUrl(a.attributes['href']!);
-      String name = stripTags(a.innerHtml);
+      String name = a.text;
       String songCount = tds[1].innerHtml;
 
       var programLink = ProgramLink(id: id, name: name, songCount: songCount);

@@ -45,7 +45,7 @@ Future<List<Post>> fetchPosts() async {
 
         var songLink = SongLink(
             id: getIdFromUrl(title.attributes['href']!)!,
-            name: stripTags(title.innerHtml),
+            name: title.text,
             artist: artistLink.innerHtml);
         var post = Post(accountLink, songLink, body, '', time);
         posts.add(post);

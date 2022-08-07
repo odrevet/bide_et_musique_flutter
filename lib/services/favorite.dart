@@ -32,8 +32,8 @@ List<SongLink> parseFavoriteTable(dom.Element table) {
     if (aTitle.toString() == '<html div>') aTitle = tr.children[4].children[1];
     favorites.add(SongLink(
         id: getIdFromUrl(aTitle.attributes['href']!)!,
-        name: stripTags(aTitle.innerHtml),
-        artist: stripTags(tr.children[3].innerHtml)));
+        name: aTitle.text,
+        artist: tr.children[3].text));
   }
 
   return favorites;
@@ -84,8 +84,8 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
 
         favorites.add(SongLink(
             id: getIdFromUrl(aTitle.attributes['href']!)!,
-            name: stripTags(aTitle.innerHtml),
-            artist: stripTags(tr.children[3].innerHtml)));
+            name: aTitle.text,
+            artist: tr.children[3].text));
       }
     }
 
