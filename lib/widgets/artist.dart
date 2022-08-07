@@ -99,7 +99,7 @@ class ArtistPageWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(stripTags(artist.alias)),
+        title: Text(artist.alias!),
       ),
       body: nestedScrollView,
     );

@@ -23,14 +23,14 @@ class Program {
   Program.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         type = json['type'],
-        name = stripTags(json['name']),
+        name = decodeHtmlEntities(json['name']),
         description = json['description'] {
     songs = <SongLink>[];
     for (var songEntry in json['songs']) {
       songs!.add(SongLink(
           id: songEntry['song_id'],
-          name: stripTags(songEntry['name']),
-          artist: stripTags(songEntry['alias'])));
+          name: decodeHtmlEntities(songEntry['name']),
+          artist: decodeHtmlEntities(songEntry['alias'])));
     }
 
     airedOn = <String?>[];

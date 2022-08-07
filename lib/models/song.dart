@@ -80,13 +80,13 @@ class Song extends SongLink {
         author = json['authors'],
         duration = Duration(seconds: json['length']['raw']),
         durationPretty = json['length']['pretty'],
-        label = stripTags(json['label']),
-        reference = stripTags(json['reference']),
+        label = decodeHtmlEntities(json['label']),
+        reference = decodeHtmlEntities(json['reference']),
         lyrics = json['lyrics'],
         super(
             id: json['id'],
-            name: stripTags(json['name']),
-            artist: stripTags(json['artists']['main']['alias']),
+            name: decodeHtmlEntities(json['name']),
+            artist: decodeHtmlEntities(json['artists']['main']['alias']),
             cover: json['covers']['main']);
 
   Map<String, dynamic> toJson() =>
@@ -111,6 +111,6 @@ class SongAiring extends Song {
       : elapsedPcent = json['now']['elapsed_pcent'],
         nbListeners = json['now']['nb_listeners'],
         program = Program(
-            id: json['now']['program']['id'], name: stripTags(json['now']['program']['name'])),
+            id: json['now']['program']['id'], name: decodeHtmlEntities(json['now']['program']['name'])),
         super.fromJson(json);
 }

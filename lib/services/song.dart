@@ -23,7 +23,7 @@ Future<List<SongLink>> fetchNewSongs() async {
     for (var item in document.findAllElements('item')) {
       var link = item.children[2].text;
 
-      var artistTitle = stripTags(item.firstChild!.text).split(' - ');
+      var artistTitle = item.firstChild!.text.split(' - ');
       var song = SongLink(id: getIdFromUrl(link)!, name: artistTitle[1], artist: artistTitle[0]);
       songs.add(song);
     }
@@ -98,7 +98,7 @@ List<Comment> parseComments(document) {
       comment.author = AccountLink(id: accountId, name: accountName);
       var commentLines = divNormal.innerHtml.split('<br>');
       commentLines.removeAt(0);
-      comment.body = stripTags(commentLines.join().trim());
+      comment.body = commentLines.join().trim();
       comment.time = tdCommentChildren[2].innerHtml;
       comments.add(comment);
     } catch (e) {

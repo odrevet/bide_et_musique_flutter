@@ -30,13 +30,13 @@ Future<List<Post>> fetchPosts() async {
         var accountHref = accountA.attributes['href']!;
 
         var idAccount = getIdFromUrl(accountHref);
-        var accountLink = AccountLink(id: idAccount, name: stripTags(accountA.innerHtml));
+        var accountLink = AccountLink(id: idAccount, name: accountA.text);
 
         var artistLink = links[1];
         var title = links[2];
 
         final idRegex = RegExp(r'(le \d+/\d+/\d+ à \d+:\d+:\d+)');
-        var match = idRegex.firstMatch(basmsg.innerHtml);
+        var match = idRegex.firstMatch(basmsg.text);
 
         if (match != null) {
           time = match[1];

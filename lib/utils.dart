@@ -33,7 +33,7 @@ int? getIdFromUrl(String url) {
   return null;
 }
 
-String stripTags(String? htmlString) {
+String decodeHtmlEntities(String htmlString) {
   var document = parser.parse(htmlString);
   return parser.parse(document.body!.text).documentElement!.text;
 }

@@ -14,8 +14,8 @@ class Forum {
 
   Forum.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = stripTags(json['name']),
-        subtitle = stripTags(json['subtitle']),
+        name = decodeHtmlEntities(json['name']),
+        subtitle = decodeHtmlEntities(json['subtitle']),
         nmsg = json['nmsg'],
         hasNew = json['has_new'],
         lastDate = json['last']['date'],
@@ -52,7 +52,7 @@ class ForumThread {
 
   ForumThread.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        title = stripTags(json['title']),
+        title = decodeHtmlEntities(json['title']),
         nbMsgs = json['nb_msgs'],
         pinned = json['pinned'],
         resolved = json['resolved'],
@@ -78,7 +78,7 @@ class ForumMessage {
 
   ForumMessage.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        title = stripTags(json['title']),
+        title = decodeHtmlEntities(json['title']),
         date = json['date'],
         text = json['text'],
         signature = json['signature'],
