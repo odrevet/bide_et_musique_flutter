@@ -75,7 +75,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-              padding: const EdgeInsets.all(1),
+              padding: const EdgeInsets.all(4),
               child: CoverWithGesture(
                   songLink: widget.songLinks[index],
                   displayPlaceholder: true,
