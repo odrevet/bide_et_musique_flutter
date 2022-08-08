@@ -36,8 +36,35 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
     int position = ++index;
     return Dismissible(
         key: Key(songLink.id.toString()),
-        onDismissed: (direction) {
-          _confirmDeletion(songLink, account);
+        onDismissed: (direction) async {
+          int statusCode = await removeSongFromFavorites(songLink.id);
+
+          if (statusCode == 200) {
+            setState(() {
+              account.favorites!.removeWhere((song) => song.id == songLink.id);
+            });
+          }
+        },
+        confirmDismiss: (DismissDirection direction) async {
+          return await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Confirmation"),
+                content: Text('Vraiment retirer "${songLink.name}" de vos favoris ? '),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text("Oui, Supprimer",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red))),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("Non, Conserver"),
+                  ),
+                ],
+              );
+            },
+          );
         },
         child: ListTile(
           leading: CoverThumb(songLink),
@@ -52,54 +79,6 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
                 .then((_) => _account = fetchAccountSession());
           },
         ));
-  }
-
-  Future<void> _confirmDeletion(SongLink songLink, Account account) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Retirer un favoris'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Vraiment retirer "${songLink.name}" de vos favoris ? '),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Oui'),
-              onPressed: () async {
-                int statusCode = await removeSongFromFavorites(songLink.id);
-
-                if (statusCode == 200) {
-                  setState(() {
-                    account.favorites!.removeWhere((song) => song.id == songLink.id);
-                  });
-                }
-
-                if (!mounted) return;
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Non'),
-              onPressed: () {
-                int index = account.favorites!.indexOf(songLink);
-
-                setState(() {
-                  _rows.insert(index, _createSongTile(songLink, account, index));
-                });
-
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Widget _buildView(BuildContext context, Account account) {
