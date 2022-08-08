@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../models/account.dart';
@@ -17,9 +19,6 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
   var _accountLinks = <AccountLink>[];
   final ScrollController _controller = ScrollController();
   bool? _isLoading;
-
-  final _font = TextStyle(
-      fontSize: 18.0, background: Paint()..color = const Color.fromARGB(180, 150, 150, 100));
 
   @override
   void initState() {
@@ -64,31 +63,33 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
             itemCount: _accountLinks.length,
             controller: _controller,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
+                crossAxisCount: orientation == Orientation.portrait ? 1 : 3),
             itemBuilder: (BuildContext context, int index) {
               var account = _accountLinks[index];
               final url = baseUri + account.image!;
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AccountPage(account: fetchAccount(account.id))));
-                },
-                onLongPress: () {
-                  openAccountImageViewerDialog(context, NetworkImage(url), account.name);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.orangeAccent,
-                      image: DecorationImage(
-                        fit: BoxFit.contain,
-                        alignment: FractionalOffset.topCenter,
-                        image: NetworkImage(url),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AccountPage(account: fetchAccount(account.id))));
+                  },
+                  onLongPress: () {
+                    openAccountImageViewerDialog(context, NetworkImage(url), account.name);
+                  },
+                  child: Column(
+                    children: [
+                      Text(account.name!, style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 16.0,)),
+                      Expanded(
+                          child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          fit: BoxFit.contain,
+                          image: NetworkImage(url),
+                        )),
                       )),
-                  child: Text(account.name!, style: _font),
-                ),
-              );
+                    ],
+                  ));
             }));
   }
 }
