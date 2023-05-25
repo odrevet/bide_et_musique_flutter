@@ -21,10 +21,10 @@ Future<List<SongLink>> fetchNewSongs() async {
     var body = response.body;
     var document = XmlDocument.parse(body);
     for (var item in document.findAllElements('item')) {
-      var link = item.children[2].text;
+      var link = item.children[2].value;
 
-      var artistTitle = item.firstChild!.text.split(' - ');
-      var song = SongLink(id: getIdFromUrl(link)!, name: artistTitle[1], artist: artistTitle[0]);
+      var artistTitle = item.firstChild!.value?.split(' - ');
+      var song = SongLink(id: getIdFromUrl(link!)!, name: artistTitle![1], artist: artistTitle[0]);
       songs.add(song);
     }
     return songs;

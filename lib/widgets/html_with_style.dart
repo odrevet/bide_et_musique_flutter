@@ -13,11 +13,11 @@ class HtmlWithStyle extends StatelessWidget {
     return Html(
         data: data,
         style: {
-          'html': Style(fontSize: const FontSize(18.0)),
+          'html': Style(fontSize: FontSize(18.0)),
           'a': Style(color: Colors.red),
         },
-        onLinkTap: (url, _, __, ___) {
+        /*onLinkTap: (url, _, __, ___) {
           onLinkTap(url!, context);
-        });
+        }*/);
   }
 }

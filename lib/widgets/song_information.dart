@@ -11,7 +11,8 @@ class SongInformations extends StatelessWidget {
   final Song? song;
   final bool compact;
 
-  const SongInformations({this.song, this.compact = false, Key? key}) : super(key: key);
+  const SongInformations({this.song, this.compact = false, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +31,19 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: '${song!.year}\n\n',
-          style: linkStyle,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Scaffold(
-                              appBar: AppBar(
-                                title: Text('Recherche de l\'année "${song!.year.toString()}"'),
-                              ),
-                              body: SearchResults(song!.year.toString(), '7')))),
-                }));
+        text: '${song!.year}\n\n',
+        style: linkStyle,
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        title: Text(
+                            'Recherche de l\'année "${song!.year.toString()}"'),
+                      ),
+                      body: SearchResults(song!.year.toString(), '7')))),
+      ));
     }
 
     if (!compact && song!.artist != null) {
@@ -52,16 +53,15 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: '${song!.artist!}\n\n',
-          style: linkStyle,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ArtistPageWidget(artist: fetchArtist(song!.artistId)))),
-                }));
+        text: '${song!.artist!}\n\n',
+        style: linkStyle,
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtistPageWidget(artist: fetchArtist(song!.artistId)))),
+      ));
     }
 
     if (song!.durationPretty != null) {
@@ -83,19 +83,18 @@ class SongInformations extends StatelessWidget {
       ));
 
       textSpans.add(TextSpan(
-          text: '${song!.label!}\n\n',
-          style: linkStyle,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Scaffold(
-                              appBar: AppBar(
-                                title: Text('Recherche du label "${song!.label}"'),
-                              ),
-                              body: SearchResults(song!.label, '5')))),
-                }));
+        text: '${song!.label!}\n\n',
+        style: linkStyle,
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        title: Text('Recherche du label "${song!.label}"'),
+                      ),
+                      body: SearchResults(song!.label, '5')))),
+      ));
     }
 
     if (song!.reference != null && song!.reference != '') {
@@ -112,6 +111,7 @@ class SongInformations extends StatelessWidget {
 
     return Center(
         child: RichText(
-            textAlign: TextAlign.center, text: TextSpan(style: defaultStyle, children: textSpans)));
+            textAlign: TextAlign.center,
+            text: TextSpan(style: defaultStyle, children: textSpans)));
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 
-class SongAiringTitle extends StatefulWidget with PreferredSizeWidget {
+class SongAiringTitle extends StatefulWidget  {  //with PreferredSizeWidget
   @override
   final Size preferredSize;
   final Future<SongAiring>? _songAiring;
