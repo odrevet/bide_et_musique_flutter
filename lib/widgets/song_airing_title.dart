@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../models/song.dart';
 
-class SongAiringTitle extends StatefulWidget  {  //with PreferredSizeWidget
+class SongAiringTitle extends StatefulWidget {
   @override
-  final Size preferredSize;
   final Future<SongAiring>? _songAiring;
   final Orientation _orientation;
 
-  SongAiringTitle(this._orientation, this._songAiring, {Key? key})
-      : preferredSize = const Size.fromHeight(50.0),
-        super(key: key);
+  const SongAiringTitle(this._orientation, this._songAiring, {Key? key})
+      : super(key: key);
 
   @override
   State<SongAiringTitle> createState() => _SongAiringTitleState();
@@ -39,13 +37,17 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
               overflow: TextOverflow.fade,
               text: TextSpan(
                 text: songAiring.name,
-                style:
-                    const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
                 children: <TextSpan>[
                   TextSpan(
                     text: '\n$subtitle',
                     style: const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14),
                   ),
                 ],
               ),
@@ -53,8 +55,10 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
           } else {
             title = Text(
               '${songAiring.name} • $subtitle',
-              style:
-                  const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
             );
           }
 
