@@ -1,7 +1,7 @@
 name: bide_et_musique
 description: Écouter et consulter la web radio 'Bide et Musique'
 
-version: 4.0.3+53
+version: 4.0.3+54
 
 environment:
   sdk: '>=3.0.2 <4.0.0'
