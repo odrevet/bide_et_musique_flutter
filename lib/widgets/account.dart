@@ -39,7 +39,8 @@ class AccountPage extends StatefulWidget {
   final Future<Account>? account;
   final int defaultPage;
 
-  const AccountPage({Key? key, this.account, this.defaultPage = 0}) : super(key: key);
+  const AccountPage({Key? key, this.account, this.defaultPage = 0})
+      : super(key: key);
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -102,7 +103,8 @@ class _AccountPageState extends State<AccountPage> {
                       Expanded(
                           child: InkWell(
                               onTap: () {
-                                openAccountImageViewerDialog(context, image, account.name);
+                                openAccountImageViewerDialog(
+                                    context, image, account.name);
                               },
                               child: Image.network(url))),
                       Expanded(
@@ -128,7 +130,8 @@ class _AccountPageState extends State<AccountPage> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
             child: Container(
-              decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+              decoration:
+                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
           PageIndicatorContainer(
@@ -146,7 +149,9 @@ class _AccountPageState extends State<AccountPage> {
               }),
               children: <Widget>[
                 account.presentation == ''
-                    ? Center(child: Text('${account.name} n\'a pas renseigné sa présentation. '))
+                    ? Center(
+                        child: Text(
+                            '${account.name} n\'a pas renseigné sa présentation. '))
                     : SingleChildScrollView(
                         child: Padding(
                         padding: const EdgeInsets.only(left: 8.0, top: 2.0),
@@ -155,11 +160,13 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       )),
                 account.favorites!.isEmpty
-                    ? Center(child: Text('${account.name} n\'a pas de favoris. '))
+                    ? Center(
+                        child: Text('${account.name} n\'a pas de favoris. '))
                     : _viewPochettoscope
                         ? PochettoscopeWidget(songLinks: account.favorites!)
                         : SongListingWidget(account.favorites),
-                if (Session.accountLink.id != null) MessageListing(account.messages)
+                if (Session.accountLink.id != null)
+                  MessageListing(account.messages)
               ],
             ),
           )
@@ -187,7 +194,9 @@ class _AccountPageState extends State<AccountPage> {
             title: Text(account.name!),
             actions: _currentPage == 1
                 ? <Widget>[
-                    Padding(padding: const EdgeInsets.only(right: 20.0), child: _switchViewButton())
+                    Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: _switchViewButton())
                   ]
                 : []),
         floatingActionButton: mailButton,
@@ -220,7 +229,8 @@ class MessageListing extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           Message message = messages![index];
           return ListTile(
-              title: Text(message.body), subtitle: Text('${message.recipient} ${message.date}'));
+              title: Text(message.body),
+              subtitle: Text('${message.recipient} ${message.date}'));
         });
   }
 }
@@ -237,7 +247,9 @@ class AccountListing extends StatelessWidget {
       rows.add(ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.black12,
-          child: Image(image: NetworkImage('$baseUri/images/avatars/${accountLink.id}.png')),
+          child: Image(
+              image: NetworkImage(
+                  '$baseUri/images/avatars/${accountLink.id}.png')),
         ),
         title: Text(
           accountLink.name!,
@@ -246,7 +258,8 @@ class AccountListing extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AccountPage(account: fetchAccount(accountLink.id))));
+                  builder: (context) =>
+                      AccountPage(account: fetchAccount(accountLink.id))));
         },
       ));
     }

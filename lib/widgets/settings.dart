@@ -88,7 +88,8 @@ class _SettingsPageState extends State<SettingsPage> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
             child: Container(
-              decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(0.8)),
+              decoration:
+                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.8)),
             ),
           ),
           PageView(
@@ -99,7 +100,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text('Relais'),
                   trailing: SizedBox(
                       width: 42,
-                      child: TextButton(onPressed: _onToggleRelay, child: Text(_relay.toString()))),
+                      child: TextButton(
+                          onPressed: _onToggleRelay,
+                          child: Text(_relay.toString()))),
                 ),
                 const Divider(),
                 CheckboxListTile(
@@ -107,9 +110,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: _rememberIdents,
                     onChanged: _onToggleRememberIdents),
                 CheckboxListTile(
-                    title: const Text('Connexion au compte au démarrage de l\'application'),
+                    title: const Text(
+                        'Connexion au compte au démarrage de l\'application'),
                     value: _autoConnect,
-                    onChanged: _rememberIdents == true ? _onToggleAutoConnect : null),
+                    onChanged:
+                        _rememberIdents == true ? _onToggleAutoConnect : null),
                 CheckboxListTile(
                     title: const Text('Empêcher la mise en veille'),
                     value: _wakelock,

@@ -51,12 +51,14 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text("Confirmation"),
-                content: Text('Vraiment retirer "${songLink.name}" de vos favoris ? '),
+                content: Text(
+                    'Vraiment retirer "${songLink.name}" de vos favoris ? '),
                 actions: <Widget>[
                   TextButton(
                       onPressed: () => Navigator.of(context).pop(true),
                       child: const Text("Oui, Supprimer",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red))),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.red))),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const Text("Non, Conserver"),
@@ -74,8 +76,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
             Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            SongPageWidget(songLink: songLink, song: fetchSong(songLink.id))))
+                        builder: (context) => SongPageWidget(
+                            songLink: songLink, song: fetchSong(songLink.id))))
                 .then((_) => _account = fetchAccountSession());
           },
         ));
@@ -94,11 +96,12 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         onReorder: (int initialPosition, int targetPosition) async {
           var draggedSong = account.favorites![initialPosition];
 
-          int statusCode =
-              await changeFavoriteRank(draggedSong.id, initialPosition, targetPosition);
+          int statusCode = await changeFavoriteRank(
+              draggedSong.id, initialPosition, targetPosition);
 
           if (statusCode == 200) {
-            FavoritesResults favoriteResults = await fetchFavorites(account.id, -1);
+            FavoritesResults favoriteResults =
+                await fetchFavorites(account.id, -1);
             setState(() {
               account.favorites = favoriteResults.songLinks;
             });
@@ -114,7 +117,8 @@ class _ManageFavoritesWidgetState extends State<ManageFavoritesWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.favorites!.isEmpty) {
-              return const Center(child: Text('Vous n\'avez pas de chanson dans vos favoris'));
+              return const Center(
+                  child: Text('Vous n\'avez pas de chanson dans vos favoris'));
             } else {
               return _buildView(context, snapshot.data!);
             }

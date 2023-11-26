@@ -127,7 +127,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           return Scaffold(
               appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
               bottomNavigationBar: SizedBox(
-                  height: 60, child: BottomAppBar(child: PlayerWidget(orientation, _songAiring))),
+                  height: 60,
+                  child: BottomAppBar(
+                      child: PlayerWidget(orientation, _songAiring))),
               drawer: const DrawerWidget(),
               body: airingWidget);
         } else {
@@ -144,9 +146,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                       children: <Widget>[
                         FutureBuilder<SongAiring>(
                             future: _songAiring,
-                            builder: (BuildContext context, AsyncSnapshot<SongAiring> snapshot) {
+                            builder: (BuildContext context,
+                                AsyncSnapshot<SongAiring> snapshot) {
                               if (snapshot.hasData) {
-                                return SongInformations(song: snapshot.data, compact: true);
+                                return SongInformations(
+                                    song: snapshot.data, compact: true);
                               } else {
                                 return const CircularProgressIndicator();
                               }
@@ -163,7 +167,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = Scaffold(
           bottomNavigationBar: SizedBox(
               height: 60,
-              child: BottomAppBar(child: PlayerWidget(Orientation.portrait, _songAiring!))),
+              child: BottomAppBar(
+                  child: PlayerWidget(Orientation.portrait, _songAiring!))),
           body: body);
     }
 
@@ -176,7 +181,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             dialogBackgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
             buttonTheme: ButtonThemeData(
                 buttonColor: Colors.orangeAccent,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))), bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0))),
+            bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange)),
         home: home);
   }
 }

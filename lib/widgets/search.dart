@@ -36,7 +36,8 @@ class _SearchResultsState extends State<SearchResults> {
     _songLinks = [];
     _loading = true;
     _loadingMore = false;
-    fetchSearchSong(widget.search, widget.type, _pageCurrent).then((SearchResult searchResult) {
+    fetchSearchSong(widget.search, widget.type, _pageCurrent)
+        .then((SearchResult searchResult) {
       setState(() {
         _loading = false;
         _pageCount = searchResult.pageCount;
@@ -70,7 +71,8 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading == true) return const Center(child: CircularProgressIndicator());
+    if (_loading == true)
+      return const Center(child: CircularProgressIndicator());
     if (_songLinks!.isEmpty) {
       return const Center(child: Text('Pas de résultats pour cette recherche'));
     }
@@ -84,7 +86,9 @@ class _SearchResultsState extends State<SearchResults> {
               title: Text(
                 _songLinks![index].name,
               ),
-              subtitle: Text(_songLinks![index].artist == null ? '' : _songLinks![index].artist!),
+              subtitle: Text(_songLinks![index].artist == null
+                  ? ''
+                  : _songLinks![index].artist!),
               onTap: () => launchSongPage(_songLinks![index], context));
         });
   }
@@ -141,7 +145,8 @@ class _SearchState extends State<Search> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AccountListingFuture(fetchSearchAccount(_controller.text))));
+              builder: (context) =>
+                  AccountListingFuture(fetchSearchAccount(_controller.text))));
     } else {
       Navigator.push(
           context,
@@ -150,7 +155,8 @@ class _SearchState extends State<Search> {
                     appBar: AppBar(
                       title: const Text('Recherche de chansons'),
                     ),
-                    body: Center(child: SearchResults(_controller.text, _currentItem)),
+                    body: Center(
+                        child: SearchResults(_controller.text, _currentItem)),
                   )));
     }
   }
@@ -170,9 +176,11 @@ class _SearchState extends State<Search> {
               children: [
                 Container(
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Theme.of(context).colorScheme.secondary, width: 2.0),
-                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 2.0),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(24.0)),
                     ),
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(3.0),
@@ -186,8 +194,10 @@ class _SearchState extends State<Search> {
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText: 'Entrez ici votre recherche',
-                      contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
                     ),
                     onSubmitted: (value) => performSearch(),
                     controller: _controller),

@@ -36,7 +36,8 @@ Future<List<Exchange>> fetchExchanges() async {
     trs.removeLast();
     for (var tr in trs) {
       var message = Exchange();
-      int? id = getAccountIdFromUrl(tr.children[0].children[0].attributes['href']);
+      int? id =
+          getAccountIdFromUrl(tr.children[0].children[0].attributes['href']);
       message.recipient = AccountLink(id: id, name: tr.children[0].text.trim());
       List<String> secondTdText = tr.children[1].text.split('\n');
       message.sentCount = secondTdText[2].trim();
@@ -54,8 +55,12 @@ Future<bool> sendMessage(String message, int? destId) async {
   const url = '$baseUri/bidebox_send.html';
 
   if (message.isNotEmpty) {
-    var response = await Session.post(url,
-        body: {'Message': removeDiacritics(message), 'T': destId.toString(), 'R': '', 'M': 'S'});
+    var response = await Session.post(url, body: {
+      'Message': removeDiacritics(message),
+      'T': destId.toString(),
+      'R': '',
+      'M': 'S'
+    });
     return response.statusCode == 200;
   }
 

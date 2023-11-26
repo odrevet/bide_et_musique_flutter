@@ -17,13 +17,15 @@ class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
   final Future<SongAiring>? _songAiring;
 
-  const PlayerWidget(this.orientation, this._songAiring, {Key? key}) : super(key: key);
+  const PlayerWidget(this.orientation, this._songAiring, {Key? key})
+      : super(key: key);
 
   @override
   State<PlayerWidget> createState() => _PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver {
+class _PlayerWidgetState extends State<PlayerWidget>
+    with WidgetsBindingObserver {
   IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
         icon: Icon(iconData),
         iconSize: 32.0,
@@ -33,7 +35,8 @@ class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: audioHandler.playbackState.map((state) => state.playing).distinct(),
+      stream:
+          audioHandler.playbackState.map((state) => state.playing).distinct(),
       builder: (context, snapshot) {
         final playing = snapshot.data ?? false;
 
@@ -63,17 +66,20 @@ class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver
                       builder: (context, snapshot) {
                         final mediaItem = snapshot.data;
                         if (mediaItem != null) {
-                          final songLink =
-                              SongLink(id: getIdFromUrl(mediaItem.id)!, name: mediaItem.title);
+                          final songLink = SongLink(
+                              id: getIdFromUrl(mediaItem.id)!,
+                              name: mediaItem.title);
                           return InkWell(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SongPageWidget(
-                                          songLink: songLink, song: fetchSong(songLink.id))));
+                                          songLink: songLink,
+                                          song: fetchSong(songLink.id))));
                             },
-                            child: CachedNetworkImage(imageUrl: songLink.thumbLink),
+                            child: CachedNetworkImage(
+                                imageUrl: songLink.thumbLink),
                           );
                         } else {
                           return Container();
@@ -82,17 +88,21 @@ class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver
                     ),
                     // Play/pause/stop buttons.
                     StreamBuilder<bool>(
-                      stream: audioHandler.playbackState.map((state) => state.playing).distinct(),
+                      stream: audioHandler.playbackState
+                          .map((state) => state.playing)
+                          .distinct(),
                       builder: (context, snapshot) {
                         final playing = snapshot.data ?? false;
                         List<IconButton> controls;
 
                         if (playing) {
                           controls = [
-                            _button(Icons.fast_rewind_rounded, audioHandler.rewind),
+                            _button(
+                                Icons.fast_rewind_rounded, audioHandler.rewind),
                             //_button(Icons.pause, audioHandler.pause),
                             _button(Icons.stop, audioHandler.stop),
-                            _button(Icons.fast_forward_rounded, audioHandler.fastForward),
+                            _button(Icons.fast_forward_rounded,
+                                audioHandler.fastForward),
                           ];
                         } else {
                           controls = [_button(Icons.stop, audioHandler.stop)];
@@ -111,7 +121,8 @@ class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver
                         final mediaState = snapshot.data;
                         return Expanded(
                           child: SeekBar(
-                            duration: mediaState?.mediaItem?.duration ?? Duration.zero,
+                            duration: mediaState?.mediaItem?.duration ??
+                                Duration.zero,
                             position: mediaState?.position ?? Duration.zero,
                             onChangeEnd: (newPosition) {
                               audioHandler.seek(newPosition);
@@ -134,8 +145,9 @@ class _PlayerWidgetState extends State<PlayerWidget> with WidgetsBindingObserver
 
   /// A stream reporting the combined state of the current media item and its
   /// current position.
-  Stream<MediaState> get _mediaStateStream => Rx.combineLatest2<MediaItem?, Duration, MediaState>(
-      audioHandler.mediaItem,
-      AudioService.position,
-      (mediaItem, position) => MediaState(mediaItem, position));
+  Stream<MediaState> get _mediaStateStream =>
+      Rx.combineLatest2<MediaItem?, Duration, MediaState>(
+          audioHandler.mediaItem,
+          AudioService.position,
+          (mediaItem, position) => MediaState(mediaItem, position));
 }

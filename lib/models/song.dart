@@ -89,8 +89,12 @@ class Song extends SongLink {
             artist: decodeHtmlEntities(json['artists']['main']['alias']),
             cover: json['covers']['main']);
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'name': name, 'artist': artist, 'duration': duration!.inSeconds};
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'artist': artist,
+        'duration': duration!.inSeconds
+      };
 }
 
 class Comment {

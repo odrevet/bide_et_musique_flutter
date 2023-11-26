@@ -9,7 +9,11 @@ class SeekBar extends StatefulWidget {
   final ValueChanged<Duration>? onChangeEnd;
 
   const SeekBar(
-      {required this.duration, required this.position, this.onChanged, this.onChangeEnd, Key? key})
+      {required this.duration,
+      required this.position,
+      this.onChanged,
+      this.onChangeEnd,
+      Key? key})
       : super(key: key);
 
   @override
@@ -59,7 +63,9 @@ class _SeekBarState extends State<SeekBar> {
           right: 16.0,
           bottom: 0.0,
           child: Text(
-              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$').firstMatch("$_remaining")?.group(1) ??
+              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                      .firstMatch("$_remaining")
+                      ?.group(1) ??
                   '$_remaining',
               style: Theme.of(context).textTheme.bodySmall),
         ),

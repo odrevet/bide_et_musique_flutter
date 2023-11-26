@@ -70,14 +70,21 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AccountPage(account: fetchAccount(account.id))));
+                            builder: (context) => AccountPage(
+                                account: fetchAccount(account.id))));
                   },
                   onLongPress: () {
-                    openAccountImageViewerDialog(context, NetworkImage(url), account.name);
+                    openAccountImageViewerDialog(
+                        context, NetworkImage(url), account.name);
                   },
                   child: Column(
                     children: [
-                      Text(account.name!, style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 16.0,)),
+                      Text(account.name!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 16.0,
+                          )),
                       Expanded(
                           child: Container(
                         decoration: BoxDecoration(

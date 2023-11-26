@@ -14,7 +14,8 @@ Future<Artist?> fetchArtist(int? artistId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      artist = Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
+      artist =
+          Artist.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       if (kDebugMode) {
         print('Error while decoding artist : $e');

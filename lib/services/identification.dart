@@ -12,12 +12,14 @@ class IdentificationResponse {
   String? loginMessage;
 }
 
-Future<IdentificationResponse> sendIdentifiers(String login, String password) async {
+Future<IdentificationResponse> sendIdentifiers(
+    String login, String password) async {
   var identificationResponse = IdentificationResponse();
 
   if (login.isEmpty) {
     identificationResponse.isLoggedIn = false;
-    identificationResponse.loginMessage = 'Veuillez entrer votre nom d\'utilisateur';
+    identificationResponse.loginMessage =
+        'Veuillez entrer votre nom d\'utilisateur';
     return identificationResponse;
   }
 
@@ -30,7 +32,8 @@ Future<IdentificationResponse> sendIdentifiers(String login, String password) as
   const url = '$baseUri/ident.html';
   Response response;
   try {
-    response = await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
+    response =
+        await Session.post(url, body: {'LOGIN': login, 'PASSWORD': password});
   } catch (e) {
     identificationResponse.isLoggedIn = false;
     identificationResponse.loginMessage = e.toString();
@@ -46,19 +49,23 @@ Future<IdentificationResponse> sendIdentifiers(String login, String password) as
 
     if (confirm.children[0].innerHtml == 'Vous avez été identifié !') {
       dom.Element divAccount = document.getElementById('compte2')!;
-      Session.accountLink.id = getIdFromUrl(divAccount.children[1].children[1].attributes['href']!);
+      Session.accountLink.id =
+          getIdFromUrl(divAccount.children[1].children[1].attributes['href']!);
       Session.accountLink.name = login;
       identificationResponse.isLoggedIn = true;
     } else {
       identificationResponse.isLoggedIn = false;
 
-      if (confirm.innerHtml.contains('Vous n\'avez pas été reconnu dans la base')) {
-        identificationResponse.loginMessage = 'Vous n\'avez pas été reconnu dans la base';
+      if (confirm.innerHtml
+          .contains('Vous n\'avez pas été reconnu dans la base')) {
+        identificationResponse.loginMessage =
+            'Vous n\'avez pas été reconnu dans la base';
       }
     }
   } else {
     identificationResponse.isLoggedIn = false;
-    identificationResponse.loginMessage = 'Erreur (code status ${response.statusCode})';
+    identificationResponse.loginMessage =
+        'Erreur (code status ${response.statusCode})';
   }
 
   return identificationResponse;

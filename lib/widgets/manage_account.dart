@@ -59,7 +59,8 @@ class LoggedInPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ManageAccountPageWidget(account: fetchAccount(Session.accountLink.id)),
+            ManageAccountPageWidget(
+                account: fetchAccount(Session.accountLink.id)),
             const ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
             BideBoxWidget(exchanges: fetchExchanges()),
@@ -84,7 +85,8 @@ class VoteListing extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
-              return const Center(child: Text('Vous n\'avez pas voté cette semaine. '));
+              return const Center(
+                  child: Text('Vous n\'avez pas voté cette semaine. '));
             } else {
               return SongListingWidget(snapshot.data);
             }
@@ -138,7 +140,8 @@ class ManageAccountPageWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                           onTap: () {
-                            openAccountImageViewerDialog(context, image, account.name);
+                            openAccountImageViewerDialog(
+                                context, image, account.name);
                           },
                           child: Image.network(url))),
                   Expanded(
@@ -164,9 +167,11 @@ class ManageAccountPageWidget extends StatelessWidget {
                       filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                       child: Stack(children: [
                         Container(
-                          decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200.withOpacity(0.7)),
                         ),
-                        SingleChildScrollView(child: HtmlWithStyle(data: account.presentation)),
+                        SingleChildScrollView(
+                            child: HtmlWithStyle(data: account.presentation)),
                       ]),
                     )
                   ],

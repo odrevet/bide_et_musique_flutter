@@ -22,9 +22,10 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   Future<void> playSong() async {
     audioHandler.stop();
+    await audioHandler.customAction('set_session_id',
+        <String, dynamic>{'session_id': Session.headers['cookie']});
     await audioHandler
-        .customAction('set_session_id', <String, dynamic>{'session_id': Session.headers['cookie']});
-    await audioHandler.customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
+        .customAction('set_radio_mode', <String, dynamic>{'radio_mode': false});
     await audioHandler.customAction('set_song', widget._song!.toJson());
     audioHandler.play();
   }
@@ -65,10 +66,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                     List<IconButton> controls;
                                     if (playing) {
                                       controls = [
-                                        _button(Icons.fast_rewind_rounded, audioHandler.rewind),
-                                        _button(Icons.pause, audioHandler.pause),
+                                        _button(Icons.fast_rewind_rounded,
+                                            audioHandler.rewind),
                                         _button(
-                                            Icons.fast_forward_rounded, audioHandler.fastForward),
+                                            Icons.pause, audioHandler.pause),
+                                        _button(Icons.fast_forward_rounded,
+                                            audioHandler.fastForward),
                                       ];
                                     } else {
                                       controls = [
@@ -76,7 +79,8 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                       ];
                                     }
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: controls,
                                     );
                                   },
@@ -87,8 +91,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
                                   builder: (context, snapshot) {
                                     final mediaState = snapshot.data;
                                     return SeekBar(
-                                      duration: mediaState?.mediaItem?.duration ?? Duration.zero,
-                                      position: mediaState?.position ?? Duration.zero,
+                                      duration:
+                                          mediaState?.mediaItem?.duration ??
+                                              Duration.zero,
+                                      position:
+                                          mediaState?.position ?? Duration.zero,
                                       onChangeEnd: (newPosition) {
                                         audioHandler.seek(newPosition);
                                       },
@@ -111,10 +118,11 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget> {
 
   /// A stream reporting the combined state of the current media item and its
   /// current position.
-  Stream<MediaState> get _mediaStateStream => Rx.combineLatest2<MediaItem?, Duration, MediaState>(
-      audioHandler.mediaItem,
-      AudioService.position,
-      (mediaItem, position) => MediaState(mediaItem, position));
+  Stream<MediaState> get _mediaStateStream =>
+      Rx.combineLatest2<MediaItem?, Duration, MediaState>(
+          audioHandler.mediaItem,
+          AudioService.position,
+          (mediaItem, position) => MediaState(mediaItem, position));
 
   IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
         icon: Icon(iconData),

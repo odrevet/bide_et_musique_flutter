@@ -54,7 +54,8 @@ class BideBoxWidget extends StatelessWidget {
               leading: GestureDetector(
                   onTap: () => showDialog(
                         context: context,
-                        builder: (BuildContext context) => MessageEditor(message.recipient),
+                        builder: (BuildContext context) =>
+                            MessageEditor(message.recipient),
                       ),
                   child: const Icon(Icons.mail)));
         });
@@ -82,7 +83,8 @@ class _MessageEditorState extends State<MessageEditor> {
           icon: const Icon(Icons.send),
           label: const Text("Envoyer"),
           onPressed: () async {
-            bool status = await sendMessage(_newMessageController.text, widget._accountLink!.id);
+            bool status = await sendMessage(
+                _newMessageController.text, widget._accountLink!.id);
 
             if (!mounted) return;
             Navigator.of(context).pop(status);

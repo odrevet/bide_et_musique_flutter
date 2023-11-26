@@ -24,7 +24,10 @@ Future<List<SongLink>> fetchNewSongs() async {
       var link = item.children[2].value;
 
       var artistTitle = item.firstChild!.value?.split(' - ');
-      var song = SongLink(id: getIdFromUrl(link!)!, name: artistTitle![1], artist: artistTitle[0]);
+      var song = SongLink(
+          id: getIdFromUrl(link!)!,
+          name: artistTitle![1],
+          artist: artistTitle[0]);
       songs.add(song);
     }
     return songs;
@@ -91,7 +94,8 @@ List<Comment> parseComments(document) {
     try {
       var tdCommentChildren = divNormal.children;
       //get comment id (remove 'comment' string)
-      comment.id = int.parse(tdCommentChildren[0].attributes['id']!.substring(8));
+      comment.id =
+          int.parse(tdCommentChildren[0].attributes['id']!.substring(8));
       dom.Element aAccount = tdCommentChildren[1].children[0];
       int? accountId = getIdFromUrl(aAccount.attributes['href']!);
       String accountName = aAccount.innerHtml;
@@ -184,12 +188,13 @@ Future<Song> fetchSong(int? songId) async {
 
 Future<void> sendEditComment(Song song, Comment comment, String text) async {
   if (text.isNotEmpty) {
-    await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}', body: {
-      'mode': 'Edit',
-      'REF': song.link,
-      'Comment__': comment.id.toString(),
-      'Text': removeDiacritics(text),
-    });
+    await Session.post('$baseUri/edit_comment.html?Comment__=${comment.id}',
+        body: {
+          'mode': 'Edit',
+          'REF': song.link,
+          'Comment__': comment.id.toString(),
+          'Text': removeDiacritics(text),
+        });
   }
 }
 

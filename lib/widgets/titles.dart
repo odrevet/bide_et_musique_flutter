@@ -57,7 +57,8 @@ class _TitlesWidgetState extends State<TitlesWidget> {
           } else if (snapshot.hasError) {
             return Scaffold(
                 appBar: AppBar(title: const Text('Ouille ouille ouille !')),
-                body: Center(child: ErrorDisplay(Exception(snapshot.error.toString()))));
+                body: Center(
+                    child: ErrorDisplay(Exception(snapshot.error.toString()))));
           }
 
           // By default, show a loading spinner
@@ -76,7 +77,8 @@ class _TitlesWidgetState extends State<TitlesWidget> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-              title: SongAiringTitle(orientation, widget._songAiringNotifier.songAiring),
+              title: SongAiringTitle(
+                  orientation, widget._songAiringNotifier.songAiring),
               bottom: orientation == Orientation.portrait
                   ? const TabBar(
                       tabs: [
@@ -94,7 +96,9 @@ class _TitlesWidgetState extends State<TitlesWidget> {
                 )
               : Row(
                   children: <Widget>[
-                    Expanded(child: SongListingWidget(songLinks['next'], split: true)),
+                    Expanded(
+                        child:
+                            SongListingWidget(songLinks['next'], split: true)),
                     Expanded(child: SongListingWidget(songLinks['past'])),
                   ],
                 ),

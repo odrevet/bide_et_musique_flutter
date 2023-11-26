@@ -13,7 +13,8 @@ Future<Program> fetchProgram(int? programId) async {
 
   if (responseJson.statusCode == 200) {
     try {
-      program = Program.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
+      program =
+          Program.fromJson(json.decode(utf8.decode(responseJson.bodyBytes)));
     } catch (e) {
       program = Program();
       program.id = 0;

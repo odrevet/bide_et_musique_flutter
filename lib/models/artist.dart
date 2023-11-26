@@ -19,7 +19,8 @@ class Artist {
         dates = json['dates']['pretty'] {
     disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
-      disco!.add(SongLink(id: discoEntry['id'], name: decodeHtmlEntities(discoEntry['name'])));
+      disco!.add(SongLink(
+          id: discoEntry['id'], name: decodeHtmlEntities(discoEntry['name'])));
     }
   }
 

@@ -60,7 +60,9 @@ class _ProgramPageState extends State<ProgramPage> {
               child: program.description != null && program.airedOn!.isNotEmpty
                   ? displayInfoButton(program)
                   : null),
-          Padding(padding: const EdgeInsets.only(right: 20.0), child: _switchViewButton())
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: _switchViewButton())
         ],
       ),
       body: Center(child: listing),
@@ -84,11 +86,13 @@ class _ProgramPageState extends State<ProgramPage> {
                 horizontal: 20,
                 vertical: 20,
               ),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0)),
               title: Text(program.name!),
               children: [
                 HtmlWithStyle(data: program.description),
-                if (program.airedOn!.isNotEmpty) Text('Dernière diffusion $airedOn')
+                if (program.airedOn!.isNotEmpty)
+                  Text('Dernière diffusion $airedOn')
               ],
             );
           },

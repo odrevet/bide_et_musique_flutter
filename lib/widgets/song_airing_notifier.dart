@@ -25,8 +25,9 @@ class SongAiringNotifier extends ChangeNotifier {
       songAiring = fetchAiring();
       songAiring!.then((s) async {
         notifyListeners();
-        int delay =
-            (s.duration!.inSeconds - (s.duration!.inSeconds * s.elapsedPcent! / 100)).ceil();
+        int delay = (s.duration!.inSeconds -
+                (s.duration!.inSeconds * s.elapsedPcent! / 100))
+            .ceil();
         _t = Timer(Duration(seconds: delay), () {
           periodicFetchSongAiring();
         });
