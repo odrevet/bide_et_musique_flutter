@@ -139,7 +139,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             drawer: const DrawerWidget(),
             body: Row(
               children: <Widget>[
-                Expanded(child: airingWidget),
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: airingWidget,
+                )),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
