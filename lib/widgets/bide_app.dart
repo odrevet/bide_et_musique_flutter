@@ -187,6 +187,13 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               titleMedium: TextStyle(
                 fontSize: 14,
               ),
+              bodyMedium: TextStyle(
+                fontSize: 12,
+              ),
+              bodyLarge: TextStyle(
+                fontSize: 16,
+              ),
+
             ),
             primarySwatch: Colors.orange,
             secondaryHeaderColor: Colors.deepOrange,
