@@ -125,7 +125,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       home = OrientationBuilder(builder: (context, orientation) {
         if (orientation == Orientation.portrait) {
           return Scaffold(
-              appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
+              appBar: AppBar(
+                  title: SongAiringTitle(orientation, _songAiring),
+                  backgroundColor: Colors.orange),
               bottomNavigationBar: SizedBox(
                   height: 60,
                   child: BottomAppBar(
@@ -175,6 +177,28 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     return MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(
+            useMaterial3: true,
+
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.orange,
+              brightness: Brightness.light,
+            ),
+
+            textTheme: const TextTheme(
+              displayLarge: TextStyle(
+                fontSize: 42,
+              ),
+
+              titleLarge: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+
+              titleMedium: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+
             primarySwatch: Colors.orange,
             secondaryHeaderColor: Colors.deepOrange,
             canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),

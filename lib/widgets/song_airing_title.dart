@@ -37,17 +37,11 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
               overflow: TextOverflow.fade,
               text: TextSpan(
                 text: songAiring.name,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                style: Theme.of(context).textTheme.titleLarge!,
                 children: <TextSpan>[
                   TextSpan(
                     text: '\n$subtitle',
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14),
+                    style: Theme.of(context).textTheme.titleMedium!,
                   ),
                 ],
               ),
@@ -55,10 +49,7 @@ class _SongAiringTitleState extends State<SongAiringTitle> {
           } else {
             title = Text(
               '${songAiring.name} • $subtitle',
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
+              style: Theme.of(context).textTheme.titleLarge!,
             );
           }
 
