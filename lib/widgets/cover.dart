@@ -59,6 +59,7 @@ class CoverWithGesture extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: Colors.black,
+                  offset: Offset(6.0, 6.0),
                   blurRadius: 20,
                 ),
               ],

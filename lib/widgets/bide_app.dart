@@ -109,7 +109,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     Widget home;
-    Widget? body;
     Widget airingWidget;
 
     if (_e != null && _songAiring == null) {
@@ -132,7 +131,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                 child: BottomAppBar(
                     child: PlayerWidget(orientation, _songAiring))),
             drawer: const DrawerWidget(),
-            body: airingWidget);
+            body: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: airingWidget,
+            ));
       } else {
         return Scaffold(
             appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
