@@ -12,7 +12,7 @@ import 'cover.dart';
 import 'song_page.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
-  const ManageFavoritesWidget({Key? key}) : super(key: key);
+  const ManageFavoritesWidget({super.key});
 
   @override
   State<ManageFavoritesWidget> createState() => _ManageFavoritesWidgetState();

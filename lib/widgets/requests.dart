@@ -9,7 +9,7 @@ import 'cover.dart';
 import 'song_page.dart';
 
 class RequestsPageWidget extends StatefulWidget {
-  const RequestsPageWidget({Key? key}) : super(key: key);
+  const RequestsPageWidget({super.key});
 
   @override
   State<RequestsPageWidget> createState() => _RequestsPageWidgetState();

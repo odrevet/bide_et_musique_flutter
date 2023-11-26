@@ -16,7 +16,7 @@ import 'html_with_style.dart';
 import 'song_page.dart';
 
 class WallWidget extends StatefulWidget {
-  const WallWidget({Key? key}) : super(key: key);
+  const WallWidget({super.key});
 
   @override
   State<WallWidget> createState() => _WallWidgetState();

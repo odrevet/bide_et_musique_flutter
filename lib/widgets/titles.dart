@@ -12,7 +12,7 @@ import 'song_listing.dart';
 class TitlesWidget extends StatefulWidget {
   final SongAiringNotifier _songAiringNotifier = SongAiringNotifier();
 
-  TitlesWidget({Key? key}) : super(key: key);
+  TitlesWidget({super.key});
 
   @override
   State<TitlesWidget> createState() => _TitlesWidgetState();

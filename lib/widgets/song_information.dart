@@ -11,8 +11,7 @@ class SongInformations extends StatelessWidget {
   final Song? song;
   final bool compact;
 
-  const SongInformations({this.song, this.compact = false, Key? key})
-      : super(key: key);
+  const SongInformations({this.song, this.compact = false, super.key});
 
   @override
   Widget build(BuildContext context) {

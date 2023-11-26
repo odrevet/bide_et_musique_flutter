@@ -7,7 +7,7 @@ import 'pochettoscope.dart';
 class PochettoScopePage extends StatelessWidget {
   final Widget? child;
 
-  const PochettoScopePage({this.child, Key? key}) : super(key: key);
+  const PochettoScopePage({this.child, super.key});
 
   @override
   Widget build(BuildContext context) {

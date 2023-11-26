@@ -17,7 +17,7 @@ import 'requests.dart';
 import 'song_listing.dart';
 
 class DisconnectButton extends StatelessWidget {
-  const DisconnectButton({Key? key}) : super(key: key);
+  const DisconnectButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class DisconnectButton extends StatelessWidget {
 }
 
 class LoggedInPage extends StatelessWidget {
-  const LoggedInPage({Key? key}) : super(key: key);
+  const LoggedInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class LoggedInPage extends StatelessWidget {
 class VoteListing extends StatelessWidget {
   final Future<List<SongLink>> songLinks;
 
-  const VoteListing(this.songLinks, {Key? key}) : super(key: key);
+  const VoteListing(this.songLinks, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class VoteListing extends StatelessWidget {
 class ManageAccountPageWidget extends StatelessWidget {
   final Future<Account>? account;
 
-  const ManageAccountPageWidget({Key? key, this.account}) : super(key: key);
+  const ManageAccountPageWidget({super.key, this.account});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'song_listing.dart';
 class ProgramPage extends StatefulWidget {
   final Future<Program>? program;
 
-  const ProgramPage({Key? key, this.program}) : super(key: key);
+  const ProgramPage({super.key, this.program});
 
   @override
   State<ProgramPage> createState() => _ProgramPageState();

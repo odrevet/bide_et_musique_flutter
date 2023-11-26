@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ErrorDisplay extends StatelessWidget {
-  final title = const TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
   final defaultStyle = const TextStyle(color: Colors.black);
   final reportedError = const TextStyle(fontStyle: FontStyle.italic);
   final dynamic exception;
 
-  const ErrorDisplay(this.exception, {Key? key}) : super(key: key);
+  const ErrorDisplay(this.exception, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,9 @@ class ErrorDisplay extends StatelessWidget {
       text: TextSpan(
         style: defaultStyle,
         children: <TextSpan>[
-          TextSpan(text: 'Ouille ouille ouille !', style: title),
+          const TextSpan(
+              text: 'Ouille ouille ouille !',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
           const TextSpan(text: ' \n Une erreur est survenue !'),
           const TextSpan(text: ' \n Le message reporté est : \n'),
           TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),

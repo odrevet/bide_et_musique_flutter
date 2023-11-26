@@ -111,11 +111,11 @@ class SongAiring extends Song {
   final int? nbListeners;
   final Program program;
 
-  SongAiring.fromJson(Map<String, dynamic> json)
+  SongAiring.fromJson(super.json)
       : elapsedPcent = json['now']['elapsed_pcent'],
         nbListeners = json['now']['nb_listeners'],
         program = Program(
             id: json['now']['program']['id'],
             name: decodeHtmlEntities(json['now']['program']['name'])),
-        super.fromJson(json);
+        super.fromJson();
 }

@@ -11,7 +11,7 @@ import 'seek_bar.dart';
 class SongPlayerWidget extends StatefulWidget {
   final Song? _song;
 
-  const SongPlayerWidget(this._song, {Key? key}) : super(key: key);
+  const SongPlayerWidget(this._song, {super.key});
 
   @override
   State<SongPlayerWidget> createState() => _SongPlayerWidgetState();

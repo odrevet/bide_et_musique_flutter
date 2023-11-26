@@ -17,8 +17,7 @@ class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
   final Future<SongAiring>? _songAiring;
 
-  const PlayerWidget(this.orientation, this._songAiring, {Key? key})
-      : super(key: key);
+  const PlayerWidget(this.orientation, this._songAiring, {super.key});
 
   @override
   State<PlayerWidget> createState() => _PlayerWidgetState();

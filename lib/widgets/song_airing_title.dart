@@ -9,8 +9,7 @@ class SongAiringTitle extends StatefulWidget {
   final Future<SongAiring>? _songAiring;
   final Orientation _orientation;
 
-  const SongAiringTitle(this._orientation, this._songAiring, {Key? key})
-      : super(key: key);
+  const SongAiringTitle(this._orientation, this._songAiring, {super.key});
 
   @override
   State<SongAiringTitle> createState() => _SongAiringTitleState();

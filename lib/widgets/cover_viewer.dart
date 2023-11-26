@@ -7,7 +7,7 @@ import 'cover.dart';
 class CoverViewer extends StatefulWidget {
   final SongLink? songLink;
 
-  const CoverViewer(this.songLink, {Key? key}) : super(key: key);
+  const CoverViewer(this.songLink, {super.key});
 
   @override
   State<CoverViewer> createState() => _CoverViewerState();

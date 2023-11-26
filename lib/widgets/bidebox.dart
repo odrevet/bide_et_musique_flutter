@@ -12,7 +12,7 @@ import 'account.dart';
 class BideBoxWidget extends StatelessWidget {
   final Future<List<Exchange>>? exchanges;
 
-  const BideBoxWidget({Key? key, this.exchanges}) : super(key: key);
+  const BideBoxWidget({super.key, this.exchanges});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class BideBoxWidget extends StatelessWidget {
 class MessageEditor extends StatefulWidget {
   final AccountLink? _accountLink;
 
-  const MessageEditor(this._accountLink, {Key? key}) : super(key: key);
+  const MessageEditor(this._accountLink, {super.key});
 
   @override
   State<MessageEditor> createState() => _MessageEditorState();

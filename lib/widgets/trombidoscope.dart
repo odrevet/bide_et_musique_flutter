@@ -7,7 +7,7 @@ import '../utils.dart';
 import 'account.dart';
 
 class TrombidoscopeWidget extends StatefulWidget {
-  const TrombidoscopeWidget({Key? key}) : super(key: key);
+  const TrombidoscopeWidget({super.key});
 
   @override
   State<TrombidoscopeWidget> createState() => _TrombidoscopeWidgetState();

@@ -11,7 +11,7 @@ import 'song_listing.dart';
 class NowSongsWidget extends StatelessWidget {
   final Future<List<NowSong>>? nowSongs;
 
-  const NowSongsWidget({Key? key, this.nowSongs}) : super(key: key);
+  const NowSongsWidget({super.key, this.nowSongs});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'program.dart';
 class ThematicPageWidget extends StatefulWidget {
   final Future<List<ProgramLink>>? programLinks;
 
-  const ThematicPageWidget({Key? key, this.programLinks}) : super(key: key);
+  const ThematicPageWidget({super.key, this.programLinks});
 
   @override
   State<ThematicPageWidget> createState() => _ThematicPageWidgetState();

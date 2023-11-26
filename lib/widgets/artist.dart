@@ -10,7 +10,7 @@ import 'song_listing.dart';
 class ArtistPageWidget extends StatelessWidget {
   final Future<Artist?>? artist;
 
-  const ArtistPageWidget({Key? key, this.artist}) : super(key: key);
+  const ArtistPageWidget({super.key, this.artist});
 
   @override
   Widget build(BuildContext context) {

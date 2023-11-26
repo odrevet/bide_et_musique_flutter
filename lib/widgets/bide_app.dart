@@ -15,7 +15,7 @@ import '../widgets/song_airing_title.dart';
 import '../widgets/song_information.dart';
 
 class BideApp extends StatefulWidget {
-  const BideApp({Key? key}) : super(key: key);
+  const BideApp({super.key});
 
   @override
   State<BideApp> createState() => _BideAppState();
@@ -121,59 +121,50 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
 
     //no url match from deep link or not launched from deep link
-    if (body == null) {
-      home = OrientationBuilder(builder: (context, orientation) {
-        if (orientation == Orientation.portrait) {
-          return Scaffold(
-              appBar: AppBar(
-                  title: SongAiringTitle(orientation, _songAiring),
-                  backgroundColor: Colors.orange),
-              bottomNavigationBar: SizedBox(
-                  height: 60,
-                  child: BottomAppBar(
-                      child: PlayerWidget(orientation, _songAiring))),
-              drawer: const DrawerWidget(),
-              body: airingWidget);
-        } else {
-          return Scaffold(
-              appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
-              drawer: const DrawerWidget(),
-              body: Row(
-                children: <Widget>[
-                  Expanded(child: airingWidget),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        FutureBuilder<SongAiring>(
-                            future: _songAiring,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<SongAiring> snapshot) {
-                              if (snapshot.hasData) {
-                                return SongInformations(
-                                    song: snapshot.data, compact: true);
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            }),
-                        PlayerWidget(orientation, _songAiring!),
-                      ],
-                    ),
-                  )
-                ],
-              ));
-        }
-      });
-    } else {
-      home = Scaffold(
-          bottomNavigationBar: SizedBox(
-              height: 60,
-              child: BottomAppBar(
-                  child: PlayerWidget(Orientation.portrait, _songAiring!))),
-          body: body);
-    }
-
+    home = OrientationBuilder(builder: (context, orientation) {
+      if (orientation == Orientation.portrait) {
+        return Scaffold(
+            appBar: AppBar(
+                title: SongAiringTitle(orientation, _songAiring),
+                backgroundColor: Colors.orange),
+            bottomNavigationBar: SizedBox(
+                height: 60,
+                child: BottomAppBar(
+                    child: PlayerWidget(orientation, _songAiring))),
+            drawer: const DrawerWidget(),
+            body: airingWidget);
+      } else {
+        return Scaffold(
+            appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
+            drawer: const DrawerWidget(),
+            body: Row(
+              children: <Widget>[
+                Expanded(child: airingWidget),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      FutureBuilder<SongAiring>(
+                          future: _songAiring,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<SongAiring> snapshot) {
+                            if (snapshot.hasData) {
+                              return SongInformations(
+                                  song: snapshot.data, compact: true);
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          }),
+                      PlayerWidget(orientation, _songAiring!),
+                    ],
+                  ),
+                )
+              ],
+            ));
+      }
+    });
+  
     return MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(

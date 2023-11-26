@@ -9,7 +9,7 @@ import '../widgets/song_airing_notifier.dart';
 class RadioStreamButton extends StatefulWidget {
   final Future<SongAiring>? _songAiring;
 
-  const RadioStreamButton(this._songAiring, {Key? key}) : super(key: key);
+  const RadioStreamButton(this._songAiring, {super.key});
 
   @override
   State<RadioStreamButton> createState() => _RadioStreamButtonState();

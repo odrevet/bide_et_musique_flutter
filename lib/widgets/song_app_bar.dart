@@ -12,9 +12,8 @@ import 'song_player.dart';
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song>? _song;
 
-  const SongAppBar(this._song, {Key? key})
-      : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+  const SongAppBar(this._song, {super.key})
+      : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize;
@@ -68,7 +67,7 @@ class _SongAppBarState extends State<SongAppBar> {
 class SongActionMenu extends StatelessWidget {
   final Song? _song;
 
-  const SongActionMenu(this._song, {Key? key}) : super(key: key);
+  const SongActionMenu(this._song, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +82,7 @@ class SongActionMenu extends StatelessWidget {
 
     //if the user is logged in
     if (Session.accountLink.id != null) {
-      if (_song!.canFavourite) {
+      if (_song.canFavourite) {
         actions.add(SongFavoriteIconWidget(_song));
       }
 
@@ -98,7 +97,7 @@ class SongActionMenu extends StatelessWidget {
     var shareSongStream = ElevatedButton.icon(
         icon: const Icon(Icons.music_note),
         label: const Text('Flux musical'),
-        onPressed: () => Share.share(_song!.streamLink));
+        onPressed: () => Share.share(_song.streamLink));
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);
@@ -146,7 +145,7 @@ class SongActionMenu extends StatelessWidget {
 class SongFavoriteIconWidget extends StatefulWidget {
   final Song? _song;
 
-  const SongFavoriteIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongFavoriteIconWidget(this._song, {super.key});
 
   @override
   State<SongFavoriteIconWidget> createState() => _SongFavoriteIconWidgetState();
@@ -191,7 +190,7 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
 class SongVoteIconWidget extends StatefulWidget {
   final Song? _song;
 
-  const SongVoteIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongVoteIconWidget(this._song, {super.key});
 
   @override
   State<SongVoteIconWidget> createState() => _SongVoteIconWidgetState();
@@ -227,7 +226,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 class SongShareIconWidget extends StatelessWidget {
   final Song? _song;
 
-  const SongShareIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongShareIconWidget(this._song, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -239,13 +238,13 @@ class SongShareIconWidget extends StatelessWidget {
             '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
 
 Tu peux consulter la fiche de cette chanson à l'adresse :
-${_song!.link}
+${_song.link}
 
 --------
 Message envoyé avec l'application 'Bide et Musique'. Disponible pour  
 * Android https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique 
 * IOS https://apps.apple.com/fr/app/bide-et-musique/id1524513644''',
-            subject: "'${_song!.name}' sur Bide et Musique"));
+            subject: "'${_song.name}' sur Bide et Musique"));
   }
 }
 
@@ -255,7 +254,7 @@ Message envoyé avec l'application 'Bide et Musique'. Disponible pour
 class SongCopyLinkIconWidget extends StatelessWidget {
   final Song? _song;
 
-  const SongCopyLinkIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongCopyLinkIconWidget(this._song, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +271,7 @@ class SongCopyLinkIconWidget extends StatelessWidget {
 class SongCopyLinkHtmlIconWidget extends StatelessWidget {
   final Song? _song;
 
-  const SongCopyLinkHtmlIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongCopyLinkHtmlIconWidget(this._song, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +280,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
         icon: const Icon(Icons.code),
         label: const Text('Copier le code HTML du lien'),
         onPressed: () => Clipboard.setData(ClipboardData(
-            text: '<a href="${_song!.link}">${_song!.name}</a>')));
+            text: '<a href="${_song!.link}">${_song.name}</a>')));
   }
 }
 
@@ -291,7 +290,7 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
 class SongOpenInBrowserIconWidget extends StatelessWidget {
   final Song? _song;
 
-  const SongOpenInBrowserIconWidget(this._song, {Key? key}) : super(key: key);
+  const SongOpenInBrowserIconWidget(this._song, {super.key});
 
   @override
   Widget build(BuildContext context) {

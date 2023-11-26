@@ -10,7 +10,7 @@ import 'song_page.dart';
 class CoverThumb extends StatelessWidget {
   final SongLink? _songLink;
 
-  const CoverThumb(this._songLink, {Key? key}) : super(key: key);
+  const CoverThumb(this._songLink, {super.key});
 
   Widget _sizedContainer({Widget? child}) {
     return SizedBox(
@@ -27,7 +27,7 @@ class CoverThumb extends StatelessWidget {
         tag: tag,
         child: _sizedContainer(
             child: CachedNetworkImage(
-                imageUrl: _songLink!.thumbLink,
+                imageUrl: _songLink.thumbLink,
                 placeholder: (context, url) =>
                     const Icon(Icons.album, size: 50.0),
                 errorWidget: (context, url, error) =>
@@ -41,11 +41,10 @@ class CoverWithGesture extends StatelessWidget {
   final bool displayPlaceholder;
 
   const CoverWithGesture(
-      {Key? key,
+      {super.key,
       this.songLink,
       this.fadeInDuration = const Duration(),
-      this.displayPlaceholder = false})
-      : super(key: key);
+      this.displayPlaceholder = false});
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +96,7 @@ class Cover extends StatelessWidget {
   const Cover(this._url,
       {this.fadeInDuration = const Duration(),
       this.displayPlaceholder = false,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -39,8 +39,7 @@ class AccountPage extends StatefulWidget {
   final Future<Account>? account;
   final int defaultPage;
 
-  const AccountPage({Key? key, this.account, this.defaultPage = 0})
-      : super(key: key);
+  const AccountPage({super.key, this.account, this.defaultPage = 0});
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -220,7 +219,7 @@ class _AccountPageState extends State<AccountPage> {
 class MessageListing extends StatelessWidget {
   final List<Message>? messages;
 
-  const MessageListing(this.messages, {Key? key}) : super(key: key);
+  const MessageListing(this.messages, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +237,7 @@ class MessageListing extends StatelessWidget {
 class AccountListing extends StatelessWidget {
   final List<AccountLink>? _accountLinks;
 
-  const AccountListing(this._accountLinks, {Key? key}) : super(key: key);
+  const AccountListing(this._accountLinks, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +270,7 @@ class AccountListing extends StatelessWidget {
 class AccountListingFuture extends StatelessWidget {
   final Future<List<AccountLink>> accounts;
 
-  const AccountListingFuture(this.accounts, {Key? key}) : super(key: key);
+  const AccountListingFuture(this.accounts, {super.key});
 
   @override
   Widget build(BuildContext context) {

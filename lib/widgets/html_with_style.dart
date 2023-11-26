@@ -6,7 +6,7 @@ import '../utils.dart';
 class HtmlWithStyle extends StatelessWidget {
   final String? data;
 
-  const HtmlWithStyle({this.data, Key? key}) : super(key: key);
+  const HtmlWithStyle({this.data, super.key});
 
   @override
   Widget build(BuildContext context) {

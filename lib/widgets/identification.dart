@@ -9,7 +9,7 @@ import '../utils.dart';
 import 'manage_account.dart';
 
 class Identification extends StatefulWidget {
-  const Identification({Key? key}) : super(key: key);
+  const Identification({super.key});
 
   @override
   State<Identification> createState() => _IdentificationState();

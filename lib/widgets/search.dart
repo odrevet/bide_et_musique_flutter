@@ -11,7 +11,7 @@ class SearchResults extends StatefulWidget {
   final String? search;
   final String? type;
 
-  const SearchResults(this.search, this.type, {Key? key}) : super(key: key);
+  const SearchResults(this.search, this.type, {super.key});
 
   @override
   State<SearchResults> createState() => _SearchResultsState();
@@ -71,8 +71,9 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading == true)
+    if (_loading == true) {
       return const Center(child: CircularProgressIndicator());
+    }
     if (_songLinks!.isEmpty) {
       return const Center(child: Text('Pas de résultats pour cette recherche'));
     }
@@ -95,7 +96,7 @@ class _SearchResultsState extends State<SearchResults> {
 }
 
 class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+  const Search({super.key});
 
   @override
   State<Search> createState() => _SearchState();

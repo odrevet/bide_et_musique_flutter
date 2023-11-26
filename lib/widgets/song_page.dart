@@ -21,7 +21,7 @@ class SongPageWidget extends StatefulWidget {
   final SongLink? songLink;
   final Future<Song>? song;
 
-  const SongPageWidget({Key? key, this.songLink, this.song}) : super(key: key);
+  const SongPageWidget({super.key, this.songLink, this.song});
 
   @override
   State<SongPageWidget> createState() => _SongPageWidgetState();

@@ -9,7 +9,7 @@ import 'error_display.dart';
 class Schedule extends StatelessWidget {
   final Future<List<DaySchedule?>>? schedule;
 
-  const Schedule({Key? key, this.schedule}) : super(key: key);
+  const Schedule({super.key, this.schedule});
 
   @override
   Widget build(BuildContext context) {

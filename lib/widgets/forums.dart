@@ -8,7 +8,7 @@ import '../widgets/error_display.dart';
 import 'html_with_style.dart';
 
 class ForumWidget extends StatefulWidget {
-  const ForumWidget({Key? key}) : super(key: key);
+  const ForumWidget({super.key});
 
   @override
   State<ForumWidget> createState() => _ForumPageState();
@@ -59,8 +59,7 @@ class ForumThreadWidget extends StatefulWidget {
   final Future<List<ForumThread>> _forumThreads;
   final Forum _forum;
 
-  const ForumThreadWidget(this._forum, this._forumThreads, {Key? key})
-      : super(key: key);
+  const ForumThreadWidget(this._forum, this._forumThreads, {super.key});
 
   @override
   State<ForumThreadWidget> createState() => _ForumThreadWidgetState();
@@ -116,8 +115,7 @@ class ForumMessagesWidget extends StatefulWidget {
   final ForumThread _forumThread;
   final Future<List<ForumMessage>> _forumMessages;
 
-  const ForumMessagesWidget(this._forumThread, this._forumMessages, {Key? key})
-      : super(key: key);
+  const ForumMessagesWidget(this._forumThread, this._forumMessages, {super.key});
 
   @override
   State<ForumMessagesWidget> createState() => _ForumMessagesWidgetState();

@@ -20,8 +20,7 @@ class SongListingWidget extends StatefulWidget {
   final List<SongLink>? _songLinks;
   final bool split;
 
-  const SongListingWidget(this._songLinks, {this.split = false, Key? key})
-      : super(key: key);
+  const SongListingWidget(this._songLinks, {this.split = false, super.key});
 
   @override
   State<SongListingWidget> createState() => _SongListingWidgetState();

@@ -8,8 +8,7 @@ class PochettoscopeWidget extends StatefulWidget {
   final Function? onEndReached;
 
   const PochettoscopeWidget(
-      {required this.songLinks, this.onEndReached, Key? key})
-      : super(key: key);
+      {required this.songLinks, this.onEndReached, super.key});
 
   @override
   State<PochettoscopeWidget> createState() => _PochettoscopeWidgetState();
