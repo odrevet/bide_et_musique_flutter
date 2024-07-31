@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../models/song.dart';
 
 class SongAiringTitle extends StatefulWidget {
-  @override
   final Future<SongAiring>? _songAiring;
   final Orientation _orientation;
 

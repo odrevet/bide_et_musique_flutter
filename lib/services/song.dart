@@ -23,7 +23,7 @@ Future<List<SongLink>> fetchNewSongs() async {
     for (var item in document.findAllElements('item')) {
       var link = item.findAllElements('comments').first.innerText;
       var song = SongLink(
-          id: getIdFromUrl(link!)!,
+          id: getIdFromUrl(link)!,
           name: item.findAllElements('title').first.innerText);
       songs.add(song);
     }

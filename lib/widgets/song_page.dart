@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:page_indicator/page_indicator.dart';
+import 'package:page_indicator_plus/page_indicator_plus.dart';
 
 import '../models/song.dart';
 import '../services/account.dart';
@@ -30,6 +30,9 @@ class SongPageWidget extends StatefulWidget {
 class _SongPageWidgetState extends State<SongPageWidget> {
   int? _currentPage;
   final _commentController = TextEditingController();
+  final PageController _pageController = PageController(
+    initialPage: 0,
+  );
 
   _SongPageWidgetState();
 
@@ -222,30 +225,25 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                   ),
                 )),
           ),
-          PageIndicatorContainer(
-            align: IndicatorAlign.bottom,
-            length: 2,
-            indicatorSpace: 20.0,
-            padding: const EdgeInsets.all(10),
-            shape: IndicatorShape.circle(size: 8),
-            indicatorColor: Theme.of(context).canvasColor,
-            indicatorSelectorColor: Theme.of(context).colorScheme.secondary,
-            child: PageView(
-              onPageChanged: (int page) => setState(() {
-                _currentPage = page;
-              }),
-              children: <Widget>[
-                SingleChildScrollView(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 4.0, top: 2.0),
-                  child: HtmlWithStyle(
-                      data: song.lyrics == ''
-                          ? '<center><i>Paroles non renseignées</i></center>'
-                          : song.lyrics),
-                )),
-                _buildViewComments(context, song),
-              ],
-            ),
+          PageIndicator(
+            controller: _pageController,
+            count: 2,
+          ),
+          PageView(
+            onPageChanged: (int page) => setState(() {
+              _currentPage = page;
+            }),
+            children: <Widget>[
+              SingleChildScrollView(
+                  child: Padding(
+                padding: const EdgeInsets.only(left: 4.0, top: 2.0),
+                child: HtmlWithStyle(
+                    data: song.lyrics == ''
+                        ? '<center><i>Paroles non renseignées</i></center>'
+                        : song.lyrics),
+              )),
+              _buildViewComments(context, song),
+            ],
           )
         ]));
 

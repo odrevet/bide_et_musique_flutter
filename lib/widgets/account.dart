@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:page_indicator/page_indicator.dart';
+import 'package:page_indicator_plus/page_indicator_plus.dart';
 
 import '../models/account.dart';
 import '../services/account.dart';
@@ -47,7 +47,9 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   int? _currentPage;
-  PageController? controller;
+  final PageController _pageController = PageController(
+    initialPage: 0,
+  );
   bool _viewPochettoscope = false;
 
   _AccountPageState();
@@ -55,7 +57,6 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     _currentPage = widget.defaultPage;
-    controller = PageController(initialPage: widget.defaultPage);
     super.initState();
   }
 
@@ -133,41 +134,35 @@ class _AccountPageState extends State<AccountPage> {
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
-          PageIndicatorContainer(
-            align: IndicatorAlign.bottom,
-            length: Session.accountLink.id == null ? 2 : 3,
-            indicatorSpace: 20.0,
-            padding: const EdgeInsets.all(10),
-            shape: IndicatorShape.circle(size: 8),
-            indicatorColor: Theme.of(context).canvasColor,
-            indicatorSelectorColor: Theme.of(context).colorScheme.secondary,
-            child: PageView(
-              controller: controller,
-              onPageChanged: (int page) => setState(() {
-                _currentPage = page;
-              }),
-              children: <Widget>[
-                account.presentation == ''
-                    ? Center(
-                        child: Text(
-                            '${account.name} n\'a pas renseigné sa présentation. '))
-                    : SingleChildScrollView(
-                        child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 2.0),
-                        child: HtmlWithStyle(
-                          data: account.presentation,
-                        ),
-                      )),
-                account.favorites!.isEmpty
-                    ? Center(
-                        child: Text('${account.name} n\'a pas de favoris. '))
-                    : _viewPochettoscope
-                        ? PochettoscopeWidget(songLinks: account.favorites!)
-                        : SongListingWidget(account.favorites),
-                if (Session.accountLink.id != null)
-                  MessageListing(account.messages)
-              ],
-            ),
+          PageIndicator(
+            controller: _pageController,
+            count: Session.accountLink.id == null ? 2 : 3,
+          ),
+          PageView(
+            controller: _pageController,
+            onPageChanged: (int page) => setState(() {
+              _currentPage = page;
+            }),
+            children: <Widget>[
+              account.presentation == ''
+                  ? Center(
+                      child: Text(
+                          '${account.name} n\'a pas renseigné sa présentation. '))
+                  : SingleChildScrollView(
+                      child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 2.0),
+                      child: HtmlWithStyle(
+                        data: account.presentation,
+                      ),
+                    )),
+              account.favorites!.isEmpty
+                  ? Center(child: Text('${account.name} n\'a pas de favoris. '))
+                  : _viewPochettoscope
+                      ? PochettoscopeWidget(songLinks: account.favorites!)
+                      : SongListingWidget(account.favorites),
+              if (Session.accountLink.id != null)
+                MessageListing(account.messages)
+            ],
           )
         ]),
       )),

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -50,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _onToggleWakeLock(bool? value) {
     setState(() {
       _wakelock = value;
-      Wakelock.toggle(enable: _wakelock!);
+      WakelockPlus.toggle(enable: _wakelock!);
       _saveOptionBool('wakelock', value);
     });
   }
