@@ -249,7 +249,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                 child: PageIndicator(
                   controller: _pageController,
                   count: 2,
-                  size: 8.0,
+                  size: 10.0,
                   layout: PageIndicatorLayout.WARM,
                   scale: 0.75,
                   space: 10,

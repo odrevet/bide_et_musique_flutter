@@ -134,36 +134,46 @@ class _AccountPageState extends State<AccountPage> {
                   BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
             ),
           ),
-          PageIndicator(
-            controller: _pageController,
-            count: Session.accountLink.id == null ? 2 : 3,
-          ),
-          PageView(
-            controller: _pageController,
-            onPageChanged: (int page) => setState(() {
-              _currentPage = page;
-            }),
-            children: <Widget>[
-              account.presentation == ''
-                  ? Center(
-                      child: Text(
-                          '${account.name} n\'a pas renseigné sa présentation. '))
-                  : SingleChildScrollView(
-                      child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 2.0),
-                      child: HtmlWithStyle(
-                        data: account.presentation,
-                      ),
-                    )),
-              account.favorites!.isEmpty
-                  ? Center(child: Text('${account.name} n\'a pas de favoris. '))
-                  : _viewPochettoscope
-                      ? PochettoscopeWidget(songLinks: account.favorites!)
-                      : SongListingWidget(account.favorites),
-              if (Session.accountLink.id != null)
-                MessageListing(account.messages)
-            ],
-          )
+          Stack(children: [
+            PageView(
+              controller: _pageController,
+              onPageChanged: (int page) => setState(() {
+                _currentPage = page;
+              }),
+              children: <Widget>[
+                account.presentation == ''
+                    ? Center(
+                        child: Text(
+                            '${account.name} n\'a pas renseigné sa présentation. '))
+                    : SingleChildScrollView(
+                        child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 2.0),
+                        child: HtmlWithStyle(
+                          data: account.presentation,
+                        ),
+                      )),
+                account.favorites!.isEmpty
+                    ? Center(
+                        child: Text('${account.name} n\'a pas de favoris. '))
+                    : _viewPochettoscope
+                        ? PochettoscopeWidget(songLinks: account.favorites!)
+                        : SongListingWidget(account.favorites),
+                if (Session.accountLink.id != null)
+                  MessageListing(account.messages)
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: PageIndicator(
+                controller: _pageController,
+                count: Session.accountLink.id == null ? 2 : 3,
+                size: 10.0,
+                layout: PageIndicatorLayout.WARM,
+                scale: 0.75,
+                space: 10,
+              ),
+            ),
+          ]),
         ]),
       )),
     );
