@@ -225,26 +225,38 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                   ),
                 )),
           ),
-          PageIndicator(
-            controller: _pageController,
-            count: 2,
-          ),
-          PageView(
-            onPageChanged: (int page) => setState(() {
-              _currentPage = page;
-            }),
-            children: <Widget>[
-              SingleChildScrollView(
-                  child: Padding(
-                padding: const EdgeInsets.only(left: 4.0, top: 2.0),
-                child: HtmlWithStyle(
-                    data: song.lyrics == ''
-                        ? '<center><i>Paroles non renseignées</i></center>'
-                        : song.lyrics),
-              )),
-              _buildViewComments(context, song),
+          Stack(
+            children: [
+              PageView(
+                controller: _pageController,
+                onPageChanged: (int page) => setState(() {
+                    _currentPage = page;
+                  }),
+                children: <Widget>[
+                  SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0, top: 2.0),
+                        child: HtmlWithStyle(
+                            data: song.lyrics == ''
+                                ? '<center><i>Paroles non renseignées</i></center>'
+                                : song.lyrics),
+                      )),
+                  _buildViewComments(context, song),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: PageIndicator(
+                  controller: _pageController,
+                  count: 2,
+                  size: 8.0,
+                  layout: PageIndicatorLayout.WARM,
+                  scale: 0.75,
+                  space: 10,
+                ),
+              ),
             ],
-          )
+          ),
         ]));
 
     Widget? postNewComment = Session.accountLink.id == null || _currentPage != 1
