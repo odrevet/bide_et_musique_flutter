@@ -52,29 +52,27 @@ class Song extends SongLink {
   String? label;
   String? reference;
   String? lyrics;
-  late List<Comment> comments;
-  late bool canListen;
-  late bool canFavourite;
-  late bool isFavourite;
-  late bool hasVote;
+  List<Comment> comments = [];
+  bool canListen = false;
+  bool canFavourite = false;
+  bool isFavourite = false;
+  bool hasVote = false;
 
-  Song(
-      {required id,
-      required name,
-      artist,
-      cover,
-      info,
-      this.year,
-      this.artistId,
-      this.author,
-      this.duration,
-      this.durationPretty,
-      this.label,
-      this.reference,
-      this.lyrics})
-      : super(id: id, name: name, artist: artist, cover: cover, info: info){
-    comments = [];
-  }
+  Song({
+    required super.id,
+    required super.name,
+    super.artist,
+    super.cover,
+    super.info,
+    this.year,
+    this.artistId,
+    this.author,
+    this.duration,
+    this.durationPretty,
+    this.label,
+    this.reference,
+    this.lyrics,
+  });
 
   Song.fromJson(Map<String, dynamic> json)
       : year = json['year'],

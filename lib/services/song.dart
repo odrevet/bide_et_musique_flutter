@@ -110,7 +110,7 @@ List<Comment> parseComments(document) {
   return comments;
 }
 
-Future<Song> fetchSong(int? songId) async {
+Future<Song> fetchSong(int songId) async {
   Song song;
   final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
