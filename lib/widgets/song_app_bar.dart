@@ -5,7 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import '../models/song.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import 'player/song_player.dart';
 

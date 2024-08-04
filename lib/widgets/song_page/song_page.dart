@@ -8,7 +8,7 @@ import 'package:page_indicator_plus/page_indicator_plus.dart';
 import '../../models/comment.dart';
 import '../../models/song.dart';
 import '../../services/account.dart';
-import '../../session.dart';
+import '../../models/session.dart';
 import '../../utils.dart';
 import '../account.dart';
 import 'comment_dialog.dart';

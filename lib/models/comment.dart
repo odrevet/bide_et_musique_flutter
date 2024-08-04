@@ -1,7 +1,7 @@
 import 'package:bide_et_musique/models/song.dart';
 import 'package:diacritic/diacritic.dart';
 
-import '../session.dart';
+import 'session.dart';
 import '../utils.dart';
 import 'account.dart';
 

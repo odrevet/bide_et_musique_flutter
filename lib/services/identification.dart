@@ -4,7 +4,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart';
 
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 class IdentificationResponse {

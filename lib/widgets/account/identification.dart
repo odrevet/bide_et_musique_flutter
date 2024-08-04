@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/identification.dart';
-import '../../session.dart';
+import '../../models/session.dart';
 import '../../utils.dart';
 import 'manage_account.dart';
 

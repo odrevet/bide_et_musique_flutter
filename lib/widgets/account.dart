@@ -6,7 +6,7 @@ import 'package:page_indicator_plus/page_indicator_plus.dart';
 
 import '../models/account.dart';
 import '../services/account.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import '../widgets/song_listing.dart';
 import 'account/bidebox.dart';

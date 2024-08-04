@@ -4,7 +4,7 @@ import 'package:html/parser.dart' as parser;
 
 import '../models/account.dart';
 import '../models/exchange.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 int? getAccountIdFromUrl(str) {

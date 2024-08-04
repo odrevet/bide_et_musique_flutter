@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/account.dart';
 import '../models/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import 'favorite.dart';
 

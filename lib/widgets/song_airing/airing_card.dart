@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/song.dart';
-import '../widgets/error_display.dart';
-import 'cover.dart';
+import '../../models/song.dart';
+import '../error_display.dart';
+import '../cover.dart';
 
 class AiringCard extends StatefulWidget {
   final Future<Song> _song;

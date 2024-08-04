@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 
-import 'models/account.dart';
+import 'account.dart';
 
 abstract class Session {
   static var accountLink = AccountLink();

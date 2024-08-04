@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../models/program.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<Program> fetchProgram(int? programId) async {

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../models/song.dart';
-import '../services/song.dart';
+import '../../models/song.dart';
+import '../../services/song.dart';
 
 class SongAiringNotifier extends ChangeNotifier {
   static final SongAiringNotifier _singleton = SongAiringNotifier._internal();

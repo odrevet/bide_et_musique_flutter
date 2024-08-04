@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/song.dart';
+import '../../models/song.dart';
 
 class SongAiringTitle extends StatefulWidget {
   final Future<SongAiring>? _songAiring;

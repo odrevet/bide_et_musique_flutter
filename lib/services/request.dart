@@ -4,7 +4,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
 import '../models/requests.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import 'song.dart';
 

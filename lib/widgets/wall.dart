@@ -8,7 +8,7 @@ import '../models/song.dart';
 import '../services/account.dart';
 import '../services/song.dart';
 import '../services/wall.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'error_display.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models/song.dart';
-import '../../player.dart';
-import '../../session.dart';
+import '../../services/player.dart';
+import '../../models/session.dart';
 import '../../utils.dart';
 import 'seek_bar.dart';
 

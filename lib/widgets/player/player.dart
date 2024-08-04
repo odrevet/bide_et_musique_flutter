@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models/song.dart';
-import '../../player.dart';
+import '../../services/player.dart';
 import '../../services/song.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';

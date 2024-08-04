@@ -2,7 +2,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
 import '../models/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<List<SongLink>> fetchPochettoscope() async {

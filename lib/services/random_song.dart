@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<int?> fetchRandomSongId() async {

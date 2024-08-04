@@ -8,7 +8,7 @@ import '../services/random_song.dart';
 import '../services/schedule.dart';
 import '../services/song.dart';
 import '../services/thematics.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'forums.dart';

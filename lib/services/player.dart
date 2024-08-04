@@ -4,8 +4,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'models/song.dart';
-import 'utils.dart' show site, host;
+import '../models/song.dart';
+import '../utils.dart' show site, host;
 
 late AudioHandler audioHandler;
 
@@ -20,7 +20,6 @@ class MediaState {
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();
 
-  //Timer? _t;
   Song? _song;
   bool _radioMode = false;
   String? _sessionId;

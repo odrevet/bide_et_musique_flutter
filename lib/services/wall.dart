@@ -6,7 +6,7 @@ import 'package:html/parser.dart' as parser;
 import '../models/account.dart';
 import '../models/post.dart';
 import '../models/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<List<Post>> fetchPosts() async {

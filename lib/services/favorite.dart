@@ -5,7 +5,7 @@ import 'package:html/parser.dart' as parser;
 
 import '../models/favorites.dart';
 import '../models/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 List<SongLink> parseFavoriteTable(dom.Element table) {

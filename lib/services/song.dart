@@ -10,7 +10,7 @@ import '../models/account.dart';
 import '../models/comment.dart';
 import '../models/now_song.dart';
 import '../models/song.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<List<SongLink>> fetchNewSongs() async {

@@ -4,7 +4,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 
 import '../models/program.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<List<ProgramLink>> fetchThematics() async {

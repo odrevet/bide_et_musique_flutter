@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 
 import '../models/forum.dart';
-import '../session.dart';
+import '../models/session.dart';
 import '../utils.dart';
 
 Future<List<Forum>> fetchForums() async {

@@ -1,17 +1,17 @@
 import 'dart:async';
 
+import 'package:bide_et_musique/widgets/song_airing/airing_card.dart';
+import 'package:bide_et_musique/widgets/song_airing/song_airing_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/song.dart';
-import '../player.dart' show audioHandler;
+import '../services/player.dart' show audioHandler;
 import '../services/identification.dart';
-import '../widgets/airing_card.dart';
 import '../widgets/drawer.dart';
 import '../widgets/error_display.dart';
 import 'player/player.dart';
-import '../widgets/song_airing_notifier.dart';
-import '../widgets/song_airing_title.dart';
+import 'song_airing/song_airing_title.dart';
 import '../widgets/song_informations.dart';
 
 class BideApp extends StatefulWidget {

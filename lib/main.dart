@@ -5,7 +5,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'player.dart';
+import 'services/player.dart';
 import 'widgets/bide_app.dart';
 
 Future<void> main() async {

@@ -7,7 +7,7 @@ import '../../models/account.dart';
 import '../../models/song.dart';
 import '../../services/account.dart';
 import '../../services/bidebox.dart';
-import '../../session.dart';
+import '../../models/session.dart';
 import '../../utils.dart';
 import '../account.dart';
 import 'bidebox.dart';
