@@ -6,8 +6,8 @@ import '../../models/account.dart';
 import '../../models/exchange.dart';
 import '../../services/account.dart';
 import '../../services/bidebox.dart';
-import '../error_display.dart';
 import '../account.dart';
+import '../error_display.dart';
 
 class BideBoxWidget extends StatelessWidget {
   final Future<List<Exchange>>? exchanges;

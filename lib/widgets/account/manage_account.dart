@@ -4,17 +4,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../models/account.dart';
+import '../../models/session.dart';
 import '../../models/song.dart';
 import '../../services/account.dart';
 import '../../services/bidebox.dart';
-import '../../models/session.dart';
 import '../../utils.dart';
 import '../account.dart';
-import 'bidebox.dart';
 import '../html_with_style.dart';
+import '../song_listing.dart';
+import 'bidebox.dart';
 import 'manage_favorites.dart';
 import 'requests.dart';
-import '../song_listing.dart';
 
 class DisconnectButton extends StatelessWidget {
   const DisconnectButton({super.key});

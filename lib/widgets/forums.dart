@@ -115,7 +115,8 @@ class ForumMessagesWidget extends StatefulWidget {
   final ForumThread _forumThread;
   final Future<List<ForumMessage>> _forumMessages;
 
-  const ForumMessagesWidget(this._forumThread, this._forumMessages, {super.key});
+  const ForumMessagesWidget(this._forumThread, this._forumMessages,
+      {super.key});
 
   @override
   State<ForumMessagesWidget> createState() => _ForumMessagesWidgetState();

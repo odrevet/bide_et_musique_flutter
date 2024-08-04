@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../models/session.dart';
 import '../models/song.dart';
 import '../services/favorite.dart';
 import '../services/song.dart';
-import '../models/session.dart';
 import '../utils.dart';
 import 'player/song_player.dart';
 
@@ -279,8 +279,8 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
     return ElevatedButton.icon(
         icon: const Icon(Icons.code),
         label: const Text('Copier le code HTML du lien'),
-        onPressed: () => Clipboard.setData(ClipboardData(
-            text: '<a href="${_song!.link}">${_song.name}</a>')));
+        onPressed: () => Clipboard.setData(
+            ClipboardData(text: '<a href="${_song!.link}">${_song.name}</a>')));
   }
 }
 

@@ -4,11 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../models/post.dart';
+import '../models/session.dart';
 import '../models/song.dart';
 import '../services/account.dart';
 import '../services/song.dart';
 import '../services/wall.dart';
-import '../models/session.dart';
 import '../utils.dart';
 import 'account.dart';
 import 'error_display.dart';

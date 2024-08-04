@@ -3,8 +3,8 @@ import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 import '../models/account.dart';
-import '../models/song.dart';
 import '../models/session.dart';
+import '../models/song.dart';
 import '../utils.dart';
 import 'favorite.dart';
 

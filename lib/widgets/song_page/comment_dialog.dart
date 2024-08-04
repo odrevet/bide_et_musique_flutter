@@ -16,7 +16,6 @@ class CommentDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       actions: [
         ElevatedButton.icon(
@@ -24,10 +23,9 @@ class CommentDialog extends StatelessWidget {
           label: const Text("Envoyer"),
           onPressed: () async {
             Navigator.of(context).pop();
-            if(comment == null){
+            if (comment == null) {
               sendAddComment(song, _commentController.text);
-            }
-            else{
+            } else {
               sendEditComment(song, comment!, _commentController.text);
             }
 
@@ -36,8 +34,7 @@ class CommentDialog extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: songLink,
-                        song: fetchSong(songLink.id))));
+                        songLink: songLink, song: fetchSong(songLink.id))));
           },
         )
       ],

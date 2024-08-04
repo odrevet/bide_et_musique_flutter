@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/song.dart';
-import '../services/player.dart' show audioHandler;
 import '../services/identification.dart';
+import '../services/player.dart' show audioHandler;
 import '../widgets/drawer.dart';
 import '../widgets/error_display.dart';
+import '../widgets/song_informations.dart';
 import 'player/player.dart';
 import 'song_airing/song_airing_title.dart';
-import '../widgets/song_informations.dart';
 
 class BideApp extends StatefulWidget {
   const BideApp({super.key});
@@ -138,7 +138,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             drawer: const DrawerWidget(),
             body: Row(
               children: <Widget>[
-                Expanded(child: Padding(
+                Expanded(
+                    child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: airingWidget,
                 )),
@@ -192,7 +193,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
               bodyLarge: TextStyle(
                 fontSize: 16,
               ),
-
             ),
             primarySwatch: Colors.orange,
             secondaryHeaderColor: Colors.deepOrange,

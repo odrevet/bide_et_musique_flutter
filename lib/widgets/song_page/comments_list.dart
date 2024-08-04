@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../../models/comment.dart';
+import '../../models/session.dart';
 import '../../models/song.dart';
 import '../../services/account.dart';
-import '../../models/session.dart';
 import '../account.dart';
-import 'comment_dialog.dart';
 import '../html_with_style.dart';
+import 'comment_dialog.dart';
 
 class CommentsList extends StatelessWidget {
   final Song song;
@@ -50,15 +51,11 @@ class CommentsList extends StatelessWidget {
         rows.add(const Divider());
       }
       return ListView(children: rows);
-    }
-    else{
+    } else {
       return const Padding(
         padding: EdgeInsets.only(left: 4.0, top: 2.0),
-        child: HtmlWithStyle(
-            data: '<i>Pas encore de commentaires</i>'),
+        child: HtmlWithStyle(data: '<i>Pas encore de commentaires</i>'),
       );
     }
-
   }
 }
-

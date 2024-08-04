@@ -97,7 +97,6 @@ class Song extends SongLink {
       };
 }
 
-
 class SongAiring extends Song {
   final int? elapsedPcent;
   final int? nbListeners;

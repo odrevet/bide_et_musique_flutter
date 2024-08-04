@@ -9,9 +9,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../models/song.dart';
 import '../../services/player.dart';
 import '../../services/song.dart';
+import '../song_page/song_page.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';
-import '../song_page/song_page.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;

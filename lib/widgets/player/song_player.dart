@@ -2,9 +2,9 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../models/session.dart';
 import '../../models/song.dart';
 import '../../services/player.dart';
-import '../../models/session.dart';
 import '../../utils.dart';
 import 'seek_bar.dart';
 

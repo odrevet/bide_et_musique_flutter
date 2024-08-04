@@ -5,15 +5,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:page_indicator_plus/page_indicator_plus.dart';
 
-import '../../models/song.dart';
 import '../../models/session.dart';
+import '../../models/song.dart';
 import '../../utils.dart';
-import 'comment_dialog.dart';
 import '../cover_viewer.dart';
 import '../error_display.dart';
 import '../html_with_style.dart';
 import '../song_app_bar.dart';
 import '../song_informations.dart';
+import 'comment_dialog.dart';
 import 'comments_list.dart';
 
 const Key _key = PageStorageKey('pageStorageKey');
@@ -23,8 +23,7 @@ class SongLyricsAndComments extends StatefulWidget {
   final SongLink songLink;
   final Function onPageChange;
 
-  const SongLyricsAndComments(
-      this.song, this.songLink, this.onPageChange,
+  const SongLyricsAndComments(this.song, this.songLink, this.onPageChange,
       {super.key});
 
   @override
@@ -48,8 +47,8 @@ class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
-                    decoration:
-                        BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade200.withOpacity(0.7)),
                   ),
                 ),
               )),
@@ -129,8 +128,7 @@ class SongPageContent extends StatefulWidget {
   final Song song;
   final Function onPageChange;
 
-  const SongPageContent(
-      this.songLink, this.song, this.onPageChange,
+  const SongPageContent(this.songLink, this.song, this.onPageChange,
       {super.key});
 
   @override
@@ -140,8 +138,6 @@ class SongPageContent extends StatefulWidget {
 class _SongPageContentState extends State<SongPageContent> {
   @override
   Widget build(BuildContext context) {
-
-
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
         return NestedScrollView(
@@ -157,22 +153,22 @@ class _SongPageContentState extends State<SongPageContent> {
                       background: Row(children: [
                     Expanded(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: MiniCover(widget.song, widget.songLink),
-                            ),
-                            Expanded(
-                                child: SingleChildScrollView(
-                                    child:
-                                        SongInformations(song: widget.song))),
-                          ],
-                        ))
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: MiniCover(widget.song, widget.songLink),
+                        ),
+                        Expanded(
+                            child: SingleChildScrollView(
+                                child: SongInformations(song: widget.song))),
+                      ],
+                    ))
                   ])),
                 ),
               ];
             },
-            body: SongLyricsAndComments(widget.song, widget.songLink, widget.onPageChange));
+            body: SongLyricsAndComments(
+                widget.song, widget.songLink, widget.onPageChange));
       } else {
         return Row(
           children: [
@@ -183,11 +179,11 @@ class _SongPageContentState extends State<SongPageContent> {
             Expanded(
                 flex: 1,
                 child: SingleChildScrollView(
-                    child:
-                    SongInformations(song: widget.song))),
+                    child: SongInformations(song: widget.song))),
             Expanded(
               flex: 2,
-              child: SongLyricsAndComments(widget.song, widget.songLink, widget.onPageChange),
+              child: SongLyricsAndComments(
+                  widget.song, widget.songLink, widget.onPageChange),
             ),
           ],
         );
@@ -251,8 +247,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
     return Scaffold(
       appBar: SongAppBar(widget.song),
-      body: SongPageContent(
-          widget.songLink!, song, onPageChange),
+      body: SongPageContent(widget.songLink!, song, onPageChange),
       floatingActionButton: postNewComment,
     );
   }

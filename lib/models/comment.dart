@@ -1,9 +1,9 @@
 import 'package:bide_et_musique/models/song.dart';
 import 'package:diacritic/diacritic.dart';
 
-import 'session.dart';
 import '../utils.dart';
 import 'account.dart';
+import 'session.dart';
 
 Future<void> sendEditComment(Song song, Comment comment, String text) async {
   if (text.isNotEmpty) {
