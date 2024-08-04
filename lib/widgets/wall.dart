@@ -13,7 +13,7 @@ import '../utils.dart';
 import 'account.dart';
 import 'error_display.dart';
 import 'html_with_style.dart';
-import 'song_page.dart';
+import 'song_page/song_page.dart';
 
 class WallWidget extends StatefulWidget {
   const WallWidget({super.key});

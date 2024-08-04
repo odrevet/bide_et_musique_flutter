@@ -10,7 +10,7 @@ import 'services/song.dart';
 import 'widgets/account.dart';
 import 'widgets/artist.dart';
 import 'widgets/program.dart';
-import 'widgets/song_page.dart';
+import 'widgets/song_page/song_page.dart';
 
 const site = 'bide-et-musique.com';
 const host = 'www.$site';

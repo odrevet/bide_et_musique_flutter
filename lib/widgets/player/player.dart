@@ -6,12 +6,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/song.dart';
-import '../player.dart';
-import '../services/song.dart';
+import '../../models/song.dart';
+import '../../player.dart';
+import '../../services/song.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';
-import 'song_page.dart';
+import '../song_page/song_page.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;

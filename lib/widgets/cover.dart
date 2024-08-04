@@ -5,7 +5,7 @@ import '../models/song.dart';
 import '../services/song.dart';
 import '../utils.dart';
 import 'cover_viewer.dart';
-import 'song_page.dart';
+import 'song_page/song_page.dart';
 
 class CoverThumb extends StatelessWidget {
   final SongLink? _songLink;

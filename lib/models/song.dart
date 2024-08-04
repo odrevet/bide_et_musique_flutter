@@ -1,5 +1,6 @@
 import '../utils.dart';
 import 'account.dart';
+import 'comment.dart';
 import 'program.dart';
 
 class SongLink {
@@ -97,14 +98,6 @@ class Song extends SongLink {
       };
 }
 
-class Comment {
-  int? id;
-  late AccountLink author;
-  String? body;
-  late String time;
-
-  Comment();
-}
 
 class SongAiring extends Song {
   final int? elapsedPcent;

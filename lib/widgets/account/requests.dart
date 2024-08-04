@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/requests.dart';
-import '../services/request.dart';
-import '../services/song.dart';
-import 'cover.dart';
-import 'song_page.dart';
+import '../../models/requests.dart';
+import '../../services/request.dart';
+import '../../services/song.dart';
+import '../cover.dart';
+import '../song_page/song_page.dart';
 
 class RequestsPageWidget extends StatefulWidget {
   const RequestsPageWidget({super.key});

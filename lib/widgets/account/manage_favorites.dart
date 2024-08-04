@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/account.dart';
-import '../models/favorites.dart';
-import '../models/song.dart';
-import '../services/account.dart';
-import '../services/favorite.dart';
-import '../services/song.dart';
-import 'cover.dart';
-import 'song_page.dart';
+import '../../models/account.dart';
+import '../../models/favorites.dart';
+import '../../models/song.dart';
+import '../../services/account.dart';
+import '../../services/favorite.dart';
+import '../../services/song.dart';
+import '../cover.dart';
+import '../song_page/song_page.dart';
 
 class ManageFavoritesWidget extends StatefulWidget {
   const ManageFavoritesWidget({super.key});

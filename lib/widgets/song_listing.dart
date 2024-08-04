@@ -5,7 +5,7 @@ import '../services/song.dart';
 import 'cover.dart';
 import 'cover_viewer.dart';
 import 'song_app_bar.dart';
-import 'song_page.dart';
+import 'song_page/song_page.dart';
 
 void launchSongPage(SongLink songLink, BuildContext context) {
   Navigator.push(
