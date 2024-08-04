@@ -32,9 +32,7 @@ class SongLyricsAndComments extends StatefulWidget {
 }
 
 class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
-  final PageController _pageController = PageController(
-    initialPage: 0,
-  );
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {

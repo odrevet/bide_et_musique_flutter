@@ -22,35 +22,38 @@ class CommentsList extends StatelessWidget {
       color: Colors.red,
     );
 
-    for (Comment comment in comments) {
-      rows.add(ListTile(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        AccountPage(account: fetchAccount(comment.author.id))));
-          },
-          title: HtmlWithStyle(data: comment.body),
-          subtitle: Text('Par ${comment.author.name!} ${comment.time}',
-              style: comment.author.name == loginName ? selfComment : null),
-          trailing: comment.author.name == loginName
-              ? IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () async {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CommentDialog(song, songLink, comment);
-                  });
+    if (comments.length > 1) {
+      for (Comment comment in comments) {
+        rows.add(ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AccountPage(
+                          account: fetchAccount(comment.author.id))));
             },
-          )
-              : null));
-      rows.add(const Divider());
+            title: HtmlWithStyle(data: comment.body),
+            subtitle: Text('Par ${comment.author.name!} ${comment.time}',
+                style: comment.author.name == loginName ? selfComment : null),
+            trailing: comment.author.name == loginName
+                ? IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CommentDialog(song, songLink, comment);
+                          });
+                    },
+                  )
+                : null));
+        rows.add(const Divider());
+      }
+      return ListView(children: rows);
+    }
+    else{
+      return Text("Pas encore de commentaire pour le moment");
     }
 
-    return ListView(children: rows);
   }
 }
-
-
