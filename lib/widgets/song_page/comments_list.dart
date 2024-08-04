@@ -52,8 +52,13 @@ class CommentsList extends StatelessWidget {
       return ListView(children: rows);
     }
     else{
-      return Text("Pas encore de commentaire pour le moment");
+      return const Padding(
+        padding: EdgeInsets.only(left: 4.0, top: 2.0),
+        child: HtmlWithStyle(
+            data: '<i>Pas encore de commentaires</i>'),
+      );
     }
 
   }
 }
+
