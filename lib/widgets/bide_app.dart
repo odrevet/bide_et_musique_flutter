@@ -125,7 +125,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         return Scaffold(
             appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
             bottomNavigationBar: SizedBox(
-                height: 60,
                 child: BottomAppBar(
                     child: PlayerWidget(orientation, _songAiring))),
             drawer: const DrawerWidget(),
