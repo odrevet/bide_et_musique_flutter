@@ -72,7 +72,9 @@ class Song extends SongLink {
       this.label,
       this.reference,
       this.lyrics})
-      : super(id: id, name: name, artist: artist, cover: cover, info: info);
+      : super(id: id, name: name, artist: artist, cover: cover, info: info){
+    comments = [];
+  }
 
   Song.fromJson(Map<String, dynamic> json)
       : year = json['year'],

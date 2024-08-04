@@ -50,7 +50,8 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           );
         }
 
-        return Center(child: _pageLoading(context, widget.songLink!));
+        var song = Song(id: widget.songLink!.id, name: widget.songLink!.name);
+        return _buildView(context, song);
       },
     );
   }
@@ -61,34 +62,6 @@ class _SongPageWidgetState extends State<SongPageWidget> {
           return CoverViewer(songLink);
         },
         fullscreenDialog: true));
-  }
-
-  Widget _pageLoading(BuildContext context, SongLink songLink) {
-    var coverLink = songLink.coverLink;
-
-    var loadingMessage = '';
-    if (songLink.name.isNotEmpty) {
-      loadingMessage += songLink.name;
-    } else {
-      loadingMessage = 'Chargement';
-    }
-
-    Widget body = Stack(children: <Widget>[
-      CachedNetworkImage(
-        imageUrl: coverLink,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth),
-          ),
-        ),
-        errorWidget: (context, url, error) =>
-            Image.asset('assets/vinyl-default.jpg'),
-      ),
-      const Align(
-          alignment: Alignment.center, child: CircularProgressIndicator())
-    ]);
-
-    return Scaffold(appBar: AppBar(title: Text(loadingMessage)), body: body);
   }
 
   _newMessageDialog(BuildContext context, Song song) {
@@ -192,13 +165,15 @@ class _SongPageWidgetState extends State<SongPageWidget> {
                               padding: const EdgeInsets.all(5.0),
                               child: Hero(
                                   tag: tag,
-                                  child: InkWell(
-                                      onTap: () {
-                                        _openCoverViewerDialog(
-                                            widget.songLink, context);
-                                      },
-                                      child: CachedNetworkImage(
-                                          imageUrl: coverLink)))),
+                                  child: Material(
+                                    child: InkWell(
+                                        onTap: () {
+                                          _openCoverViewerDialog(
+                                              widget.songLink, context);
+                                        },
+                                        child: CachedNetworkImage(
+                                            imageUrl: coverLink)),
+                                  ))),
                         ),
                         Expanded(
                             flex: 1,
@@ -230,17 +205,18 @@ class _SongPageWidgetState extends State<SongPageWidget> {
               PageView(
                 controller: _pageController,
                 onPageChanged: (int page) => setState(() {
-                    _currentPage = page;
-                  }),
+                  _currentPage = page;
+                }),
                 children: <Widget>[
+                  song.lyrics != null ?
                   SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 4.0, top: 2.0),
-                        child: HtmlWithStyle(
-                            data: song.lyrics == ''
-                                ? '<center><i>Paroles non renseignées</i></center>'
-                                : song.lyrics),
-                      )),
+                    padding: const EdgeInsets.only(left: 4.0, top: 2.0),
+                    child: HtmlWithStyle(
+                        data: song.lyrics == ''
+                            ? '<center><i>Paroles non renseignées</i></center>'
+                            : song.lyrics),
+                  )) : const Center(child: CircularProgressIndicator()),
                   _buildViewComments(context, song),
                 ],
               ),
