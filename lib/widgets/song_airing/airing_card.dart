@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bide_et_musique/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/song.dart';
@@ -25,10 +26,13 @@ class _AiringCardState extends State<AiringCard> {
         future: widget._song,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return CoverWithGesture(
-                songLink: snapshot.data,
-                displayPlaceholder: false,
-                fadeInDuration: const Duration());
+            return Hero(
+              tag: createTag(snapshot.data!),
+              child: CoverWithGesture(
+                  songLink: snapshot.data,
+                  displayPlaceholder: false,
+                  fadeInDuration: const Duration()),
+            );
           } else if (snapshot.hasError) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
