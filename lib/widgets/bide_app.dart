@@ -35,6 +35,16 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         if (_songAiring == null) {
           _e = _songAiringNotifier.e;
         } else {
+          SharedPreferences.getInstance().then((prefs) {
+            bool dynamictheme = prefs.getBool('dynamictheme') ?? false;
+            //if (dynamictheme) {
+              _songAiringNotifier.songAiring!.then((song) async {
+                _updateImage(song);
+              });
+            //}
+          });
+
+          // update the song in the notification
           audioHandler.customAction('get_radio_mode').then((radioMode) {
             if (radioMode == true) {
               _songAiringNotifier.songAiring!.then((song) async {
@@ -53,8 +63,21 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     autoLogin();
     initSongFetch();
-
     super.initState();
+  }
+
+  ColorScheme dynamicColorScheme =
+      ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent);
+
+  Future<void> _updateImage(Song song) async {
+    final ColorScheme newColorScheme = await ColorScheme.fromImageProvider(
+        provider: NetworkImage(song.coverLink), brightness: Brightness.light);
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      dynamicColorScheme = newColorScheme;
+    });
   }
 
   void autoLogin() async {
@@ -168,46 +191,48 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       }
     });
 
+    var textTheme = const TextTheme(
+      displayLarge: TextStyle(
+        fontSize: 42,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 14,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 12,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+      ),
+    );
+
+    /*ThemeData(
+      primarySwatch: Colors.orange,
+      secondaryHeaderColor: Colors.deepOrange,
+      canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+      dialogBackgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+      appBarTheme: const AppBarTheme(
+        color: Colors.orange,
+        elevation: 4.0,
+      ),
+      buttonTheme: ButtonThemeData(
+          buttonColor: Colors.orangeAccent,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0))),
+      bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange),
+    );*/
+
     return MaterialApp(
         title: 'Bide&Musique',
         theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.orange,
-              brightness: Brightness.light,
-            ),
-            textTheme: const TextTheme(
-              displayLarge: TextStyle(
-                fontSize: 42,
-              ),
-              titleLarge: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              titleMedium: TextStyle(
-                fontSize: 14,
-              ),
-              bodyMedium: TextStyle(
-                fontSize: 12,
-              ),
-              bodyLarge: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            primarySwatch: Colors.orange,
-            secondaryHeaderColor: Colors.deepOrange,
-            canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-            dialogBackgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-            appBarTheme: const AppBarTheme(
-              color: Colors.orange,
-              elevation: 4.0,
-              // Add more properties as needed
-            ),
-            buttonTheme: ButtonThemeData(
-                buttonColor: Colors.orangeAccent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0))),
-            bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange)),
+          useMaterial3: true,
+          colorScheme: dynamicColorScheme,
+          textTheme: textTheme,
+        ),
         home: home);
   }
 }

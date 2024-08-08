@@ -15,6 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool? _rememberIdents = false;
   bool? _autoConnect = false;
   bool? _wakelock = false;
+  bool? _dynamicTheming = true;
   int _relay = 1;
 
   @override
@@ -52,6 +53,14 @@ class _SettingsPageState extends State<SettingsPage> {
       _wakelock = value;
       WakelockPlus.toggle(enable: _wakelock!);
       _saveOptionBool('wakelock', value);
+    });
+  }
+
+  void _onToggleDynamicTheming(bool? value) {
+    setState(() {
+      _dynamicTheming = value;
+      WakelockPlus.toggle(enable: _dynamicTheming!);
+      _saveOptionBool('dynamictheming', value);
     });
   }
 
@@ -119,6 +128,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: const Text('Empêcher la mise en veille'),
                     value: _wakelock,
                     onChanged: _onToggleWakeLock),
+                CheckboxListTile(
+                    title: const Text('Theme dynamique'),
+                    value: _dynamicTheming,
+                    onChanged: _onToggleDynamicTheming),
               ])),
             ],
           )
