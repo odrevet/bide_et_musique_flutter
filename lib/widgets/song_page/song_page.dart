@@ -16,8 +16,6 @@ import '../song_informations.dart';
 import 'comment_dialog.dart';
 import 'comments_list.dart';
 
-const Key _key = PageStorageKey('pageStorageKey');
-
 class SongLyricsAndComments extends StatefulWidget {
   final Song song;
   final SongLink songLink;
@@ -32,6 +30,7 @@ class SongLyricsAndComments extends StatefulWidget {
 
 class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
   final PageController _pageController = PageController();
+  final Key _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +126,10 @@ class SongPageContent extends StatefulWidget {
   final SongLink songLink;
   final Song song;
   final Function onPageChange;
+  final bool preview;
 
-  const SongPageContent(this.songLink, this.song, this.onPageChange,
+  const SongPageContent(
+      this.songLink, this.song, this.onPageChange, this.preview,
       {super.key});
 
   @override
@@ -160,7 +161,9 @@ class _SongPageContentState extends State<SongPageContent> {
                         ),
                         Expanded(
                             child: SingleChildScrollView(
-                                child: SongInformations(song: widget.song))),
+                                child: widget.preview == true
+                                    ? const Center(child: CircularProgressIndicator())
+                                    : SongInformations(song: widget.song))),
                       ],
                     ))
                   ])),
@@ -179,7 +182,9 @@ class _SongPageContentState extends State<SongPageContent> {
             Expanded(
                 flex: 1,
                 child: SingleChildScrollView(
-                    child: SongInformations(song: widget.song))),
+                    child: widget.preview == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : SongInformations(song: widget.song))),
             Expanded(
               flex: 2,
               child: SongLyricsAndComments(
@@ -213,7 +218,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
       future: widget.song,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildView(context, snapshot.data!);
+          return _buildView(context, snapshot.data!, false);
         } else if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(title: const Text('Ouille ouille ouille !')),
@@ -222,7 +227,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
         }
 
         var song = Song(id: widget.songLink!.id, name: widget.songLink!.name);
-        return _buildView(context, song);
+        return _buildView(context, song, true);
       },
     );
   }
@@ -233,7 +238,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
     });
   }
 
-  Widget _buildView(BuildContext context, Song song) {
+  Widget _buildView(BuildContext context, Song song, preview) {
     Widget? postNewComment = Session.accountLink.id == null || _currentPage != 1
         ? null
         : FloatingActionButton(
@@ -247,7 +252,7 @@ class _SongPageWidgetState extends State<SongPageWidget> {
 
     return Scaffold(
       appBar: SongAppBar(widget.song),
-      body: SongPageContent(widget.songLink!, song, onPageChange),
+      body: SongPageContent(widget.songLink!, song, onPageChange, preview),
       floatingActionButton: postNewComment,
     );
   }

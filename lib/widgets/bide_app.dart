@@ -154,7 +154,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
                               AsyncSnapshot<SongAiring> snapshot) {
                             if (snapshot.hasData) {
                               return SongInformations(
-                                  song: snapshot.data, compact: true);
+                                  song: snapshot.data!, compact: true);
                             } else {
                               return const CircularProgressIndicator();
                             }

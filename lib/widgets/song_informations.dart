@@ -8,10 +8,10 @@ import 'artist.dart';
 import 'search.dart';
 
 class SongInformations extends StatelessWidget {
-  final Song? song;
+  final Song song;
   final bool compact;
 
-  const SongInformations({this.song, this.compact = false, super.key});
+  const SongInformations({required this.song, this.compact = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,14 @@ class SongInformations extends StatelessWidget {
 
     var textSpans = <TextSpan>[];
 
-    if (!compact && song!.year != 0) {
+    if (!compact && song.year != 0) {
       textSpans.add(TextSpan(
         text: 'Année\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: '${song!.year}\n\n',
+        text: '${song.year}\n\n',
         style: linkStyle,
         recognizer: TapGestureRecognizer()
           ..onTap = () => Navigator.push(
@@ -39,50 +39,50 @@ class SongInformations extends StatelessWidget {
                   builder: (context) => Scaffold(
                       appBar: AppBar(
                         title: Text(
-                            'Recherche de l\'année "${song!.year.toString()}"'),
+                            'Recherche de l\'année "${song.year.toString()}"'),
                       ),
-                      body: SearchResults(song!.year.toString(), '7')))),
+                      body: SearchResults(song.year.toString(), '7')))),
       ));
     }
 
-    if (!compact && song!.artist != null) {
+    if (!compact && song.artist != null) {
       textSpans.add(TextSpan(
         text: 'Artiste\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: '${song!.artist!}\n\n',
+        text: '${song.artist!}\n\n',
         style: linkStyle,
         recognizer: TapGestureRecognizer()
           ..onTap = () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtistPageWidget(artist: fetchArtist(song!.artistId)))),
+                      ArtistPageWidget(artist: fetchArtist(song.artistId)))),
       ));
     }
 
-    if (song!.durationPretty != null) {
+    if (song.durationPretty != null) {
       textSpans.add(TextSpan(
         text: 'Durée \n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: '${song!.durationPretty!}\n\n',
+        text: '${song.durationPretty!}\n\n',
         style: defaultStyle,
       ));
     }
 
-    if (song!.label != null && song!.label != '') {
+    if (song.label != null && song.label != '') {
       textSpans.add(TextSpan(
         text: 'Label\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: '${song!.label!}\n\n',
+        text: '${song.label!}\n\n',
         style: linkStyle,
         recognizer: TapGestureRecognizer()
           ..onTap = () => Navigator.push(
@@ -90,20 +90,20 @@ class SongInformations extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => Scaffold(
                       appBar: AppBar(
-                        title: Text('Recherche du label "${song!.label}"'),
+                        title: Text('Recherche du label "${song.label}"'),
                       ),
-                      body: SearchResults(song!.label, '5')))),
+                      body: SearchResults(song.label, '5')))),
       ));
     }
 
-    if (song!.reference != null && song!.reference != '') {
+    if (song.reference != null && song.reference != '') {
       textSpans.add(TextSpan(
         text: 'Référence\n',
         style: defaultStyle,
       ));
 
       textSpans.add(TextSpan(
-        text: '${song!.reference}\n\n',
+        text: '${song.reference}\n\n',
         style: defaultStyle,
       ));
     }
