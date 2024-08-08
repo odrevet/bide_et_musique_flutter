@@ -48,8 +48,6 @@ class CoverWithGesture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tag = createTag(songLink!);
-
     return Wrap(
         direction: MediaQuery.of(context).orientation == Orientation.portrait
             ? Axis.horizontal
@@ -84,8 +82,7 @@ class CoverWithGesture extends StatelessWidget {
               },
               child: Cover(songLink!.coverLink,
                   displayPlaceholder: displayPlaceholder,
-                  fadeInDuration: fadeInDuration,
-                  tag: tag),
+                  fadeInDuration: fadeInDuration),
             ),
           )
         ]);
@@ -96,27 +93,22 @@ class Cover extends StatelessWidget {
   final String _url;
   final Duration fadeInDuration;
   final bool displayPlaceholder;
-  final String tag;
 
   const Cover(this._url,
       {this.fadeInDuration = const Duration(),
       this.displayPlaceholder = false,
-      this.tag = '',
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: tag,
-      child: CachedNetworkImage(
-        fadeInDuration: fadeInDuration,
-        placeholder: displayPlaceholder
-            ? (context, url) => Image.asset('assets/vinyl-default.jpg')
-            : null,
-        imageUrl: _url,
-        errorWidget: (context, url, error) =>
-            Image.asset('assets/vinyl-default.jpg'),
-      ),
+    return CachedNetworkImage(
+      fadeInDuration: fadeInDuration,
+      placeholder: displayPlaceholder
+          ? (context, url) => Image.asset('assets/vinyl-default.jpg')
+          : null,
+      imageUrl: _url,
+      errorWidget: (context, url, error) =>
+          Image.asset('assets/vinyl-default.jpg'),
     );
   }
 }
