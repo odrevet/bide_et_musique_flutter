@@ -131,7 +131,7 @@ class _AccountPageState extends State<AccountPage> {
             filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
             child: Container(
               decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+              BoxDecoration(color: Colors.grey.shade200.withValues(alpha: 0.7)),
             ),
           ),
           Stack(children: [

@@ -168,7 +168,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                       child: Stack(children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.grey.shade200.withOpacity(0.7)),
+                              color: Colors.grey.shade200.withValues(alpha: 0.7)),
                         ),
                         SingleChildScrollView(
                             child: HtmlWithStyle(data: account.presentation)),

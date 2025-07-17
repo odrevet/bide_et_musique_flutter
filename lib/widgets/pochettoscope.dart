@@ -46,7 +46,7 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
     }
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_controller!.offset >= _controller!.position.maxScrollExtent &&
         !_controller!.position.outOfRange &&
         _isLoading == false) {

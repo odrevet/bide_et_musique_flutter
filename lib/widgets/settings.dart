@@ -89,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
             filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
             child: Container(
               decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.8)),
+                  BoxDecoration(color: Colors.grey.shade200.withValues(alpha: 0.8)),
             ),
           ),
           PageView(

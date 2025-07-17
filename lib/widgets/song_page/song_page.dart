@@ -47,7 +47,7 @@ class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
                   filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade200.withOpacity(0.7)),
+                        color: Colors.grey.shade200.withValues(alpha: 0.7)),
                   ),
                 ),
               )),
