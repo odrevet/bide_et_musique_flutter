@@ -9,10 +9,12 @@ import 'song_page/song_page.dart';
 
 void launchSongPage(SongLink songLink, BuildContext context) {
   Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SongPageWidget(
-              songLink: songLink, song: fetchSong(songLink.id))));
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          SongPageWidget(songLink: songLink, song: fetchSong(songLink.id)),
+    ),
+  );
 }
 
 /// Display given songs in a ListView
@@ -49,22 +51,14 @@ class _SongListingWidgetState extends State<SongListingWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Expanded(
-                  child: Divider(
-                    indent: 20.0,
-                    endIndent: 10.0,
-                    thickness: 1,
-                  ),
+                  child: Divider(indent: 20.0, endIndent: 10.0, thickness: 1),
                 ),
                 Text(
                   songLink.info!,
                   style: const TextStyle(color: Colors.blueGrey),
                 ),
                 const Expanded(
-                  child: Divider(
-                    indent: 10.0,
-                    endIndent: 20.0,
-                    thickness: 1,
-                  ),
+                  child: Divider(indent: 10.0, endIndent: 20.0, thickness: 1),
                 ),
               ],
             ),
@@ -74,38 +68,42 @@ class _SongListingWidgetState extends State<SongListingWidget> {
         }
       }
 
-      rows.add(ListTile(
-        leading: GestureDetector(
-          child: CoverThumb(songLink),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
-              builder: (BuildContext context) {
-                return CoverViewer(songLink);
-              },
-              fullscreenDialog: true)),
+      rows.add(
+        ListTile(
+          leading: GestureDetector(
+            child: CoverThumb(songLink),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return CoverViewer(songLink);
+                },
+                fullscreenDialog: true,
+              ),
+            ),
+          ),
+          title: Text(songLink.name),
+          trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
+          subtitle: Text(subtitle),
+          onTap: () => launchSongPage(songLink, context),
+          onLongPress: () {
+            fetchSong(songLink.id).then((song) {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
+                    children: [SongActionMenu(song)],
+                  );
+                },
+              );
+            });
+          },
         ),
-        title: Text(
-          songLink.name,
-        ),
-        trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
-        subtitle: Text(subtitle),
-        onTap: () => launchSongPage(songLink, context),
-        onLongPress: () {
-          fetchSong(songLink.id).then((song) {
-            showDialog<void>(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  contentPadding: const EdgeInsets.all(20.0),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                  children: [SongActionMenu(song)],
-                );
-              },
-            );
-          });
-        },
-      ));
+      );
     }
 
     return ListView(children: rows);

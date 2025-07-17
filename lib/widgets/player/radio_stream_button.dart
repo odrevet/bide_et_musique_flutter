@@ -18,10 +18,10 @@ class RadioStreamButton extends StatefulWidget {
 class _RadioStreamButtonState extends State<RadioStreamButton> {
   @override
   Widget build(BuildContext context) {
-    Widget label = const Text("Écouter la radio",
-        style: TextStyle(
-          fontSize: 20.0,
-        ));
+    Widget label = const Text(
+      "Écouter la radio",
+      style: TextStyle(fontSize: 20.0),
+    );
 
     return FutureBuilder<SongAiring>(
       future: widget._songAiring,
@@ -32,7 +32,9 @@ class _RadioStreamButtonState extends State<RadioStreamButton> {
           onPressed: () async {
             SongAiringNotifier().songAiring!.then((song) async {
               await audioHandler.customAction(
-                  'set_radio_mode', <String, dynamic>{'radio_mode': true});
+                'set_radio_mode',
+                <String, dynamic>{'radio_mode': true},
+              );
               await audioHandler.customAction('set_song', song.toJson());
               await audioHandler.play();
             });

@@ -23,8 +23,9 @@ Future<List<SongLink>> fetchNewSongs() async {
     for (var item in document.findAllElements('item')) {
       var link = item.findAllElements('comments').first.innerText;
       var song = SongLink(
-          id: getIdFromUrl(link)!,
-          name: item.findAllElements('title').first.innerText);
+        id: getIdFromUrl(link)!,
+        name: item.findAllElements('title').first.innerText,
+      );
       songs.add(song);
     }
 
@@ -49,9 +50,10 @@ Future<List<NowSong>> fetchNowSongs() async {
     for (dom.Element tr in trs) {
       var tds = tr.getElementsByTagName('td');
       var songLink = SongLink(
-          id: getIdFromUrl(tds[3].children[0].attributes['href']!)!,
-          name: tds[3].children[0].innerHtml,
-          index: index);
+        id: getIdFromUrl(tds[3].children[0].attributes['href']!)!,
+        name: tds[3].children[0].innerHtml,
+        index: index,
+      );
       songLink.index = index;
       var nowSong = NowSong();
       nowSong.date = tds[0].innerHtml.trim();
@@ -92,8 +94,9 @@ List<Comment> parseComments(document) {
     try {
       var tdCommentChildren = divNormal.children;
       //get comment id (remove 'comment' string)
-      comment.id =
-          int.parse(tdCommentChildren[0].attributes['id']!.substring(8));
+      comment.id = int.parse(
+        tdCommentChildren[0].attributes['id']!.substring(8),
+      );
       dom.Element aAccount = tdCommentChildren[1].children[0];
       int? accountId = getIdFromUrl(aAccount.attributes['href']!);
       String accountName = aAccount.innerHtml;
@@ -120,15 +123,16 @@ Future<Song> fetchSong(int songId) async {
       song = Song.fromJson(json.decode(decodedJson));
     } catch (e) {
       song = Song(
-          id: songId,
-          name: '?',
-          year: 0,
-          artist: '?',
-          author: '?',
-          duration: null,
-          label: '?',
-          reference: '?',
-          lyrics: e.toString());
+        id: songId,
+        name: '?',
+        year: 0,
+        artist: '?',
+        author: '?',
+        duration: null,
+        label: '?',
+        reference: '?',
+        lyrics: e.toString(),
+      );
     }
   } else {
     throw Exception('Failed to load song with id $songId');
@@ -202,11 +206,12 @@ SongLink songLinkFromTr(dom.Element tr) {
   }
 
   return SongLink(
-      id: a != null ? getIdFromUrl(a.attributes['href']!)! : 0,
-      artist: tdArtist.text.trim(),
-      name: title.trim(),
-      info: tdInfo.text.trim(),
-      isNew: isNew);
+    id: a != null ? getIdFromUrl(a.attributes['href']!)! : 0,
+    artist: tdArtist.text.trim(),
+    name: title.trim(),
+    info: tdInfo.text.trim(),
+    isNew: isNew,
+  );
 }
 
 Future<Map<String, List<SongLink>>> fetchTitles() async {

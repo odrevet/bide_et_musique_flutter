@@ -60,11 +60,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: ListView(
-      children: <Widget>[
-        SizedBox(
-          height: 120.0,
-          child: DrawerHeader(
+      child: ListView(
+        children: <Widget>[
+          SizedBox(
+            height: 120.0,
+            child: DrawerHeader(
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
@@ -79,201 +79,239 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                 ),
                 child: Container(),
-              )),
-        ),
-        ListTile(
-          title: Text(_accountTitle),
-          leading: const Icon(Icons.account_circle),
-          trailing:
-              Session.accountLink.id == null ? null : const DisconnectButton(),
-          onTap: () {
-            Navigator.push(
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text(_accountTitle),
+            leading: const Icon(Icons.account_circle),
+            trailing: Session.accountLink.id == null
+                ? null
+                : const DisconnectButton(),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Identification()),
+              ).then((_) {
+                _setAccountTitle();
+              });
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Titres'),
+            leading: const Icon(Icons.queue_music),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TitlesWidget()),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Programmation'),
+            leading: const Icon(Icons.calendar_view_day),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const Identification())).then((_) {
-              _setAccountTitle();
-            });
-          },
-        ),
-        const Divider(),
-        ListTile(
-          title: const Text('Titres'),
-          leading: const Icon(Icons.queue_music),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TitlesWidget()));
-          },
-        ),
-        ListTile(
-          title: const Text('Programmation'),
-          leading: const Icon(Icons.calendar_view_day),
-          onTap: () {
-            Navigator.push(
+                  builder: (context) => Schedule(schedule: fetchSchedule()),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Thématiques'),
+            leading: const Icon(Icons.photo_album),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Schedule(schedule: fetchSchedule())));
-          },
-        ),
-        ListTile(
-          title: const Text('Thématiques'),
-          leading: const Icon(Icons.photo_album),
-          onTap: () {
-            Navigator.push(
+                  builder: (context) =>
+                      ThematicPageWidget(programLinks: fetchThematics()),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Morceau du moment'),
+            leading: const Icon(Icons.access_alarms),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ThematicPageWidget(programLinks: fetchThematics())));
-          },
-        ),
-        ListTile(
-          title: const Text('Morceau du moment'),
-          leading: const Icon(Icons.access_alarms),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NowSongsWidget(nowSongs: fetchNowSongs())));
-          },
-        ),
-        ListTile(
-          title: const Text('Morceau au pif'),
-          leading: const Icon(Icons.shuffle),
-          onTap: () {
-            fetchRandomSongId().then((id) => Navigator.push(
-                context,
-                MaterialPageRoute(
+                  builder: (context) =>
+                      NowSongsWidget(nowSongs: fetchNowSongs()),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Morceau au pif'),
+            leading: const Icon(Icons.shuffle),
+            onTap: () {
+              fetchRandomSongId().then(
+                (id) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) => SongPageWidget(
-                        songLink: SongLink(id: id!, name: ''),
-                        song: fetchSong(id)))));
-          },
-        ),
-        ListTile(
-          title: const Text('Recherche'),
-          leading: const Icon(Icons.search),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Search()));
-          },
-        ),
-        const Divider(),
-        ListTile(
-          title: const Text('Mur des messages'),
-          leading: const Icon(Icons.comment),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const WallWidget()));
-          },
-        ),
-        ListTile(
-          title: const Text('Forums'),
-          leading: const Icon(Icons.forum),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ForumWidget()));
-          },
-        ),
-        const Divider(),
-        ListTile(
-          title: const Text('Pochettoscope'),
-          leading: const Icon(Icons.image),
-          onTap: () {
-            Navigator.push(
+                      songLink: SongLink(id: id!, name: ''),
+                      song: fetchSong(id),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Recherche'),
+            leading: const Icon(Icons.search),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Search()),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Mur des messages'),
+            leading: const Icon(Icons.comment),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const WallWidget()),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Forums'),
+            leading: const Icon(Icons.forum),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ForumWidget()),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Pochettoscope'),
+            leading: const Icon(Icons.image),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const PochettoScopePage()));
-          },
-        ),
-        ListTile(
-          title: const Text('Trombidoscope'),
-          leading: const Icon(Icons.face),
-          onTap: () {
-            Navigator.push(
+                  builder: (context) => const PochettoScopePage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Trombidoscope'),
+            leading: const Icon(Icons.face),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const TrombidoscopeWidget()));
-          },
-        ),
-        const Divider(),
-        ListTile(
-          title: const Text('Nouvelles entrées'),
-          leading: const Icon(Icons.fiber_new),
-          onTap: () {
-            Navigator.push(
+                  builder: (context) => const TrombidoscopeWidget(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Nouvelles entrées'),
+            leading: const Icon(Icons.fiber_new),
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SongsWidget(songs: fetchNewSongs())));
-          },
-        ),
-        ListTile(
-          title: const Text('Options'),
-          leading: const Icon(Icons.settings),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()));
-          },
-        ),
-        ListTile(
+                  builder: (context) => SongsWidget(songs: fetchNewSongs()),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Options'),
+            leading: const Icon(Icons.settings),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+          ListTile(
             title: const Text('À propos'),
             leading: const Icon(Icons.info),
             onTap: () => showAboutDialog(
-                    context: context,
-                    applicationName: _packageInfo.appName,
-                    applicationVersion: _packageInfo.version,
-                    applicationIcon: Image.asset(
-                        'android/app/src/main/res/mipmap-mdpi/ic_launcher.png'),
+              context: context,
+              applicationName: _packageInfo.appName,
+              applicationVersion: _packageInfo.version,
+              applicationIcon: Image.asset(
+                'android/app/src/main/res/mipmap-mdpi/ic_launcher.png',
+              ),
+              children: [
+                RichText(
+                  text: TextSpan(
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Application Bide&Musique par \n',
-                              style: defaultStyle,
+                      TextSpan(
+                        text: 'Application Bide&Musique par \n',
+                        style: defaultStyle,
+                      ),
+                      TextSpan(
+                        text: 'Olivier Drevet',
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AccountPage(account: fetchAccount(84482)),
                             ),
-                            TextSpan(
-                              text: 'Olivier Drevet',
-                              style: linkStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AccountPage(
-                                            account: fetchAccount(84482)))),
-                            ),
-                            TextSpan(
-                              text: '\n\nDistribuée sous la ',
-                              style: defaultStyle,
-                            ),
-                            TextSpan(
-                              text: 'license GPLv3',
-                              style: linkStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => launchURL(
-                                    'https://www.gnu.org/licenses/gpl-3.0.fr.html'),
-                            ),
-                            TextSpan(
-                              text: '\n\nCode source disponible sur ',
-                              style: defaultStyle,
-                            ),
-                            TextSpan(
-                              text: 'github.com\n\n',
-                              style: linkStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => launchURL(
-                                    'https://github.com/odrevet/bide-et-musique-flutter'),
-                            ),
-                            TextSpan(
-                              text: 'Manuel Utilisateur en ligne',
-                              style: linkStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => launchURL(
-                                    'https://github.com/odrevet/bide-et-musique-flutter/wiki/Manuel-Utilisateur'),
-                            )
-                          ],
-                        ),
-                      )
-                    ])),
-      ],
-    ));
+                          ),
+                      ),
+                      TextSpan(
+                        text: '\n\nDistribuée sous la ',
+                        style: defaultStyle,
+                      ),
+                      TextSpan(
+                        text: 'license GPLv3',
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchURL(
+                            'https://www.gnu.org/licenses/gpl-3.0.fr.html',
+                          ),
+                      ),
+                      TextSpan(
+                        text: '\n\nCode source disponible sur ',
+                        style: defaultStyle,
+                      ),
+                      TextSpan(
+                        text: 'github.com\n\n',
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchURL(
+                            'https://github.com/odrevet/bide-et-musique-flutter',
+                          ),
+                      ),
+                      TextSpan(
+                        text: 'Manuel Utilisateur en ligne',
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchURL(
+                            'https://github.com/odrevet/bide-et-musique-flutter/wiki/Manuel-Utilisateur',
+                          ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

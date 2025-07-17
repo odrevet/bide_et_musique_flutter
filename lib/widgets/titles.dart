@@ -56,9 +56,11 @@ class _TitlesWidgetState extends State<TitlesWidget> {
             return _buildView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Scaffold(
-                appBar: AppBar(title: const Text('Ouille ouille ouille !')),
-                body: Center(
-                    child: ErrorDisplay(Exception(snapshot.error.toString()))));
+              appBar: AppBar(title: const Text('Ouille ouille ouille !')),
+              body: Center(
+                child: ErrorDisplay(Exception(snapshot.error.toString())),
+              ),
+            );
           }
 
           // By default, show a loading spinner
@@ -72,13 +74,16 @@ class _TitlesWidgetState extends State<TitlesWidget> {
   }
 
   Widget _buildView(Map<String, List<SongLink>> songLinks) {
-    return OrientationBuilder(builder: (context, orientation) {
-      return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
               title: SongAiringTitle(
-                  orientation, widget._songAiringNotifier.songAiring),
+                orientation,
+                widget._songAiringNotifier.songAiring,
+              ),
               bottom: orientation == Orientation.portrait
                   ? const TabBar(
                       tabs: [
@@ -86,24 +91,29 @@ class _TitlesWidgetState extends State<TitlesWidget> {
                         Tab(text: 'De retour dans leur bac'),
                       ],
                     )
-                  : null),
-          body: orientation == Orientation.portrait
-              ? TabBarView(
-                  children: [
-                    SongListingWidget(songLinks['next'], split: true),
-                    SongListingWidget(songLinks['past']),
-                  ],
-                )
-              : Row(
-                  children: <Widget>[
-                    Expanded(
-                        child:
-                            SongListingWidget(songLinks['next'], split: true)),
-                    Expanded(child: SongListingWidget(songLinks['past'])),
-                  ],
-                ),
-        ),
-      );
-    });
+                  : null,
+            ),
+            body: orientation == Orientation.portrait
+                ? TabBarView(
+                    children: [
+                      SongListingWidget(songLinks['next'], split: true),
+                      SongListingWidget(songLinks['past']),
+                    ],
+                  )
+                : Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: SongListingWidget(
+                          songLinks['next'],
+                          split: true,
+                        ),
+                      ),
+                      Expanded(child: SongListingWidget(songLinks['past'])),
+                    ],
+                  ),
+          ),
+        );
+      },
+    );
   }
 }

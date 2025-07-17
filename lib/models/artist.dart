@@ -13,14 +13,18 @@ class Artist {
   Artist({required this.id, this.alias, this.site, this.dates, this.disco});
 
   Artist.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        alias = json['alias'],
-        site = json['site'],
-        dates = json['dates']['pretty'] {
+    : id = json['id'],
+      alias = json['alias'],
+      site = json['site'],
+      dates = json['dates']['pretty'] {
     disco = <SongLink>[];
     for (var discoEntry in json['disco']) {
-      disco!.add(SongLink(
-          id: discoEntry['id'], name: decodeHtmlEntities(discoEntry['name'])));
+      disco!.add(
+        SongLink(
+          id: discoEntry['id'],
+          name: decodeHtmlEntities(discoEntry['name']),
+        ),
+      );
     }
   }
 

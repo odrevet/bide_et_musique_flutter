@@ -23,9 +23,7 @@ class BideBoxWidget extends StatelessWidget {
           if (snapshot.hasData) {
             return _buildView(context, snapshot.data!);
           } else if (snapshot.hasError) {
-            return Center(
-              child: ErrorDisplay(snapshot.error),
-            );
+            return Center(child: ErrorDisplay(snapshot.error));
           }
 
           return const CircularProgressIndicator();
@@ -36,29 +34,32 @@ class BideBoxWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, List<Exchange> messages) {
     return ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (BuildContext context, int index) {
-          Exchange message = messages[index];
-          return ListTile(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AccountPage(
-                            account: fetchAccount(message.recipient!.id),
-                            defaultPage: 2,
-                          ))),
-              title: Text(
-                message.recipient!.name!,
+      itemCount: messages.length,
+      itemBuilder: (BuildContext context, int index) {
+        Exchange message = messages[index];
+        return ListTile(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AccountPage(
+                account: fetchAccount(message.recipient!.id),
+                defaultPage: 2,
               ),
-              subtitle: Text('${message.sentCount} ${message.receivedCount}'),
-              leading: GestureDetector(
-                  onTap: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            MessageEditor(message.recipient),
-                      ),
-                  child: const Icon(Icons.mail)));
-        });
+            ),
+          ),
+          title: Text(message.recipient!.name!),
+          subtitle: Text('${message.sentCount} ${message.receivedCount}'),
+          leading: GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (BuildContext context) =>
+                  MessageEditor(message.recipient),
+            ),
+            child: const Icon(Icons.mail),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -84,21 +85,22 @@ class _MessageEditorState extends State<MessageEditor> {
           label: const Text("Envoyer"),
           onPressed: () async {
             bool status = await sendMessage(
-                _newMessageController.text, widget._accountLink!.id);
+              _newMessageController.text,
+              widget._accountLink!.id,
+            );
 
             if (!mounted) return;
             Navigator.of(context).pop(status);
           },
-        )
+        ),
       ],
       title: Text('Message pour ${widget._accountLink!.name}'),
       content: TextFormField(
-          maxLength: 500,
-          maxLines: 5,
-          controller: _newMessageController,
-          decoration: const InputDecoration(
-            hintText: 'Entrez votre message ici',
-          )),
+        maxLength: 500,
+        maxLines: 5,
+        controller: _newMessageController,
+        decoration: const InputDecoration(hintText: 'Entrez votre message ici'),
+      ),
     );
   }
 }

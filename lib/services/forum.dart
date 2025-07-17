@@ -69,8 +69,12 @@ Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
       forumMessages.add(ForumMessage(title: 'Erreur JSON', text: e.toString()));
     }
   } else {
-    forumMessages.add(ForumMessage(
-        title: 'Erreur HTTP', text: 'Code ${responseJson.statusCode}'));
+    forumMessages.add(
+      ForumMessage(
+        title: 'Erreur HTTP',
+        text: 'Code ${responseJson.statusCode}',
+      ),
+    );
   }
 
   return forumMessages;

@@ -13,7 +13,7 @@ class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song>? _song;
 
   const SongAppBar(this._song, {super.key})
-      : preferredSize = const Size.fromHeight(kToolbarHeight);
+    : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize;
@@ -31,20 +31,21 @@ class _SongAppBarState extends State<SongAppBar> {
         if (snapshot.hasData) {
           Song? song = snapshot.data;
           Widget songActionButton = IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        contentPadding: const EdgeInsets.all(20.0),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        children: [SongActionMenu(song)],
-                      );
-                    },
-                  ));
+            icon: const Icon(Icons.menu),
+            onPressed: () => showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  ),
+                  children: [SongActionMenu(song)],
+                );
+              },
+            ),
+          );
 
           return AppBar(
             title: Text(snapshot.data!.name),
@@ -95,9 +96,10 @@ class SongActionMenu extends StatelessWidget {
     var actionsShare = <Widget>[];
 
     var shareSongStream = ElevatedButton.icon(
-        icon: const Icon(Icons.music_note),
-        label: const Text('Flux musical'),
-        onPressed: () => Share.share(_song.streamLink));
+      icon: const Icon(Icons.music_note),
+      label: const Text('Flux musical'),
+      onPressed: () => Share.share(_song.streamLink),
+    );
 
     actionsShare.add(SongShareIconWidget(_song));
     actionsShare.add(shareSongStream);
@@ -109,34 +111,37 @@ class SongActionMenu extends StatelessWidget {
     }
 
     Widget popupMenuButtonShare = PopupMenuButton<Widget>(
-        icon: const Icon(
-          Icons.share,
-        ),
-        itemBuilder: (BuildContext context) => popupMenuShare);
+      icon: const Icon(Icons.share),
+      itemBuilder: (BuildContext context) => popupMenuShare,
+    );
 
     ///////////////////////////////////
     //// Copy
     var popupMenuCopy = <PopupMenuEntry<Widget>>[];
-    popupMenuCopy
-        .add(PopupMenuItem<Widget>(child: SongCopyLinkIconWidget(_song)));
-    popupMenuCopy
-        .add(PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)));
+    popupMenuCopy.add(
+      PopupMenuItem<Widget>(child: SongCopyLinkIconWidget(_song)),
+    );
+    popupMenuCopy.add(
+      PopupMenuItem<Widget>(child: SongCopyLinkHtmlIconWidget(_song)),
+    );
 
     Widget popupMenuButtonCopy = PopupMenuButton<Widget>(
-        icon: const Icon(
-          Icons.content_copy,
-        ),
-        itemBuilder: (BuildContext context) => popupMenuCopy);
+      icon: const Icon(Icons.content_copy),
+      itemBuilder: (BuildContext context) => popupMenuCopy,
+    );
 
-    actions.add(Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
-    ));
+    actions.add(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[popupMenuButtonCopy, popupMenuButtonShare],
+      ),
+    );
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: actions);
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: actions,
+    );
   }
 }
 
@@ -158,16 +163,17 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
   Widget build(BuildContext context) {
     if (widget._song!.isFavourite) {
       return ElevatedButton.icon(
-          icon: const Icon(Icons.star),
-          label: const Text('Retirer des favoris'),
-          onPressed: () async {
-            int statusCode = await removeSongFromFavorites(widget._song!.id);
-            if (statusCode == 200) {
-              setState(() {
-                widget._song!.isFavourite = false;
-              });
-            }
-          });
+        icon: const Icon(Icons.star),
+        label: const Text('Retirer des favoris'),
+        onPressed: () async {
+          int statusCode = await removeSongFromFavorites(widget._song!.id);
+          if (statusCode == 200) {
+            setState(() {
+              widget._song!.isFavourite = false;
+            });
+          }
+        },
+      );
     } else {
       return ElevatedButton.icon(
         icon: const Icon(Icons.star_border),
@@ -178,7 +184,8 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
             setState(() => widget._song!.isFavourite = true);
           } else {
             debugPrint(
-                'Add song to favorites returned status code $statusCode');
+              'Add song to favorites returned status code $statusCode',
+            );
           }
         },
       );
@@ -202,9 +209,10 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        icon: const Icon(Icons.exposure_plus_1),
-        label: const Text('Voter'),
-        onPressed: (widget._song!.hasVote ? null : callbackVote));
+      icon: const Icon(Icons.exposure_plus_1),
+      label: const Text('Voter'),
+      onPressed: (widget._song!.hasVote ? null : callbackVote),
+    );
   }
 
   void callbackVote() async {
@@ -232,10 +240,10 @@ class SongShareIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: const Icon(Icons.message),
-        label: const Text('Message'),
-        onPressed: () => Share.share(
-            '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
+      icon: const Icon(Icons.message),
+      label: const Text('Message'),
+      onPressed: () => Share.share(
+        '''En ce moment j'écoute '${_song!.name}' sur Bide et Musique !
 
 Tu peux consulter la fiche de cette chanson à l'adresse :
 ${_song.link}
@@ -244,7 +252,9 @@ ${_song.link}
 Message envoyé avec l'application 'Bide et Musique'. Disponible pour  
 * Android https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique 
 * IOS https://apps.apple.com/fr/app/bide-et-musique/id1524513644''',
-            subject: "'${_song.name}' sur Bide et Musique"));
+        subject: "'${_song.name}' sur Bide et Musique",
+      ),
+    );
   }
 }
 
@@ -260,11 +270,12 @@ class SongCopyLinkIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: const Icon(Icons.link),
-        label: const Text('Copier l\'url'),
-        onPressed: () {
-          Clipboard.setData(ClipboardData(text: _song!.link));
-        });
+      icon: const Icon(Icons.link),
+      label: const Text('Copier l\'url'),
+      onPressed: () {
+        Clipboard.setData(ClipboardData(text: _song!.link));
+      },
+    );
   }
 }
 
@@ -277,10 +288,12 @@ class SongCopyLinkHtmlIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: const Icon(Icons.code),
-        label: const Text('Copier le code HTML du lien'),
-        onPressed: () => Clipboard.setData(
-            ClipboardData(text: '<a href="${_song!.link}">${_song.name}</a>')));
+      icon: const Icon(Icons.code),
+      label: const Text('Copier le code HTML du lien'),
+      onPressed: () => Clipboard.setData(
+        ClipboardData(text: '<a href="${_song!.link}">${_song.name}</a>'),
+      ),
+    );
   }
 }
 
@@ -296,8 +309,9 @@ class SongOpenInBrowserIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //share song button
     return ElevatedButton.icon(
-        icon: const Icon(Icons.open_in_browser),
-        label: const Text('Ouvrir l\'url'),
-        onPressed: () => launchURL(_song!.link));
+      icon: const Icon(Icons.open_in_browser),
+      label: const Text('Ouvrir l\'url'),
+      onPressed: () => launchURL(_song!.link),
+    );
   }
 }

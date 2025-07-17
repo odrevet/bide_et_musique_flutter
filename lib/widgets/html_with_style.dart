@@ -11,13 +11,14 @@ class HtmlWithStyle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Html(
-        data: data,
-        style: {
-          'html': Style(fontSize: FontSize(18.0)),
-          'a': Style(color: Colors.red),
-        },
-        onLinkTap: (url, _, _) {
-          onLinkTap(url!, context);
-        });
+      data: data,
+      style: {
+        'html': Style(fontSize: FontSize(18.0)),
+        'a': Style(color: Colors.red),
+      },
+      onLinkTap: (url, _, _) {
+        onLinkTap(url!, context);
+      },
+    );
   }
 }

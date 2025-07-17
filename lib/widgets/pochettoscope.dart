@@ -7,8 +7,11 @@ class PochettoscopeWidget extends StatefulWidget {
   final List<SongLink> songLinks;
   final Function? onEndReached;
 
-  const PochettoscopeWidget(
-      {required this.songLinks, this.onEndReached, super.key});
+  const PochettoscopeWidget({
+    required this.songLinks,
+    this.onEndReached,
+    super.key,
+  });
 
   @override
   State<PochettoscopeWidget> createState() => _PochettoscopeWidgetState();
@@ -27,12 +30,14 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       _controller = ScrollController();
       _controller!.addListener(_scrollListener);
       _isLoading = true;
-      widget.onEndReached!().then((songLinks) => {
-            setState(() {
-              _isLoading = false;
-              widget.songLinks.addAll(songLinks);
-            })
-          });
+      widget.onEndReached!().then(
+        (songLinks) => {
+          setState(() {
+            _isLoading = false;
+            widget.songLinks.addAll(songLinks);
+          }),
+        },
+      );
     } else {
       _isLoading = false;
     }
@@ -53,12 +58,14 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
       setState(() {
         _isLoading = true;
       });
-      widget.onEndReached!().then((songLinks) => {
-            setState(() {
-              _isLoading = false;
-              widget.songLinks.addAll(songLinks);
-            })
-          });
+      widget.onEndReached!().then(
+        (songLinks) => {
+          setState(() {
+            _isLoading = false;
+            widget.songLinks.addAll(songLinks);
+          }),
+        },
+      );
     }
   }
 
@@ -70,17 +77,21 @@ class _PochettoscopeWidgetState extends State<PochettoscopeWidget> {
     }
 
     return GridView.builder(
-        itemCount: widget.songLinks.length,
-        controller: _controller,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 3),
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-              padding: const EdgeInsets.all(4),
-              child: CoverWithGesture(
-                  songLink: widget.songLinks[index],
-                  displayPlaceholder: true,
-                  fadeInDuration: const Duration(milliseconds: 20)));
-        });
+      itemCount: widget.songLinks.length,
+      controller: _controller,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.all(4),
+          child: CoverWithGesture(
+            songLink: widget.songLinks[index],
+            displayPlaceholder: true,
+            fadeInDuration: const Duration(milliseconds: 20),
+          ),
+        );
+      },
+    );
   }
 }

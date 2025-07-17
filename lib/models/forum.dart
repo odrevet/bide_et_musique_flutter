@@ -13,13 +13,13 @@ class Forum {
   Forum({this.id, this.name, this.subtitle, this.nmsg, this.hasNew});
 
   Forum.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = decodeHtmlEntities(json['name']),
-        subtitle = decodeHtmlEntities(json['subtitle']),
-        nmsg = json['nmsg'],
-        hasNew = json['has_new'],
-        lastDate = json['last']['date'],
-        last = AccountLink(id: json['last']['id'], name: json['last']['name']);
+    : id = json['id'],
+      name = decodeHtmlEntities(json['name']),
+      subtitle = decodeHtmlEntities(json['subtitle']),
+      nmsg = json['nmsg'],
+      hasNew = json['has_new'],
+      lastDate = json['last']['date'],
+      last = AccountLink(id: json['last']['id'], name: json['last']['name']);
 }
 
 class ForumThread {
@@ -36,34 +36,37 @@ class ForumThread {
   String? lastDate;
   AccountLink? last;
 
-  ForumThread(
-      {this.id,
-      this.title,
-      this.nbMsgs,
-      this.pinned,
-      this.resolved,
-      this.hasPost,
-      this.hasNew,
-      this.read,
-      this.ownerId,
-      this.ownerName,
-      this.lastDate,
-      this.last});
+  ForumThread({
+    this.id,
+    this.title,
+    this.nbMsgs,
+    this.pinned,
+    this.resolved,
+    this.hasPost,
+    this.hasNew,
+    this.read,
+    this.ownerId,
+    this.ownerName,
+    this.lastDate,
+    this.last,
+  });
 
   ForumThread.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = decodeHtmlEntities(json['title']),
-        nbMsgs = json['nb_msgs'],
-        pinned = json['pinned'],
-        resolved = json['resolved'],
-        hasPost = json['has_post'],
-        hasNew = json['new'],
-        read = json['read'],
-        ownerId = json['owner_id'],
-        ownerName = json['owner_name'],
-        lastDate = json['last']['date'],
-        last = AccountLink(
-            id: json['last']['user_id'], name: json['last']['user_name']);
+    : id = json['id'],
+      title = decodeHtmlEntities(json['title']),
+      nbMsgs = json['nb_msgs'],
+      pinned = json['pinned'],
+      resolved = json['resolved'],
+      hasPost = json['has_post'],
+      hasNew = json['new'],
+      read = json['read'],
+      ownerId = json['owner_id'],
+      ownerName = json['owner_name'],
+      lastDate = json['last']['date'],
+      last = AccountLink(
+        id: json['last']['user_id'],
+        name: json['last']['user_name'],
+      );
 }
 
 class ForumMessage {
@@ -75,21 +78,22 @@ class ForumMessage {
   bool? folded;
   AccountLink? user;
 
-  ForumMessage(
-      {this.id,
-      this.title,
-      this.date,
-      this.text,
-      this.signature,
-      this.folded,
-      this.user});
+  ForumMessage({
+    this.id,
+    this.title,
+    this.date,
+    this.text,
+    this.signature,
+    this.folded,
+    this.user,
+  });
 
   ForumMessage.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = decodeHtmlEntities(json['title']),
-        date = json['date'],
-        text = json['text'],
-        signature = json['signature'],
-        folded = json['folded'],
-        user = AccountLink(id: json['user']['id'], name: json['user']['name']);
+    : id = json['id'],
+      title = decodeHtmlEntities(json['title']),
+      date = json['date'],
+      text = json['text'],
+      signature = json['signature'],
+      folded = json['folded'],
+      user = AccountLink(id: json['user']['id'], name: json['user']['name']);
 }

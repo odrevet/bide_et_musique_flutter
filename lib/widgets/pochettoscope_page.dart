@@ -12,21 +12,22 @@ class PochettoScopePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Le pochettoscope'),
-        ),
-        body: FutureBuilder<List<SongLink>>(
-          future: fetchPochettoscope(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return PochettoscopeWidget(
-                  songLinks: snapshot.data!, onEndReached: fetchPochettoscope);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+      appBar: AppBar(title: const Text('Le pochettoscope')),
+      body: FutureBuilder<List<SongLink>>(
+        future: fetchPochettoscope(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return PochettoscopeWidget(
+              songLinks: snapshot.data!,
+              onEndReached: fetchPochettoscope,
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
 
-            return const CircularProgressIndicator();
-          },
-        ));
+          return const CircularProgressIndicator();
+        },
+      ),
+    );
   }
 }

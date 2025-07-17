@@ -23,19 +23,23 @@ class SongAiringNotifier extends ChangeNotifier {
     _reset();
     try {
       songAiring = fetchAiring();
-      songAiring!.then((s) async {
-        notifyListeners();
-        int delay = (s.duration!.inSeconds -
-                (s.duration!.inSeconds * s.elapsedPcent! / 100))
-            .ceil();
-        _t = Timer(Duration(seconds: delay), () {
-          periodicFetchSongAiring();
-        });
-      }, onError: (e) {
-        this.e = e;
-        _reset();
-        notifyListeners();
-      });
+      songAiring!.then(
+        (s) async {
+          notifyListeners();
+          int delay =
+              (s.duration!.inSeconds -
+                      (s.duration!.inSeconds * s.elapsedPcent! / 100))
+                  .ceil();
+          _t = Timer(Duration(seconds: delay), () {
+            periodicFetchSongAiring();
+          });
+        },
+        onError: (e) {
+          this.e = e;
+          _reset();
+          notifyListeners();
+        },
+      );
     } catch (e) {
       this.e = e;
       _reset();

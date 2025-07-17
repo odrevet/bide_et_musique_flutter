@@ -31,20 +31,25 @@ class CommentDialog extends StatelessWidget {
 
             // refresh current page to display posted comment
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongPageWidget(
-                        songLink: songLink, song: fetchSong(songLink.id))));
+              context,
+              MaterialPageRoute(
+                builder: (context) => SongPageWidget(
+                  songLink: songLink,
+                  song: fetchSong(songLink.id),
+                ),
+              ),
+            );
           },
-        )
+        ),
       ],
       title: const Text('Votre commentaire'),
       content: TextFormField(
-          maxLines: 5,
-          controller: _commentController,
-          decoration: const InputDecoration(
-            hintText: 'Entrez votre commentaire ici',
-          )),
+        maxLines: 5,
+        controller: _commentController,
+        decoration: const InputDecoration(
+          hintText: 'Entrez votre commentaire ici',
+        ),
+      ),
     );
   }
 }

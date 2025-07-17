@@ -45,9 +45,7 @@ class _IdentificationState extends State<Identification> {
                 return const LoggedInPage();
               } else if (snapshot.data!.isLoggedIn == false) {
                 return Scaffold(
-                  appBar: AppBar(
-                    title: const Text("Connexion à votre compte"),
-                  ),
+                  appBar: AppBar(title: const Text("Connexion à votre compte")),
                   body: _buildViewLoginForm(context, snapshot.data),
                 );
               }
@@ -57,9 +55,7 @@ class _IdentificationState extends State<Identification> {
 
             // By default, show the login form
             return Scaffold(
-              appBar: AppBar(
-                title: const Text("Connexion à votre compte"),
-              ),
+              appBar: AppBar(title: const Text("Connexion à votre compte")),
               body: _buildViewLoginForm(context),
             );
           },
@@ -128,58 +124,66 @@ class _IdentificationState extends State<Identification> {
     });
   }
 
-  Widget _buildViewLoginForm(BuildContext context,
-      [IdentificationResponse? identificationResponse]) {
+  Widget _buildViewLoginForm(
+    BuildContext context, [
+    IdentificationResponse? identificationResponse,
+  ]) {
     var form = Form(
       child: ListView(
         children: <Widget>[
           TextFormField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                hintText: 'Nom utilisateur',
-              )),
+            controller: _usernameController,
+            decoration: const InputDecoration(hintText: 'Nom utilisateur'),
+          ),
           TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                hintText: 'Mot de passe',
-              )),
+            controller: _passwordController,
+            obscureText: true,
+            decoration: const InputDecoration(hintText: 'Mot de passe'),
+          ),
           identificationResponse != null &&
                   identificationResponse.isLoggedIn == false
               ? Container(
                   margin: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                      'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red)))
+                    'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                )
               : const Text(''),
           CheckboxListTile(
-              title: const Text("Se souvenir des identifiants"),
-              value: _remember,
-              onChanged: _onRememberToggle),
+            title: const Text("Se souvenir des identifiants"),
+            value: _remember,
+            onChanged: _onRememberToggle,
+          ),
           Container(
             margin: const EdgeInsets.only(top: 2.0),
             child: ElevatedButton(
-                onPressed: _performLogin,
-                child: const Text(
-                  'Se connecter',
-                )),
+              onPressed: _performLogin,
+              child: const Text('Se connecter'),
+            ),
           ),
           const Divider(),
-          Column(children: [
-            const Text("Pas de compte ? "),
-            ElevatedButton(
-              onPressed: () => launchURL('$baseUri/create_account.html'),
-              child: const Text('En créer un sur bide-et-musique.com'),
-            ),
-          ]),
+          Column(
+            children: [
+              const Text("Pas de compte ? "),
+              ElevatedButton(
+                onPressed: () => launchURL('$baseUri/create_account.html'),
+                child: const Text('En créer un sur bide-et-musique.com'),
+              ),
+            ],
+          ),
           const Divider(),
-          Column(children: [
-            ElevatedButton(
-              onPressed: _clearSettings,
-              child: const Text('Oublier les identifiants'),
-            ),
-          ])
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: _clearSettings,
+                child: const Text('Oublier les identifiants'),
+              ),
+            ],
+          ),
         ],
       ),
     );

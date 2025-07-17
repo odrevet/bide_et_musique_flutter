@@ -29,15 +29,17 @@ class _AiringCardState extends State<AiringCard> {
             return Hero(
               tag: createTag(snapshot.data!),
               child: CoverWithGesture(
-                  songLink: snapshot.data,
-                  displayPlaceholder: false,
-                  fadeInDuration: const Duration()),
+                songLink: snapshot.data,
+                displayPlaceholder: false,
+                fadeInDuration: const Duration(),
+              ),
             );
           } else if (snapshot.hasError) {
             return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [ErrorDisplay(snapshot.error)]);
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [ErrorDisplay(snapshot.error)],
+            );
           }
 
           return Container();

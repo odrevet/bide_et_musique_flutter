@@ -14,17 +14,19 @@ class ErrorDisplay extends StatelessWidget {
         style: defaultStyle,
         children: <TextSpan>[
           const TextSpan(
-              text: 'Ouille ouille ouille !',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+            text: 'Ouille ouille ouille !',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+          ),
           const TextSpan(text: ' \n Une erreur est survenue !'),
           const TextSpan(text: ' \n Le message reporté est : \n'),
           TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
           const TextSpan(
-              text:
-                  ' \n • Verifiez que votre appareil est connecté à Internet\n'),
+            text: ' \n • Verifiez que votre appareil est connecté à Internet\n',
+          ),
           const TextSpan(
-              text:
-                  ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n')
+            text:
+                ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n',
+          ),
         ],
       ),
     );

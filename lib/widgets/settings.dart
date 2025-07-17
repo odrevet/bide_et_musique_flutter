@@ -74,56 +74,66 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Options'),
-      ),
+      appBar: AppBar(title: const Text('Options')),
       body: Center(
-          child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/bm_logo.png'),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/bm_logo.png')),
+          ),
+          child: Stack(
+            children: [
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200.withValues(alpha: 0.8),
+                  ),
+                ),
+              ),
+              PageView(
+                children: <Widget>[
+                  Form(
+                    child: ListView(
+                      children: [
+                        ListTile(
+                          title: const Text('Relais'),
+                          trailing: SizedBox(
+                            width: 42,
+                            child: TextButton(
+                              onPressed: _onToggleRelay,
+                              child: Text(_relay.toString()),
+                            ),
+                          ),
+                        ),
+                        const Divider(),
+                        CheckboxListTile(
+                          title: const Text('Se souvenir des identifiants'),
+                          value: _rememberIdents,
+                          onChanged: _onToggleRememberIdents,
+                        ),
+                        CheckboxListTile(
+                          title: const Text(
+                            'Connexion au compte au démarrage de l\'application',
+                          ),
+                          value: _autoConnect,
+                          onChanged: _rememberIdents == true
+                              ? _onToggleAutoConnect
+                              : null,
+                        ),
+                        CheckboxListTile(
+                          title: const Text('Empêcher la mise en veille'),
+                          value: _wakelock,
+                          onChanged: _onToggleWakeLock,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        child: Stack(children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-            child: Container(
-              decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withValues(alpha: 0.8)),
-            ),
-          ),
-          PageView(
-            children: <Widget>[
-              Form(
-                  child: ListView(children: [
-                ListTile(
-                  title: const Text('Relais'),
-                  trailing: SizedBox(
-                      width: 42,
-                      child: TextButton(
-                          onPressed: _onToggleRelay,
-                          child: Text(_relay.toString()))),
-                ),
-                const Divider(),
-                CheckboxListTile(
-                    title: const Text('Se souvenir des identifiants'),
-                    value: _rememberIdents,
-                    onChanged: _onToggleRememberIdents),
-                CheckboxListTile(
-                    title: const Text(
-                        'Connexion au compte au démarrage de l\'application'),
-                    value: _autoConnect,
-                    onChanged:
-                        _rememberIdents == true ? _onToggleAutoConnect : null),
-                CheckboxListTile(
-                    title: const Text('Empêcher la mise en veille'),
-                    value: _wakelock,
-                    onChanged: _onToggleWakeLock),
-              ])),
-            ],
-          )
-        ]),
-      )),
+      ),
     );
   }
 }

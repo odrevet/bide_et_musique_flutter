@@ -22,17 +22,23 @@ class _CoverViewerState extends State<CoverViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.songLink!.name), actions: <Widget>[
-        Padding(
+      appBar: AppBar(
+        title: Text(widget.songLink!.name),
+        actions: <Widget>[
+          Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () =>
                   setState(() => _threeDimensionMode = !_threeDimensionMode),
-              child: Icon(_threeDimensionMode
-                  ? Icons.threed_rotation
-                  : Icons.zoom_out_map),
-            )),
-      ]),
+              child: Icon(
+                _threeDimensionMode
+                    ? Icons.threed_rotation
+                    : Icons.zoom_out_map,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: _threeDimensionMode
             ? Transform(
@@ -46,10 +52,9 @@ class _CoverViewerState extends State<CoverViewer> {
                       setState(() => _offset += details.delta),
                   onDoubleTap: () => setState(() => _offset = Offset.zero),
                   child: _buildView(context),
-                ))
-            : InteractiveViewer(
-                child: _buildView(context),
-              ),
+                ),
+              )
+            : InteractiveViewer(child: _buildView(context)),
       ),
     );
   }

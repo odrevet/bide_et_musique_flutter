@@ -59,22 +59,27 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
         bool? isAvailable = requests[index].isAvailable;
 
         Widget listTile = ListTile(
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SongPageWidget(
-                            songLink: songLink, song: fetchSong(songLink.id))));
-              },
-              child: CoverThumb(songLink),
-            ),
-            title: Text(songLink.name),
-            subtitle: Text(songLink.artist!),
-            trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
-            onTap: () => setState(() {
-                  if (isAvailable!) _selectedRequestId = songLink.id;
-                }));
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SongPageWidget(
+                    songLink: songLink,
+                    song: fetchSong(songLink.id),
+                  ),
+                ),
+              );
+            },
+            child: CoverThumb(songLink),
+          ),
+          title: Text(songLink.name),
+          subtitle: Text(songLink.artist!),
+          trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
+          onTap: () => setState(() {
+            if (isAvailable!) _selectedRequestId = songLink.id;
+          }),
+        );
 
         if (songLink.id == _selectedRequestId) {
           return Material(color: Colors.orange[400], child: listTile);
@@ -97,27 +102,32 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
                 enabled: _selectedRequestId != null,
                 controller: _dedicateController,
                 decoration: const InputDecoration(
-                    hintText: 'Dédicace (facultative, 40 caractères maximum)'),
+                  hintText: 'Dédicace (facultative, 40 caractères maximum)',
+                ),
               ),
             ),
             IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () => _selectedRequestId == null
-                    ? null
-                    : sendRequest(_selectedRequestId, _dedicateController.text)
-                        .then((statusCode) {
-                        if (statusCode != 200) {
-                          debugPrint(
-                              'Send request error with status code $statusCode');
-                        }
+              icon: const Icon(Icons.send),
+              onPressed: () => _selectedRequestId == null
+                  ? null
+                  : sendRequest(
+                      _selectedRequestId,
+                      _dedicateController.text,
+                    ).then((statusCode) {
+                      if (statusCode != 200) {
+                        debugPrint(
+                          'Send request error with status code $statusCode',
+                        );
+                      }
 
-                        setState(() {
-                          _selectedRequestId = null;
-                          _dedicateController.text = '';
-                        });
-                      }))
+                      setState(() {
+                        _selectedRequestId = null;
+                        _dedicateController.text = '';
+                      });
+                    }),
+            ),
           ],
-        )
+        ),
       ],
     );
   }

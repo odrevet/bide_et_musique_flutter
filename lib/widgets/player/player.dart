@@ -25,17 +25,15 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
-  IconButton _button(IconData iconData, VoidCallback onPressed) => IconButton(
-        icon: Icon(iconData),
-        iconSize: 32.0,
-        onPressed: onPressed,
-      );
+  IconButton _button(IconData iconData, VoidCallback onPressed) =>
+      IconButton(icon: Icon(iconData), iconSize: 32.0, onPressed: onPressed);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream:
-          audioHandler.playbackState.map((state) => state.playing).distinct(),
+      stream: audioHandler.playbackState
+          .map((state) => state.playing)
+          .distinct(),
       builder: (context, snapshot) {
         final playing = snapshot.data ?? false;
 
@@ -66,19 +64,24 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         final mediaItem = snapshot.data;
                         if (mediaItem != null) {
                           final songLink = SongLink(
-                              id: getIdFromUrl(mediaItem.id)!,
-                              name: mediaItem.title);
+                            id: getIdFromUrl(mediaItem.id)!,
+                            name: mediaItem.title,
+                          );
                           return InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SongPageWidget(
-                                          songLink: songLink,
-                                          song: fetchSong(songLink.id))));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SongPageWidget(
+                                    songLink: songLink,
+                                    song: fetchSong(songLink.id),
+                                  ),
+                                ),
+                              );
                             },
                             child: CachedNetworkImage(
-                                imageUrl: songLink.thumbLink),
+                              imageUrl: songLink.thumbLink,
+                            ),
                           );
                         } else {
                           return Container();
@@ -97,11 +100,15 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         if (playing) {
                           controls = [
                             _button(
-                                Icons.fast_rewind_rounded, audioHandler.rewind),
+                              Icons.fast_rewind_rounded,
+                              audioHandler.rewind,
+                            ),
                             //_button(Icons.pause, audioHandler.pause),
                             _button(Icons.stop, audioHandler.stop),
-                            _button(Icons.fast_forward_rounded,
-                                audioHandler.fastForward),
+                            _button(
+                              Icons.fast_forward_rounded,
+                              audioHandler.fastForward,
+                            ),
                           ];
                         } else {
                           controls = [_button(Icons.stop, audioHandler.stop)];
@@ -120,7 +127,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
                         final mediaState = snapshot.data;
                         return Expanded(
                           child: SeekBar(
-                            duration: mediaState?.mediaItem?.duration ??
+                            duration:
+                                mediaState?.mediaItem?.duration ??
                                 Duration.zero,
                             position: mediaState?.position ?? Duration.zero,
                             onChangeEnd: (newPosition) {
@@ -146,7 +154,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
   /// current position.
   Stream<MediaState> get _mediaStateStream =>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
-          audioHandler.mediaItem,
-          AudioService.position,
-          (mediaItem, position) => MediaState(mediaItem, position));
+        audioHandler.mediaItem,
+        AudioService.position,
+        (mediaItem, position) => MediaState(mediaItem, position),
+      );
 }
