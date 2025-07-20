@@ -98,7 +98,7 @@ class SongActionMenu extends StatelessWidget {
     var shareSongStream = ElevatedButton.icon(
       icon: const Icon(Icons.music_note),
       label: const Text('Flux musical'),
-      onPressed: () => Share.share(_song.streamLink),
+      onPressed: () => SharePlus.instance.share(ShareParams(text: _song.streamLink)),
     );
 
     actionsShare.add(SongShareIconWidget(_song));

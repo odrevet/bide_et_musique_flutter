@@ -49,7 +49,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     _setAccountTitle();
   }
 
-  _setAccountTitle() {
+  void _setAccountTitle() {
     setState(() {
       _accountTitle = Session.accountLink.id == null
           ? 'Connexion'

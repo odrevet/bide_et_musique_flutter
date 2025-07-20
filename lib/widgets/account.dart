@@ -208,10 +208,12 @@ class _AccountPageState extends State<AccountPage> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => MessageEditor(account),
-                ).then((status) async {
+                ).then((status) {
                   if (status == true) {
                     // refresh current page so posted message is visible
-                    Navigator.of(context).pop();
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
                   }
                 }),
             child: const Icon(Icons.mail),

@@ -90,7 +90,9 @@ class _MessageEditorState extends State<MessageEditor> {
             );
 
             if (!mounted) return;
-            Navigator.of(context).pop(status);
+            if (context.mounted) {
+              Navigator.of(context).pop(status);
+            }
           },
         ),
       ],
