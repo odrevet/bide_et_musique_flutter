@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:audio_service/audio_service.dart';
-import 'package:bide_et_musique/utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:audio_service/audio_service.dart';
 
 import '../../models/song.dart';
 import '../../services/player.dart';
@@ -12,6 +11,7 @@ import '../../services/song.dart';
 import '../song_page/song_page.dart';
 import 'radio_stream_button.dart';
 import 'seek_bar.dart';
+import 'package:bide_et_musique/utils.dart';
 
 class PlayerWidget extends StatefulWidget {
   final Orientation orientation;
@@ -25,137 +25,120 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
-  IconButton _button(IconData iconData, VoidCallback onPressed) =>
-      IconButton(icon: Icon(iconData), iconSize: 32.0, onPressed: onPressed);
+  IconButton _button(IconData iconData, VoidCallback onPressed) {
+    return IconButton(icon: Icon(iconData), iconSize: 32.0, onPressed: onPressed);
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: audioHandler.playbackState
-          .map((state) => state.playing)
-          .distinct(),
+      stream: audioHandler.playbackState.map((s) => s.playing).distinct(),
       builder: (context, snapshot) {
         final playing = snapshot.data ?? false;
 
-        if (!playing) {
-          return RadioStreamButton(widget._songAiring);
-        }
+        if (!playing) return RadioStreamButton(widget._songAiring);
 
         return FutureBuilder<dynamic>(
           future: audioHandler.customAction('get_radio_mode'),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              bool radioMode = snapshot.data;
-              if (radioMode) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    playing
-                        ? _button(Icons.stop, audioHandler.stop)
-                        : RadioStreamButton(widget._songAiring),
-                  ],
-                );
-              } else {
-                return Row(
-                  children: [
-                    StreamBuilder<MediaItem?>(
-                      stream: audioHandler.mediaItem,
-                      builder: (context, snapshot) {
-                        final mediaItem = snapshot.data;
-                        if (mediaItem != null) {
-                          final songLink = SongLink(
-                            id: getIdFromUrl(mediaItem.id)!,
-                            name: mediaItem.title,
-                          );
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SongPageWidget(
-                                    songLink: songLink,
-                                    song: fetchSong(songLink.id),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl: songLink.thumbLink,
-                            ),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                    // Play/pause/stop buttons.
-                    StreamBuilder<bool>(
-                      stream: audioHandler.playbackState
-                          .map((state) => state.playing)
-                          .distinct(),
-                      builder: (context, snapshot) {
-                        final playing = snapshot.data ?? false;
-                        List<IconButton> controls;
+            if (!snapshot.hasData) return const CircularProgressIndicator();
 
-                        if (playing) {
-                          controls = [
-                            _button(
-                              Icons.fast_rewind_rounded,
-                              audioHandler.rewind,
-                            ),
-                            //_button(Icons.pause, audioHandler.pause),
-                            _button(Icons.stop, audioHandler.stop),
-                            _button(
-                              Icons.fast_forward_rounded,
-                              audioHandler.fastForward,
-                            ),
-                          ];
-                        } else {
-                          controls = [_button(Icons.stop, audioHandler.stop)];
-                        }
+            final radioMode = snapshot.data as bool;
 
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: controls,
-                        );
-                      },
-                    ),
-                    // A seek bar.
-                    StreamBuilder<MediaState>(
-                      stream: _mediaStateStream,
-                      builder: (context, snapshot) {
-                        final mediaState = snapshot.data;
-                        return Expanded(
-                          child: SeekBar(
-                            duration:
-                                mediaState?.mediaItem?.duration ??
-                                Duration.zero,
-                            position: mediaState?.position ?? Duration.zero,
-                            onChangeEnd: (newPosition) {
-                              audioHandler.seek(newPosition);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              }
+            if (radioMode) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _button(Icons.stop, audioHandler.stop),
+                ],
+              );
             }
 
-            return const CircularProgressIndicator();
+            return Row(
+              children: [
+                _buildSongThumbnail(),
+                _buildControls(),
+                _buildSeekBar(),
+              ],
+            );
           },
         );
       },
     );
   }
 
-  /// A stream reporting the combined state of the current media item and its
-  /// current position.
+  Widget _buildSongThumbnail() {
+    return StreamBuilder<MediaItem?>(
+      stream: audioHandler.mediaItem,
+      builder: (context, snapshot) {
+        final mediaItem = snapshot.data;
+        if (mediaItem == null) return const SizedBox();
+
+        final songLink = SongLink(
+          id: getIdFromUrl(mediaItem.id)!,
+          name: mediaItem.title,
+        );
+
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SongPageWidget(
+                  songLink: songLink,
+                  song: fetchSong(songLink.id),
+                ),
+              ),
+            );
+          },
+          child: CachedNetworkImage(imageUrl: songLink.thumbLink),
+        );
+      },
+    );
+  }
+
+  Widget _buildControls() {
+    return StreamBuilder<bool>(
+      stream: audioHandler.playbackState.map((s) => s.playing).distinct(),
+      builder: (context, snapshot) {
+        final playing = snapshot.data ?? false;
+
+        final buttons = playing
+            ? [
+          _button(Icons.fast_rewind_rounded, audioHandler.rewind),
+          _button(Icons.stop, audioHandler.stop),
+          _button(Icons.fast_forward_rounded, audioHandler.fastForward),
+        ]
+            : [_button(Icons.stop, audioHandler.stop)];
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: buttons,
+        );
+      },
+    );
+  }
+
+  Widget _buildSeekBar() {
+    return StreamBuilder<MediaState>(
+      stream: _mediaStateStream,
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+        return Expanded(
+          child: SeekBar(
+            duration: state?.mediaItem?.duration ?? Duration.zero,
+            position: state?.position ?? Duration.zero,
+            onChangeEnd: audioHandler.seek,
+          ),
+        );
+      },
+    );
+  }
+
   Stream<MediaState> get _mediaStateStream =>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
         audioHandler.mediaItem,
         AudioService.position,
-        (mediaItem, position) => MediaState(mediaItem, position),
+            (item, pos) => MediaState(item, pos),
       );
 }
