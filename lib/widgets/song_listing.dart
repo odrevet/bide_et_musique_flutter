@@ -85,22 +85,23 @@ class _SongListingWidgetState extends State<SongListingWidget> {
           trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
           subtitle: Text(subtitle),
           onTap: () => launchSongPage(songLink, context),
-          onLongPress: () {
-            fetchSong(songLink.id).then((song) {
-              showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return SimpleDialog(
-                    contentPadding: const EdgeInsets.all(20.0),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    ),
-                    children: [SongActionMenu(song)],
-                  );
-                },
-              );
-            });
+          onLongPress: () async {
+            final song = await fetchSong(songLink.id);
+            if (!context.mounted) return;
+
+            showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  ),
+                  children: [SongActionMenu(song)],
+                );
+              },
+            );
           },
         ),
       );

@@ -53,7 +53,7 @@ class _SearchResultsState extends State<SearchResults> {
     _controller.removeListener(_scrollListener);
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
         _pageCurrent < _pageCount! &&

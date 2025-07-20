@@ -65,7 +65,7 @@ class _IdentificationState extends State<Identification> {
   }
 
   //save or load login
-  _loadSettings() async {
+  Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     _remember = prefs.getBool('rememberIdents') ?? false;
     if (_remember == true) {
@@ -74,27 +74,27 @@ class _IdentificationState extends State<Identification> {
     }
   }
 
-  _saveSettings() async {
+  Future<void> _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('login', _usernameController.text);
     prefs.setString('password', _passwordController.text);
   }
 
-  _loadRemember() async {
+  Future<void> _loadRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _remember = (prefs.getBool('rememberIdents') ?? false);
     });
   }
 
-  _saveRemember() async {
+  Future<void> _saveRemember() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setBool('rememberIdents', _remember!);
     });
   }
 
-  _clearSettings() async {
+  Future<void> _clearSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _usernameController.text = '';

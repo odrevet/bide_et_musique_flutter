@@ -47,7 +47,7 @@ class SongAiringNotifier extends ChangeNotifier {
     }
   }
 
-  _reset() {
+  void _reset() {
     _t?.cancel();
     songAiring = null;
   }

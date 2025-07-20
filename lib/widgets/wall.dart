@@ -38,7 +38,7 @@ class _WallWidgetState extends State<WallWidget> {
     });
   }
 
-  _newMessageDialog(BuildContext context) {
+  Future<void> _newMessageDialog(BuildContext context) {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -57,7 +57,9 @@ class _WallWidgetState extends State<WallWidget> {
                 _newMessageController.text = '';
 
                 if (!mounted) return;
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

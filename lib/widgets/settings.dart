@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _loadSettings();
   }
 
-  _loadSettings() async {
+  Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _rememberIdents = prefs.getBool('rememberIdents') ?? false;
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
     prefs.setInt('relay', _relay);
   }
 
-  _saveOptionBool(String name, bool? value) async {
+  Future<void> _saveOptionBool(String name, bool? value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setBool(name, value!);

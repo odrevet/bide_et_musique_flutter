@@ -149,15 +149,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             title: const Text('Morceau au pif'),
             leading: const Icon(Icons.shuffle),
-            onTap: () {
-              fetchRandomSongId().then(
-                (id) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SongPageWidget(
-                      songLink: SongLink(id: id!, name: ''),
-                      song: fetchSong(id),
-                    ),
+            onTap: () async {
+              final id = await fetchRandomSongId();
+              if (!context.mounted) return;
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SongPageWidget(
+                    songLink: SongLink(id: id!, name: ''),
+                    song: fetchSong(id),
                   ),
                 ),
               );

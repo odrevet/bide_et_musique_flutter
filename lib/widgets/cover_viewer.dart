@@ -59,7 +59,7 @@ class _CoverViewerState extends State<CoverViewer> {
     );
   }
 
-  _buildView(BuildContext context) {
+  Hero _buildView(BuildContext context) {
     var tag = createTag(widget.songLink!);
     return Hero(tag: tag, child: Cover(widget.songLink!.coverLink));
   }

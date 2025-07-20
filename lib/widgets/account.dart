@@ -13,7 +13,7 @@ import 'account/bidebox.dart';
 import 'html_with_style.dart';
 import 'pochettoscope.dart';
 
-openAccountImageViewerDialog(context, image, title) {
+void openAccountImageViewerDialog(BuildContext context, NetworkImage image, String title) {
   Navigator.of(context).push(
     MaterialPageRoute<void>(
       builder: (BuildContext context) {
@@ -104,7 +104,7 @@ class _AccountPageState extends State<AccountPage> {
                               openAccountImageViewerDialog(
                                 context,
                                 image,
-                                account.name,
+                                account.name!,
                               );
                             },
                             child: Image.network(url),

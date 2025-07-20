@@ -21,7 +21,7 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
   bool _searchMode = false;
   String _searchInput = '';
 
-  onSearchTextChanged(String text) async {
+  Future<void> onSearchTextChanged(String text) async {
     setState(() {
       _searchInput = controller.text;
     });

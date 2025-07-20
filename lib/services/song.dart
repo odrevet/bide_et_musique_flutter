@@ -84,9 +84,9 @@ Future<SongAiring> fetchAiring() async {
   }
 }
 
-List<Comment> parseComments(document) {
+List<Comment> parseComments(dom.Document document) {
   var comments = <Comment>[];
-  var divComments = document.getElementById('comments');
+  var divComments = document.getElementById('comments')!;
   var divsNormal = divComments.getElementsByClassName('normal');
 
   for (dom.Element divNormal in divsNormal) {

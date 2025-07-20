@@ -146,7 +146,7 @@ class ManageAccountPageWidget extends StatelessWidget {
                         openAccountImageViewerDialog(
                           context,
                           image,
-                          account.name,
+                          account.name!,
                         );
                       },
                       child: Image.network(url),

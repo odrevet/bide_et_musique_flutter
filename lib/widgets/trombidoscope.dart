@@ -37,7 +37,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     _controller.removeListener(_scrollListener);
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
         _isLoading == false) {
@@ -82,7 +82,7 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
               openAccountImageViewerDialog(
                 context,
                 NetworkImage(url),
-                account.name,
+                account.name!,
               );
             },
             child: Column(
