@@ -42,7 +42,8 @@ class SongActionMenu extends StatelessWidget {
     var shareSongStream = ElevatedButton.icon(
       icon: const Icon(Icons.music_note),
       label: const Text('Flux musical'),
-      onPressed: () => SharePlus.instance.share(ShareParams(text: _song.streamLink)),
+      onPressed: () =>
+          SharePlus.instance.share(ShareParams(text: _song.streamLink)),
     );
 
     actionsShare.add(SongShareIconWidget(_song));
@@ -89,12 +90,11 @@ class SongActionMenu extends StatelessWidget {
   }
 }
 
-
 class SongAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<Song>? _song;
 
   const SongAppBar(this._song, {super.key})
-      : preferredSize = const Size.fromHeight(kToolbarHeight);
+    : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize;
@@ -118,7 +118,10 @@ class _SongAppBarState extends State<SongAppBar> {
               children: [
                 Text(
                   song.name,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (song.artist?.isNotEmpty == true)
@@ -126,7 +129,9 @@ class _SongAppBarState extends State<SongAppBar> {
                     song.artist!,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                       fontWeight: FontWeight.w400,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -180,7 +185,10 @@ class _SongAppBarState extends State<SongAppBar> {
           maxChildSize: 0.9,
           expand: false,
           builder: (context, scrollController) {
-            return SongActionBottomSheet(song, scrollController: scrollController);
+            return SongActionBottomSheet(
+              song,
+              scrollController: scrollController,
+            );
           },
         );
       },
@@ -219,7 +227,7 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: theme.colorScheme.onSurface.withOpacity(0.3),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -273,20 +281,16 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.music_note,
-            size: 32,
-            color: theme.colorScheme.primary,
-          ),
+          Icon(Icons.music_note, size: 32, color: theme.colorScheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -304,7 +308,7 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
                   Text(
                     widget.song.artist!,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -336,8 +340,7 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
   Widget _buildUserActions() {
     return Column(
       children: [
-        if (widget.song.canFavourite)
-          SongFavoriteIconWidget(widget.song),
+        if (widget.song.canFavourite) SongFavoriteIconWidget(widget.song),
         const SizedBox(height: 8),
         SongVoteIconWidget(widget.song),
       ],
@@ -355,7 +358,9 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 48),
           ),
-          onPressed: () => Share.share(widget.song.streamLink),
+          onPressed: () => SharePlus.instance.share(
+            ShareParams(text: widget.song.streamLink),
+          ),
         ),
       ],
     );
@@ -394,10 +399,10 @@ class _SongFavoriteIconWidgetState extends State<SongFavoriteIconWidget> {
     return ElevatedButton.icon(
       icon: _isLoading
           ? const SizedBox(
-        width: 16,
-        height: 16,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      )
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
           : Icon(isFavorite ? Icons.star : Icons.star_border),
       label: Text(isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'),
       style: ElevatedButton.styleFrom(
@@ -482,16 +487,16 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
     return ElevatedButton.icon(
       icon: _isLoading
           ? const SizedBox(
-        width: 16,
-        height: 16,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      )
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
           : Icon(hasVoted ? Icons.how_to_vote : Icons.exposure_plus_1),
       label: Text(hasVoted ? 'Déjà voté' : 'Voter pour cette chanson'),
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 48),
         backgroundColor: hasVoted
-            ? Theme.of(context).colorScheme.surfaceVariant
+            ? Theme.of(context).colorScheme.surfaceContainerHighest
             : Theme.of(context).colorScheme.secondaryContainer,
         foregroundColor: hasVoted
             ? Theme.of(context).colorScheme.onSurfaceVariant
@@ -561,8 +566,10 @@ class SongShareIconWidget extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 48),
       ),
-      onPressed: () => Share.share(
-        '''🎵 En ce moment j'écoute "${song.name}" sur Bide et Musique !
+      onPressed: () => SharePlus.instance.share(
+        ShareParams(
+          text:
+              '''🎵 En ce moment j'écoute "${song.name}" sur Bide et Musique !
 
 🔗 Découvre cette chanson :
 ${song.link}
@@ -570,7 +577,8 @@ ${song.link}
 📱 Télécharge l'app :
 • Android : https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique 
 • iOS : https://apps.apple.com/fr/app/bide-et-musique/id1524513644''',
-        subject: '"${song.name}" sur Bide et Musique',
+          subject: '"${song.name}" sur Bide et Musique',
+        ),
       ),
     );
   }

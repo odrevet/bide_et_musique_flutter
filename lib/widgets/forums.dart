@@ -38,7 +38,7 @@ class _ForumPageState extends State<ForumWidget> {
                       MaterialPageRoute(
                         builder: (context) => ForumThreadWidget(
                           forum,
-                          fetchForumThreads(forum.id),
+                          fetchForumThreads(forum.id!),
                         ),
                       ),
                     );
@@ -98,7 +98,7 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                       MaterialPageRoute(
                         builder: (context) => ForumMessagesWidget(
                           forumThread,
-                          fetchForumMessages(widget._forum.id, forumThread.id),
+                          fetchForumMessages(widget._forum.id!, forumThread.id!),
                         ),
                       ),
                     );

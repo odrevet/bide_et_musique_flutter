@@ -199,7 +199,6 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
         primarySwatch: Colors.orange,
         secondaryHeaderColor: Colors.deepOrange,
         canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
-        dialogBackgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
         appBarTheme: const AppBarTheme(
           color: Colors.orange,
           elevation: 4.0,
@@ -211,7 +210,7 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             borderRadius: BorderRadius.circular(20.0),
           ),
         ),
-        bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange),
+        bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange), dialogTheme: DialogThemeData(backgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5)),
       ),
       home: home,
     );

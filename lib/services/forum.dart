@@ -29,7 +29,7 @@ Future<List<Forum>> fetchForums() async {
   return forums;
 }
 
-Future<List<ForumThread>> fetchForumThreads(forumId) async {
+Future<List<ForumThread>> fetchForumThreads(int forumId) async {
   List<ForumThread> forumThreads = [];
   final url = '$baseUri/forums/$forumId';
   final responseJson = await Session.get(url);
@@ -52,7 +52,7 @@ Future<List<ForumThread>> fetchForumThreads(forumId) async {
   return forumThreads;
 }
 
-Future<List<ForumMessage>> fetchForumMessages(forumId, threadId) async {
+Future<List<ForumMessage>> fetchForumMessages(int forumId, int threadId) async {
   List<ForumMessage> forumMessages = [];
   final url = '$baseUri/forums/$forumId/thread/$threadId';
   final responseJson = await Session.get(url);
