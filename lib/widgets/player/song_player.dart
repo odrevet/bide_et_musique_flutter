@@ -71,13 +71,13 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
             end: Alignment.bottomCenter,
             colors: [
               Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.surface.withOpacity(0.8),
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
             ],
           ),
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.1),
+              color: Theme.of(context).shadowColor.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -130,12 +130,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.primary.withOpacity(0.8),
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -186,12 +186,12 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                          Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
                           blurRadius: 16,
                           offset: const Offset(0, 4),
                         ),
@@ -255,13 +255,13 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
                       Text(
                         _formatDuration(position),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                       Text(
                         _formatDuration(duration),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -279,26 +279,17 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(enabled ? 1.0 : 0.5),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: enabled ? 1.0 : 0.5),
       ),
       child: IconButton(
         icon: Icon(icon),
         iconSize: 32,
         color: enabled
             ? Theme.of(context).colorScheme.onSurfaceVariant
-            : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+            : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
         onPressed: enabled ? onPressed : null,
         padding: const EdgeInsets.all(16),
       ),
-    );
-  }
-
-  Widget _buildSecondaryButton(IconData icon, VoidCallback onPressed) {
-    return IconButton(
-      icon: Icon(icon),
-      iconSize: 24,
-      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-      onPressed: onPressed,
     );
   }
 
@@ -319,7 +310,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
           Text(
             'Chargement...',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],

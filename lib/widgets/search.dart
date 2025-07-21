@@ -53,7 +53,7 @@ class _SearchResultsState extends State<SearchResults> {
     _controller.removeListener(_scrollListener);
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
         _pageCurrent < _pageCount! &&
@@ -205,16 +205,16 @@ class _SearchState extends State<Search> {
               borderRadius: BorderRadius.circular(20.0), // Match your app's button theme
             ),
             elevation: 2,
-            shadowColor: Colors.orange.withOpacity(0.3),
+            shadowColor: Colors.orange.withValues(alpha: 0.3),
           ).copyWith(
-            overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered)) {
-                  return Colors.white.withOpacity(0.08);
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                if (states.contains(WidgetState.hovered)) {
+                  return Colors.white.withValues(alpha: 0.08);
                 }
-                if (states.contains(MaterialState.focused) ||
-                    states.contains(MaterialState.pressed)) {
-                  return Colors.white.withOpacity(0.12);
+                if (states.contains(WidgetState.focused) ||
+                    states.contains(WidgetState.pressed)) {
+                  return Colors.white.withValues(alpha: 0.12);
                 }
                 return null;
               },
@@ -235,7 +235,7 @@ class _SearchState extends State<Search> {
               borderRadius: BorderRadius.circular(20.0),
             ),
             elevation: 2,
-            shadowColor: Colors.orange.withOpacity(0.3),
+            shadowColor: Colors.orange.withValues(alpha: 0.3),
           ),
         ),
         iconButtonTheme: IconButtonThemeData(
@@ -244,14 +244,14 @@ class _SearchState extends State<Search> {
             backgroundColor: Colors.transparent,
             padding: const EdgeInsets.all(8),
           ).copyWith(
-            overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered)) {
-                  return Colors.orange.withOpacity(0.08);
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                if (states.contains(WidgetState.hovered)) {
+                  return Colors.orange.withValues(alpha: 0.08);
                 }
-                if (states.contains(MaterialState.focused) ||
-                    states.contains(MaterialState.pressed)) {
-                  return Colors.orange.withOpacity(0.12);
+                if (states.contains(WidgetState.focused) ||
+                    states.contains(WidgetState.pressed)) {
+                  return Colors.orange.withValues(alpha: 0.12);
                 }
                 return null;
               },
