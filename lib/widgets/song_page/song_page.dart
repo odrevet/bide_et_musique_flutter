@@ -138,6 +138,168 @@ class MiniCover extends StatelessWidget {
   }
 }
 
+// New widget for landscape cover/info toggle
+class LandscapeCoverToggle extends StatefulWidget {
+  final Song song;
+  final SongLink songLink;
+  final bool preview;
+
+  const LandscapeCoverToggle({
+    super.key,
+    required this.song,
+    required this.songLink,
+    required this.preview,
+  });
+
+  @override
+  State<LandscapeCoverToggle> createState() => _LandscapeCoverToggleState();
+}
+
+class _LandscapeCoverToggleState extends State<LandscapeCoverToggle>
+    with SingleTickerProviderStateMixin {
+  bool _showInfo = false;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _toggleView() {
+    setState(() {
+      _showInfo = !_showInfo;
+      if (_showInfo) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  void _openCoverViewerDialog(SongLink? songLink, BuildContext context) {
+    if (!_showInfo) {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) {
+            return CoverViewer(songLink);
+          },
+          fullscreenDialog: true,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Main content area (cover or info)
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: _showInfo
+                  ? Container(
+                      key: const ValueKey('info'),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: widget.preview
+                          ? const Center(child: CircularProgressIndicator())
+                          : SingleChildScrollView(
+                              padding: const EdgeInsets.all(16),
+                              child: SongInformations(song: widget.song),
+                            ),
+                    )
+                  : Hero(
+                      key: const ValueKey('cover'),
+                      tag: createTag(widget.songLink),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(12),
+                        clipBehavior: Clip.antiAlias,
+                        child: InkWell(
+                          onTap: () =>
+                              _openCoverViewerDialog(widget.songLink, context),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.2),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.song.coverLink,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+            ),
+          ),
+        ),
+        // Toggle button
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _toggleView,
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: Icon(
+                  _showInfo ? Icons.image : Icons.info_outline,
+                  key: ValueKey(_showInfo),
+                ),
+              ),
+              label: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: Text(
+                  _showInfo ? 'Voir la pochette' : 'Voir les infos',
+                  key: ValueKey(_showInfo),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                backgroundColor: Theme.of(
+                  context,
+                ).primaryColor.withValues(alpha: 0.1),
+                foregroundColor: Theme.of(context).primaryColor,
+                elevation: 0,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class SongPageContent extends StatefulWidget {
   final SongLink songLink;
   final Song song;
@@ -211,19 +373,21 @@ class _SongPageContentState extends State<SongPageContent> {
             ),
           );
         } else {
+          // Improved landscape layout
           return Row(
             children: [
-              Expanded(flex: 2, child: MiniCover(widget.song, widget.songLink)),
-              Expanded(
-                flex: 1,
-                child: SingleChildScrollView(
-                  child: widget.preview == true
-                      ? const Center(child: CircularProgressIndicator())
-                      : SongInformations(song: widget.song),
-                ),
-              ),
+              // Cover/Info toggle section (left)
               Expanded(
                 flex: 2,
+                child: LandscapeCoverToggle(
+                  song: widget.song,
+                  songLink: widget.songLink,
+                  preview: widget.preview,
+                ),
+              ),
+              // Lyrics and comments section (right)
+              Expanded(
+                flex: 3,
                 child: SongLyricsAndComments(
                   widget.song,
                   widget.songLink,
