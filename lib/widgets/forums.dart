@@ -98,7 +98,10 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
                       MaterialPageRoute(
                         builder: (context) => ForumMessagesWidget(
                           forumThread,
-                          fetchForumMessages(widget._forum.id!, forumThread.id!),
+                          fetchForumMessages(
+                            widget._forum.id!,
+                            forumThread.id!,
+                          ),
                         ),
                       ),
                     );

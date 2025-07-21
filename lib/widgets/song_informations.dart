@@ -39,9 +39,8 @@ class SongInformations extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ArtistPageWidget(
-                    artist: fetchArtist(song.artistId),
-                  ),
+                  builder: (context) =>
+                      ArtistPageWidget(artist: fetchArtist(song.artistId)),
                 ),
               ),
             ),
@@ -80,72 +79,76 @@ class SongInformations extends StatelessWidget {
   }
 
   Widget _buildInfoCard(
-      BuildContext context, {
-        required String title,
-        required String value,
-        VoidCallback? onTap,
-        bool isClickable = true,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String value,
+    VoidCallback? onTap,
+    bool isClickable = true,
+  }) {
     final theme = Theme.of(context);
     final isInteractive = isClickable && onTap != null;
 
     return Card(
-        margin: const EdgeInsets.only(bottom: 6.0),
-        elevation: 1,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: isInteractive ? onTap : null,
-            borderRadius: BorderRadius.circular(6.0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
+      margin: const EdgeInsets.only(bottom: 6.0),
+      elevation: 1,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: isInteractive ? onTap : null,
+          borderRadius: BorderRadius.circular(6.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 8.0,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          value,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: isInteractive
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurface,
-                            fontWeight: isInteractive
-                                ? FontWeight.w600
-                                : FontWeight.normal,
-                          ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        value,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: isInteractive
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurface,
+                          fontWeight: isInteractive
+                              ? FontWeight.w600
+                              : FontWeight.normal,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  if (isInteractive)
-                    Icon(
-                      Icons.chevron_right,
-                      size: 20,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                ],
-              ),
+                ),
+                if (isInteractive)
+                  Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _navigateToSearch(
-      BuildContext context,
-      String title,
-      String query,
-      String searchType,
-      ) {
+    BuildContext context,
+    String title,
+    String query,
+    String searchType,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -171,18 +174,10 @@ class CompactSongInformations extends StatelessWidget {
       runSpacing: 2.0,
       children: [
         if (song.durationPretty != null)
-          _buildCompactChip(
-            context,
-            Icons.schedule,
-            song.durationPretty!,
-          ),
+          _buildCompactChip(context, Icons.schedule, song.durationPretty!),
 
         if (song.year != 0)
-          _buildCompactChip(
-            context,
-            Icons.event,
-            song.year.toString(),
-          ),
+          _buildCompactChip(context, Icons.event, song.year.toString()),
 
         if (song.artist != null)
           _buildCompactChip(
@@ -192,9 +187,8 @@ class CompactSongInformations extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ArtistPageWidget(
-                  artist: fetchArtist(song.artistId),
-                ),
+                builder: (context) =>
+                    ArtistPageWidget(artist: fetchArtist(song.artistId)),
               ),
             ),
           ),
@@ -203,11 +197,11 @@ class CompactSongInformations extends StatelessWidget {
   }
 
   Widget _buildCompactChip(
-      BuildContext context,
-      IconData icon,
-      String label, {
-        VoidCallback? onTap,
-      }) {
+    BuildContext context,
+    IconData icon,
+    String label, {
+    VoidCallback? onTap,
+  }) {
     final theme = Theme.of(context);
 
     return ActionChip(

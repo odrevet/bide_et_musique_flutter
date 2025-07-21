@@ -210,7 +210,10 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
             borderRadius: BorderRadius.circular(20.0),
           ),
         ),
-        bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange), dialogTheme: DialogThemeData(backgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5)),
+        bottomAppBarTheme: const BottomAppBarTheme(color: Colors.orange),
+        dialogTheme: DialogThemeData(
+          backgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+        ),
       ),
       home: home,
     );

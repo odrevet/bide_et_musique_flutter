@@ -143,7 +143,10 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
       ),
       child: ScaleTransition(
         scale: Tween(begin: 1.0, end: 0.95).animate(
-          CurvedAnimation(parent: _playButtonController, curve: Curves.easeInOut),
+          CurvedAnimation(
+            parent: _playButtonController,
+            curve: Curves.easeInOut,
+          ),
         ),
         child: IconButton(
           icon: const Icon(Icons.play_arrow_rounded),
@@ -186,12 +189,16 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
                           blurRadius: 16,
                           offset: const Offset(0, 4),
                         ),
@@ -201,10 +208,15 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
                       icon: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
                         transitionBuilder: (child, animation) {
-                          return ScaleTransition(scale: animation, child: child);
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
                         },
                         child: Icon(
-                          playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                          playing
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
                           key: ValueKey(playing),
                         ),
                       ),
@@ -247,25 +259,6 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
                     },
                   ),
                   const SizedBox(height: 8),
-
-                  // Time indicators
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _formatDuration(position),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
-                      ),
-                      Text(
-                        _formatDuration(duration),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             );
@@ -275,18 +268,26 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
     );
   }
 
-  Widget _buildControlButton(IconData icon, VoidCallback onPressed, {bool enabled = true}) {
+  Widget _buildControlButton(
+    IconData icon,
+    VoidCallback onPressed, {
+    bool enabled = true,
+  }) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: enabled ? 1.0 : 0.5),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(
+          alpha: enabled ? 1.0 : 0.5,
+        ),
       ),
       child: IconButton(
         icon: Icon(icon),
         iconSize: 32,
         color: enabled
             ? Theme.of(context).colorScheme.onSurfaceVariant
-            : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+            : Theme.of(
+                context,
+              ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
         onPressed: enabled ? onPressed : null,
         padding: const EdgeInsets.all(16),
       ),
@@ -310,7 +311,9 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
           Text(
             'Chargement...',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -324,7 +327,7 @@ class _SongPlayerWidgetState extends State<SongPlayerWidget>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
         audioHandler.mediaItem,
         AudioService.position,
-            (mediaItem, position) => MediaState(mediaItem, position),
+        (mediaItem, position) => MediaState(mediaItem, position),
       );
 
   String _formatDuration(Duration duration) {

@@ -37,8 +37,8 @@ class _SearchResultsState extends State<SearchResults> {
     _loading = true;
     _loadingMore = false;
     fetchSearchSong(widget.search, widget.type, _pageCurrent).then((
-        SearchResult searchResult,
-        ) {
+      SearchResult searchResult,
+    ) {
       setState(() {
         _loading = false;
         _pageCount = searchResult.pageCount;
@@ -63,7 +63,7 @@ class _SearchResultsState extends State<SearchResults> {
         _pageCurrent++;
       });
       fetchSearchSong(widget.search, widget.type, _pageCurrent).then(
-            (SearchResult searchResult) => setState(() {
+        (SearchResult searchResult) => setState(() {
           _loadingMore = false;
           _songLinks = [..._songLinks!, ...searchResult.songLinks];
         }),
@@ -168,7 +168,10 @@ class _SearchState extends State<Search> {
                     const Text('Résultats de recherche'),
                     Text(
                       '"${_controller.text}"',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ],
                 ),
@@ -192,34 +195,41 @@ class _SearchState extends State<Search> {
     return Theme(
       data: theme.copyWith(
         filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            backgroundColor: Colors.orangeAccent, // Use your app's orange accent
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0), // Match your app's button theme
-            ),
-            elevation: 2,
-            shadowColor: Colors.orange.withValues(alpha: 0.3),
-          ).copyWith(
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                  (Set<WidgetState> states) {
-                if (states.contains(WidgetState.hovered)) {
-                  return Colors.white.withValues(alpha: 0.08);
-                }
-                if (states.contains(WidgetState.focused) ||
-                    states.contains(WidgetState.pressed)) {
-                  return Colors.white.withValues(alpha: 0.12);
-                }
-                return null;
-              },
-            ),
-          ),
+          style:
+              FilledButton.styleFrom(
+                backgroundColor: Colors.orangeAccent,
+                // Use your app's orange accent
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 24,
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    20.0,
+                  ), // Match your app's button theme
+                ),
+                elevation: 2,
+                shadowColor: Colors.orange.withValues(alpha: 0.3),
+              ).copyWith(
+                overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                  Set<WidgetState> states,
+                ) {
+                  if (states.contains(WidgetState.hovered)) {
+                    return Colors.white.withValues(alpha: 0.08);
+                  }
+                  if (states.contains(WidgetState.focused) ||
+                      states.contains(WidgetState.pressed)) {
+                    return Colors.white.withValues(alpha: 0.12);
+                  }
+                  return null;
+                }),
+              ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -239,24 +249,25 @@ class _SearchState extends State<Search> {
           ),
         ),
         iconButtonTheme: IconButtonThemeData(
-          style: IconButton.styleFrom(
-            foregroundColor: Colors.orange,
-            backgroundColor: Colors.transparent,
-            padding: const EdgeInsets.all(8),
-          ).copyWith(
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                  (Set<WidgetState> states) {
-                if (states.contains(WidgetState.hovered)) {
-                  return Colors.orange.withValues(alpha: 0.08);
-                }
-                if (states.contains(WidgetState.focused) ||
-                    states.contains(WidgetState.pressed)) {
-                  return Colors.orange.withValues(alpha: 0.12);
-                }
-                return null;
-              },
-            ),
-          ),
+          style:
+              IconButton.styleFrom(
+                foregroundColor: Colors.orange,
+                backgroundColor: Colors.transparent,
+                padding: const EdgeInsets.all(8),
+              ).copyWith(
+                overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                  Set<WidgetState> states,
+                ) {
+                  if (states.contains(WidgetState.hovered)) {
+                    return Colors.orange.withValues(alpha: 0.08);
+                  }
+                  if (states.contains(WidgetState.focused) ||
+                      states.contains(WidgetState.pressed)) {
+                    return Colors.orange.withValues(alpha: 0.12);
+                  }
+                  return null;
+                }),
+              ),
         ),
       ),
       child: Scaffold(
@@ -283,7 +294,10 @@ class _SearchState extends State<Search> {
 
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
                   child: DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -296,11 +310,7 @@ class _SearchState extends State<Search> {
                         value: type.value,
                         child: Row(
                           children: [
-                            Icon(
-                              type.icon,
-                              size: 20,
-                              color: Colors.orange,
-                            ),
+                            Icon(type.icon, size: 20, color: Colors.orange),
                             const SizedBox(width: 12),
                             Expanded(child: Text(type.label)),
                           ],
@@ -331,19 +341,18 @@ class _SearchState extends State<Search> {
                 controller: _controller,
                 focusNode: _focusNode,
                 hintText: 'Entrez votre recherche...',
-                leading: Icon(
-                  currentSearchType.icon,
-                  color: Colors.orange,
-                ),
-                trailing: _controller.text.isNotEmpty ? [
-                  IconButton(
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.clear),
-                  ),
-                ] : null,
+                leading: Icon(currentSearchType.icon, color: Colors.orange),
+                trailing: _controller.text.isNotEmpty
+                    ? [
+                        IconButton(
+                          onPressed: () {
+                            _controller.clear();
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.clear),
+                        ),
+                      ]
+                    : null,
                 onSubmitted: (_) => performSearch(),
                 onChanged: (_) => setState(() {}),
               ),
@@ -355,17 +364,19 @@ class _SearchState extends State<Search> {
                 onPressed: _isSearching ? null : performSearch,
                 icon: _isSearching
                     ? SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                )
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            theme.colorScheme.onPrimary,
+                          ),
+                        ),
+                      )
                     : const Icon(Icons.search),
-                label: Text(_isSearching ? 'Recherche...' : 'Lancer la recherche'),
+                label: Text(
+                  _isSearching ? 'Recherche...' : 'Lancer la recherche',
+                ),
               ),
             ],
           ),

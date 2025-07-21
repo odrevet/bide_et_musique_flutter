@@ -13,7 +13,11 @@ import 'account/bidebox.dart';
 import 'html_with_style.dart';
 import 'pochettoscope.dart';
 
-void openAccountImageViewerDialog(BuildContext context, NetworkImage image, String title) {
+void openAccountImageViewerDialog(
+  BuildContext context,
+  NetworkImage image,
+  String title,
+) {
   Navigator.of(context).push(
     MaterialPageRoute<void>(
       builder: (BuildContext context) {

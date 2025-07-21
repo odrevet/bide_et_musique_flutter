@@ -197,7 +197,7 @@ class _SongAppBarState extends State<SongAppBar> {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// Enhanced Bottom Sheet with Better UX
+// Bottom Sheet
 
 class SongActionBottomSheet extends StatefulWidget {
   final Song song;
@@ -231,9 +231,6 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-
-          // Song info header
-          _buildSongHeader(theme),
 
           // Scrollable content
           Expanded(
@@ -269,50 +266,6 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
                 const SizedBox(height: 8),
                 SongOpenInBrowserIconWidget(widget.song),
                 const SizedBox(height: 16),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSongHeader(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-        border: Border(
-          bottom: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2),
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.music_note, size: 32, color: theme.colorScheme.primary),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.song.name,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (widget.song.artist?.isNotEmpty == true)
-                  Text(
-                    widget.song.artist!,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
               ],
             ),
           ),
@@ -378,7 +331,7 @@ class _SongActionBottomSheetState extends State<SongActionBottomSheet> {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// Enhanced Action Widgets
+// Action Widgets
 
 class SongFavoriteIconWidget extends StatefulWidget {
   final Song song;
@@ -551,7 +504,7 @@ class _SongVoteIconWidgetState extends State<SongVoteIconWidget> {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// Enhanced Share and Copy Widgets
+// Share and Copy Widgets
 
 class SongShareIconWidget extends StatelessWidget {
   final Song song;
