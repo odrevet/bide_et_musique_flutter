@@ -143,53 +143,66 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
     }
 
     //no url match from deep link or not launched from deep link
-    home = OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        return Scaffold(
+    home = OrientationBuilder(
+      builder: (context, orientation) {
+        if (orientation == Orientation.portrait) {
+          return Scaffold(
             appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
             bottomNavigationBar: SizedBox(
-                child: BottomAppBar(
-                    child: PlayerWidget(orientation, _songAiring))),
+              child: BottomAppBar(
+                child: PlayerWidget(orientation, _songAiring),
+              ),
+            ),
             drawer: const DrawerWidget(),
             body: Padding(
               padding: const EdgeInsets.all(6.0),
               child: airingWidget,
-            ));
-      } else {
-        return Scaffold(
+            ),
+          );
+        } else {
+          return Scaffold(
             appBar: AppBar(title: SongAiringTitle(orientation, _songAiring)),
             drawer: const DrawerWidget(),
             body: Row(
               children: <Widget>[
                 Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: airingWidget,
-                )),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: airingWidget,
+                  ),
+                ),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       FutureBuilder<SongAiring>(
-                          future: _songAiring,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<SongAiring> snapshot) {
-                            if (snapshot.hasData) {
-                              return SongInformations(
-                                  song: snapshot.data!, compact: true);
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          }),
+                        future: _songAiring,
+                        builder:
+                            (
+                              BuildContext context,
+                              AsyncSnapshot<SongAiring> snapshot,
+                            ) {
+                              if (snapshot.hasData) {
+                                return SongInformations(
+                                  song: snapshot.data!,
+                                  compact: true,
+                                );
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            },
+                      ),
                       PlayerWidget(orientation, _songAiring!),
                     ],
                   ),
-                )
+                ),
               ],
-            ));
-      }
-    });
+            ),
+          );
+        }
+      },
+    );
 
     var textTheme = const TextTheme(
       displayLarge: TextStyle(

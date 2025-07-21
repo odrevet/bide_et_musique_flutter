@@ -41,10 +41,13 @@ class Schedule extends StatelessWidget {
       rows.add(ListTile(title: Text(daySchedule!.day)));
 
       for (ScheduleEntry scheduleEntry in daySchedule.entries) {
-        rows.add(ListTile(
+        rows.add(
+          ListTile(
             title: Text('${scheduleEntry.time} : ${scheduleEntry.title}'),
             subtitle: Text(scheduleEntry.duration),
-            onTap: () => onLinkTap(baseUri + scheduleEntry.href, context)));
+            onTap: () => onLinkTap(baseUri + scheduleEntry.href, context),
+          ),
+        );
       }
     }
 

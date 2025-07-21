@@ -17,14 +17,17 @@ Future<Account> fetchAccount(int? accountId) async {
   //so we never fetch this special own account page, we fetch it
   //without identification and parse it like any other page
   final bool ownAccount = accountId == Session.accountLink.id;
-  final response =
-      ownAccount ? await http.get(Uri.parse(url)) : await Session.get(url);
+  final response = ownAccount
+      ? await http.get(Uri.parse(url))
+      : await Session.get(url);
 
   if (response.statusCode == 200) {
     var body = response.body;
     dom.Document document = parser.parse(body);
-    var txtpresentation =
-        document.getElementsByClassName('txtpresentation')[0].innerHtml.trim();
+    var txtpresentation = document
+        .getElementsByClassName('txtpresentation')[0]
+        .innerHtml
+        .trim();
     account.presentation = txtpresentation;
     account.name = document
         .getElementsByClassName('titre-utilisateur')[0]
@@ -49,9 +52,11 @@ Future<Account> fetchAccount(int? accountId) async {
 
     //bm tables list favourite songs or messages, either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage =
-        document.getElementsByClassName('titre-message').isNotEmpty;
-    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
+    bool hasMessage = document
+        .getElementsByClassName('titre-message')
+        .isNotEmpty;
+    bool hasFavorite =
+        (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 
     //parse favorites
@@ -69,8 +74,10 @@ Future<Account> fetchAccount(int? accountId) async {
       for (dom.Element tr in table.getElementsByTagName('tr')) {
         var message = Message();
         dom.Element td = tr.children[0];
-        List<String> header =
-            td.getElementsByClassName('txtred')[0].text.split('\n');
+        List<String> header = td
+            .getElementsByClassName('txtred')[0]
+            .text
+            .split('\n');
         message.body = td.getElementsByTagName('p')[0].text;
         message.recipient = header[1].trim();
         message.date = header[2].trim();
@@ -103,9 +110,10 @@ Future<List<SongLink>> fetchVotes() async {
     trs.removeAt(0); //remove header
     for (var tr in trs) {
       var song = SongLink(
-          id: getIdFromUrl(tr.children[3].children[0].attributes['href']!)!,
-          name: tr.children[3].text,
-          artist: tr.children[2].text);
+        id: getIdFromUrl(tr.children[3].children[0].attributes['href']!)!,
+        name: tr.children[3].text,
+        artist: tr.children[2].text,
+      );
       songLinks.add(song);
     }
   } else {
@@ -128,9 +136,11 @@ Future<Account> fetchAccountSession() async {
     //bm table may list favourite songs or messages.
     //either are optional
     List<dom.Element> tables = document.getElementsByClassName('bmtable');
-    bool hasMessage =
-        document.getElementsByClassName('titre-message').isNotEmpty;
-    bool hasFavorite = (tables.length == 1 && !hasMessage) ||
+    bool hasMessage = document
+        .getElementsByClassName('titre-message')
+        .isNotEmpty;
+    bool hasFavorite =
+        (tables.length == 1 && !hasMessage) ||
         (tables.length == 2 && hasMessage);
 
     //parse favorites

@@ -21,16 +21,19 @@ class Program {
   Program({this.id, this.name, this.description, this.airedOn, this.type});
 
   Program.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        type = json['type'],
-        name = decodeHtmlEntities(json['name']),
-        description = json['description'] {
+    : id = json['id'],
+      type = json['type'],
+      name = decodeHtmlEntities(json['name']),
+      description = json['description'] {
     songs = <SongLink>[];
     for (var songEntry in json['songs']) {
-      songs!.add(SongLink(
+      songs!.add(
+        SongLink(
           id: songEntry['song_id'],
           name: decodeHtmlEntities(songEntry['name']),
-          artist: decodeHtmlEntities(songEntry['alias'])));
+          artist: decodeHtmlEntities(songEntry['alias']),
+        ),
+      );
     }
 
     airedOn = <String?>[];

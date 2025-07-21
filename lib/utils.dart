@@ -19,13 +19,9 @@ const baseUri = 'https://$host';
 const radioIcon = '\u{1F4FB}';
 const songIcon = '♪';
 
-var linkStyle = const TextStyle(
-  color: Colors.red,
-);
+var linkStyle = const TextStyle(color: Colors.red);
 
-var defaultStyle = const TextStyle(
-  color: Colors.black,
-);
+var defaultStyle = const TextStyle(color: Colors.black);
 
 int? getIdFromUrl(String url) {
   final idRegex = RegExp(r'(\d+).(?:html|php)$');
@@ -42,8 +38,9 @@ String decodeHtmlEntities(String htmlString) {
 //corresponding Widget or returns false otherwise
 Widget? handleLink(String url, BuildContext context) {
   RegExp regExp = RegExp(
-      r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
-      caseSensitive: false);
+    r'https?:\/\/www.bide-et-musique.com\/(\w+)\/(\d+).html',
+    caseSensitive: false,
+  );
 
   if (regExp.hasMatch(url) == true) {
     var type = regExp.firstMatch(url)![1];
@@ -52,7 +49,9 @@ Widget? handleLink(String url, BuildContext context) {
     switch (type) {
       case 'song':
         return SongPageWidget(
-            songLink: SongLink(id: id, name: ''), song: fetchSong(id));
+          songLink: SongLink(id: id, name: ''),
+          song: fetchSong(id),
+        );
       case 'account':
         return AccountPage(account: fetchAccount(id));
       case 'artist':
@@ -77,7 +76,7 @@ void onLinkTap(String url, BuildContext context) {
   }
 }
 
-launchURL(String url) async {
+Future<void> launchURL(String url) async {
   if (await canLaunchUrl(Uri.parse(url))) {
     await launchUrl(Uri.parse(url));
   } else {

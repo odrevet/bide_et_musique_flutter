@@ -14,9 +14,7 @@ class SongsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Les nouvelles entrées'),
-      ),
+      appBar: AppBar(title: const Text('Les nouvelles entrées')),
       body: Center(
         child: FutureBuilder<List<SongLink>>(
           future: songs,

@@ -13,25 +13,23 @@ class CoverThumb extends StatelessWidget {
   const CoverThumb(this._songLink, {super.key});
 
   Widget _sizedContainer({Widget? child}) {
-    return SizedBox(
-      width: 50.0,
-      height: 50.0,
-      child: Center(child: child),
-    );
+    return SizedBox(width: 50.0, height: 50.0, child: Center(child: child));
   }
 
   @override
   Widget build(BuildContext context) {
     final tag = createTag(_songLink!);
     return Hero(
-        tag: tag,
-        child: _sizedContainer(
-            child: CachedNetworkImage(
-                imageUrl: _songLink.thumbLink,
-                placeholder: (context, url) =>
-                    const Icon(Icons.album, size: 50.0),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.album, size: 50.0))));
+      tag: tag,
+      child: _sizedContainer(
+        child: CachedNetworkImage(
+          imageUrl: _songLink.thumbLink,
+          placeholder: (context, url) => const Icon(Icons.album, size: 50.0),
+          errorWidget: (context, url, error) =>
+              const Icon(Icons.album, size: 50.0),
+        ),
+      ),
+    );
   }
 }
 
@@ -40,52 +38,62 @@ class CoverWithGesture extends StatelessWidget {
   final Duration fadeInDuration;
   final bool displayPlaceholder;
 
-  const CoverWithGesture(
-      {super.key,
-      this.songLink,
-      this.fadeInDuration = const Duration(),
-      this.displayPlaceholder = false});
+  const CoverWithGesture({
+    super.key,
+    this.songLink,
+    this.fadeInDuration = const Duration(),
+    this.displayPlaceholder = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        direction: MediaQuery.of(context).orientation == Orientation.portrait
-            ? Axis.horizontal
-            : Axis.vertical,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(6.0, 6.0),
-                  blurRadius: 20,
+      direction: MediaQuery.of(context).orientation == Orientation.portrait
+          ? Axis.horizontal
+          : Axis.vertical,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(6.0, 6.0),
+                blurRadius: 20,
+              ),
+            ],
+          ),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SongPageWidget(
+                    songLink: songLink,
+                    song: fetchSong(songLink!.id),
+                  ),
                 ),
-              ],
+              );
+            },
+            onLongPress: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) {
+                    return CoverViewer(songLink);
+                  },
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: Cover(
+              songLink!.coverLink,
+              displayPlaceholder: displayPlaceholder,
+              fadeInDuration: fadeInDuration,
             ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SongPageWidget(
-                            songLink: songLink,
-                            song: fetchSong(songLink!.id))));
-              },
-              onLongPress: () {
-                Navigator.of(context).push(MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return CoverViewer(songLink);
-                    },
-                    fullscreenDialog: true));
-              },
-              child: Cover(songLink!.coverLink,
-                  displayPlaceholder: displayPlaceholder,
-                  fadeInDuration: fadeInDuration),
-            ),
-          )
-        ]);
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -94,10 +102,12 @@ class Cover extends StatelessWidget {
   final Duration fadeInDuration;
   final bool displayPlaceholder;
 
-  const Cover(this._url,
-      {this.fadeInDuration = const Duration(),
-      this.displayPlaceholder = false,
-      super.key});
+  const Cover(
+    this._url, {
+    this.fadeInDuration = const Duration(),
+    this.displayPlaceholder = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

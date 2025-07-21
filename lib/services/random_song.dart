@@ -12,6 +12,7 @@ Future<int?> fetchRandomSongId() async {
     return getIdFromUrl(location);
   } else {
     throw Exception(
-        'Failed to fetch random song id : HTTP status code was ${response.statusCode}');
+      'Failed to fetch random song id : HTTP status code was ${response.statusCode}',
+    );
   }
 }

@@ -38,14 +38,15 @@ class _WallWidgetState extends State<WallWidget> {
     });
   }
 
-  _newMessageDialog(BuildContext context) {
+  Future<void> _newMessageDialog(BuildContext context) {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
+          ),
           actions: <Widget>[
             ElevatedButton.icon(
               icon: const Icon(Icons.send),
@@ -56,17 +57,20 @@ class _WallWidgetState extends State<WallWidget> {
                 _newMessageController.text = '';
 
                 if (!mounted) return;
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
-            )
+            ),
           ],
           title: const Text('Nouveau message'),
           content: TextFormField(
-              maxLines: 5,
-              controller: _newMessageController,
-              decoration: const InputDecoration(
-                hintText: 'Entrez votre message ici',
-              )),
+            maxLines: 5,
+            controller: _newMessageController,
+            decoration: const InputDecoration(
+              hintText: 'Entrez votre message ici',
+            ),
+          ),
         );
       },
     );
@@ -84,9 +88,7 @@ class _WallWidgetState extends State<WallWidget> {
           );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quoi de neuf ?'),
-      ),
+      appBar: AppBar(title: const Text('Quoi de neuf ?')),
       floatingActionButton: postNew,
       body: Center(
         child: FutureBuilder<List<Post>>(
@@ -109,54 +111,59 @@ class _WallWidgetState extends State<WallWidget> {
   Widget _buildView(BuildContext context, List<Post> posts) {
     var rows = <Widget>[];
     for (Post post in posts) {
-      rows.add(Card(
-        child: Column(
-          children: [
-            RichText(
-              text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.black,
-                  ),
+      rows.add(
+        Card(
+          child: Column(
+            children: [
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(fontSize: 14.0, color: Colors.black),
                   children: [
                     TextSpan(
                       text: post.author.name,
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AccountPage(
-                                    account: fetchAccount(post.author.id)))),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AccountPage(
+                              account: fetchAccount(post.author.id),
+                            ),
+                          ),
+                        ),
                     ),
-                    TextSpan(
-                      text: ' ${post.time} pendant ',
-                    ),
+                    TextSpan(text: ' ${post.time} pendant '),
                     TextSpan(
                       text: post.during.name,
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SongPageWidget(
-                                    songLink: SongLink(
-                                        id: post.during.id,
-                                        name: post.during.name),
-                                    song: fetchSong(post.during.id)))),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SongPageWidget(
+                              songLink: SongLink(
+                                id: post.during.id,
+                                name: post.during.name,
+                              ),
+                              song: fetchSong(post.during.id),
+                            ),
+                          ),
+                        ),
                     ),
-                  ]),
-            ),
-            const Divider(),
-            HtmlWithStyle(
-              data: post.body,
-            )
-          ],
+                  ],
+                ),
+              ),
+              const Divider(),
+              HtmlWithStyle(data: post.body),
+            ],
+          ),
         ),
-      ));
+      );
     }
 
     return RefreshIndicator(
-        onRefresh: _updatePosts, child: ListView(children: rows));
+      onRefresh: _updatePosts,
+      child: ListView(children: rows),
+    );
   }
 }

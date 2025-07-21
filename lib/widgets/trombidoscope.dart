@@ -23,10 +23,12 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     super.initState();
     _controller.addListener(_scrollListener);
     _isLoading = true;
-    fetchTrombidoscope().then((accounts) => setState(() {
-          _isLoading = false;
-          _accountLinks = [..._accountLinks, ...accounts];
-        }));
+    fetchTrombidoscope().then(
+      (accounts) => setState(() {
+        _isLoading = false;
+        _accountLinks = [..._accountLinks, ...accounts];
+      }),
+    );
   }
 
   @override
@@ -35,17 +37,19 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     _controller.removeListener(_scrollListener);
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
         _isLoading == false) {
       setState(() {
         _isLoading = true;
       });
-      fetchTrombidoscope().then((accounts) => setState(() {
-            _isLoading = false;
-            _accountLinks = [..._accountLinks, ...accounts];
-          }));
+      fetchTrombidoscope().then(
+        (accounts) => setState(() {
+          _isLoading = false;
+          _accountLinks = [..._accountLinks, ...accounts];
+        }),
+      );
     }
   }
 
@@ -54,47 +58,58 @@ class _TrombidoscopeWidgetState extends State<TrombidoscopeWidget> {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Le trombidoscope'),
+      appBar: AppBar(title: const Text('Le trombidoscope')),
+      body: GridView.builder(
+        itemCount: _accountLinks.length,
+        controller: _controller,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: orientation == Orientation.portrait ? 1 : 3,
         ),
-        body: GridView.builder(
-            itemCount: _accountLinks.length,
-            controller: _controller,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: orientation == Orientation.portrait ? 1 : 3),
-            itemBuilder: (BuildContext context, int index) {
-              var account = _accountLinks[index];
-              final url = baseUri + account.image!;
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountPage(
-                                account: fetchAccount(account.id))));
-                  },
-                  onLongPress: () {
-                    openAccountImageViewerDialog(
-                        context, NetworkImage(url), account.name);
-                  },
-                  child: Column(
-                    children: [
-                      Text(account.name!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 16.0,
-                          )),
-                      Expanded(
-                          child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: NetworkImage(url),
-                        )),
-                      )),
-                    ],
-                  ));
-            }));
+        itemBuilder: (BuildContext context, int index) {
+          var account = _accountLinks[index];
+          final url = baseUri + account.image!;
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AccountPage(account: fetchAccount(account.id)),
+                ),
+              );
+            },
+            onLongPress: () {
+              openAccountImageViewerDialog(
+                context,
+                NetworkImage(url),
+                account.name!,
+              );
+            },
+            child: Column(
+              children: [
+                Text(
+                  account.name!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 16.0,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(url),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

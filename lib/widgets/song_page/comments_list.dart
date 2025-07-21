@@ -19,35 +19,41 @@ class CommentsList extends StatelessWidget {
     List<Comment> comments = song.comments;
     var rows = <Widget>[];
     String? loginName = Session.accountLink.name;
-    var selfComment = const TextStyle(
-      color: Colors.red,
-    );
+    var selfComment = const TextStyle(color: Colors.red);
 
     if (comments.length > 1) {
       for (Comment comment in comments) {
-        rows.add(ListTile(
+        rows.add(
+          ListTile(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AccountPage(
-                          account: fetchAccount(comment.author.id))));
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AccountPage(account: fetchAccount(comment.author.id)),
+                ),
+              );
             },
             title: HtmlWithStyle(data: comment.body),
-            subtitle: Text('Par ${comment.author.name!} ${comment.time}',
-                style: comment.author.name == loginName ? selfComment : null),
+            subtitle: Text(
+              'Par ${comment.author.name!} ${comment.time}',
+              style: comment.author.name == loginName ? selfComment : null,
+            ),
             trailing: comment.author.name == loginName
                 ? IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () async {
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CommentDialog(song, songLink, comment);
-                          });
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CommentDialog(song, songLink, comment);
+                        },
+                      );
                     },
                   )
-                : null));
+                : null,
+          ),
+        );
         rows.add(const Divider());
       }
       return ListView(children: rows);

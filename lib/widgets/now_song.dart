@@ -16,9 +16,7 @@ class NowSongsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Morceau du moment'),
-      ),
+      appBar: AppBar(title: const Text('Morceau du moment')),
       body: Center(
         child: FutureBuilder<List<NowSong>>(
           future: nowSongs,
@@ -41,12 +39,16 @@ class NowSongsWidget extends StatelessWidget {
     var rows = <ListTile>[];
 
     for (NowSong nowSong in nowSongs) {
-      rows.add(ListTile(
+      rows.add(
+        ListTile(
           onTap: () => launchSongPage(nowSong.songLink!, context),
           leading: CoverThumb(nowSong.songLink),
           title: HtmlWithStyle(
-              data: '${nowSong.songLink!.name}<br/>${nowSong.desc}'),
-          subtitle: Text('Le ${nowSong.date}')));
+            data: '${nowSong.songLink!.name}<br/>${nowSong.desc}',
+          ),
+          subtitle: Text('Le ${nowSong.date}'),
+        ),
+      );
     }
 
     return ListView(children: rows);

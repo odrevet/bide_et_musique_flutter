@@ -60,11 +60,12 @@ class LoggedInPage extends StatelessWidget {
         body: TabBarView(
           children: [
             ManageAccountPageWidget(
-                account: fetchAccount(Session.accountLink.id)),
+              account: fetchAccount(Session.accountLink.id),
+            ),
             const ManageFavoritesWidget(),
             VoteListing(fetchVotes()),
             BideBoxWidget(exchanges: fetchExchanges()),
-            const RequestsPageWidget()
+            const RequestsPageWidget(),
           ],
         ),
       ),
@@ -81,21 +82,23 @@ class VoteListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SongLink>>(
-        future: songLinks,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data!.isEmpty) {
-              return const Center(
-                  child: Text('Vous n\'avez pas voté cette semaine. '));
-            } else {
-              return SongListingWidget(snapshot.data);
-            }
-          } else if (snapshot.hasError) {
-            return Center(child: Text("${snapshot.error}"));
+      future: songLinks,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('Vous n\'avez pas voté cette semaine. '),
+            );
+          } else {
+            return SongListingWidget(snapshot.data);
           }
+        } else if (snapshot.hasError) {
+          return Center(child: Text("${snapshot.error}"));
+        }
 
-          return const Center(child: CircularProgressIndicator());
-        });
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }
 
@@ -130,57 +133,76 @@ class ManageAccountPageWidget extends StatelessWidget {
     return Container(
       color: Theme.of(context).canvasColor,
       child: Center(
-          child: Column(
-        children: <Widget>[
-          Expanded(
+        child: Column(
+          children: <Widget>[
+            Expanded(
               flex: 3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                      child: InkWell(
-                          onTap: () {
-                            openAccountImageViewerDialog(
-                                context, image, account.name);
-                          },
-                          child: Image.network(url))),
+                    child: InkWell(
+                      onTap: () {
+                        openAccountImageViewerDialog(
+                          context,
+                          image,
+                          account.name!,
+                        );
+                      },
+                      child: Image.network(url),
+                    ),
+                  ),
                   Expanded(
                     child: Text(
-                        '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}\n',
-                        style: const TextStyle(fontSize: 14)),
+                      '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}\n',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                 ],
-              )),
-          Expanded(
-            flex: 7,
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.fill,
-                alignment: FractionalOffset.topCenter,
-                image: image,
-              )),
-              child: Stack(children: [
-                PageView(
-                  children: <Widget>[
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
-                      child: Stack(children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade200.withOpacity(0.7)),
-                        ),
-                        SingleChildScrollView(
-                            child: HtmlWithStyle(data: account.presentation)),
-                      ]),
-                    )
-                  ],
-                )
-              ]),
+              ),
             ),
-          ),
-        ],
-      )),
+            Expanded(
+              flex: 7,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    alignment: FractionalOffset.topCenter,
+                    image: image,
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    PageView(
+                      children: <Widget>[
+                        BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                child: HtmlWithStyle(
+                                  data: account.presentation,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

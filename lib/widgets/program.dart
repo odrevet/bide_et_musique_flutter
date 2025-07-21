@@ -32,8 +32,9 @@ class _ProgramPageState extends State<ProgramPage> {
           }
 
           return Scaffold(
-              appBar: AppBar(title: const Text('Chargement')),
-              body: const Center(child: CircularProgressIndicator()));
+            appBar: AppBar(title: const Text('Chargement')),
+            body: const Center(child: CircularProgressIndicator()),
+          );
         },
       ),
     );
@@ -56,13 +57,15 @@ class _ProgramPageState extends State<ProgramPage> {
         title: Text(program.name!),
         actions: <Widget>[
           Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: program.description != null && program.airedOn!.isNotEmpty
-                  ? displayInfoButton(program)
-                  : null),
+            padding: const EdgeInsets.only(right: 20.0),
+            child: program.description != null && program.airedOn!.isNotEmpty
+                ? displayInfoButton(program)
+                : null,
+          ),
           Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: _switchViewButton())
+            padding: const EdgeInsets.only(right: 20.0),
+            child: _switchViewButton(),
+          ),
         ],
       ),
       body: Center(child: listing),
@@ -87,12 +90,13 @@ class _ProgramPageState extends State<ProgramPage> {
                 vertical: 20,
               ),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.0)),
+                borderRadius: BorderRadius.circular(24.0),
+              ),
               title: Text(program.name!),
               children: [
                 HtmlWithStyle(data: program.description),
                 if (program.airedOn!.isNotEmpty)
-                  Text('Dernière diffusion $airedOn')
+                  Text('Dernière diffusion $airedOn'),
               ],
             );
           },
@@ -109,9 +113,7 @@ class _ProgramPageState extends State<ProgramPage> {
           _viewPochettoscope = !_viewPochettoscope;
         });
       },
-      child: Icon(
-        _viewPochettoscope == true ? Icons.image : Icons.queue_music,
-      ),
+      child: Icon(_viewPochettoscope == true ? Icons.image : Icons.queue_music),
     );
   }
 }

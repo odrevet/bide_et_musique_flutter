@@ -16,8 +16,11 @@ abstract class Session {
   }
 
   static Future<http.Response> post(String url, {body}) async {
-    http.Response response =
-        await http.post(Uri.parse(url), body: body, headers: headers);
+    http.Response response = await http.post(
+      Uri.parse(url),
+      body: body,
+      headers: headers,
+    );
     _updateCookie(response);
     return response;
   }
@@ -26,8 +29,9 @@ abstract class Session {
     String? rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
-      headers['cookie'] =
-          (index == -1) ? rawCookie : rawCookie.substring(0, index);
+      headers['cookie'] = (index == -1)
+          ? rawCookie
+          : rawCookie.substring(0, index);
     }
   }
 }

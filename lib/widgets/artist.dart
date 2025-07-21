@@ -27,12 +27,8 @@ class ArtistPageWidget extends StatelessWidget {
           var loadingMessage = 'Chargement';
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text(loadingMessage),
-            ),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
+            appBar: AppBar(title: Text(loadingMessage)),
+            body: const Center(child: CircularProgressIndicator()),
           );
         },
       ),
@@ -51,58 +47,67 @@ class ArtistPageWidget extends StatelessWidget {
             automaticallyImplyLeading: false,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-                background: Row(children: [
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: InkWell(child: Image.network(urlArtistImage))),
-                      Expanded(
+              background: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: InkWell(child: Image.network(urlArtistImage)),
+                        ),
+                        Expanded(
                           child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          if (artist.site != null)
-                            GestureDetector(
-                              onTap: () => launchURL(artist.site!),
-                              child: Text(artist.site!, style: linkStyle),
-                            ),
-                          Text(artist.alias!),
-                          if (artist.dates != null) Text(artist.dates!)
-                        ],
-                      )),
-                    ],
-                  ))
-            ])),
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              if (artist.site != null)
+                                GestureDetector(
+                                  onTap: () => launchURL(artist.site!),
+                                  child: Text(artist.site!, style: linkStyle),
+                                ),
+                              Text(artist.alias!),
+                              if (artist.dates != null) Text(artist.dates!),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ];
       },
       body: Center(
-          child: Container(
-        decoration: BoxDecoration(
+        child: Container(
+          decoration: BoxDecoration(
             image: DecorationImage(
-          fit: BoxFit.fill,
-          alignment: FractionalOffset.topCenter,
-          image: NetworkImage(urlArtistImage),
-        )),
-        child: Stack(children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
-            child: Container(
-              decoration:
-                  BoxDecoration(color: Colors.grey.shade200.withOpacity(0.7)),
+              fit: BoxFit.fill,
+              alignment: FractionalOffset.topCenter,
+              image: NetworkImage(urlArtistImage),
             ),
           ),
-          SongListingWidget(artist.disco)
-        ]),
-      )),
+          child: Stack(
+            children: [
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200.withValues(alpha: 0.7),
+                  ),
+                ),
+              ),
+              SongListingWidget(artist.disco),
+            ],
+          ),
+        ),
+      ),
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(artist.alias!),
-      ),
+      appBar: AppBar(title: Text(artist.alias!)),
       body: nestedScrollView,
     );
   }

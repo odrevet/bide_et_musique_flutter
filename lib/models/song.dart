@@ -11,14 +11,15 @@ class SongLink {
   String? cover;
   int? index;
 
-  SongLink(
-      {required this.id,
-      required this.name,
-      this.artist,
-      this.cover,
-      this.info,
-      this.index,
-      this.isNew = false});
+  SongLink({
+    required this.id,
+    required this.name,
+    this.artist,
+    this.cover,
+    this.info,
+    this.index,
+    this.isNew = false,
+  });
 
   String get streamLink {
     return '$baseUri/stream_$id.php';
@@ -75,26 +76,27 @@ class Song extends SongLink {
   });
 
   Song.fromJson(Map<String, dynamic> json)
-      : year = json['year'],
-        artistId = json['artists']['main']['id'],
-        author = json['authors'],
-        duration = Duration(seconds: json['length']['raw']),
-        durationPretty = json['length']['pretty'],
-        label = decodeHtmlEntities(json['label']),
-        reference = decodeHtmlEntities(json['reference']),
-        lyrics = json['lyrics'],
-        super(
-            id: json['id'],
-            name: decodeHtmlEntities(json['name']),
-            artist: decodeHtmlEntities(json['artists']['main']['alias']),
-            cover: json['covers']['main']);
+    : year = json['year'],
+      artistId = json['artists']['main']['id'],
+      author = json['authors'],
+      duration = Duration(seconds: json['length']['raw']),
+      durationPretty = json['length']['pretty'],
+      label = decodeHtmlEntities(json['label']),
+      reference = decodeHtmlEntities(json['reference']),
+      lyrics = json['lyrics'],
+      super(
+        id: json['id'],
+        name: decodeHtmlEntities(json['name']),
+        artist: decodeHtmlEntities(json['artists']['main']['alias']),
+        cover: json['covers']['main'],
+      );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'artist': artist,
-        'duration': duration!.inSeconds
-      };
+    'id': id,
+    'name': name,
+    'artist': artist,
+    'duration': duration!.inSeconds,
+  };
 }
 
 class SongAiring extends Song {
@@ -103,10 +105,11 @@ class SongAiring extends Song {
   final Program program;
 
   SongAiring.fromJson(super.json)
-      : elapsedPcent = json['now']['elapsed_pcent'],
-        nbListeners = json['now']['nb_listeners'],
-        program = Program(
-            id: json['now']['program']['id'],
-            name: decodeHtmlEntities(json['now']['program']['name'])),
-        super.fromJson();
+    : elapsedPcent = json['now']['elapsed_pcent'],
+      nbListeners = json['now']['nb_listeners'],
+      program = Program(
+        id: json['now']['program']['id'],
+        name: decodeHtmlEntities(json['now']['program']['name']),
+      ),
+      super.fromJson();
 }
