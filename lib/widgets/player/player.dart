@@ -25,6 +25,34 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
+  // listen for radio mode changes
+  late StreamController<bool> _radioModeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _radioModeController = StreamController<bool>.broadcast();
+    _initRadioModeStream();
+  }
+
+  void _initRadioModeStream() async {
+    // Get initial radio mode
+    final initialMode = await audioHandler.customAction('get_radio_mode') as bool;
+    _radioModeController.add(initialMode);
+
+    // Listen for playback state changes and update radio mode accordingly
+    audioHandler.playbackState.listen((state) async {
+      final radioMode = await audioHandler.customAction('get_radio_mode') as bool;
+      _radioModeController.add(radioMode);
+    });
+  }
+
+  @override
+  void dispose() {
+    _radioModeController.close();
+    super.dispose();
+  }
+
   IconButton _button(IconData iconData, VoidCallback onPressed) {
     return IconButton(
       icon: Icon(iconData),
@@ -42,12 +70,11 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
         if (!playing) return RadioStreamButton(widget._songAiring);
 
-        return FutureBuilder<dynamic>(
-          future: audioHandler.customAction('get_radio_mode'),
+        return StreamBuilder<bool>(
+          stream: _radioModeController.stream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) return const CircularProgressIndicator();
-
-            final radioMode = snapshot.data as bool;
+            final radioMode = snapshot.data!;
 
             if (radioMode) {
               return Row(
@@ -107,10 +134,10 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
         final buttons = playing
             ? [
-                _button(Icons.fast_rewind_rounded, audioHandler.rewind),
-                _button(Icons.stop, audioHandler.stop),
-                _button(Icons.fast_forward_rounded, audioHandler.fastForward),
-              ]
+          _button(Icons.fast_rewind_rounded, audioHandler.rewind),
+          _button(Icons.stop, audioHandler.stop),
+          _button(Icons.fast_forward_rounded, audioHandler.fastForward),
+        ]
             : [_button(Icons.stop, audioHandler.stop)];
 
         return Row(
@@ -141,6 +168,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
         audioHandler.mediaItem,
         AudioService.position,
-        (item, pos) => MediaState(item, pos),
+            (item, pos) => MediaState(item, pos),
       );
 }
