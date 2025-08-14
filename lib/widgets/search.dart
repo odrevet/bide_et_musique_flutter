@@ -303,7 +303,7 @@ class _SearchState extends State<Search> {
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
                     ),
-                    value: _currentItem,
+                    initialValue: _currentItem,
                     isExpanded: true,
                     items: _searchTypes.map((SearchType type) {
                       return DropdownMenuItem<String>(

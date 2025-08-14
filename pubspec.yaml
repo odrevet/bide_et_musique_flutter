@@ -14,11 +14,11 @@ dependencies:
   diacritic: ^0.1.0
   flutter_html: ^3.0.0-beta.2
   html: ^0.15.0
-  http: ^1.2.2
+  http: ^1.5.0
   just_audio: ^0.10.4
-  package_info_plus: ^8.0.1
+  package_info_plus: ^8.3.1
   page_indicator_plus: ^1.0.4
-  share_plus: ^11.0.0
+  share_plus: ^11.1.0
   shared_preferences: ^2.3.0
   url_launcher: ^6.1.5
   xml: ^6.5.0
