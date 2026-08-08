@@ -44,23 +44,7 @@ https://apps.apple.com/fr/app/bide-et-musique/id1524513644
 
 ## android
 
-* Editer le ficher `android/app/build.gradle` et dé-commenter
-
-```
-    /*signingConfigs {
-        release {
-            ...
-        }
-    }*/
-```
-
-ainsi que
-
-```
-//signingConfig signingConfigs.release
-```
-
-* Editer le fichier `android/key.properties` et ajouter les clés (secretes, ne pas les commit) ainsi que le chemin vers la clé privée .jks générée au préalable.
+ficher `android/app/build.gradle.kts` lit dans `android/key.properties` les infos pour signer. 
 
 * Créer un apk 
 
