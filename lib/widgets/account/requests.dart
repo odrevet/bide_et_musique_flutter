@@ -53,38 +53,51 @@ class _RequestsPageWidgetState extends State<RequestsPageWidget> {
 
   Widget _buildView(BuildContext context, List<Request> requests) {
     Widget listview = ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: requests.length,
       itemBuilder: (context, index) {
         var songLink = requests[index].songLink!;
         bool? isAvailable = requests[index].isAvailable;
 
-        Widget listTile = ListTile(
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SongPageWidget(
-                    songLink: songLink,
-                    song: fetchSong(songLink.id),
+        Widget listTile = Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+          child: ListTile(
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SongPageWidget(
+                      songLink: songLink,
+                      song: fetchSong(songLink.id),
+                    ),
                   ),
-                ),
-              );
-            },
-            child: CoverThumb(songLink),
+                );
+              },
+              child: CoverThumb(songLink),
+            ),
+            title: Text(songLink.name),
+            subtitle: Text(songLink.artist!),
+            trailing: songLink.isNew
+                ? Icon(Icons.fiber_new, color: Colors.orange.shade700)
+                : null,
+            onTap: () => setState(() {
+              if (isAvailable!) _selectedRequestId = songLink.id;
+            }),
           ),
-          title: Text(songLink.name),
-          subtitle: Text(songLink.artist!),
-          trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
-          onTap: () => setState(() {
-            if (isAvailable!) _selectedRequestId = songLink.id;
-          }),
         );
 
+        final theme = Theme.of(context);
         if (songLink.id == _selectedRequestId) {
-          return Material(color: Colors.orange[400], child: listTile);
+          return Material(
+            color: theme.colorScheme.primaryContainer,
+            child: listTile,
+          );
         } else if (isAvailable != true) {
-          return Material(color: Colors.red[300], child: listTile);
+          return Material(
+            color: theme.colorScheme.errorContainer,
+            child: listTile,
+          );
         } else {
           return listTile;
         }

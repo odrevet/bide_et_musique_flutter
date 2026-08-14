@@ -19,9 +19,9 @@ const baseUri = 'https://$host';
 const radioIcon = '\u{1F4FB}';
 const songIcon = '♪';
 
-var linkStyle = const TextStyle(color: Colors.red);
+final linkStyle = const TextStyle(color: Colors.red);
 
-var defaultStyle = const TextStyle(color: Colors.black);
+final defaultStyle = const TextStyle(color: Colors.black87);
 
 int? getIdFromUrl(String url) {
   final idRegex = RegExp(r'(\d+).(?:html|php)$');
@@ -31,7 +31,7 @@ int? getIdFromUrl(String url) {
 
 String decodeHtmlEntities(String htmlString) {
   var document = parser.parse(htmlString);
-  return parser.parse(document.body!.text).documentElement!.text;
+  return document.body!.text;
 }
 
 //handle an url (e.g deep link) if the app can understand it returns the

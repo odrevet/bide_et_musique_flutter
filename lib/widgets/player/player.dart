@@ -25,31 +25,25 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget>
     with WidgetsBindingObserver {
-  // listen for radio mode changes
-  late StreamController<bool> _radioModeController;
+  late final AudioPlayerHandler _handler;
+  bool _radioMode = false;
+  StreamSubscription? _playbackSub;
 
   @override
   void initState() {
     super.initState();
-    _radioModeController = StreamController<bool>.broadcast();
-    _initRadioModeStream();
-  }
-
-  void _initRadioModeStream() async {
-    // Get initial radio mode
-    final initialMode = await audioHandler.customAction('get_radio_mode') as bool;
-    _radioModeController.add(initialMode);
-
-    // Listen for playback state changes and update radio mode accordingly
-    audioHandler.playbackState.listen((state) async {
-      final radioMode = await audioHandler.customAction('get_radio_mode') as bool;
-      _radioModeController.add(radioMode);
+    _handler = audioHandler as AudioPlayerHandler;
+    _radioMode = _handler.radioMode;
+    _playbackSub = audioHandler.playbackState.listen((_) {
+      if (mounted) {
+        setState(() => _radioMode = _handler.radioMode);
+      }
     });
   }
 
   @override
   void dispose() {
-    _radioModeController.close();
+    _playbackSub?.cancel();
     super.dispose();
   }
 
@@ -58,6 +52,54 @@ class _PlayerWidgetState extends State<PlayerWidget>
       icon: Icon(iconData),
       iconSize: 32.0,
       onPressed: onPressed,
+    );
+  }
+
+  Widget _buildRadioStopButton() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        gradient: LinearGradient(
+          colors: [Colors.orange.shade400, Colors.deepOrange.shade500],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.orange.shade300.withValues(alpha: 0.5),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(28),
+          onTap: audioHandler.stop,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.stop,
+                  size: 22,
+                  color: Colors.white.withValues(alpha: 0.9),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  "Éteindre la radio",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.95),
+                    letterSpacing: 0.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -70,27 +112,19 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
         if (!playing) return RadioStreamButton(widget._songAiring);
 
-        return StreamBuilder<bool>(
-          stream: _radioModeController.stream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const CircularProgressIndicator();
-            final radioMode = snapshot.data!;
+        if (_radioMode) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [_buildRadioStopButton()],
+          );
+        }
 
-            if (radioMode) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [_button(Icons.stop, audioHandler.stop)],
-              );
-            }
-
-            return Row(
-              children: [
-                _buildSongThumbnail(),
-                _buildControls(),
-                _buildSeekBar(),
-              ],
-            );
-          },
+        return Row(
+          children: [
+            _buildSongThumbnail(),
+            _buildControls(),
+            _buildSeekBar(),
+          ],
         );
       },
     );
@@ -134,10 +168,10 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
         final buttons = playing
             ? [
-          _button(Icons.fast_rewind_rounded, audioHandler.rewind),
-          _button(Icons.stop, audioHandler.stop),
-          _button(Icons.fast_forward_rounded, audioHandler.fastForward),
-        ]
+                _button(Icons.fast_rewind_rounded, audioHandler.rewind),
+                _button(Icons.stop, audioHandler.stop),
+                _button(Icons.fast_forward_rounded, audioHandler.fastForward),
+              ]
             : [_button(Icons.stop, audioHandler.stop)];
 
         return Row(
@@ -168,6 +202,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
         audioHandler.mediaItem,
         AudioService.position,
-            (item, pos) => MediaState(item, pos),
+        (item, pos) => MediaState(item, pos),
       );
 }

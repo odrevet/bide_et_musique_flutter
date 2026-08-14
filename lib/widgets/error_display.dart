@@ -1,31 +1,59 @@
 import 'package:flutter/material.dart';
 
 class ErrorDisplay extends StatelessWidget {
-  final defaultStyle = const TextStyle(color: Colors.black);
-  final reportedError = const TextStyle(fontStyle: FontStyle.italic);
   final dynamic exception;
 
   const ErrorDisplay(this.exception, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        style: defaultStyle,
-        children: <TextSpan>[
-          const TextSpan(
-            text: 'Ouille ouille ouille !',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.error_outline, size: 48, color: theme.colorScheme.error),
+          const SizedBox(height: 16),
+          Text(
+            'Ouille ouille ouille !',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.error,
+            ),
           ),
-          const TextSpan(text: ' \n Une erreur est survenue !'),
-          const TextSpan(text: ' \n Le message reporté est : \n'),
-          TextSpan(text: ' \n ${exception.toString()}\n', style: reportedError),
-          const TextSpan(
-            text: ' \n • Verifiez que votre appareil est connecté à Internet\n',
+          const SizedBox(height: 8),
+          Text(
+            'Une erreur est survenue !',
+            style: theme.textTheme.bodyLarge,
           ),
-          const TextSpan(
-            text:
-                ' \n • Bide et Musique est peut-être temporairement indisponible, ré-éssayez ulterieurement\n',
+          const SizedBox(height: 12),
+          Card(
+            color: theme.colorScheme.errorContainer,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                exception.toString(),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: theme.colorScheme.onErrorContainer,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '• Vérifiez que votre appareil est connecté à Internet',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '• Bide et Musique est peut-être temporairement indisponible',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),

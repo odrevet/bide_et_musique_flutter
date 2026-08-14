@@ -108,15 +108,15 @@ Future<FavoritesResults> fetchFavorites(int? accountId, int page) async {
 }
 
 Future<int> addSongToFavorites(String songUrl) async {
-  Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  Session.headers['Host'] = host;
-  Session.headers['Origin'] = baseUri;
-  Session.headers['Referer'] = songUrl;
+  Session.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+  Session.setHeader('Host', host);
+  Session.setHeader('Origin', baseUri);
+  Session.setHeader('Referer', songUrl);
 
   final response = await Session.post(songUrl, body: {'M': 'AS'});
 
-  Session.headers.remove('Referer');
-  Session.headers.remove('Content-Type');
+  Session.removeHeader('Referer');
+  Session.removeHeader('Content-Type');
 
   return response.statusCode;
 }

@@ -25,6 +25,8 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   String? _sessionId;
   String? _latestId;
 
+  bool get radioMode => _radioMode;
+
   /// Initialise our audio handler.
   AudioPlayerHandler() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);

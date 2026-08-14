@@ -42,10 +42,16 @@ class _CoverViewerState extends State<CoverViewer> {
       body: Center(
         child: _threeDimensionMode
             ? Transform(
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
-                  ..rotateX(0.01 * _offset.dy)
-                  ..rotateY(-0.01 * _offset.dx),
+                transform: () {
+                  var xAngle = (0.01 * _offset.dy)
+                      .clamp(-1.4, 1.4);
+                  var yAngle = (-0.01 * _offset.dx)
+                      .clamp(-1.4, 1.4);
+                  return Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateX(xAngle)
+                    ..rotateY(yAngle);
+                }(),
                 alignment: FractionalOffset.center,
                 child: GestureDetector(
                   onPanUpdate: (details) =>

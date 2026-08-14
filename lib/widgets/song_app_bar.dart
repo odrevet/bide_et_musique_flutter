@@ -140,7 +140,7 @@ class _SongAppBarState extends State<SongAppBar> {
             ),
             actions: <Widget>[
               IconButton(
-                icon: const Icon(Icons.more_vert),
+                icon: const Icon(Icons.music_note),
                 tooltip: 'Options de la chanson',
                 onPressed: () => _showSongOptionsBottomSheet(context, song),
               ),

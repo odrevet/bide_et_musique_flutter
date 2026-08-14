@@ -109,53 +109,67 @@ class _WallWidgetState extends State<WallWidget> {
   }
 
   Widget _buildView(BuildContext context, List<Post> posts) {
+    final theme = Theme.of(context);
     var rows = <Widget>[];
     for (Post post in posts) {
       rows.add(
         Card(
-          child: Column(
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(fontSize: 14.0, color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: post.author.name,
-                      style: linkStyle,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AccountPage(
-                              account: fetchAccount(post.author.id),
-                            ),
-                          ),
-                        ),
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
                     ),
-                    TextSpan(text: ' ${post.time} pendant '),
-                    TextSpan(
-                      text: post.during.name,
-                      style: linkStyle,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SongPageWidget(
-                              songLink: SongLink(
-                                id: post.during.id,
-                                name: post.during.name,
+                    children: [
+                      TextSpan(
+                        text: post.author.name,
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountPage(
+                                account: fetchAccount(post.author.id),
                               ),
-                              song: fetchSong(post.during.id),
                             ),
                           ),
+                      ),
+                      TextSpan(
+                        text: ' ${post.time ?? ''}',
+                        style: TextStyle(
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                    ),
-                  ],
+                      ),
+                      TextSpan(text: ' pendant '),
+                      TextSpan(
+                        text: post.during.name,
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongPageWidget(
+                                songLink: SongLink(
+                                  id: post.during.id,
+                                  name: post.during.name,
+                                ),
+                                song: fetchSong(post.during.id),
+                              ),
+                            ),
+                          ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(),
-              HtmlWithStyle(data: post.body),
-            ],
+                const Divider(height: 16),
+                HtmlWithStyle(data: post.body),
+              ],
+            ),
           ),
         ),
       );
@@ -163,7 +177,10 @@ class _WallWidgetState extends State<WallWidget> {
 
     return RefreshIndicator(
       onRefresh: _updatePosts,
-      child: ListView(children: rows),
+      child: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        children: rows,
+      ),
     );
   }
 }

@@ -34,28 +34,48 @@ class BideBoxWidget extends StatelessWidget {
 
   Widget _buildView(BuildContext context, List<Exchange> messages) {
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: messages.length,
       itemBuilder: (BuildContext context, int index) {
         Exchange message = messages[index];
-        return ListTile(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AccountPage(
-                account: fetchAccount(message.recipient!.id),
-                defaultPage: 2,
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+          child: ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AccountPage(
+                  account: fetchAccount(message.recipient!.id),
+                  defaultPage: 2,
+                ),
               ),
             ),
-          ),
-          title: Text(message.recipient!.name!),
-          subtitle: Text('${message.sentCount} ${message.receivedCount}'),
-          leading: GestureDetector(
-            onTap: () => showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  MessageEditor(message.recipient),
+            title: Text(
+              message.recipient!.name!,
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
-            child: const Icon(Icons.mail),
+            subtitle: Text(
+              'Envoyés: ${message.sentCount} · Reçus: ${message.receivedCount}',
+            ),
+            leading: GestureDetector(
+              onTap: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    MessageEditor(message.recipient),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.mail,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
           ),
         );
       },

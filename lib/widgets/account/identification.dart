@@ -128,66 +128,101 @@ class _IdentificationState extends State<Identification> {
     BuildContext context, [
     IdentificationResponse? identificationResponse,
   ]) {
+    final theme = Theme.of(context);
     var form = Form(
       child: ListView(
+        padding: const EdgeInsets.all(24),
         children: <Widget>[
+          const SizedBox(height: 24),
+          Text(
+            'Connectez-vous à votre compte',
+            style: theme.textTheme.titleLarge,
+          ),
+          const SizedBox(height: 24),
           TextFormField(
             controller: _usernameController,
-            decoration: const InputDecoration(hintText: 'Nom utilisateur'),
+            decoration: const InputDecoration(
+              labelText: 'Nom d\'utilisateur',
+              prefixIcon: Icon(Icons.person),
+              border: OutlineInputBorder(),
+            ),
           ),
+          const SizedBox(height: 16),
           TextFormField(
             controller: _passwordController,
             obscureText: true,
-            decoration: const InputDecoration(hintText: 'Mot de passe'),
+            decoration: const InputDecoration(
+              labelText: 'Mot de passe',
+              prefixIcon: Icon(Icons.lock),
+              border: OutlineInputBorder(),
+            ),
           ),
-          identificationResponse != null &&
-                  identificationResponse.isLoggedIn == false
-              ? Container(
-                  margin: const EdgeInsets.only(top: 20.0),
-                  child: Text(
-                    'Erreur d\'authentification:\n${identificationResponse.loginMessage}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    ),
+          if (identificationResponse != null &&
+              identificationResponse.isLoggedIn == false) ...[
+            const SizedBox(height: 16),
+            Card(
+              color: theme.colorScheme.errorContainer,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  '${identificationResponse.loginMessage}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: theme.colorScheme.onErrorContainer,
                   ),
-                )
-              : const Text(''),
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
           CheckboxListTile(
             title: const Text("Se souvenir des identifiants"),
             value: _remember,
             onChanged: _onRememberToggle,
+            controlAffinity: ListTileControlAffinity.leading,
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 2.0),
-            child: ElevatedButton(
-              onPressed: _performLogin,
-              child: const Text('Se connecter'),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            icon: const Icon(Icons.login),
+            label: const Text('Se connecter'),
+            onPressed: _performLogin,
+            style: FilledButton.styleFrom(
+              minimumSize: const Size(double.infinity, 48),
             ),
           ),
+          const SizedBox(height: 24),
           const Divider(),
-          Column(
-            children: [
-              const Text("Pas de compte ? "),
-              ElevatedButton(
-                onPressed: () => launchURL('$baseUri/create_account.html'),
-                child: const Text('En créer un sur bide-et-musique.com'),
-              ),
-            ],
+          const SizedBox(height: 16),
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  "Pas de compte ?",
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.open_in_new, size: 18),
+                  label: const Text('Créer un compte sur le site'),
+                  onPressed: () => launchURL('$baseUri/create_account.html'),
+                ),
+              ],
+            ),
           ),
-          const Divider(),
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: _clearSettings,
-                child: const Text('Oublier les identifiants'),
-              ),
-            ],
+          const SizedBox(height: 16),
+          Center(
+            child: TextButton.icon(
+              icon: const Icon(Icons.delete_sweep, size: 18),
+              label: const Text('Oublier les identifiants enregistrés'),
+              onPressed: _clearSettings,
+            ),
           ),
         ],
       ),
     );
 
-    return Container(padding: const EdgeInsets.all(30.0), child: form);
+    return form;
   }
 }

@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:page_indicator_plus/page_indicator_plus.dart';
 
 import '../models/account.dart';
 import '../models/session.dart';
 import '../services/account.dart';
 import '../utils.dart';
+import 'page_dots.dart';
 import '../widgets/song_listing.dart';
 import 'account/bidebox.dart';
 import 'html_with_style.dart';
@@ -142,11 +142,14 @@ class _AccountPageState extends State<AccountPage> {
             children: [
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200.withValues(alpha: 0.7),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.85),
+                    ),
                   ),
-                ),
               ),
               Stack(
                 children: [
@@ -188,13 +191,9 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: PageIndicator(
+                    child:                     PageDots(
                       controller: _pageController,
                       count: Session.accountLink.id == null ? 2 : 3,
-                      size: 10.0,
-                      layout: PageIndicatorLayout.WARM,
-                      scale: 0.75,
-                      space: 10,
                     ),
                   ),
                 ],
@@ -263,9 +262,12 @@ class MessageListing extends StatelessWidget {
       itemCount: messages!.length,
       itemBuilder: (BuildContext context, int index) {
         Message message = messages![index];
-        return ListTile(
-          title: Text(message.body),
-          subtitle: Text('${message.recipient} ${message.date}'),
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: ListTile(
+            title: Text(message.body),
+            subtitle: Text('${message.recipient} ${message.date}'),
+          ),
         );
       },
     );
@@ -305,7 +307,10 @@ class AccountListing extends StatelessWidget {
       );
     }
 
-    return ListView(children: rows);
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      children: rows,
+    );
   }
 }
 

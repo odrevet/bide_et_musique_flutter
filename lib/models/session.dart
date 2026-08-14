@@ -1,16 +1,33 @@
-import 'dart:async';
-
 import 'package:http/http.dart' as http;
 
 import 'account.dart';
 
-abstract class Session {
+class Session {
+  Session._();
+
   static var accountLink = AccountLink();
 
-  static Map<String, String> headers = {};
+  static final Map<String, String> _baseHeaders = {};
+
+  static Map<String, String> get headers => Map.unmodifiable(_baseHeaders);
+
+  static void setHeader(String key, String value) {
+    _baseHeaders[key] = value;
+  }
+
+  static void removeHeader(String key) {
+    _baseHeaders.remove(key);
+  }
+
+  static void clearHeaders() {
+    _baseHeaders.clear();
+  }
 
   static Future<http.Response> get(String url) async {
-    http.Response response = await http.get(Uri.parse(url), headers: headers);
+    http.Response response = await http.get(
+      Uri.parse(url),
+      headers: _baseHeaders,
+    );
     _updateCookie(response);
     return response;
   }
@@ -19,7 +36,7 @@ abstract class Session {
     http.Response response = await http.post(
       Uri.parse(url),
       body: body,
-      headers: headers,
+      headers: _baseHeaders,
     );
     _updateCookie(response);
     return response;
@@ -29,7 +46,7 @@ abstract class Session {
     String? rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
-      headers['cookie'] = (index == -1)
+      _baseHeaders['cookie'] = (index == -1)
           ? rawCookie
           : rawCookie.substring(0, index);
     }

@@ -81,16 +81,25 @@ class _SearchResultsState extends State<SearchResults> {
     }
 
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       controller: _controller,
       itemCount: _songLinks!.length,
       itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          leading: CoverThumb(_songLinks![index]),
-          title: Text(_songLinks![index].name),
-          subtitle: Text(
-            _songLinks![index].artist == null ? '' : _songLinks![index].artist!,
+        final link = _songLinks![index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+          child: ListTile(
+            leading: CoverThumb(link),
+            title: Text(
+              link.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: link.artist != null && link.artist!.isNotEmpty
+                ? Text(link.artist!)
+                : null,
+            onTap: () => launchSongPage(link, context),
           ),
-          onTap: () => launchSongPage(_songLinks![index], context),
         );
       },
     );
@@ -175,8 +184,6 @@ class _SearchState extends State<Search> {
                     ),
                   ],
                 ),
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                foregroundColor: Theme.of(context).colorScheme.onSurface,
               ),
               body: SearchResults(_controller.text, _currentItem),
             ),
@@ -190,196 +197,88 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Theme(
-      data: theme.copyWith(
-        filledButtonTheme: FilledButtonThemeData(
-          style:
-              FilledButton.styleFrom(
-                backgroundColor: Colors.orangeAccent,
-                // Use your app's orange accent
-                foregroundColor: Colors.white,
+    return Scaffold(
+      appBar: AppBar(title: const Text('Rechercher dans la base')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 24,
+                  horizontal: 12,
+                  vertical: 4,
                 ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    20.0,
-                  ), // Match your app's button theme
-                ),
-                elevation: 2,
-                shadowColor: Colors.orange.withValues(alpha: 0.3),
-              ).copyWith(
-                overlayColor: WidgetStateProperty.resolveWith<Color?>((
-                  Set<WidgetState> states,
-                ) {
-                  if (states.contains(WidgetState.hovered)) {
-                    return Colors.white.withValues(alpha: 0.08);
-                  }
-                  if (states.contains(WidgetState.focused) ||
-                      states.contains(WidgetState.pressed)) {
-                    return Colors.white.withValues(alpha: 0.12);
-                  }
-                  return null;
-                }),
-              ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orangeAccent,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            elevation: 2,
-            shadowColor: Colors.orange.withValues(alpha: 0.3),
-          ),
-        ),
-        iconButtonTheme: IconButtonThemeData(
-          style:
-              IconButton.styleFrom(
-                foregroundColor: Colors.orange,
-                backgroundColor: Colors.transparent,
-                padding: const EdgeInsets.all(8),
-              ).copyWith(
-                overlayColor: WidgetStateProperty.resolveWith<Color?>((
-                  Set<WidgetState> states,
-                ) {
-                  if (states.contains(WidgetState.hovered)) {
-                    return Colors.orange.withValues(alpha: 0.08);
-                  }
-                  if (states.contains(WidgetState.focused) ||
-                      states.contains(WidgetState.pressed)) {
-                    return Colors.orange.withValues(alpha: 0.12);
-                  }
-                  return null;
-                }),
-              ),
-        ),
-      ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Rechercher dans la base'),
-          backgroundColor: theme.colorScheme.surface,
-          foregroundColor: theme.colorScheme.onSurface,
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-
-              // Search type selector
-              Text(
-                'Type de recherche',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
+                child: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
                   ),
-                  child: DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                    initialValue: _currentItem,
-                    isExpanded: true,
-                    items: _searchTypes.map((SearchType type) {
-                      return DropdownMenuItem<String>(
-                        value: type.value,
-                        child: Row(
-                          children: [
-                            Icon(type.icon, size: 20, color: Colors.orange),
-                            const SizedBox(width: 12),
-                            Expanded(child: Text(type.label)),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        setState(() => _currentItem = newValue);
-                      }
-                    },
-                  ),
+                  initialValue: _currentItem,
+                  isExpanded: true,
+                  items: _searchTypes.map((SearchType type) {
+                    return DropdownMenuItem<String>(
+                      value: type.value,
+                      child: Row(
+                        children: [
+                          Icon(type.icon, size: 20, color: Colors.orange),
+                          const SizedBox(width: 12),
+                          Expanded(child: Text(type.label)),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      setState(() => _currentItem = newValue);
+                    }
+                  },
                 ),
               ),
+            ),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 16),
 
-              // Search input
-              Text(
-                'Terme de recherche',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+            SearchBar(
+              controller: _controller,
+              focusNode: _focusNode,
+              hintText: 'Rechercher un titre, un artiste...',
+              leading: Icon(currentSearchType.icon, color: Colors.orange),
+              trailing: _controller.text.isNotEmpty
+                  ? [
+                      IconButton(
+                        onPressed: () {
+                          _controller.clear();
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                    ]
+                  : null,
+              onSubmitted: (_) => performSearch(),
+              onChanged: (_) => setState(() {}),
+            ),
+
+            const SizedBox(height: 24),
+
+            FilledButton.icon(
+              onPressed: _isSearching ? null : performSearch,
+              icon: _isSearching
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.search),
+              label: Text(
+                _isSearching ? 'Recherche...' : 'Lancer la recherche',
               ),
-              const SizedBox(height: 12),
-
-              SearchBar(
-                controller: _controller,
-                focusNode: _focusNode,
-                hintText: 'Entrez votre recherche...',
-                leading: Icon(currentSearchType.icon, color: Colors.orange),
-                trailing: _controller.text.isNotEmpty
-                    ? [
-                        IconButton(
-                          onPressed: () {
-                            _controller.clear();
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-                      ]
-                    : null,
-                onSubmitted: (_) => performSearch(),
-                onChanged: (_) => setState(() {}),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Search button with applied theme
-              FilledButton.icon(
-                onPressed: _isSearching ? null : performSearch,
-                icon: _isSearching
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                      )
-                    : const Icon(Icons.search),
-                label: Text(
-                  _isSearching ? 'Recherche...' : 'Lancer la recherche',
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

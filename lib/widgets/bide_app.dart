@@ -24,12 +24,14 @@ class BideApp extends StatefulWidget {
 class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   Future<SongAiring>? _songAiring;
   Exception? _e;
-  late SongAiringNotifier _songAiringNotifier;
+  late final SongAiringNotifier _songAiringNotifier;
+  late final VoidCallback _airingListener;
 
   void initSongFetch() {
     _e = null;
     _songAiringNotifier = SongAiringNotifier();
-    _songAiringNotifier.addListener(() {
+    _airingListener = () {
+      if (!mounted) return;
       setState(() {
         _songAiring = _songAiringNotifier.songAiring;
         if (_songAiring == null) {
@@ -44,7 +46,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           });
         }
       });
-    });
+    };
+    _songAiringNotifier.addListener(_airingListener);
     _songAiringNotifier.periodicFetchSongAiring();
   }
 
@@ -73,6 +76,8 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _songAiringNotifier.removeListener(_airingListener);
+    _songAiringNotifier.dispose();
     super.dispose();
   }
 
@@ -181,6 +186,11 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
       },
     );
 
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.orange,
+      brightness: Brightness.light,
+    );
+
     return MaterialApp(
       title: 'Bide&Musique',
       theme: ThemeData(
@@ -189,6 +199,9 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           seedColor: Colors.orange,
           brightness: Brightness.light,
         ),
+        primarySwatch: Colors.orange,
+        secondaryHeaderColor: Colors.deepOrange,
+        canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 42),
           titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -196,23 +209,39 @@ class _BideAppState extends State<BideApp> with WidgetsBindingObserver {
           bodyMedium: TextStyle(fontSize: 12),
           bodyLarge: TextStyle(fontSize: 16),
         ),
-        primarySwatch: Colors.orange,
-        secondaryHeaderColor: Colors.deepOrange,
-        canvasColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.orange,
           elevation: 4.0,
-          // Add more properties as needed
         ),
+        bottomAppBarTheme: BottomAppBarThemeData(color: Colors.orange),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.orangeAccent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
         ),
-        bottomAppBarTheme: BottomAppBarThemeData(color: Colors.orange),
+        cardTheme: CardThemeData(
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          clipBehavior: Clip.antiAlias,
+        ),
         dialogTheme: DialogThemeData(
           backgroundColor: const Color.fromARGB(0xE5, 0xF5, 0xEE, 0xE5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        dividerTheme: DividerThemeData(
+          thickness: 1,
+          color: colorScheme.outlineVariant,
+        ),
+        snackBarTheme: SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       home: home,

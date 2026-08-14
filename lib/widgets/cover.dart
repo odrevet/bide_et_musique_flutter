@@ -25,7 +25,7 @@ class CoverThumb extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: _songLink.thumbLink,
           placeholder: (context, url) => const Icon(Icons.album, size: 50.0),
-          errorWidget: (context, url, error) =>
+          errorBuilder: (context, error, stackTrace) =>
               const Icon(Icons.album, size: 50.0),
         ),
       ),
@@ -117,7 +117,7 @@ class Cover extends StatelessWidget {
           ? (context, url) => Image.asset('assets/vinyl-default.jpg')
           : null,
       imageUrl: _url,
-      errorWidget: (context, url, error) =>
+      errorBuilder: (context, error, stackTrace) =>
           Image.asset('assets/vinyl-default.jpg'),
     );
   }

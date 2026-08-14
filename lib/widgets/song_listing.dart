@@ -69,44 +69,63 @@ class _SongListingWidgetState extends State<SongListingWidget> {
       }
 
       rows.add(
-        ListTile(
-          leading: GestureDetector(
-            child: CoverThumb(songLink),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return CoverViewer(songLink);
-                },
-                fullscreenDialog: true,
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: ListTile(
+            leading: GestureDetector(
+              child: CoverThumb(songLink),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) {
+                    return CoverViewer(songLink);
+                  },
+                  fullscreenDialog: true,
+                ),
               ),
             ),
-          ),
-          title: Text(songLink.name),
-          trailing: songLink.isNew ? const Icon(Icons.fiber_new) : null,
-          subtitle: Text(subtitle),
-          onTap: () => launchSongPage(songLink, context),
-          onLongPress: () async {
-            final song = await fetchSong(songLink.id);
-            if (!context.mounted) return;
+            title: Text(
+              songLink.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: songLink.isNew
+                ? Icon(Icons.fiber_new, color: Colors.orange.shade700)
+                : null,
+            subtitle: subtitle.isNotEmpty
+                ? Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : null,
+            onTap: () => launchSongPage(songLink, context),
+            onLongPress: () async {
+              final song = await fetchSong(songLink.id);
+              if (!context.mounted) return;
 
-            showDialog<void>(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  contentPadding: const EdgeInsets.all(20.0),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  ),
-                  children: [SongActionMenu(song)],
-                );
-              },
-            );
-          },
+              showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
+                    children: [SongActionMenu(song)],
+                  );
+                },
+              );
+            },
+          ),
         ),
       );
     }
 
-    return ListView(children: rows);
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      itemCount: rows.length,
+      itemBuilder: (context, index) => rows[index],
+    );
   }
 }

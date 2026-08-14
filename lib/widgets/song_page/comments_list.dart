@@ -19,12 +19,14 @@ class CommentsList extends StatelessWidget {
     List<Comment> comments = song.comments;
     var rows = <Widget>[];
     String? loginName = Session.accountLink.name;
-    var selfComment = const TextStyle(color: Colors.red);
+    var selfComment = TextStyle(color: Theme.of(context).colorScheme.primary);
 
     if (comments.length > 1) {
       for (Comment comment in comments) {
         rows.add(
-          ListTile(
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: ListTile(
             onTap: () {
               Navigator.push(
                 context,
@@ -34,14 +36,19 @@ class CommentsList extends StatelessWidget {
                 ),
               );
             },
-            title: HtmlWithStyle(data: comment.body),
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: HtmlWithStyle(data: comment.body),
+            ),
             subtitle: Text(
               'Par ${comment.author.name!} ${comment.time}',
-              style: comment.author.name == loginName ? selfComment : null,
+              style: (comment.author.name == loginName ? selfComment : null)?.copyWith(
+                fontSize: 12,
+              ),
             ),
             trailing: comment.author.name == loginName
                 ? IconButton(
-                    icon: const Icon(Icons.edit),
+                    icon: const Icon(Icons.edit, size: 20),
                     onPressed: () async {
                       showDialog(
                         context: context,
@@ -53,10 +60,13 @@ class CommentsList extends StatelessWidget {
                   )
                 : null,
           ),
-        );
-        rows.add(const Divider());
+        ),
+      );
       }
-      return ListView(children: rows);
+      return ListView(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        children: rows,
+      );
     } else {
       return const Padding(
         padding: EdgeInsets.only(left: 4.0, top: 2.0),

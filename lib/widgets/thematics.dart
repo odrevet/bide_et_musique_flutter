@@ -90,20 +90,31 @@ class _ThematicPageWidgetState extends State<ThematicPageWidget> {
         .toList();
 
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: programLinks.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(programLinks[index].name!),
-          subtitle: Text(programLinks[index].songCount!),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ProgramPage(program: fetchProgram(programLinks[index].id)),
-              ),
-            );
-          },
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+          child: ListTile(
+            title: Text(
+              programLinks[index].name!,
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            subtitle: Text(
+              '${programLinks[index].songCount} titres',
+            ),
+            trailing: const Icon(Icons.chevron_right, size: 18),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProgramPage(
+                    program: fetchProgram(programLinks[index].id),
+                  ),
+                ),
+              );
+            },
+          ),
         );
       },
     );

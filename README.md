@@ -48,12 +48,17 @@ ficher `android/app/build.gradle.kts` lit dans `android/key.properties` les info
 
 * Créer un apk 
 
-```
+```bash
     flutter build apk
 ```
 
 * Créer un appbundle 
 
-```
+```bash
     flutter build appbundle
+```
+# Linux
+
+```bash
+sudo apt-get install -y libgcrypt20-dev liblz4-dev libgpg-error-dev libmpv-dev
 ```

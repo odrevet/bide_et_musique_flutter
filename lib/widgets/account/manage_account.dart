@@ -25,7 +25,7 @@ class DisconnectButton extends StatelessWidget {
       icon: const Icon(Icons.close),
       onPressed: () {
         Session.accountLink.id = null;
-        Session.headers = {};
+        Session.clearHeaders();
         Navigator.pop(context);
       },
     );
@@ -130,8 +130,9 @@ class ManageAccountPageWidget extends StatelessWidget {
     final url = baseUri + account.image!;
     final image = NetworkImage(url);
 
+    final theme = Theme.of(context);
     return Container(
-      color: Theme.of(context).canvasColor,
+      color: theme.colorScheme.surface,
       child: Center(
         child: Column(
           children: <Widget>[
@@ -153,9 +154,15 @@ class ManageAccountPageWidget extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}\n',
-                      style: const TextStyle(fontSize: 14),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${account.type}\n${account.inscription}\n${account.messageForum}\n${account.comments}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -181,12 +188,13 @@ class ManageAccountPageWidget extends StatelessWidget {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade200.withValues(
-                                    alpha: 0.7,
-                                  ),
+                                  color: theme
+                                      .colorScheme.surfaceContainerHighest
+                                      .withValues(alpha: 0.85),
                                 ),
                               ),
                               SingleChildScrollView(
+                                padding: const EdgeInsets.all(12),
                                 child: HtmlWithStyle(
                                   data: account.presentation,
                                 ),

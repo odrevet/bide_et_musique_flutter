@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:page_indicator_plus/page_indicator_plus.dart';
 
 import '../../models/session.dart';
 import '../../models/song.dart';
@@ -11,6 +10,7 @@ import '../../utils.dart';
 import '../cover_viewer.dart';
 import '../error_display.dart';
 import '../html_with_style.dart';
+import '../page_dots.dart';
 import '../song_app_bar.dart';
 import '../song_informations.dart';
 import 'comment_dialog.dart';
@@ -52,7 +52,10 @@ class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
                   filter: ImageFilter.blur(sigmaX: 9.6, sigmaY: 9.6),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200.withValues(alpha: 0.7),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.85),
                     ),
                   ),
                 ),
@@ -84,14 +87,10 @@ class _SongLyricsAndCommentsState extends State<SongLyricsAndComments> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: PageIndicator(
-                controller: _pageController,
-                count: 2,
-                size: 10.0,
-                layout: PageIndicatorLayout.WARM,
-                scale: 0.75,
-                space: 10,
-              ),
+              child:             PageDots(
+              controller: _pageController,
+              count: 2,
+            ),
             ),
           ],
         ),

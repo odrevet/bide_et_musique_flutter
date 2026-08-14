@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:xml/xml.dart';
@@ -70,17 +69,13 @@ Future<List<NowSong>> fetchNowSongs() async {
 
 Future<SongAiring> fetchAiring() async {
   const url = '$baseUri/wapi/song/now';
-  try {
-    final responseJson = await Session.get(url);
-    if (responseJson.statusCode == 200) {
-      String decodedString = utf8.decode(responseJson.bodyBytes);
-      Map<String, dynamic> decodedJson = json.decode(decodedString);
-      return SongAiring.fromJson(decodedJson);
-    } else {
-      throw ('Response was ${responseJson.statusCode}');
-    }
-  } catch (e) {
-    rethrow;
+  final responseJson = await Session.get(url);
+  if (responseJson.statusCode == 200) {
+    String decodedString = utf8.decode(responseJson.bodyBytes);
+    Map<String, dynamic> decodedJson = json.decode(decodedString);
+    return SongAiring.fromJson(decodedJson);
+  } else {
+    throw Exception('Failed to load airing: HTTP ${responseJson.statusCode}');
   }
 }
 
@@ -115,8 +110,13 @@ List<Comment> parseComments(dom.Document document) {
 
 Future<Song> fetchSong(int songId) async {
   Song song;
-  final responseJson = await Session.get('$baseUri/wapi/song/$songId');
 
+  final results = await Future.wait([
+    Session.get('$baseUri/wapi/song/$songId'),
+    Session.get('$baseUri/song/$songId.html'),
+  ]);
+
+  final responseJson = results[0];
   if (responseJson.statusCode == 200) {
     try {
       var decodedJson = utf8.decode(responseJson.bodyBytes);
@@ -139,7 +139,7 @@ Future<Song> fetchSong(int songId) async {
   }
 
   //fetch comments and, if connected, the favorite status
-  var response = await Session.get('$baseUri/song/$songId.html');
+  var response = results[1];
 
   if (response.statusCode == 200) {
     song.canListen = false;
@@ -251,14 +251,14 @@ Future<Map<String, List<SongLink>>> fetchTitles() async {
 }
 
 Future<int> voteForSong(String songLink) async {
-  Session.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  Session.headers['Host'] = host;
-  Session.headers['Origin'] = baseUri;
-  Session.headers['Referer'] = songLink;
+  Session.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+  Session.setHeader('Host', host);
+  Session.setHeader('Origin', baseUri);
+  Session.setHeader('Referer', songLink);
 
   final response = await Session.post(songLink, body: {'Note': '1', 'M': 'CN'});
 
-  Session.headers.remove('Referer');
-  Session.headers.remove('Content-Type');
+  Session.removeHeader('Referer');
+  Session.removeHeader('Content-Type');
   return response.statusCode;
 }

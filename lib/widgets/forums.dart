@@ -25,24 +25,37 @@ class _ForumPageState extends State<ForumWidget> {
           var forums = snapshot.data;
           if (snapshot.hasData) {
             return ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: forums!.length,
               itemBuilder: (BuildContext context, int index) {
                 Forum forum = forums[index];
-                return ListTile(
-                  title: Text(forum.name!),
-                  subtitle: Text(forum.subtitle!),
-                  trailing: forum.hasNew! ? const Icon(Icons.fiber_new) : null,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ForumThreadWidget(
-                          forum,
-                          fetchForumThreads(forum.id!),
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                  child: ListTile(
+                    title: Text(
+                      forum.name!,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      forum.subtitle!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: forum.hasNew!
+                        ? Icon(Icons.fiber_new, color: Colors.orange.shade700)
+                        : null,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForumThreadWidget(
+                            forum,
+                            fetchForumThreads(forum.id!),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               },
             );
@@ -78,34 +91,41 @@ class _ForumThreadWidgetState extends State<ForumThreadWidget> {
           if (snapshot.hasData) {
             List<ForumThread> forumThreads = snapshot.data!;
             return ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: forumThreads.length,
               itemBuilder: (BuildContext context, int index) {
                 ForumThread forumThread = forumThreads[index];
                 String messageCountText = forumThread.nbMsgs! > 1
                     ? 'messages'
                     : 'message';
-                return ListTile(
-                  title: Text(forumThread.title!),
-                  subtitle: Text(
-                    '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name} ${forumThread.lastDate}',
-                  ),
-                  trailing: forumThread.hasNew!
-                      ? const Icon(Icons.fiber_new)
-                      : null,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ForumMessagesWidget(
-                          forumThread,
-                          fetchForumMessages(
-                            widget._forum.id!,
-                            forumThread.id!,
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                  child: ListTile(
+                    title: Text(
+                      forumThread.title!,
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    subtitle: Text(
+                      '${forumThread.nbMsgs} $messageCountText, dernier par ${forumThread.last!.name}',
+                    ),
+                    trailing: forumThread.hasNew!
+                        ? Icon(Icons.fiber_new, color: Colors.orange.shade700)
+                        : null,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForumMessagesWidget(
+                            forumThread,
+                            fetchForumMessages(
+                              widget._forum.id!,
+                              forumThread.id!,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               },
             );

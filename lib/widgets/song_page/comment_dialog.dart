@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/comment.dart';
 import '../../models/song.dart';
+import '../../services/comment.dart';
 import '../../services/song.dart';
 
 class CommentDialog extends StatelessWidget {

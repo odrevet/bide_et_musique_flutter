@@ -17,6 +17,14 @@ class SongAiringNotifier extends ChangeNotifier {
   Future<SongAiring>? songAiring;
   dynamic e;
   Timer? _t;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _t?.cancel();
+    super.dispose();
+  }
 
   void periodicFetchSongAiring() {
     e = null;
@@ -24,23 +32,26 @@ class SongAiringNotifier extends ChangeNotifier {
     try {
       songAiring = fetchAiring();
       songAiring!.then(
-        (s) async {
+        (s) {
+          if (_disposed) return;
           notifyListeners();
           int delay =
               (s.duration!.inSeconds -
                       (s.duration!.inSeconds * s.elapsedPcent! / 100))
                   .ceil();
           _t = Timer(Duration(seconds: delay), () {
-            periodicFetchSongAiring();
+            if (!_disposed) periodicFetchSongAiring();
           });
         },
         onError: (e) {
+          if (_disposed) return;
           this.e = e;
           _reset();
           notifyListeners();
         },
       );
     } catch (e) {
+      if (_disposed) return;
       this.e = e;
       _reset();
       notifyListeners();

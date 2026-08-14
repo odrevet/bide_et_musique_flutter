@@ -57,28 +57,40 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     });
   }
 
+  Widget _drawerSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16, bottom: 4),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: Theme.of(context).colorScheme.primary,
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Drawer(
       child: ListView(
         children: <Widget>[
-          SizedBox(
-            height: 120.0,
-            child: DrawerHeader(
+          DrawerHeader(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: AssetImage('assets/bandeau.png'),
+              ),
+              color: theme.colorScheme.primaryContainer,
+            ),
+            child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: AssetImage('assets/bandeau.png'),
+                  image: AssetImage('assets/bm_logo_white.png'),
                 ),
-              ),
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage('assets/bm_logo_white.png'),
-                  ),
-                ),
-                child: Container(),
               ),
             ),
           ),
@@ -86,7 +98,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text(_accountTitle),
             leading: const Icon(Icons.account_circle),
             trailing: Session.accountLink.id == null
-                ? null
+                ? const Icon(Icons.login)
                 : const DisconnectButton(),
             onTap: () {
               Navigator.push(
@@ -98,6 +110,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           const Divider(),
+          _drawerSectionHeader('Navigation'),
           ListTile(
             title: const Text('Titres'),
             leading: const Icon(Icons.queue_music),
@@ -174,7 +187,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               );
             },
           ),
-          const Divider(),
+          _drawerSectionHeader('Communauté'),
           ListTile(
             title: const Text('Mur des messages'),
             leading: const Icon(Icons.comment),
@@ -195,7 +208,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               );
             },
           ),
-          const Divider(),
+          _drawerSectionHeader('Galerie'),
           ListTile(
             title: const Text('Pochettoscope'),
             leading: const Icon(Icons.image),
@@ -220,7 +233,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               );
             },
           ),
-          const Divider(),
+          _drawerSectionHeader('Système'),
           ListTile(
             title: const Text('Nouvelles entrées'),
             leading: const Icon(Icons.fiber_new),
@@ -243,6 +256,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               );
             },
           ),
+          const Divider(),
           ListTile(
             title: const Text('À propos'),
             leading: const Icon(Icons.info),
