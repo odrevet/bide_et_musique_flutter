@@ -4,11 +4,13 @@ description: Écouter et consulter la web radio 'Bide et Musique'
 version: 4.2.0+62
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.13.0
+
 
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.8
   audio_service: ^0.18.0
   audio_service_mpris: ^0.2.1
   cached_network_image_ce: ^4.10.0
@@ -47,3 +49,5 @@ flutter:
     - assets/bm_logo_white.png
     - assets/vinyl-default.jpg
     - android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+
+
