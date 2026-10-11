@@ -16,7 +16,7 @@ dependencies:
   cached_network_image_ce: ^4.10.0
   diacritic: ^0.1.0
   flutter_html: ^3.0.0
-  html: ^0.15.0
+  html: ^0.15.7
   http: ^1.6.0
   just_audio: ^0.10.4
   just_audio_media_kit: ^2.1.0
@@ -29,6 +29,9 @@ dependencies:
   wakelock_plus: ^1.7.0
   rxdart: ^0.28.0
   media_kit_libs_linux: ^1.2.1
+
+dependency_overrides:
+  html: 0.15.5
 
 dev_dependencies:
   test: ^1.30.0

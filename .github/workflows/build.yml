@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [main, ci-test]
+  pull_request:
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux
+            os: ubuntu-latest
+            build: flutter build linux --release
+            artifact: build/linux/x64/release/bundle
+          - target: windows
+            os: windows-latest
+            build: flutter build windows --release
+            artifact: build/windows/x64/runner/Release
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Dépendances Linux
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev
+
+      - run: flutter pub get
+      # - run: flutter test
+      - run: ${{ matrix.build }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: ${{ matrix.artifact }}
