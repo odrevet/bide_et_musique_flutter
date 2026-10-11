@@ -19,7 +19,6 @@ avec une interface pensée pour le mobile, vous pouvez :
 
 [![Android Google Play Store](https://img.shields.io/badge/Android-Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=fr.odrevet.bide_et_musique)
 [![Android F-Droid Store](https://img.shields.io/badge/Android-F--Droid-1976D2?logo=f-droid&logoColor=white)](https://f-droid.org/packages/fr.odrevet.bide_et_musique/)
-[![iOS App Store](https://img.shields.io/badge/iOS-App%20Store-0D96F6?logo=appstore&logoColor=white)](https://apps.apple.com/fr/app/bide-et-musique/id1524513644)
 [![Latest release](https://img.shields.io/github/v/release/odrevet/bide_et_musique_flutter)](https://github.com/odrevet/bide_et_musique_flutter/releases/latest)
 
 # Vidéo de présentation 
