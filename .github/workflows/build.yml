@@ -1,26 +1,25 @@
 name: Build
 
 on:
-  push:
-    branches: [main, ci-test]
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to build
+        type: choice
+        default: all
+        options:
+          - all
+          - linux
+          - windows
 
 jobs:
   build:
     name: ${{ matrix.target }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.target == 'windows' && 'windows-latest' || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - target: linux
-            os: ubuntu-latest
-            build: flutter build linux --release
-            artifact: build/linux/x64/release/bundle
-          - target: windows
-            os: windows-latest
-            build: flutter build windows --release
-            artifact: build/windows/x64/runner/Release
+        target: ${{ fromJSON(inputs.platform == 'all' && '["linux","windows"]' || format('["{0}"]', inputs.platform)) }}
 
     steps:
       - uses: actions/checkout@v6
@@ -30,7 +29,7 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Dépendances Linux
+      - name: Linux dependencies
         if: matrix.target == 'linux'
         run: |
           sudo apt-get update -y
@@ -38,9 +37,9 @@ jobs:
 
       - run: flutter pub get
       # - run: flutter test
-      - run: ${{ matrix.build }}
+      - run: flutter build ${{ matrix.target }} --release
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}
-          path: ${{ matrix.artifact }}
+          path: ${{ matrix.target == 'windows' && 'build/windows/x64/runner/Release' || 'build/linux/x64/release/bundle' }}
